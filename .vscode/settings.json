@@ -7,6 +7,14 @@
   "python.formatting.blackArgs": ["--line-length", "88"],
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": true,
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.formatOnSave": true
   }
 }
 
