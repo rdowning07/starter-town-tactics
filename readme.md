@@ -1,128 +1,51 @@
 # Starter Town Tactics
 
-A tactical RPG prototype in Python inspired by Final Fantasy Tactics. This project is designed for hands-on learning with game systems, AI behavior, and developer tools like pre-commit, linting, and test automation.
+A tile-based tactical simulation engine built in Python.  
+Created by [rdowning07](https://github.com/rdowning07) for a PMIII → Principal PMT/SDM transition roadmap at Amazon.
 
 ---
 
-## 🚀 Features
+## Features
 
-- Grid-based tactical movement
-- Modular game architecture
-- Pre-configured dev tools: `black`, `isort`, `mypy`, `pylint`, `pytest`, `pre-commit`
-- Structured unit tests and CI-ready
+- ✅ Grid-based map with terrain types and movement costs
+- ✅ Units with customizable movement range, diagonal rules
+- ✅ Defensive movement logic and validation (off-grid, occupied, etc.)
+- ✅ Pytest test suite with high coverage of edge cases
+- ✅ Modular Python architecture (`game/`, `tests/`)
 
 ---
 
-## 🛠️ Installation
+## Getting Started
 
 ```bash
-git clone https://github.com/rdowning07/starter-town-tactics.git
-cd starter-town-tactics
-python3 -m venv .venv
-source .venv/bin/activate   # or `.venv\Scripts\activate` on Windows
+# From the root of the repo:
+python -m venv venv
+source venv/bin/activate
+
 pip install -r requirements.txt
-pre-commit install
-```
+python -m pytest
 
----
+Learning Journey & AI Integration
 
-## 🧪 Running Tests
+This repo supports techincal growth from architecture to delivery leveraging AI.
 
-```bash
-pytest
-```
+✅ Technical Milestones
+Built core classes: Tile, Grid, Unit, Game
+Implemented terrain-movement logic and edge-case guards
+Created full test suite with Pytest
+Modularized Python packages for scaling
+🤖 AI-Augmented Work
+Used ChatGPT for:
+Scaffolding architecture
+Troubleshooting module/import errors
+Refactoring test cases and CLI test runs
+Tracking PM-style milestones in plan.md
 
----
-
-## 🧹 Linting and Type Checks
-
-```bash
-black .
-isort .
-pylint game tests
-mypy game
-```
-
-To run all checks:
-
-```bash
-pre-commit run --all-files
-```
-
----
-
-## 📂 Project Structure
-
-```
+Repo Structure
 starter-town-tactics/
-├── .vscode/                  # Editor settings (optional)
-├── game/                     # Core game logic
-│   ├── __init__.py
-│   ├── grid.py
-│   └── main.py
-├── tests/                    # Test suite
-│   ├── __init__.py
-│   ├── test_example.py
-│   ├── test_grid.py
-│   └── tests_fail.py
-├── .pylintrc                 # Linting config
-├── .pre-commit-config.yaml   # Pre-commit hooks
-├── pytest.ini                # Pytest config
-├── requirements.txt          # Dependencies
-├── hello.py                  # Temporary dev/test file
-└── README.md
-```
-
----
-
-## 📈 Continuous Integration (optional)
-
-Add the following GitHub Actions file to `.github/workflows/ci.yml`:
-
-```yaml
-name: CI
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
-jobs:
-  lint-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pre-commit
-      - name: Run pre-commit
-        run: pre-commit run --all-files
-      - name: Run tests
-        run: pytest
-```
-
----
-
-## 🧭 Roadmap
-
--
-
----
-
-## 📜 License
-
-MIT
-
----
-
-## 👤 Author
-
-Rob Downing [https://github.com/rdowning07](https://github.com/rdowning07)
-
+├── game/                # Core game logic
+├── tests/               # Unit + integration test cases
+├── plan.md              # Learning plan & milestone tracking
+├── README.md
+├── pytest.ini
+└── ...
