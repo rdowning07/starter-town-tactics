@@ -1,0 +1,10 @@
+pygame==2.5.2
+
+# Development dependencies
+pytest==8.4.1
+pre-commit==3.7.0
+black==24.4.2
+isort==5.13.2
+mypy==1.10.0
+pylint==3.2.2
+"""This module handles the game grid logic."""

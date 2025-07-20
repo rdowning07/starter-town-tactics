@@ -1,0 +1,47 @@
+[MASTER]
+ignore=venv
+jobs=1
+load-plugins=
+extension-pkg-whitelist=
+ignore-patterns=test_.*\.py
+
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    too-few-public-methods,
+    invalid-name,
+    no-member,
+    comparison-of-constants,
+    unused-argument,
+    line-too-long
+
+[REPORTS]
+output-format=colorized
+reports=no
+score=yes
+
+[DESIGN]
+max-args=5
+max-attributes=10
+max-locals=15
+max-returns=6
+max-branches=12
+max-statements=50
+
+[BASIC]
+good-names=i,j,k,ex,Run,_,x,y,dx,dy
+bad-names=foo,bar,baz
+variable-rgx=[a-z_][a-z0-9_]{1,30}$
+
+[FORMAT]
+max-line-length=100
+indent-string='    '
+
+[TYPECHECK]
+ignored-modules=pygame
+ignored-classes=pygame.Surface,pygame.Rect
+
+[SIMILARITIES]
+min-similarity-lines=4
