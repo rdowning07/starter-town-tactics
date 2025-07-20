@@ -1,3 +1,12 @@
-venv/
+# .gitignore
+
 __pycache__/
 *.pyc
+*.pyo
+*.log
+*.DS_Store
+.venv/
+venv/
+.env
+.vscode/
+.idea/
