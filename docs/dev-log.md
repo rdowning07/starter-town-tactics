@@ -1,25 +1,12 @@
-# Starter Town Tactics — Dev Log
+# dev-log.md
 
----
+**Date:** 2025-07-20
 
-## Week 1
+### Completed
+- Resolved persistent git/pre-commit errors involving `README.md`.
+- Rebuilt modules for maintainability (`game.py`, `tile.py`, `grid.py`, `conftest.py`).
+- Reinstalled pre-commit and updated hooks (black, isort, mypy, pylint).
+- Type annotations and pylint compliance addressed for `game.py`.
 
-### Goals:
-- Establish dev environment
-- Run basic `pygame` loop
-- Set up Git and GitHub
-
-### Accomplishments:
-- Installed Homebrew, Python 3.9, Git
-- Created virtual environment and ran basic Pygame window
-- Initialized Git and linked to GitHub repo
-- Pushed working code to `main`
-
-### Reflections:
-- Reinforced terminal/Git fluency
-- Resolved environment issues (zsh, PATH, Python version)
-- Established foundation for iterative progress
-
-### Next:
-- Add input handling and game loop structure
-
+### Tests
+- `pytest` reports 14/14 passed in 0.13s.
