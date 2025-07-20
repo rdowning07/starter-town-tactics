@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_third_party = ["pygame"]
+
+[tool.pylint]
+max-line-length = 88
+
+[tool.mypy]
+ignore_missing_imports = true
