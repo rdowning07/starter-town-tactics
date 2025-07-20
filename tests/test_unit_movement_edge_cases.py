@@ -1,8 +1,10 @@
 # tests/test_unit_movement_edge_cases.py
 
+import pytest
+
 from game.grid import Grid, Tile
 from game.unit import Unit
-import pytest
+
 
 @pytest.fixture
 def grid_with_unit():

@@ -1,80 +1,34 @@
-# game/unit.py
-
-from game.grid import Grid
-
 class Unit:
-    """Represents a unit on the grid."""
-
-    def __init__(self, name, x, y, team, move_range=3, can_move_diagonally=False):
-        """
-        Initialize a unit with basic attributes.
-
-        Args:
-            name (str): Name of the unit.
-            x (int): X-coordinate on the grid.
-            y (int): Y-coordinate on the grid.
-            team (str): Team affiliation.
-            move_range (int): Max number of tiles the unit can move.
-            can_move_diagonally (bool): Whether the unit can move diagonally.
-        """
+    def __init__(self, name, x, y, team, symbol=None, move_range=1, health=10):
         self.name = name
         self.x = x
         self.y = y
         self.team = team
+        self.symbol = symbol or name[0].upper()
         self.move_range = move_range
-        self.can_move_diagonally = can_move_diagonally
-
-    def move(self, new_x, new_y, grid: Grid) -> bool:
-        """
-        Attempt to move the unit to a new tile on the grid.
-
-        Args:
-            new_x (int): Destination x-coordinate.
-            new_y (int): Destination y-coordinate.
-            grid (Grid): The game grid.
-
-        Returns:
-            bool: True if movement was successful, False otherwise.
-        """
-        target_tile = grid.get_tile(new_x, new_y)
-
-        # Check 1: bounds
-        if target_tile is None:
-            return False
-
-        # Check 2: occupied
-        if target_tile.unit is not None:
-            return False
-
-        # Check 3: same position
-        if (new_x, new_y) == (self.x, self.y):
-            return False
-
-        # Check 4: movement range
-        dx = abs(self.x - new_x)
-        dy = abs(self.y - new_y)
-
-        # Prevent diagonal if not allowed
-        if not self.can_move_diagonally and dx != 0 and dy != 0:
-            return False
-
-        manhattan_distance = dx + dy
-        if manhattan_distance > self.move_range:
-            return False
-
-        # Check 5: terrain movement cost
-        if target_tile.movement_cost > self.move_range:
-            return False
-
-        # Execute move
-        current_tile = grid.get_tile(self.x, self.y)
-        if current_tile:
-            current_tile.unit = None
-        target_tile.unit = self
-        self.x = new_x
-        self.y = new_y
-
-        return True
+        self.health = health
 
     def __repr__(self):
-        return f"<{self.team} {self.name} at ({self.x}, {self.y})>"
+        return f"<Unit {self.name} ({self.team}) at ({self.x}, {self.y})>"
+
+    def move(self, new_x, new_y, grid):
+        distance = abs(self.x - new_x) + abs(self.y - new_y)
+        if distance > self.move_range:
+            return False
+
+        if not grid.is_within_bounds(new_x, new_y):
+            return False
+
+        dest_tile = grid.get_tile(new_x, new_y)
+        if dest_tile.unit or dest_tile.movement_cost > self.move_range:
+            return False
+
+        grid.get_tile(self.x, self.y).unit = None
+        dest_tile.unit = self
+        self.x, self.y = new_x, new_y
+        return True
+
+    def move_to(self, x, y, grid=None):
+        # Optional passthrough for interface similarity if not using grid logic
+        self.x = x
+        self.y = y

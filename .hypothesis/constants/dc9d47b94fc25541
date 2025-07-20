@@ -1,0 +1,4 @@
+# file: /Users/robertdowning/starter-town-tactics/game/grid.py
+# hypothesis_version: 6.136.0
+
+['.', '?', 'F', 'Game Map:', 'M', 'forest', 'mountain', 'plains']

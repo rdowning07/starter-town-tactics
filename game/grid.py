@@ -1,62 +1,53 @@
-"""Grid module for handling the game board logic."""
-
 from random import choice
 
-class Tile:
-    """Represents a single tile on the grid."""
-    def __init__(self, x, y, terrain_type="plains", movement_cost=1):
-        self.x = x
-        self.y = y
-        self.terrain_type = terrain_type
-        self.movement_cost = movement_cost
-        self.unit = None  # Reference to Unit object on this tile
+from game.tile import Tile
+from game.unit import Unit
 
-    def is_occupied(self):
-        return self.unit is not None
-
-    def get_symbol(self):
-        """Return a character representing the terrain type or unit."""
-        if self.unit:
-            return self.unit.name[0].upper()
-        terrain_symbols = {
-            "plains": ".",
-            "forest": "F",
-            "mountain": "M",
-        }
-        return terrain_symbols.get(self.terrain_type, "?")
 
 class Grid:
-    """Represents a 2D grid of tiles for the game."""
-
-    TERRAIN_TYPES = [
-        ("plains", 1),
-        ("forest", 2),
-        ("mountain", 3)
-    ]
-
-    def __init__(self, width, height):
-        """
-        Initialize the grid with the specified width and height.
-
-        Args:
-            width (int): Number of columns in the grid.
-            height (int): Number of rows in the grid.
-        """
+    def __init__(self, width, height, terrain_layout=None):
         self.width = width
         self.height = height
-        self.tiles = [
-            [Tile(x, y, *choice(self.TERRAIN_TYPES)) for x in range(width)]
-            for y in range(height)
-        ]
+        self.tiles = []
+
+        for y in range(height):
+            row = []
+            for x in range(width):
+                if terrain_layout:
+                    terrain_type = terrain_layout[y][x]
+                    if terrain_type == "plains":
+                        movement_cost = 1
+                    elif terrain_type == "forest":
+                        movement_cost = 2
+                    elif terrain_type == "mountain":
+                        movement_cost = 3
+                    else:
+                        raise ValueError(f"Unknown terrain type: {terrain_type}")
+                    tile = Tile(
+                        x, y, terrain_type=terrain_type, movement_cost=movement_cost
+                    )
+                else:
+                    tile = Tile(x, y)
+                row.append(tile)
+            self.tiles.append(row)
 
     def get_tile(self, x, y):
-        """Safely return the tile at the given coordinates, or None if out of bounds."""
-        if 0 <= y < self.height and 0 <= x < self.width:
+        if self.is_within_bounds(x, y):
             return self.tiles[y][x]
-        return None
+        else:
+            return None
 
-    def print_ascii(self):
-        """Print an ASCII representation of the grid."""
-        print("Game Map:")
+    def is_within_bounds(self, x, y):
+        return 0 <= x < self.width and 0 <= y < self.height
+
+    def place_unit(self, unit):
+        if self.is_within_bounds(unit.x, unit.y):
+            self.tiles[unit.y][unit.x].unit = unit
+        else:
+            raise ValueError(f"Unit position out of bounds: ({unit.x}, {unit.y})")
+
+    def print_ascii(self, show_title=True):
+        if show_title:
+            print("Game Map:")
         for row in self.tiles:
             print(" ".join(tile.get_symbol() for tile in row))

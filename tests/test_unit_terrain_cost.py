@@ -1,6 +1,7 @@
 from game.grid import Grid, Tile
 from game.unit import Unit
 
+
 def test_unit_movement_within_terrain_cost():
     grid = Grid(3, 3)
     unit = Unit("Hero", 1, 1, team="Red", move_range=2)
@@ -11,6 +12,7 @@ def test_unit_movement_within_terrain_cost():
 
     moved = unit.move(1, 2, grid)
     assert not moved  # Too costly to move
+
 
 def test_unit_movement_on_walkable_terrain():
     grid = Grid(3, 3)

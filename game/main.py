@@ -1,9 +1,8 @@
-# game/main.py
-
 """Main entry point to run a sample game session."""
 
 from game.game import Game
 from game.unit import Unit
+
 
 def main():
     game = Game(5, 5)
@@ -17,12 +16,14 @@ def main():
     game.add_unit(enemy)
 
     # Print the initial game state
+    print("Initial Game State:")
     game.print_state()
 
     # Advance a turn and reprint state
     game.next_turn()
     print(f"\nTurn: {game.current_turn}")
     game.print_state()
+
 
 if __name__ == "__main__":
     main()
