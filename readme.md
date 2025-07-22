@@ -105,8 +105,54 @@ Game Map:
    ```bash
    python -m game.main
    ```
+## Features
+
+- Grid-based tactical map with sprite rendering
+- Mouse input: unit selection, hover tile highlight, and move preview
+- Camera panning with arrow keys
+- Debug overlay with turn, camera, and unit info
+- Clean asset management via `SpriteManager`
+- Fully tested using `pytest`
+
+## How to Run
+
+```bash
+python main.py
 
 ---
+
+---
+
+### ✅ Step 2: **Update `resumegpt.md`**
+
+Here’s the Week 2 wrap-up and Week 3 preview you can paste into `resumegpt.md`:
+
+```md
+## ✅ Week 2 Summary
+
+**Deliverables Completed:**
+- Mouse UI: selection, hover highlight, move preview
+- Tile-based debug overlay (turn, unit info, cursor position)
+- Fully working `SpriteManager` with modular access to units, tiles, UI sprites
+- Camera panning (arrow keys)
+- Modular, maintainable architecture
+- All pre-commit checks passed (except non-blocking pylint warnings)
+- All unit tests passed
+
+**Technical Learning:**
+- Pygame rendering pipeline
+- Coordinate transformations and input mapping
+- Object-oriented sprite management
+- Grid logic decoupled from rendering
+- Python project structure and GitHub workflow
+
+## 🔜 Week 3 Plan
+
+**Goals:**
+- Add keyboard unit control (arrow keys or WASD)
+- Implement turn indicator and next turn logic
+- Integrate health bars and basic UI feedback
+- Begin exploring AI agent movement logic
 
 ## 🛠️ Next Sprint Preview
 
