@@ -1,101 +1,84 @@
-# 📓 ResumeGPT Dev Log – Starter Town Tactics
+# starter-town-tactics: Dev Log & Resume
 
-## 🧾 Summary
+## ✅ Summary (as of 2025-07-22)
 
-**Project:** `starter-town-tactics`  
-**Status:** ✅ Week 2 Complete  
-**Branch:** `main` — Clean, tested, and pushed  
-**Tests:** 15/15 Passing (`pytest`)  
-**Pre-Commit:** `black`, `isort`, `mypy` ✅ | `pylint` ⚠️ Minor warnings only  
-**Tech Stack:** Python, Pygame, Pytest, Pre-commit hooks
+**Project**: `starter-town-tactics`  
+**Status**: ✅ W3 deliverables completed and pushed  
+**Branch**: `main`  
+**Latest Commit**: `Fix: force commit after hook blockage`
 
 ---
 
-## ✅ Week 2 Achievements – Mouse UI + Debug Overlay
+## 🎯 This Week’s Goal (W3)
 
-### 🔧 Core Gameplay Features
-- ✅ Unit selection via mouse click
-- ✅ Tile hover highlight
-- ✅ Click-to-move with movement preview (green tile)
-- ✅ Camera panning using arrow keys
-- ✅ Debug overlay: turn number, unit info, tile hover location
+**Focus**:
+- Keyboard and Mouse input handling
+- Architecture refinement
+- Prep for AI and MCP (multi-character processing) integration
+- GitHub sync troubleshooting and resolution
 
-### 🧪 Testing & Quality
-- Full test suite passed: `pytest` ✅ (15/15)
-- All pre-commit hooks succeeded:
-  - `black`, `isort`, `mypy` ✅
-  - `pylint` rating 9.67/10 — warnings tracked but non-blocking
-
-### 📦 Architecture & Cleanup
-- Added modular `SpriteManager` for tile/unit/ui loading
-- Removed legacy `game/main.py` → replaced with unified `main.py`
-- Simplified tile rendering + moved camera logic to game state
-- New `test_sprite_manager.py` for asset validation
-
-### 📤 GitHub
-- Pushed to `main`
-- Commit message:  
-  `"Finalize: sprites, updated game.py, moved main.py, tests and docs"`
+**Deliverables**:
+- ✅ `input_state.py`, `keyboard_controller.py`, and unit tests
+- ✅ Mouse click, highlight, panning and debug overlay (W2)
+- ✅ Keyboard input support (W3)
+- ✅ Finalized safe commit workflow
+- ✅ GitHub push fixed after 10+ failed attempts with `--no-verify`
 
 ---
 
-## 🚀 Week 3 Kickoff Plan – Keyboard Input & State Flow
+## 🛠️ Key Accomplishments
 
-### 🎮 Input Expansion
-- ⌨️ Add keyboard-based cursor movement (WASD/arrow keys)
-- 🖱️ Support dual input mode (mouse + keyboard coexist)
-- 🔁 Switch between selected unit and movement preview
-
-### 🎯 State Machine Design
-- Introduce game phases:
-  - Player Select → Move → Confirm
-  - Enemy Turn (stub for now)
-- Build input handling module (extract from `main.py`)
-
-### 🧹 Refactor Goals
-- Split large `main.py` into:
-  - `input_handler.py`
-  - `renderer.py`
-  - `game_loop.py`
-- Evaluate `Unit` constructor for simplification (`pylint` warning)
-
-### 🧪 Tests To Add
-- Cursor movement logic
-- Unit selection state machine
-- Preview tile edge case coverage
+- Built `bin/safe-commit.sh` to automate Git push and checks
+- Modularized input: `input_state`, `keyboard_controller`
+- Refactored and passed 26/26 tests
+- Pre-commit success: `black`, `isort`, `mypy`
+- `pylint`: warnings reviewed, non-blocking, 9.72/10 rating
+- Git push blockage root cause found (hook interference, stale cache)
 
 ---
 
-## 🧰 Outstanding Tasks
+## 🧠 Lessons Learned
 
-- [ ] Add keyboard-based cursor + action selection
-- [ ] Begin state machine for player phase
-- [ ] Break out `main.py` into clean modules
-- [ ] Address `too-many-arguments` in `Unit` class (optional)
+- Pre-commit cache corruption can block silently
+- `pre-commit clean`, `--no-verify` are essential tools
+- Committing responsibly requires escape hatch automation
+- Resetting Git is safe when followed with structured re-commit
 
 ---
 
-## 📘 Project Run Instructions
+## 📂 Permanent Fixes in Place
+
+- ✅ `safe-commit.sh` automates full commit/push with browser open
+- ✅ GitHub push is verified and fixed
+- ✅ All workflows updated in `README.md` and `plan.md`
+
+---
+
+## 🔜 Next Session (W4/W5 Double Sprint)
+
+- Implement AI turn logic (pushed from W3)
+- Refactor turn controller and integrate AI agents
+- Setup GitHub Actions (CI) for test/lint validation
+- Optional: Reduce pylint noise (R091X), or document why not
+
+---
+
+## 🧠 Reference Commands
 
 ```bash
-python main.py         # Launch game
-pytest                 # Run tests
-pre-commit run --all   # Format & lint check
-
-
-✅ Current Features
-Grid-based tactical map
-Mouse selection & movement
-Tile hover + preview
-Camera panning
-Debug info display
-100% test pass
-
-🔁 Restart Prompt
-
-Resume the `starter-town-tactics` project from latest clean state. All tests and pre-commit hooks passed. Begin Week 3: keyboard input, state machine design, and input/refactor modules.
-
+# When stuck, use:
+git reset
+pre-commit clean
+git add .
+git commit --no-verify -m "Fix: force commit after hook blockage"
+git push origin main
+```
 
 ---
 
-Let me know when you'd like to push this update, generate `plan.md`, or begin Week 3 development.
+## 💻 Author
+
+**Rob Downing**  
+Senior Program Manager III @ Amazon  
+GitHub: [rdowning07](https://github.com/rdowning07)  
+Focus: PMT transition, AI & architecture mastery

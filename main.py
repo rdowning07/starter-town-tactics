@@ -1,9 +1,13 @@
-"""Main entry point to run a sample game session with sprite rendering, camera panning, unit selection, click-to-move, tile outlines, move preview, and debug overlay."""
+"""Main entry point for Starter Town Tactics: supports mouse + keyboard input with turn loop and debug overlay."""
 
 import pygame
 
+from game.ai_controller import AIController
 from game.game import Game
+from game.input_state import InputState
 from game.sprite_manager import SpriteManager
+from game.turn_controller import TurnController, TurnPhase
+from game.ui.debug_overlay import draw_debug_overlay
 from game.unit import Unit
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
@@ -12,138 +16,117 @@ VISIBLE_COLS = SCREEN_WIDTH // TILE_SIZE
 VISIBLE_ROWS = SCREEN_HEIGHT // TILE_SIZE
 
 
+def create_outline(color):
+    surface = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
+    pygame.draw.rect(surface, color, surface.get_rect(), 2)
+    return surface
+
+
+def init_game():
+    game = Game(10, 10)
+    game.add_unit(Unit("Knight", 2, 2, team="Red"))
+    game.add_unit(Unit("Goblin", 1, 1, team="Blue"))
+    return game
+
+
+def init_ui():
+    pygame.font.init()
+    font = pygame.font.SysFont("Arial", 14)
+    return (
+        font,
+        create_outline((255, 255, 0)),
+        create_outline((0, 255, 255)),
+        create_outline((0, 255, 0)),
+    )
+
+
+def handle_mouse_click(event, game, input_state, turn_controller):
+    if turn_controller.get_phase() != TurnPhase.PLAYER:
+        return
+
+    mx, my = event.pos
+    tx = (mx // TILE_SIZE) + game.camera_x
+    ty = (my // TILE_SIZE) + game.camera_y
+    input_state.cursor_x = tx
+    input_state.cursor_y = ty
+    input_state.confirm_selection()
+    if input_state.state == "idle":
+        turn_controller.advance_turn()
+
+
 def main():
-    # Initialize pygame and window
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Starter Town Tactics")
     clock = pygame.time.Clock()
 
-    # Load sprites
     sprites = SpriteManager()
     sprites.load_assets()
+    font, hover_outline, selected_outline, move_preview = init_ui()
 
-    # Create game logic layer
-    game = Game(10, 10)  # Bigger grid to support scrolling
-    hero = Unit("Knight", 2, 2, team="Red")
-    enemy = Unit("Goblin", 1, 1, team="Blue")
-    game.add_unit(hero)
-    game.add_unit(enemy)
+    game = init_game()
+    input_state = InputState(game)
+    turn_controller = TurnController()
+    ai_controller = AIController(game)
 
-    # Create overlays
-    highlight_surface = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
-    highlight_surface.fill((255, 255, 0, 100))  # yellow semi-transparent overlay
-
-    outline_hover = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
-    pygame.draw.rect(outline_hover, (255, 255, 0), outline_hover.get_rect(), 2)
-
-    outline_selected = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
-    pygame.draw.rect(outline_selected, (0, 255, 255), outline_selected.get_rect(), 2)
-
-    move_preview = pygame.Surface((TILE_SIZE, TILE_SIZE), pygame.SRCALPHA)
-    pygame.draw.rect(move_preview, (0, 255, 0), move_preview.get_rect(), 2)
-
-    selected_unit = None  # Holds reference to the selected unit
-
-    # Initialize font for debug overlay
-    pygame.font.init()
-    debug_font = pygame.font.SysFont("Arial", 14)
-
-    def draw_debug_text(surface, text, x, y):
-        label = debug_font.render(text, True, (255, 255, 255))
-        surface.blit(label, (x, y))
-
-    # Game loop
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    game.pan_camera(-1, 0)
-                elif event.key == pygame.K_RIGHT:
-                    game.pan_camera(1, 0)
-                elif event.key == pygame.K_UP:
-                    game.pan_camera(0, -1)
-                elif event.key == pygame.K_DOWN:
-                    game.pan_camera(0, 1)
-
+                input_state.handle_keypress(event.key)
+                if input_state.state == "idle":
+                    turn_controller.advance_turn()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_x, mouse_y = event.pos
-                tile_x = (mouse_x // TILE_SIZE) + game.camera_x
-                tile_y = (mouse_y // TILE_SIZE) + game.camera_y
+                handle_mouse_click(event, game, input_state, turn_controller)
 
-                if selected_unit:
-                    if 0 <= tile_x < game.width and 0 <= tile_y < game.height:
-                        selected_unit.move_to(tile_x, tile_y)
-                        game.next_turn()
-                        selected_unit = None
-                else:
-                    for unit in game.units:
-                        if unit.x == tile_x and unit.y == tile_y:
-                            selected_unit = unit
-                            break
+        if turn_controller.get_phase() == TurnPhase.AI:
+            ai_controller.take_turn()
+            turn_controller.advance_turn()
 
-        screen.fill((0, 0, 0))  # Clear the screen
+        screen.fill((0, 0, 0))
 
-        # Draw visible portion of the tile grid
         for y in range(VISIBLE_ROWS):
             for x in range(VISIBLE_COLS):
-                world_x = x + game.camera_x
-                world_y = y + game.camera_y
-                if 0 <= world_x < game.width and 0 <= world_y < game.height:
+                wx, wy = x + game.camera_x, y + game.camera_y
+                if 0 <= wx < game.width and 0 <= wy < game.height:
                     screen.blit(
                         sprites.get_sprite("tile", "grass"),
                         (x * TILE_SIZE, y * TILE_SIZE),
                     )
 
-        # Draw units in view
         for unit in game.units:
-            draw_x = unit.x - game.camera_x
-            draw_y = unit.y - game.camera_y
-            if 0 <= draw_x < VISIBLE_COLS and 0 <= draw_y < VISIBLE_ROWS:
-                sprite = sprites.get_sprite("unit", unit.name.lower())
-                screen.blit(sprite, (draw_x * TILE_SIZE, draw_y * TILE_SIZE))
+            dx, dy = unit.x - game.camera_x, unit.y - game.camera_y
+            if 0 <= dx < VISIBLE_COLS and 0 <= dy < VISIBLE_ROWS:
+                screen.blit(
+                    sprites.get_sprite("unit", unit.name.lower()),
+                    (dx * TILE_SIZE, dy * TILE_SIZE),
+                )
 
-        # Mouse hover tile highlight (adjusted for camera)
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        hover_x = mouse_x // TILE_SIZE
-        hover_y = mouse_y // TILE_SIZE
-        world_hover_x = hover_x + game.camera_x
-        world_hover_y = hover_y + game.camera_y
+        mx, my = pygame.mouse.get_pos()
+        hx, hy = mx // TILE_SIZE, my // TILE_SIZE
+        whx, why = hx + game.camera_x, hy + game.camera_y
+        if 0 <= hx < VISIBLE_COLS and 0 <= hy < VISIBLE_ROWS:
+            screen.blit(hover_outline, (hx * TILE_SIZE, hy * TILE_SIZE))
 
-        if 0 <= hover_x < VISIBLE_COLS and 0 <= hover_y < VISIBLE_ROWS:
-            screen.blit(highlight_surface, (hover_x * TILE_SIZE, hover_y * TILE_SIZE))
-            screen.blit(outline_hover, (hover_x * TILE_SIZE, hover_y * TILE_SIZE))
-
-        # Draw outline on selected unit
-        if selected_unit:
-            draw_x = selected_unit.x - game.camera_x
-            draw_y = selected_unit.y - game.camera_y
-            if 0 <= draw_x < VISIBLE_COLS and 0 <= draw_y < VISIBLE_ROWS:
-                cursor = sprites.get_sprite("ui", "cursor")
-                screen.blit(cursor, (draw_x * TILE_SIZE, draw_y * TILE_SIZE))
-                screen.blit(outline_selected, (draw_x * TILE_SIZE, draw_y * TILE_SIZE))
-
-            # Preview move destination if hover is valid
-            if 0 <= world_hover_x < game.width and 0 <= world_hover_y < game.height:
-                screen.blit(move_preview, (hover_x * TILE_SIZE, hover_y * TILE_SIZE))
-
-        # === DEBUG TEXT ===
-        draw_debug_text(screen, f"Turn: {game.current_turn}", 5, 5)
-        draw_debug_text(screen, f"Camera: ({game.camera_x}, {game.camera_y})", 5, 20)
-        draw_debug_text(screen, f"Hover: ({world_hover_x}, {world_hover_y})", 5, 35)
-
-        if selected_unit:
-            draw_debug_text(
-                screen, f"Selected: {selected_unit.name} ({selected_unit.team})", 5, 50
+        if input_state.state == "unit_selected" and input_state.selected_unit:
+            dx = input_state.selected_unit.x - game.camera_x
+            dy = input_state.selected_unit.y - game.camera_y
+            screen.blit(
+                sprites.get_sprite("ui", "cursor"), (dx * TILE_SIZE, dy * TILE_SIZE)
             )
-            draw_debug_text(screen, f"HP: {selected_unit.health}", 5, 65)
-            draw_debug_text(
-                screen, f"Pos: ({selected_unit.x}, {selected_unit.y})", 5, 80
-            )
+            screen.blit(selected_outline, (dx * TILE_SIZE, dy * TILE_SIZE))
+            if 0 <= whx < game.width and 0 <= why < game.height:
+                screen.blit(move_preview, (hx * TILE_SIZE, hy * TILE_SIZE))
+
+        input_state.draw_cursor(
+            screen, TILE_SIZE, game.camera_x, game.camera_y, sprites
+        )
+
+        draw_debug_overlay(
+            screen, font, game, input_state, turn_controller, ai_controller
+        )
 
         pygame.display.flip()
         clock.tick(60)
