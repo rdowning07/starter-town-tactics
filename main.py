@@ -1,10 +1,12 @@
-"""Main entry point for Starter Town Tactics: supports mouse + keyboard input with turn loop and debug overlay."""
+# main.py
 
 import pygame
 
 from game.ai_controller import AIController
 from game.game import Game
+from game.gamepad_controller import GamepadController
 from game.input_state import InputState
+from game.keyboard_controller import KeyboardController
 from game.sprite_manager import SpriteManager
 from game.turn_controller import TurnController, TurnPhase
 from game.ui.debug_overlay import draw_debug_overlay
@@ -54,6 +56,17 @@ def handle_mouse_click(event, game, input_state, turn_controller):
         turn_controller.advance_turn()
 
 
+def init_gamepads(input_state):
+    pygame.joystick.init()
+    controllers = []
+    for i in range(pygame.joystick.get_count()):
+        controller = GamepadController(input_state)
+        controller.joystick = pygame.joystick.Joystick(i)
+        controller.joystick.init()
+        controllers.append(controller)
+    return controllers
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -66,6 +79,8 @@ def main():
 
     game = init_game()
     input_state = InputState(game)
+    keyboard_controller = KeyboardController(input_state)
+    gamepad_controllers = init_gamepads(input_state)
     turn_controller = TurnController()
     ai_controller = AIController(game)
 
@@ -75,11 +90,19 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                input_state.handle_keypress(event.key)
+                keyboard_controller.handle_key_event(event)
                 if input_state.state == "idle":
                     turn_controller.advance_turn()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 handle_mouse_click(event, game, input_state, turn_controller)
+            elif event.type in [pygame.JOYBUTTONDOWN, pygame.JOYHATMOTION]:
+                for controller in gamepad_controllers:
+                    controller.handle_event(event)
+                    if input_state.state == "idle":
+                        turn_controller.advance_turn()
+
+        for controller in gamepad_controllers:
+            controller.update()
 
         if turn_controller.get_phase() == TurnPhase.AI:
             ai_controller.take_turn()
