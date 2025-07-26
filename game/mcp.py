@@ -1,17 +1,34 @@
 # game/mcp.py
 
+import math
+
+
 class MCP:
-    """Map-Command-Predict AI engine stub."""
+    """Map-Command-Predict AI engine"""
+
+    def __init__(self, strategy="nearest"):
+        self.strategy = strategy
 
     def decide_action(self, unit, game):
-        """Very basic MCP strategy:
-        Move the unit one tile closer to the nearest enemy.
-        """
-        targets = [u for u in game.units if u.team != unit.team]
+        """Determine best movement coordinates based on strategy."""
+        targets = self._get_targets(unit, game)
         if not targets:
             return unit.x, unit.y  # No-op
 
+        if self.strategy == "nearest":
+            return self._move_toward_nearest(unit, targets)
+        else:
+            # Placeholder for future strategies
+            return unit.x, unit.y
+
+    def _get_targets(self, unit, game):
+        return [u for u in game.units if u.team != unit.team]
+
+    def _move_toward_nearest(self, unit, targets):
         closest = self._find_nearest(unit, targets)
+        if not closest:
+            return unit.x, unit.y
+
         dx = closest.x - unit.x
         dy = closest.y - unit.y
 
@@ -21,11 +38,8 @@ class MCP:
         return move_x, move_y
 
     def _find_nearest(self, unit, targets):
-        closest = None
-        min_dist = float("inf")
-        for target in targets:
-            dist = abs(unit.x - target.x) + abs(unit.y - target.y)
-            if dist < min_dist:
-                min_dist = dist
-                closest = target
-        return closest
+        return min(
+            targets,
+            key=lambda t: abs(unit.x - t.x) + abs(unit.y - t.y),
+            default=None,
+        )
