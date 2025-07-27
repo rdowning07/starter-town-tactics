@@ -5,15 +5,17 @@ from game.game import Game
 from game.input_state import InputState
 from game.turn_controller import TurnController, TurnPhase
 from game.unit import Unit
+from game.mcp import MCP
 
 
-def simulate_battle():
+def simulate_battle(use_mcp=False, strategy="nearest"):
     game = Game(10, 10)
     game.add_unit(Unit("Knight", 2, 2, team="Red"))
     game.add_unit(Unit("Goblin", 1, 1, team="Blue"))
 
     turn_controller = TurnController()
-    ai_controller = AIController(game)
+    mcp_agent = MCP(strategy=strategy) if use_mcp else None
+    ai_controller = AIController(game, mcp_agent=mcp_agent)
     input_state = InputState(game)
 
     log = []
@@ -33,6 +35,12 @@ def simulate_battle():
             ai_controller.take_turn()
             turn_controller.advance_turn()
 
-        log.append(f"Turn {game.current_turn}: {phase.name}")
+        log.append(f"Turn {game.current_turn}: {phase.name} — Last action: {ai_controller.last_action}")
 
     return log
+
+
+if __name__ == "__main__":
+    log = simulate_battle(use_mcp=True)
+    for entry in log:
+        print(entry)
