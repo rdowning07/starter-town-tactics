@@ -1,5 +1,3 @@
-# main.py
-
 import pygame
 
 from game.ai_controller import AIController
@@ -11,6 +9,8 @@ from game.sprite_manager import SpriteManager
 from game.turn_controller import TurnController, TurnPhase
 from game.ui.debug_overlay import draw_debug_overlay
 from game.unit import Unit
+from game.overlay.grid_overlay import GridOverlay
+from game.ui.grid_overlay_draw import draw_movement_range, draw_terrain_overlay
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
 TILE_SIZE = 32
@@ -150,6 +150,13 @@ def main():
         draw_debug_overlay(
             screen, font, game, input_state, turn_controller, ai_controller
         )
+
+        # 🔹 NEW: Draw movement range and terrain overlay
+        if input_state.selected_unit:
+            reachable = GridOverlay.movement_range(game.grid, input_state.selected_unit, 3)
+            draw_movement_range(screen, game.grid, input_state.selected_unit, reachable, TILE_SIZE, game.camera_x, game.camera_y)
+
+        draw_terrain_overlay(screen, game.grid, TILE_SIZE, game.camera_x, game.camera_y)
 
         pygame.display.flip()
         clock.tick(60)
