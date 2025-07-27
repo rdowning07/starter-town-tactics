@@ -1,10 +1,17 @@
+# game/ai_controller.py
+
 import math
+
 
 class AIController:
     def __init__(self, game, mcp_agent=None):
         self.game = game
         self.mcp_agent = mcp_agent
         self.last_action = "Idle"
+
+    @classmethod
+    def with_mcp(cls, game, mcp_agent):
+        return cls(game, mcp_agent)
 
     def take_turn(self):
         ai_units = [u for u in self.game.units if u.team == "Blue"]
@@ -16,23 +23,19 @@ class AIController:
 
         for unit in ai_units:
             if self.mcp_agent:
-                # Use MCP agent to decide action
                 move_x, move_y = self.mcp_agent.decide_action(unit, self.game)
                 unit.move_to(move_x, move_y)
                 self.last_action = f"{unit.name} used MCP"
             else:
-                # Default fallback behavior
                 nearest = self._find_nearest(unit, targets)
                 if nearest:
                     dx = nearest.x - unit.x
                     dy = nearest.y - unit.y
-
                     move_x = unit.x + (1 if dx > 0 else -1 if dx < 0 else 0)
                     move_y = unit.y + (1 if dy > 0 else -1 if dy < 0 else 0)
-
                     unit.move_to(move_x, move_y)
                     self.last_action = f"{unit.name} moved toward {nearest.name}"
-            break  # one action per turn
+            break  # One action per turn
 
         self.game.next_turn()
 
