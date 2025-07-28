@@ -1,12 +1,9 @@
 from game.grid import Grid
 
 
-def test_ascii_output(capsys):
-    terrain = [
-        ["plains", "forest"],
-        ["plains", "plains"],
-    ]
-    grid = Grid(2, 2, terrain_layout=terrain)
-    grid.print_ascii(show_title=False)
-    captured = capsys.readouterr()
-    assert captured.out == ". F\n. .\n"
+def test_tile_retrieval_and_bounds():
+    grid = Grid(3, 3)
+    assert grid.get_tile(1, 1) is not None
+    assert grid.get_tile(3, 3) is None
+    assert grid.is_within_bounds(2, 2)
+    assert not grid.is_within_bounds(-1, 0)

@@ -7,10 +7,10 @@ from game.input_state import InputState
 from game.keyboard_controller import KeyboardController
 from game.sprite_manager import SpriteManager
 from game.turn_controller import TurnController, TurnPhase
-from game.ui.debug_overlay import draw_debug_overlay
 from game.unit import Unit
 from game.overlay.grid_overlay import GridOverlay
-from game.ui.grid_overlay_draw import draw_movement_range, draw_terrain_overlay
+from game.overlay.overlay_state import OverlayState
+from game.ui.debug_overlay import draw_debug_overlay
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
 TILE_SIZE = 32
@@ -83,6 +83,8 @@ def main():
     gamepad_controllers = init_gamepads(input_state)
     turn_controller = TurnController()
     ai_controller = AIController(game)
+    overlay_state = OverlayState()  # ✅ NEW
+    overlay = GridOverlay(game, overlay_state)  # ✅ NEW
 
     running = True
     while running:
@@ -91,6 +93,7 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 keyboard_controller.handle_key_event(event)
+                overlay_state.handle_key_event(event)  # ✅ NEW
                 if input_state.state == "idle":
                     turn_controller.advance_turn()
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -118,6 +121,8 @@ def main():
                         sprites.get_sprite("tile", "grass"),
                         (x * TILE_SIZE, y * TILE_SIZE),
                     )
+
+        overlay.draw(screen, TILE_SIZE, game.camera_x, game.camera_y)  # ✅ Unified overlay draw
 
         for unit in game.units:
             dx, dy = unit.x - game.camera_x, unit.y - game.camera_y
@@ -150,13 +155,6 @@ def main():
         draw_debug_overlay(
             screen, font, game, input_state, turn_controller, ai_controller
         )
-
-        # 🔹 NEW: Draw movement range and terrain overlay
-        if input_state.selected_unit:
-            reachable = GridOverlay.movement_range(game.grid, input_state.selected_unit, 3)
-            draw_movement_range(screen, game.grid, input_state.selected_unit, reachable, TILE_SIZE, game.camera_x, game.camera_y)
-
-        draw_terrain_overlay(screen, game.grid, TILE_SIZE, game.camera_x, game.camera_y)
 
         pygame.display.flip()
         clock.tick(60)

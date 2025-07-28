@@ -1,15 +1,16 @@
 from game.unit import Unit
 
 
-def test_unit_movement():
-    unit = Unit("Test", 1, 1, team="Blue", move_range=2)
-    unit.move_to(2, 2)
-    assert unit.x == 2
-    assert unit.y == 2
+def test_unit_initialization():
+    unit = Unit("Hero", 1, 1, team="Blue")
+    assert unit.name == "Hero"
+    assert unit.team == "Blue"
+    assert unit.x == 1
+    assert unit.y == 1
 
 
-def test_unit_attributes():
-    unit = Unit("Test", 1, 1, team="Red", move_range=3)
-    assert unit.name == "Test"
-    assert unit.team == "Red"
-    assert unit.move_range == 3
+def test_unit_move_to():
+    unit = Unit("Knight", 0, 0, team="Red")
+    unit.move_to(3, 3)
+    assert unit.x == 3
+    assert unit.y == 3

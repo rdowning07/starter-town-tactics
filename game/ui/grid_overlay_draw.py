@@ -1,31 +1,21 @@
-# ui/grid_overlay_draw.py
+"""Handles drawing overlays like movement, attack, and threat zones."""
 
 import pygame
 from game.grid import Grid
-from game.unit import Unit
+from game.overlay.overlay_state import OverlayState
 
+def draw_movement_range(surface, grid: Grid, overlay_state: OverlayState) -> None:
+    for x, y in overlay_state.movement_tiles:
+        pygame.draw.rect(surface, (0, 255, 0), grid.get_tile_rect(x, y), 2)
 
-def draw_movement_range(screen, grid: Grid, unit: Unit, reachable: set, tile_size: int, camera_x: int, camera_y: int):
-    color = (0, 0, 255, 100)  # translucent blue
+def draw_threat_zone(surface, grid: Grid, overlay_state: OverlayState) -> None:
+    for x, y in overlay_state.threat_tiles:
+        pygame.draw.rect(surface, (255, 0, 0), grid.get_tile_rect(x, y), 2)
 
-    overlay = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
-    pygame.draw.rect(overlay, color, overlay.get_rect())
+def draw_attack_range(surface, grid: Grid, overlay_state: OverlayState) -> None:
+    for x, y in overlay_state.attack_tiles:
+        pygame.draw.rect(surface, (255, 255, 0), grid.get_tile_rect(x, y), 2)
 
-    for x, y in reachable:
-        screen_x = (x - camera_x) * tile_size
-        screen_y = (y - camera_y) * tile_size
-        if 0 <= screen_x < screen.get_width() and 0 <= screen_y < screen.get_height():
-            screen.blit(overlay, (screen_x, screen_y))
-
-
-def draw_terrain_overlay(screen, grid: Grid, tile_size: int, camera_x: int, camera_y: int):
-    font = pygame.font.SysFont("Arial", 10)
-
-    for row in grid.tiles:
-        for tile in row:
-            screen_x = (tile.x - camera_x) * tile_size
-            screen_y = (tile.y - camera_y) * tile_size
-            if 0 <= screen_x < screen.get_width() and 0 <= screen_y < screen.get_height():
-                cost = str(tile.movement_cost)
-                label = font.render(cost, True, (255, 255, 255))
-                screen.blit(label, (screen_x + 2, screen_y + 2))
+def draw_terrain_overlay(surface, grid: Grid, overlay_state: OverlayState) -> None:
+    for x, y in overlay_state.terrain_tiles:
+        pygame.draw.rect(surface, (0, 0, 255), grid.get_tile_rect(x, y), 2)

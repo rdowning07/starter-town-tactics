@@ -1,30 +1,20 @@
-"""Represents a single tile on the game grid."""
-
-from typing import Optional
-
-from game.unit import Unit
-
-
 class Tile:
-    def __init__(
-        self, x: int, y: int, terrain_type: str = "plains", movement_cost: int = 1
-    ):
+    def __init__(self, x, y, terrain_type="plains", movement_cost=1):
         self.x = x
         self.y = y
         self.terrain_type = terrain_type
         self.movement_cost = movement_cost
-        self.unit: Optional[Unit] = None
+        self.unit = None
 
-    def is_walkable(self) -> bool:
-        """Return True if no unit is present on this tile."""
-        return self.unit is None
+    def is_walkable(self):
+        return self.unit is None and self.terrain_type != "mountain"
 
-    def get_symbol(self) -> str:
-        """Return a symbol representing this tile's current state."""
+    def get_symbol(self):
         if self.unit:
             return self.unit.name[0].upper()
-        if self.terrain_type == "forest":
-            return "F"
-        if self.terrain_type == "mountain":
-            return "M"
-        return "."
+        terrain_symbols = {
+            "plains": ".",
+            "forest": "F",
+            "mountain": "M",
+        }
+        return terrain_symbols.get(self.terrain_type, ".")  # 🔧 fallback to "."

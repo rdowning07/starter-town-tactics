@@ -1,92 +1,47 @@
 # Starter Town Tactics
 
-A tactical RPG engine inspired by Final Fantasy Tactics and Pathfinder, designed to support AI-driven and player-controlled gameplay. Developed as part of a learning journey into AI, game architecture, and software engineering.
+A turn-based tactical RPG learning project inspired by Final Fantasy Tactics, written in Python using Pygame.
 
 ---
 
-## 🎮 Features
+## 🔧 Development Status
 
-- Grid-based tactical combat
-- Keyboard, mouse, and gamepad input support
-- Turn-based game loop with phase control
-- AI agent logic via `AIController` and pluggable `MCP` strategies
-- Full unit selection, movement, and interaction
-- ASCII rendering system for testing and prototyping
+- **Total Tests:** 39
+- **Passing:** 31
+- **Failing:** 8
+- **Coverage:** 83%
 
----
-
-## 🧠 AI Integration
-
-- **AIController**: Controls enemy turns with either hardcoded logic or a pluggable MCP agent.
-- **MCP (Map-Command-Predict)**: Pluggable AI decision engine supporting:
-  - `"nearest"`: Move toward the closest enemy
-  - Future support for: `"aggressive"`, `"defensive"`, `"flank"`
+### Known Issues
+- Input normalization (key casing) inconsistency
+- Terrain movement validation is incomplete
+- Some modules have interdependencies that need decoupling
+- Build is in mid-refactor state; game runs but test suite fails on critical logic
 
 ---
 
-## 🧪 Testing
+## 🛠️ Next Steps
+- Fix remaining test failures
+- Re-establish a consistent input handling system (mouse, keyboard, gamepad)
+- Finalize turn cycle integration and terrain movement rules
+- Reach stable build milestone before continuing gameplay features
 
-- 44 tests across modules including input, AI, unit movement, and edge cases
-- Full suite runnable with `./test_debug.sh`
+---
 
+## 💡 Sprint Retrospective Summary
+- Integrated phased turn logic via `TurnPhase`
+- Restored `SimRunner` simulation and added event logging
+- Implemented cursor and terrain overlays
+- Confirmed rendering and tile system are robust
+
+---
+
+## 💾 Local Dev
+Use the following to run tests:
 ```bash
-./test_debug.sh
+make clean
+make test
 ```
-
----
-
-## 🧪 Simulation
-
-- `sim_runner.py` runs a sample 10-turn battle with or without MCP:
-
+To skip pre-commit temporarily when committing:
 ```bash
-python sim_runner.py
+git commit --no-verify -m "Save work"
 ```
-
----
-
-## 🧰 Dev Scripts
-
-- `./dev_push.sh "message"`: Force-add, commit, push
-- `./test_debug.sh`: Run all tests with verbose debug
-
-Make scripts executable:
-```bash
-chmod +x dev_push.sh test_debug.sh
-```
-
----
-
-## 🚧 Roadmap
-
-- [x] Input state machine for all input types
-- [x] MCP integration into AI turns
-- [ ] Richer terrain and pathfinding
-- [ ] Fog of war and visibility
-- [ ] Story + cutscene scaffolding
-- [ ] Art + animation system
-
----
-
-## 📁 Structure
-
-```
-game/
-├── ai_controller.py
-├── gamepad_controller.py
-├── keyboard_controller.py
-├── input_state.py
-├── mcp.py
-├── sprite_manager.py
-├── turn_controller.py
-├── unit.py
-tests/
-├── test_ai_controller.py
-├── test_input_state.py
-├── test_mcp.py
-├── ...
-```
-
----
-
-This project is part of a career progression initiative focused on learning AI, architecture, and PMT-level software leadership through hands-on development.

@@ -1,39 +1,33 @@
-"""Core game state and orchestration logic, including grid, unit management, turn progression, and camera control."""
+from typing import List, Optional
 
 from game.grid import Grid
 from game.unit import Unit
+from game.turn_controller import TurnController
+from game.ai_controller import AIController
 
 
 class Game:
     def __init__(self, width: int, height: int):
         self.grid = Grid(width, height)
-        self.units: list[Unit] = []
+        self.units: List[Unit] = []
         self.current_turn: int = 0
-        self.camera_x: int = 0
-        self.camera_y: int = 0
-        self.width = width
-        self.height = height
+        self.turn_controller = TurnController(self)
+        self.ai_controller = AIController(self)
 
-    def add_unit(self, unit: Unit) -> bool:
-        """Attempt to place a unit on the grid at its coordinates."""
+    def add_unit(self, unit: Unit) -> None:
+        self.units.append(unit)
         tile = self.grid.get_tile(unit.x, unit.y)
-        if tile and tile.unit is None:
-            tile.unit = unit
-            self.units.append(unit)
-            return True
-        return False
+        tile.unit = unit
+
+    def get_current_unit(self) -> Optional[Unit]:
+        if not self.units:
+            return None
+        return self.units[self.current_turn % len(self.units)]
+
+    def is_over(self) -> bool:
+        teams = {unit.team for unit in self.units if unit.is_alive()}
+        return len(teams) <= 1
 
     def next_turn(self) -> None:
-        """Advance to the next game turn and reset unit movement."""
         self.current_turn += 1
-        for unit in self.units:
-            unit.reset_movement()
-
-    def pan_camera(self, dx: int, dy: int) -> None:
-        """Adjust the camera offset by (dx, dy) while staying within grid bounds."""
-        self.camera_x = max(0, min(self.camera_x + dx, self.width - 1))
-        self.camera_y = max(0, min(self.camera_y + dy, self.height - 1))
-
-    def print_state(self) -> None:
-        """Display the current grid state for debugging."""
-        self.grid.print_ascii()
+        self.turn_controller.end_turn()
