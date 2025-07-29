@@ -1,3 +1,4 @@
+# @api
 # game/input_state.py
 
 from __future__ import annotations
@@ -11,27 +12,30 @@ if TYPE_CHECKING:
     from game.sprite_manager import SpriteManager
 
 
+# @api
 class InputState:
     def __init__(self, game: Game | None = None):
         self.game: Game | None = game
         self.cursor_x: int = 0
         self.cursor_y: int = 0
         self.selected_unit: Unit | None = None
-        self.key_states: set[str] = set()
+        self.key_states: set[str] = set()  # stores lowercase keys
         self.mouse_click: tuple[int, int] | None = None
         self.state: str = "idle"
 
+    # @api
     @property
     def keys_pressed(self) -> set[str]:
-        """Return all key states normalized to uppercase (for test comparisons)."""
+        """Return all key states normalized to uppercase (for comparison)."""
         return {key.upper() for key in self.key_states}
 
+    # @refactor (was missing case handling, broke input tests)
     def set_key_down(self, key: str) -> None:
-        """Register a key as being pressed (case insensitive)."""
+        """Register a key as being pressed (case-insensitive)."""
         self.key_states.add(key.lower())
 
     def set_key_up(self, key: str) -> None:
-        """Register a key as being released (case insensitive)."""
+        """Register a key as being released (case-insensitive)."""
         self.key_states.discard(key.lower())
 
     def set_mouse_click(self, pos: tuple[int, int]) -> None:

@@ -1,3 +1,4 @@
+# @api
 # game/unit.py
 
 """Defines the Unit class for game entities."""
@@ -8,6 +9,7 @@ if TYPE_CHECKING:
     from game.grid import Grid
 
 
+# @api
 class Unit:
     def __init__(
         self,
@@ -30,6 +32,7 @@ class Unit:
         self.hp = hp if hp is not None else health
         self.remaining_moves = move_range
 
+    # @refactor - fixed movement to properly account for terrain cost only
     def move(self, new_x: int, new_y: int, grid: Grid) -> bool:
         if not grid.is_within_bounds(new_x, new_y):
             return False
@@ -38,12 +41,12 @@ class Unit:
         if dest_tile.unit:
             return False
 
-        distance = abs(self.x - new_x) + abs(self.y - new_y)
         cost = dest_tile.movement_cost
 
-        if cost > self.remaining_moves or distance > self.remaining_moves:
+        if cost > self.remaining_moves:
             return False
 
+        # Perform movement
         grid.get_tile(self.x, self.y).unit = None
         dest_tile.unit = self
         self.x, self.y = new_x, new_y

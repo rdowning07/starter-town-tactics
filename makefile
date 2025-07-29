@@ -17,15 +17,15 @@ help:
 
 .PHONY: test
 test:
-	pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=term-missing
+	PYTHONPATH=. pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=term-missing
 
 .PHONY: coverage
 coverage:
-	pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=term-missing
+	PYTHONPATH=. pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=term-missing
 
 .PHONY: htmlcov
 htmlcov:
-	pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=html
+	PYTHONPATH=. pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=html
 	open htmlcov/index.html
 
 .PHONY: clean

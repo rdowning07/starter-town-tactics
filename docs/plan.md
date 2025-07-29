@@ -1,14 +1,17 @@
-# plan.md
+## Sprint Recovery: 2025-07-29
 
-**Current Date:** 2025-07-20
+### Context Loss Fix (Complete)
+- [x] Add PYTHONPATH to Makefile to fix imports
+- [x] Update test_turn_controller to use absolute imports
+- [x] Confirm presence of __init__.py in test directories
 
-## Sprint Summary
-✅ All tests passing  
-✅ Linter and formatter integrated  
-✅ Functional game logic scaffolding complete
+### Next Steps
+- [ ] Re-run all tests: `make clean && make test`
+- [ ] Continue repairs for AI turn loop via SimRunner and TurnController
+- [ ] Expand dummy_game if needed for additional test scaffolding
+- [ ] Push changes once tests pass and structure is stable
 
-## Next Sprint Goals
-- Refactor `unit.py` to reduce positional arguments
-- Add CLI controls or `pygame` UI loop
-- Introduce save/load state handling
-- Expand movement and terrain rules
+### Future Safeguards
+- Maintain `PYTHONPATH=.` in all scripts
+- Ensure every subdir with test helpers has `__init__.py`
+- Treat `Makefile` as a canonical test entrypoint
