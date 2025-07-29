@@ -1,7 +1,10 @@
 """AI behavior logic."""
+
 from __future__ import annotations
-from game.unit import Unit
+
 from game.grid import Grid
+from game.unit import Unit
+
 
 class AIController:
     def __init__(self, units: list[Unit]):

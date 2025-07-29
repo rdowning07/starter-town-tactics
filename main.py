@@ -5,12 +5,12 @@ from game.game import Game
 from game.gamepad_controller import GamepadController
 from game.input_state import InputState
 from game.keyboard_controller import KeyboardController
-from game.sprite_manager import SpriteManager
-from game.turn_controller import TurnController, TurnPhase
-from game.unit import Unit
 from game.overlay.grid_overlay import GridOverlay
 from game.overlay.overlay_state import OverlayState
+from game.sprite_manager import SpriteManager
+from game.turn_controller import TurnController, TurnPhase
 from game.ui.debug_overlay import draw_debug_overlay
+from game.unit import Unit
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
 TILE_SIZE = 32
@@ -122,7 +122,9 @@ def main():
                         (x * TILE_SIZE, y * TILE_SIZE),
                     )
 
-        overlay.draw(screen, TILE_SIZE, game.camera_x, game.camera_y)  # ✅ Unified overlay draw
+        overlay.draw(
+            screen, TILE_SIZE, game.camera_x, game.camera_y
+        )  # ✅ Unified overlay draw
 
         for unit in game.units:
             dx, dy = unit.x - game.camera_x, unit.y - game.camera_y

@@ -1,7 +1,8 @@
 import pytest
+
 from game.grid import Grid
-from game.unit import Unit
 from game.overlay.grid_overlay import GridOverlay
+from game.unit import Unit
 
 
 def test_movement_range_basic():

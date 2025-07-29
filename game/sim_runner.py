@@ -4,6 +4,7 @@
 from game.game import Game
 from game.unit import Unit
 
+
 class SimRunner:
     def __init__(self, game: Game):
         self.game = game

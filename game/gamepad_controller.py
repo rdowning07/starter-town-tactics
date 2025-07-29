@@ -10,6 +10,7 @@ RIGHT_BUTTON = 3
 CONFIRM_BUTTON = 4
 CANCEL_BUTTON = 5
 
+
 class GamepadController:
     def __init__(self, input_state: InputState):
         self.input_state = input_state

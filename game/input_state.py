@@ -2,14 +2,16 @@
 # game/input_state.py
 
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
+
 import pygame
 
 if TYPE_CHECKING:
-    from game.grid import Grid
     from game.game import Game
-    from game.unit import Unit
+    from game.grid import Grid
     from game.sprite_manager import SpriteManager
+    from game.unit import Unit
 
 
 # @api
@@ -64,7 +66,9 @@ class InputState:
             self.selected_unit = tile.unit
             self.state = "selected"
         elif self.selected_unit:
-            moved = self.selected_unit.move(self.cursor_x, self.cursor_y, self.game.grid)
+            moved = self.selected_unit.move(
+                self.cursor_x, self.cursor_y, self.game.grid
+            )
             if moved:
                 self.selected_unit = None
                 self.state = "idle"

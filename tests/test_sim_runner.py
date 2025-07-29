@@ -1,5 +1,5 @@
-from game.sim_runner import SimRunner
 from game.game import Game
+from game.sim_runner import SimRunner
 from game.unit import Unit
 
 

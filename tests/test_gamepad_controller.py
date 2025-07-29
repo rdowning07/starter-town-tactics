@@ -1,5 +1,5 @@
-from game.input_state import InputState
 from game.gamepad_controller import GamepadController
+from game.input_state import InputState
 
 
 def test_gamepad_movement_buttons():

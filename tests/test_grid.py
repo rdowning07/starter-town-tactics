@@ -1,4 +1,5 @@
 import pytest
+
 from game.grid import Grid
 
 

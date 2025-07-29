@@ -1,9 +1,9 @@
 from typing import List, Optional
 
-from game.grid import Grid
-from game.unit import Unit
-from game.turn_controller import TurnController
 from game.ai_controller import AIController
+from game.grid import Grid
+from game.turn_controller import TurnController
+from game.unit import Unit
 
 
 class Game:

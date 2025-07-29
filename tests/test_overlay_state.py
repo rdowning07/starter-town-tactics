@@ -1,6 +1,7 @@
 # tests/test_overlay_state.py
 
 import pygame
+
 from game.overlay.overlay_state import OverlayState
 
 

@@ -14,7 +14,9 @@ class Grid:
                 cost = 1
                 if terrain_layout:
                     terrain = terrain_layout[y][x]
-                    cost = 3 if terrain == "mountain" else 2 if terrain == "forest" else 1
+                    cost = (
+                        3 if terrain == "mountain" else 2 if terrain == "forest" else 1
+                    )
                 self.tiles[x][y] = Tile(x, y, terrain_type=terrain, movement_cost=cost)
 
     def get_tile(self, x, y):

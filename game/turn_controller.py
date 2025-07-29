@@ -3,8 +3,9 @@
 """Controls the flow of turns between units."""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
 from enum import Enum
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from game.game import Game
@@ -30,7 +31,9 @@ class TurnController:
     def next_turn(self) -> None:
         # Used by test_turn_cycle
         self.current_phase = (
-            TurnPhase.ENEMY if self.current_phase == TurnPhase.PLAYER else TurnPhase.PLAYER
+            TurnPhase.ENEMY
+            if self.current_phase == TurnPhase.PLAYER
+            else TurnPhase.PLAYER
         )
 
     def end_turn(self) -> None:
