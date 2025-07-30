@@ -1,18 +1,17 @@
 {
-    "project": "starter-town-tactics",
-    "indexedFiles": [
-      "README.md",
-      "plan.md",
-      "resumegpt.md",
-      "game/**/*.py",
-      "tests/**/*.py"
-    ],
-    "instructions": [
-      "Use plan.md and resumegpt.md for architectural context and testing goals.",
-      "Preserve interface contracts marked with `# @contract` and `# @api`.",
-      "Prioritize test-driven development and maintain gameplay fidelity.",
-      "Assist with drift detection between code and test expectations."
-    ],
-    "contextDepth": 5
-  }
-  
+  "project": "starter-town-tactics",
+  "indexedFiles": [
+    "README.md",
+    "plan.md",
+    "resumegpt.md",
+    "game/**/*.py",
+    "tests/**/*.py"
+  ],
+  "instructions": [
+    "Use plan.md and resumegpt.md for architectural context and testing goals.",
+    "Preserve interface contracts marked with `# @contract` and `# @api`.",
+    "Prioritize test-driven development and maintain gameplay fidelity.",
+    "Assist with drift detection between code and test expectations."
+  ],
+  "contextDepth": 5
+}
