@@ -7,3 +7,9 @@ class SpriteManager:
 
     def get_sprite(self, name):
         return self.sprites.get(name)
+
+    def get_cursor_sprite(self):
+        """
+        Returns the cursor sprite.
+        """
+        return self.get_sprite("cursor")
