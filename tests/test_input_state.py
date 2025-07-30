@@ -3,20 +3,7 @@ import pytest
 
 from game.input_state import InputState
 from game.unit import Unit
-
-
-class DummyGame:
-    def __init__(self, width=5, height=5):
-        self.width = width
-        self.height = height
-        self.units = []
-        self.current_turn = 1
-
-    def add_unit(self, unit):
-        self.units.append(unit)
-
-    def next_turn(self):
-        self.current_turn += 1
+from tests.utils.dummy_game import DummyGame  # Use the correct DummyGame
 
 
 class DummySprites:
@@ -39,7 +26,7 @@ def test_confirm_selects_unit():
     input_state.cursor_x, input_state.cursor_y = 1, 1
     input_state.confirm_selection()
     assert input_state.selected_unit == knight
-    assert input_state.state == "unit_selected"
+    assert input_state.state == "selected"  # Fix state name
 
 
 def test_confirm_moves_unit_and_ends_turn():
@@ -51,7 +38,7 @@ def test_confirm_moves_unit_and_ends_turn():
     assert input_state.selected_unit is None
     assert input_state.state == "idle"
     assert knight.x == 2 and knight.y == 2
-    assert game.current_turn == 1
+    assert game.turn_controller.current_turn == 1  # Use turn_controller
 
 
 def test_confirm_does_nothing_on_empty_tile():

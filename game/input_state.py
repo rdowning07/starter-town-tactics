@@ -16,11 +16,24 @@ if TYPE_CHECKING:
 
 # @api
 class InputState:
-    def __init__(self, game: Game | None = None):
-        self.game: Game | None = game
+    """
+    Tracks the current input state for the game.
+
+    Attributes:
+        game (Game | None): Reference to the main Game object.
+        cursor_x (int): X position of the selection cursor (tile coordinates).
+        cursor_y (int): Y position of the selection cursor (tile coordinates).
+        selected_unit (Unit | None): Currently selected unit, if any.
+        key_states (set[str]): Set of currently pressed keys (lowercase).
+        mouse_click (tuple[int, int] | None): Last mouse click position (tile coordinates), or None.
+        state (str): Current input state, e.g., "idle" or "selected".
+    """
+
+    def __init__(self, game: "Game" | None = None):
+        self.game: "Game" | None = game
         self.cursor_x: int = 0
         self.cursor_y: int = 0
-        self.selected_unit: Unit | None = None
+        self.selected_unit: "Unit" | None = None
         self.key_states: set[str] = set()  # stores lowercase keys
         self.mouse_click: tuple[int, int] | None = None
         self.state: str = "idle"
@@ -82,13 +95,22 @@ class InputState:
 
     def draw_cursor(
         self,
-        surface: pygame.Surface,
+        surface: "pygame.Surface",
         tile_size: int,
         offset_x: int,
         offset_y: int,
-        sprites: SpriteManager,
+        sprites: "SpriteManager",
     ) -> None:
-        """Draw a cursor sprite at the current tile position."""
+        """
+        Draw a cursor sprite at the current tile position.
+
+        Args:
+            surface (pygame.Surface): The surface to draw on.
+            tile_size (int): The size of a tile in pixels.
+            offset_x (int): X offset for drawing.
+            offset_y (int): Y offset for drawing.
+            sprites (SpriteManager): Must provide get_cursor_sprite() -> pygame.Surface.
+        """
         try:
             sprite = sprites.get_cursor_sprite()
         except AttributeError:
