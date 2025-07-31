@@ -12,7 +12,7 @@ class Game:
         self.units: List[Unit] = []
         self.current_turn: int = 0
         self.turn_controller = TurnController(self)
-        self.ai_controller = AIController(self)
+        self.ai_controller = AIController(self.units)
 
     def add_unit(self, unit: Unit) -> None:
         self.units.append(unit)

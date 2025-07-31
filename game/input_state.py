@@ -86,6 +86,7 @@ class InputState:
                 self.selected_unit = None
                 self.state = "idle"
                 if hasattr(self.game, "turn_controller"):
+                    print("DEBUG: Calling end_turn from InputState.confirm_selection")
                     self.game.turn_controller.end_turn()
 
     def cancel_selection(self) -> None:

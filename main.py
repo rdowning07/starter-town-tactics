@@ -9,7 +9,7 @@ from game.overlay.grid_overlay import GridOverlay
 from game.overlay.overlay_state import OverlayState
 from game.sprite_manager import SpriteManager
 from game.turn_controller import TurnController, TurnPhase
-from game.ui.debug_overlay import draw_debug_overlay
+from game.ui.debug_overlay import draw_debug_info
 from game.unit import Unit
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
@@ -81,10 +81,10 @@ def main():
     input_state = InputState(game)
     keyboard_controller = KeyboardController(input_state)
     gamepad_controllers = init_gamepads(input_state)
-    turn_controller = TurnController()
+    turn_controller = TurnController(game)
     ai_controller = AIController(game)
     overlay_state = OverlayState()  # ✅ NEW
-    overlay = GridOverlay(game, overlay_state)  # ✅ NEW
+    overlay = GridOverlay(game)  # Pass only required argument
 
     running = True
     while running:
@@ -118,7 +118,7 @@ def main():
                 wx, wy = x + game.camera_x, y + game.camera_y
                 if 0 <= wx < game.width and 0 <= wy < game.height:
                     screen.blit(
-                        sprites.get_sprite("tile", "grass"),
+                        sprites.get_sprite("tile_grass"),
                         (x * TILE_SIZE, y * TILE_SIZE),
                     )
 
@@ -130,7 +130,7 @@ def main():
             dx, dy = unit.x - game.camera_x, unit.y - game.camera_y
             if 0 <= dx < VISIBLE_COLS and 0 <= dy < VISIBLE_ROWS:
                 screen.blit(
-                    sprites.get_sprite("unit", unit.name.lower()),
+                    sprites.get_sprite(f"unit_{unit.name.lower()}"),
                     (dx * TILE_SIZE, dy * TILE_SIZE),
                 )
 
@@ -140,11 +140,11 @@ def main():
         if 0 <= hx < VISIBLE_COLS and 0 <= hy < VISIBLE_ROWS:
             screen.blit(hover_outline, (hx * TILE_SIZE, hy * TILE_SIZE))
 
-        if input_state.state == "unit_selected" and input_state.selected_unit:
+        if input_state.state == "selected" and input_state.selected_unit:
             dx = input_state.selected_unit.x - game.camera_x
             dy = input_state.selected_unit.y - game.camera_y
             screen.blit(
-                sprites.get_sprite("ui", "cursor"), (dx * TILE_SIZE, dy * TILE_SIZE)
+                sprites.get_sprite("ui_cursor"), (dx * TILE_SIZE, dy * TILE_SIZE)
             )
             screen.blit(selected_outline, (dx * TILE_SIZE, dy * TILE_SIZE))
             if 0 <= whx < game.width and 0 <= why < game.height:
@@ -154,8 +154,13 @@ def main():
             screen, TILE_SIZE, game.camera_x, game.camera_y, sprites
         )
 
-        draw_debug_overlay(
-            screen, font, game, input_state, turn_controller, ai_controller
+        draw_debug_info(
+            screen, font, [
+                f"Game: {game}",
+                f"InputState: {input_state.state}",
+                f"Turn: {turn_controller.current_turn}",
+                f"AI: {ai_controller}"
+            ]
         )
 
         pygame.display.flip()

@@ -33,11 +33,16 @@ def test_confirm_moves_unit_and_ends_turn():
     input_state, knight, game = make_input_state_with_unit()
     input_state.cursor_x, input_state.cursor_y = 1, 1
     input_state.confirm_selection()
-    input_state.cursor_x, input_state.cursor_y = 2, 2
+    # Ensure knight has full moves and (1,2) is empty (orthogonal move)
+    knight.remaining_moves = knight.move_range
+    if hasattr(game, 'grid'):
+        game.grid.get_tile(1, 2).unit = None
+    print('Before move: remaining_moves:', knight.remaining_moves)
+    input_state.cursor_x, input_state.cursor_y = 1, 2
     input_state.confirm_selection()
     assert input_state.selected_unit is None
     assert input_state.state == "idle"
-    assert knight.x == 2 and knight.y == 2
+    assert knight.x == 1 and knight.y == 2
     assert game.turn_controller.current_turn == 1  # Use turn_controller
 
 
@@ -68,3 +73,28 @@ def test_draw_cursor_does_not_crash():
         input_state.draw_cursor(surface, 32, 0, 0, sprites)
     except Exception as e:
         pytest.fail(f"draw_cursor raised exception: {e}")
+
+
+def test_clear_mouse_click_sets_none():
+    input_state = InputState()
+    input_state.mouse_click = (1, 2)
+    input_state.clear_mouse_click()
+    assert input_state.mouse_click is None
+
+def test_move_cursor_clamps_to_bounds():
+    class DummyGame:
+        def __init__(self):
+            self.grid = type("Grid", (), {"width": 2, "height": 2})()
+    input_state = InputState(DummyGame())
+    input_state.cursor_x, input_state.cursor_y = 0, 0
+    input_state.move_cursor(-1, -1)
+    assert input_state.cursor_x == 0 and input_state.cursor_y == 0
+    input_state.move_cursor(10, 10)
+    assert input_state.cursor_x == 1 and input_state.cursor_y == 1
+
+def test_confirm_selection_early_return():
+    input_state = InputState()
+    # Should not raise or change state
+    input_state.state = "idle"
+    input_state.confirm_selection()
+    assert input_state.state == "idle"

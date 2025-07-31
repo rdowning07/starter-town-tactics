@@ -35,18 +35,24 @@ class Unit:
 
     # @refactor - fixed movement to properly account for terrain cost only
     def move(self, new_x: int, new_y: int, grid: Grid) -> bool:
+        # Disallow diagonal movement and enforce range
+        dx = abs(new_x - self.x)
+        dy = abs(new_y - self.y)
+        if dx + dy == 0:
+            return False  # No movement
+        if dx > 0 and dy > 0:
+            return False  # Diagonal movement not allowed
+        if dx + dy > self.remaining_moves:
+            return False  # Too far
         if not grid.is_within_bounds(new_x, new_y):
             return False
-
         dest_tile = grid.get_tile(new_x, new_y)
         if dest_tile.unit:
             return False
-
         cost = dest_tile.movement_cost
-
+        print(f"DEBUG: Trying to move from ({self.x},{self.y}) to ({new_x},{new_y}), cost={cost}, remaining_moves={self.remaining_moves}")
         if cost > self.remaining_moves:
             return False
-
         # Perform movement
         grid.get_tile(self.x, self.y).unit = None
         dest_tile.unit = self

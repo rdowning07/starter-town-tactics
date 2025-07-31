@@ -1,6 +1,3 @@
-import pygame
-
-
 def draw_debug_overlay(surface, font, game, input_state):
     lines = [
         f"Turn: {game.current_turn}",

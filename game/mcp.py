@@ -9,3 +9,5 @@ class MCP:
             self.input_state.set_key_down(event["key"])
         elif event["type"] == "keyup":
             self.input_state.set_key_up(event["key"])
+        elif event["type"] == "mousebuttondown":
+            self.input_state.set_mouse_click(event["pos"])

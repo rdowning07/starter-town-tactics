@@ -38,6 +38,7 @@ class TurnController:
 
     def end_turn(self) -> None:
         self.current_turn += 1
+        print(f"DEBUG: end_turn called, current_turn is now {self.current_turn}")
         self.next_turn()
 
     def is_ai_turn(self) -> bool:

@@ -9,6 +9,11 @@ class OverlayState:
         self.show_terrain = True
         self.show_attack = True
         self.show_threat = True
+        # Add tile collections for overlay drawing
+        self.movement_tiles = set()
+        self.threat_tiles = set()
+        self.attack_tiles = set()
+        self.terrain_tiles = set()
 
     def handle_key_event(self, event):
         if event.type == pygame.KEYDOWN:
