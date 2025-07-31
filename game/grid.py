@@ -42,9 +42,7 @@ class Grid:
     def place_unit(self, unit) -> None:
         """Place a unit on the grid."""
         if not self.is_within_bounds(unit.x, unit.y):
-            raise ValueError(
-                f"Unit position ({unit.x}, {unit.y}) out of bounds"
-            )
+            raise ValueError(f"Unit position ({unit.x}, {unit.y}) out of bounds")
         tile = self.get_tile(unit.x, unit.y)
         if tile.unit:
             raise ValueError(f"Tile ({unit.x}, {unit.y}) already occupied")

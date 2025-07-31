@@ -1,7 +1,7 @@
 """Tests for grid overlay drawing functions."""
 
-import pytest
 import pygame
+import pytest
 
 from game.grid import Grid
 from game.overlay.overlay_state import OverlayState
@@ -38,10 +38,10 @@ class TestGridOverlayDraw:
         """Test drawing movement range overlay."""
         # Add some movement tiles
         overlay_state.movement_tiles = {(1, 1), (2, 1)}
-        
+
         # Should not raise any exceptions
         draw_movement_range(surface, grid, overlay_state)
-        
+
         # Verify tiles were added to overlay state
         assert len(overlay_state.movement_tiles) == 2
         assert (1, 1) in overlay_state.movement_tiles
@@ -51,10 +51,10 @@ class TestGridOverlayDraw:
         """Test drawing threat zone overlay."""
         # Add some threat tiles
         overlay_state.threat_tiles = {(0, 0), (1, 0)}
-        
+
         # Should not raise any exceptions
         draw_threat_zone(surface, grid, overlay_state)
-        
+
         # Verify tiles were added to overlay state
         assert len(overlay_state.threat_tiles) == 2
         assert (0, 0) in overlay_state.threat_tiles
@@ -64,10 +64,10 @@ class TestGridOverlayDraw:
         """Test drawing attack range overlay."""
         # Add some attack tiles
         overlay_state.attack_tiles = {(1, 2), (2, 2)}
-        
+
         # Should not raise any exceptions
         draw_attack_range(surface, grid, overlay_state)
-        
+
         # Verify tiles were added to overlay state
         assert len(overlay_state.attack_tiles) == 2
         assert (1, 2) in overlay_state.attack_tiles
@@ -77,10 +77,10 @@ class TestGridOverlayDraw:
         """Test drawing terrain overlay."""
         # Add some terrain tiles
         overlay_state.terrain_tiles = {(0, 1), (0, 2)}
-        
+
         # Should not raise any exceptions
         draw_terrain_overlay(surface, grid, overlay_state)
-        
+
         # Verify tiles were added to overlay state
         assert len(overlay_state.terrain_tiles) == 2
         assert (0, 1) in overlay_state.terrain_tiles
@@ -93,7 +93,7 @@ class TestGridOverlayDraw:
         assert len(overlay_state.threat_tiles) == 0
         assert len(overlay_state.attack_tiles) == 0
         assert len(overlay_state.terrain_tiles) == 0
-        
+
         # Should not raise any exceptions
         draw_movement_range(surface, grid, overlay_state)
         draw_threat_zone(surface, grid, overlay_state)
@@ -104,10 +104,10 @@ class TestGridOverlayDraw:
         """Test that grid.get_tile_rect returns correct coordinates."""
         rect = grid.get_tile_rect(1, 1)
         assert rect == (32, 32, 32, 32)  # (x, y, width, height)
-        
+
         rect = grid.get_tile_rect(0, 0)
         assert rect == (0, 0, 32, 32)
-        
+
         rect = grid.get_tile_rect(2, 2)
         assert rect == (64, 64, 32, 32)
 
@@ -115,12 +115,12 @@ class TestGridOverlayDraw:
         """Test that grid.get_tile_rect raises error for out of bounds."""
         with pytest.raises(ValueError):
             grid.get_tile_rect(-1, 0)
-        
+
         with pytest.raises(ValueError):
             grid.get_tile_rect(0, -1)
-        
+
         with pytest.raises(ValueError):
             grid.get_tile_rect(3, 0)  # width is 3, so 3 is out of bounds
-        
+
         with pytest.raises(ValueError):
-            grid.get_tile_rect(0, 3)  # height is 3, so 3 is out of bounds 
+            grid.get_tile_rect(0, 3)  # height is 3, so 3 is out of bounds

@@ -11,6 +11,7 @@ def test_ai_update_moves_unit_down():
     ai.update(grid)
     assert unit.y == 2  # Should have moved down
 
+
 def test_ai_take_action_moves_unit_down():
     grid = Grid(3, 3)
     unit = Unit("AIUnit", 1, 1, team="AI")

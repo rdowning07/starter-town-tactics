@@ -1,6 +1,7 @@
 import pytest
-from game.keyboard_controller import KeyboardController
+
 from game.input_state import InputState
+from game.keyboard_controller import KeyboardController
 from game.overlay_manager import OverlayManager
 
 

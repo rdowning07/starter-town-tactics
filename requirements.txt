@@ -2,9 +2,12 @@ pygame==2.5.2
 
 # Development dependencies
 pytest==8.4.1
+pytest-cov==6.2.1
+flake8==7.1.1
 pre-commit==3.7.0
 black==24.4.2
 isort==5.13.2
 mypy==1.10.0
 pylint==3.2.2
+types-PyYAML==6.0.12.20250516
 

@@ -35,9 +35,9 @@ def test_confirm_moves_unit_and_ends_turn():
     input_state.confirm_selection()
     # Ensure knight has full moves and (1,2) is empty (orthogonal move)
     knight.remaining_moves = knight.move_range
-    if hasattr(game, 'grid'):
+    if hasattr(game, "grid"):
         game.grid.get_tile(1, 2).unit = None
-    print('Before move: remaining_moves:', knight.remaining_moves)
+    print("Before move: remaining_moves:", knight.remaining_moves)
     input_state.cursor_x, input_state.cursor_y = 1, 2
     input_state.confirm_selection()
     assert input_state.selected_unit is None
@@ -81,16 +81,19 @@ def test_clear_mouse_click_sets_none():
     input_state.clear_mouse_click()
     assert input_state.mouse_click is None
 
+
 def test_move_cursor_clamps_to_bounds():
     class DummyGame:
         def __init__(self):
             self.grid = type("Grid", (), {"width": 2, "height": 2})()
+
     input_state = InputState(DummyGame())
     input_state.cursor_x, input_state.cursor_y = 0, 0
     input_state.move_cursor(-1, -1)
     assert input_state.cursor_x == 0 and input_state.cursor_y == 0
     input_state.move_cursor(10, 10)
     assert input_state.cursor_x == 1 and input_state.cursor_y == 1
+
 
 def test_confirm_selection_early_return():
     input_state = InputState()

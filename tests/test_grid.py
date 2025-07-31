@@ -33,7 +33,7 @@ def test_place_unit_out_of_bounds():
 
 def test_terrain_movement_costs():
     grid = Grid(2, 2)
-    
+
     # Manually set terrain types after grid creation
     # grid.tiles[y][x] indexing - y is row, x is column
     grid.tiles[0][0] = Tile(0, 0, terrain_type="plains", movement_cost=1)

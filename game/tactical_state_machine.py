@@ -14,7 +14,7 @@ class TacticalState(Enum):
 
 
 class TacticalStateMachine:
-    def __init__(self):
+    def __init__(self) -> None:
         self.state: TacticalState = TacticalState.IDLE
         self.previous_state: Optional[TacticalState] = None
 
@@ -23,17 +23,13 @@ class TacticalStateMachine:
         self.previous_state = self.state
         self.state = new_state
         print(
-            f"[TacticalStateMachine] {self.previous_state.name} → "
-            f"{self.state.name}"
+            f"[TacticalStateMachine] {self.previous_state.name} → " f"{self.state.name}"
         )
 
     def cancel(self) -> None:
         """Revert to the previous state if canceling an action."""
         if self.previous_state:
-            print(
-                f"[TacticalStateMachine] Canceling → "
-                f"{self.previous_state.name}"
-            )
+            print(f"[TacticalStateMachine] Canceling → " f"{self.previous_state.name}")
             self.state, self.previous_state = self.previous_state, self.state
 
     def is_player_turn_active(self) -> bool:

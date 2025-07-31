@@ -1,4 +1,5 @@
 import pytest
+
 from game.tactical_state_machine import TacticalState, TacticalStateMachine
 
 

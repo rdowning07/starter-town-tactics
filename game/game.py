@@ -18,6 +18,8 @@ class Game:
         self.units.append(unit)
         tile = self.grid.get_tile(unit.x, unit.y)
         tile.unit = unit
+        # Add unit to turn controller
+        self.turn_controller.add_unit(unit.name)
 
     def get_current_unit(self) -> Optional[Unit]:
         if not self.units:

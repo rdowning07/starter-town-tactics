@@ -21,7 +21,7 @@ class AIController:
         # Simple stub for simulation compatibility
         print(f"DEBUG: AIController.take_action called for {unit.name}")
         # Example: try to move down if possible
-        grid = unit.grid if hasattr(unit, 'grid') else None
+        grid = unit.grid if hasattr(unit, "grid") else None
         if grid:
             new_x, new_y = unit.x, min(grid.height - 1, unit.y + 1)
             unit.move(new_x, new_y, grid)

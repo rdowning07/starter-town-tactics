@@ -10,8 +10,13 @@ def test_unit_movement_within_terrain_cost():
 
     # Set terrain at (1, 2) to mountain (cost 3) - use [y][x] indexing
     grid.tiles[2][1] = Tile(1, 2, terrain_type="mountain", movement_cost=3)
-    print('Before move: remaining_moves:', unit.remaining_moves, 'cost:', grid.tiles[2][1].movement_cost)
-    print('Test tile:', grid.get_tile(1, 2), 'Direct tile:', grid.tiles[2][1])
+    print(
+        "Before move: remaining_moves:",
+        unit.remaining_moves,
+        "cost:",
+        grid.tiles[2][1].movement_cost,
+    )
+    print("Test tile:", grid.get_tile(1, 2), "Direct tile:", grid.tiles[2][1])
     moved = unit.move(1, 2, grid)
     assert not moved  # Too costly to move
 
@@ -27,6 +32,7 @@ def test_unit_movement_on_walkable_terrain():
 
     moved = unit.move(1, 2, grid)
     assert moved  # Should be able to move
+
 
 def test_unit_movement_exact_cost():
     grid = Grid(3, 3)

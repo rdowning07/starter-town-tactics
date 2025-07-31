@@ -20,7 +20,9 @@ class OverlayManager:
     def toggle(self, overlay_name: str) -> None:
         if overlay_name in self._overlays:
             self._overlays[overlay_name] = not self._overlays[overlay_name]
-            print(f"[OverlayManager] Toggled '{overlay_name}' → {self._overlays[overlay_name]}")
+            print(
+                f"[OverlayManager] Toggled '{overlay_name}' → {self._overlays[overlay_name]}"
+            )
         else:
             print(f"[OverlayManager] Warning: Unknown overlay '{overlay_name}'")
 

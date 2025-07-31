@@ -10,7 +10,7 @@ def test_ascii_output_with_title(capsys):
     grid.tiles[0][1] = Tile(1, 0, terrain_type="forest", movement_cost=2)
     grid.tiles[1][0] = Tile(0, 1, terrain_type="plains", movement_cost=1)
     grid.tiles[1][1] = Tile(1, 1, terrain_type="plains", movement_cost=1)
-    
+
     grid.print_ascii(show_title=True)
 
     captured = capsys.readouterr()
@@ -27,7 +27,7 @@ def test_ascii_output_without_title(capsys):
     grid.tiles[0][1] = Tile(1, 0, terrain_type="forest", movement_cost=2)
     grid.tiles[1][0] = Tile(0, 1, terrain_type="plains", movement_cost=1)
     grid.tiles[1][1] = Tile(1, 1, terrain_type="plains", movement_cost=1)
-    
+
     grid.print_ascii(show_title=False)
 
     captured = capsys.readouterr()

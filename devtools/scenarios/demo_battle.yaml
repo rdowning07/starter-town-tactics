@@ -1,0 +1,21 @@
+name: "Demo Battle Scenario"
+description: "A simple battle scenario with AI and player units for testing the SimRunner"
+
+units:
+  - id: "ai_alpha"
+    team: "ai"
+    ap: 2
+    hp: 10
+  - id: "p_bravo"
+    team: "player"
+    ap: 3
+    hp: 15
+  - id: "ai_delta"
+    team: "ai"
+    ap: 2
+    hp: 8
+
+metadata:
+  max_turns: 12
+  death_on_turn: 3
+  death_unit: "ai_delta"

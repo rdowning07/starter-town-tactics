@@ -55,6 +55,7 @@ def test_move_beyond_range(grid_with_unit):
     assert success
     assert unit.x == 1 and unit.y == 2
 
+
 def test_diagonal_movement_not_allowed(grid_with_unit):
     grid, unit = grid_with_unit
     # Attempt to move diagonally from (1,1) to (2,2)
