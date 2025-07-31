@@ -1,4 +1,4 @@
-import pygame
+# Removed unused import
 
 
 def draw_debug_info(screen, font, info, x=10, y=10, line_height=20):

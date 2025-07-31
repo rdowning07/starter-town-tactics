@@ -59,13 +59,13 @@ def test_simrunner_runs_and_logs(runner_with_ai):
     assert logs[0]["unit"] == "p1"
     assert logs[0]["type"] == "player"
     assert logs[0]["turn"] == 1
-    
+
     # Check second turn
     assert logs[3]["event"] == "turn_start"
     assert logs[3]["unit"] == "ai1"
     assert logs[3]["type"] == "ai"
     assert logs[3]["turn"] == 2
-    
+
     # Check for player input waiting
     assert any(entry.get("event") == "player_input_waiting" for entry in logs)
     # Check for AI action
@@ -111,31 +111,34 @@ def test_unit_death_functionality():
     """Test that unit death functionality works correctly."""
     from game.action_point_manager import ActionPointManager
     from game.tactical_state_machine import TacticalStateMachine
-    
+
     apm = ActionPointManager()
     fsm = TacticalStateMachine()
     tc = TurnController(apm, fsm)
-    
+
     tc.add_unit("unit1")
     tc.add_unit("unit2")
     tc.add_unit("unit3")
-    
+
     runner = SimRunner(tc)
-    
+
     # Mark a unit as dead
     runner.mark_unit_dead("unit2")
-    
+
     # Check that the unit is marked as dead
     assert "unit2" in runner.dead_units
-    
+
     # Check that the death event was logged
     logs = runner.get_log()
-    assert any(entry.get("event") == "unit_dead" and entry.get("unit") == "unit2" for entry in logs)
-    
+    assert any(
+        entry.get("event") == "unit_dead" and entry.get("unit") == "unit2"
+        for entry in logs
+    )
+
     # Run a turn and check that dead unit is skipped
     runner.run_turn()
     logs = runner.get_log()
-    
+
     # Should see a skip_turn event for the dead unit if it comes up in rotation
     skip_events = [entry for entry in logs if entry.get("event") == "skip_turn"]
     if skip_events:

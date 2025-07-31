@@ -1,10 +1,10 @@
 # @api
-from game.turn_controller import TurnController
 from game.action_point_manager import ActionPointManager
-from game.tactical_state_machine import TacticalStateMachine
-from game.unit_manager import UnitManager
 from game.ai_controller import AIController
 from game.sim_runner import SimRunner
+from game.tactical_state_machine import TacticalStateMachine
+from game.turn_controller import TurnController
+from game.unit_manager import UnitManager
 
 
 class GameState:

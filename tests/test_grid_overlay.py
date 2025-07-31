@@ -1,4 +1,4 @@
-import pytest
+# Removed unused import
 
 from game.grid import Grid
 from game.overlay.grid_overlay import GridOverlay

@@ -1,5 +1,5 @@
 # @api
-from typing import Optional, List, Dict, Literal, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
 
 from game.ai_controller import AIController
 from game.tactical_state_machine import TacticalState
@@ -63,11 +63,7 @@ class SimRunner:
         self.turn_count += 1
 
         if unit_id in self.dead_units:
-            self.log.append({
-                "event": "skip_turn",
-                "unit": unit_id,
-                "reason": "dead"
-            })
+            self.log.append({"event": "skip_turn", "unit": unit_id, "reason": "dead"})
             self.turn_controller.end_turn()
             return
 
@@ -84,26 +80,32 @@ class SimRunner:
         if self._is_ai(unit_id):
             self._run_ai_turn(unit_id)
         else:
-            self.log.append({
-                "event": "player_input_waiting",
-                "unit": unit_id,
-                "fsm_state": self.turn_controller.get_state().name,
-            })
+            self.log.append(
+                {
+                    "event": "player_input_waiting",
+                    "unit": unit_id,
+                    "fsm_state": self.turn_controller.get_state().name,
+                }
+            )
 
         self.turn_controller.end_turn()
 
-        self.log.append({
-            "event": "turn_end",
-            "turn": self.turn_count,
-            "unit": unit_id,
-        })
+        self.log.append(
+            {
+                "event": "turn_end",
+                "turn": self.turn_count,
+                "unit": unit_id,
+            }
+        )
 
         if self.turn_count >= self.max_turns:
             self.phase = "GAME_OVER"
-            self.log.append({
-                "event": "game_over",
-                "reason": "Max turns reached",
-            })
+            self.log.append(
+                {
+                    "event": "game_over",
+                    "reason": "Max turns reached",
+                }
+            )
 
     def _run_ai_turn(self, unit_id: str):
         """Run AI logic for this unit, respecting AP and FSM."""
@@ -120,11 +122,13 @@ class SimRunner:
                     )
                     if unit:
                         self.ai_controller.take_action(unit)
-        
-        self.log.append({
-            "event": "ai_action",
-            "unit": unit_id,
-        })
+
+        self.log.append(
+            {
+                "event": "ai_action",
+                "unit": unit_id,
+            }
+        )
 
     def _ensure_fsm_state(self):
         if self.turn_controller.get_state() != TacticalState.SELECTING_UNIT:
@@ -147,13 +151,17 @@ class SimRunner:
         self.dead_units.add(unit_id)
         # Remove from turn controller
         self.turn_controller.remove_unit(unit_id)
-        self.log.append({
-            "event": "unit_dead",
-            "unit": unit_id,
-        })
+        self.log.append(
+            {
+                "event": "unit_dead",
+                "unit": unit_id,
+            }
+        )
 
     def _check_game_over(self) -> bool:
-        living_units = [u for u in self.turn_controller.units if u not in self.dead_units]
+        living_units = [
+            u for u in self.turn_controller.units if u not in self.dead_units
+        ]
         return len(living_units) == 0
 
     # Backward compatibility methods

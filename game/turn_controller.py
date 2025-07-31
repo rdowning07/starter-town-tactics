@@ -41,14 +41,14 @@ class TurnController:
         if unit_id in self.units:
             # Find the index of the unit to remove
             unit_index = self.units.index(unit_id)
-            
+
             # Remove the unit
             self.units.remove(unit_id)
-            
+
             # Adjust current_index if necessary
             if self.units:  # Only adjust if there are still units
                 if unit_index <= self.current_index:
-                    # If we removed a unit at or before current_index, 
+                    # If we removed a unit at or before current_index,
                     # we need to adjust current_index
                     self.current_index = max(0, self.current_index - 1)
                 # Ensure current_index is within bounds

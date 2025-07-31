@@ -51,7 +51,9 @@ class Unit:
             return False
         cost = dest_tile.movement_cost
         print(
-            f"DEBUG: Trying to move from ({self.x},{self.y}) to ({new_x},{new_y}), cost={cost}, remaining_moves={self.remaining_moves}"
+            f"DEBUG: Trying to move from ({self.x},{self.y}) to "
+            f"({new_x},{new_y}), cost={cost}, "
+            f"remaining_moves={self.remaining_moves}"
         )
         if cost > self.remaining_moves:
             return False

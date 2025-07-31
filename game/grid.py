@@ -24,13 +24,17 @@ class Grid:
     def get_tile(self, x: int, y: int) -> Tile:
         """Get a tile at the specified coordinates."""
         if not self.is_within_bounds(x, y):
-            raise ValueError(f"Coordinates ({x}, {y}) out of bounds")
+            raise ValueError(
+                f"Coordinates ({x}, {y}) out of bounds"
+            )
         return self.tiles[y][x]
 
     def get_tile_rect(self, x: int, y: int) -> tuple[int, int, int, int]:
         """Get the rectangle coordinates for a tile."""
         if not self.is_within_bounds(x, y):
-            raise ValueError(f"Coordinates ({x}, {y}) out of bounds")
+            raise ValueError(
+                f"Coordinates ({x}, {y}) out of bounds"
+            )
         # Assuming 32x32 tile size for now
         tile_size = 32
         return (x * tile_size, y * tile_size, tile_size, tile_size)
