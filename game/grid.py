@@ -6,6 +6,11 @@ from game.tile import Tile
 
 
 class Grid:
+    """
+    Represents a 2D grid of tiles for the game.
+    Supports both default initialization and terrain-based initialization.
+    """
+
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
@@ -21,20 +26,30 @@ class Grid:
                 row.append(tile)
             self.tiles.append(row)
 
+    @classmethod
+    def from_terrain(cls, terrain_grid: list[list[str]]) -> "Grid":
+        """Create a grid from a terrain grid."""
+        height = len(terrain_grid)
+        width = len(terrain_grid[0])
+        grid = cls(width, height)
+
+        for y in range(height):
+            for x in range(width):
+                terrain = terrain_grid[y][x]
+                grid.tiles[y][x] = Tile(x, y, terrain=terrain)
+
+        return grid
+
     def get_tile(self, x: int, y: int) -> Tile:
         """Get a tile at the specified coordinates."""
         if not self.is_within_bounds(x, y):
-            raise ValueError(
-                f"Coordinates ({x}, {y}) out of bounds"
-            )
+            raise ValueError(f"Coordinates ({x}, {y}) out of bounds")
         return self.tiles[y][x]
 
     def get_tile_rect(self, x: int, y: int) -> tuple[int, int, int, int]:
         """Get the rectangle coordinates for a tile."""
         if not self.is_within_bounds(x, y):
-            raise ValueError(
-                f"Coordinates ({x}, {y}) out of bounds"
-            )
+            raise ValueError(f"Coordinates ({x}, {y}) out of bounds")
         # Assuming 32x32 tile size for now
         tile_size = 32
         return (x * tile_size, y * tile_size, tile_size, tile_size)

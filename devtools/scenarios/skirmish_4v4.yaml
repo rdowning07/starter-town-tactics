@@ -1,0 +1,16 @@
+name: "Skirmish at the Crossroads"
+description: "A balanced tactical battle between two squads."
+map_id: "crossroads"
+objective: "Defeat all enemy units."
+max_turns: 12
+
+units:
+  - { id: p1, team: player, hp: 8, ap: 3 }
+  - { id: p2, team: player, hp: 8, ap: 3 }
+  - { id: p3, team: player, hp: 8, ap: 3 }
+  - { id: p4, team: player, hp: 8, ap: 3 }
+
+  - { id: e1, team: ai, hp: 8, ap: 3 }
+  - { id: e2, team: ai, hp: 8, ap: 3 }
+  - { id: e3, team: ai, hp: 8, ap: 3 }
+  - { id: e4, team: ai, hp: 8, ap: 3 }

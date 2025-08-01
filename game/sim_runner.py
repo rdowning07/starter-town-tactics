@@ -158,6 +158,17 @@ class SimRunner:
             }
         )
 
+    def log_fake_death(self, unit_id: str) -> None:
+        """Log a fake death event for a unit."""
+        self.log.append(
+            {
+                "event": "fake_death",
+                "unit_id": unit_id,
+                "message": f"{unit_id} has entered its second phase!",
+                "emoji": "💀➡️🔥",
+            }
+        )
+
     def _check_game_over(self) -> bool:
         living_units = [
             u for u in self.turn_controller.units if u not in self.dead_units
@@ -174,7 +185,7 @@ class SimRunner:
             try:
                 self.run_turn()
                 turns += 1
-            except Exception as e:
+            except (ValueError, RuntimeError, AttributeError) as e:
                 self.log.append({"event": "error", "turn": turns, "error": str(e)})
                 break
         if turns == max_turns:

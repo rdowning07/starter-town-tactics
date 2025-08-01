@@ -1,0 +1,10 @@
+name: "Prologue: The Fall"
+description: "Face overwhelming odds and fall... for now."
+map_id: "castle_throne"
+objective: "Survive as long as you can."
+max_turns: 6
+
+units:
+  - { id: hero, team: player, hp: 10, ap: 3 }
+
+  - { id: black_knight, team: ai, hp: 99, ap: 4 }

@@ -1,54 +1,92 @@
-# Starter Town Tactics
+# 🧠 Starter Town Tactics
 
-A Final Fantasy Tactics–inspired tactical RPG built in Python using `pygame`, developed as a learning project to:
-- Deepen software architecture and AI integration skills
-- Transition from PMIII to TPM/SDM roles at Amazon
-- Demonstrate mastery of interface design, simulation systems, and test-driven workflows
+A turn-based tactical combat simulation inspired by classic tactical RPGs (Final Fantasy Tactics, Fire Emblem), built for learning game architecture, AI integration, and simulation.
+
+**🎉 Technical Foundation Complete!** Ready for game development phase.
 
 ---
 
-## 🧱 Project Structure
+## 🎮 Features
+
+- 🔁 **Turn-based simulation engine**
+- ⚔️ **Action Point system**
+- 🎯 **Finite State Machine for tactical phases**
+- 🧠 **AI-controlled enemy turns**
+- 💀 **Unit death and turn skipping**
+- 🛠 **Scenario loader (YAML)**
+- 📋 **Structured logging with event history**
+- 🧪 **94 tests, 85% coverage, full mypy compliance**
+
+---
+
+## 📂 Project Structure
 
 ```
 starter-town-tactics/
-├── game/                   # Core game logic and architecture
-│   ├── ai_controller.py
-│   ├── game.py
-│   ├── grid.py
-│   ├── input_state.py
-│   ├── keyboard_controller.py
-│   ├── mcp.py
-│   ├── sprite_manager.py
-│   ├── turn_controller.py
-│   ├── unit.py
-│   └── overlay/            # Grid overlays for movement, threats, terrain
+├── game/
+│   ├── sim_runner.py             # Simulation loop (player/AI turns)
+│   ├── turn_controller.py        # Turn order management
+│   ├── action_point_manager.py   # AP cost + tracking
+│   ├── tactical_state_machine.py # FSM for tactical UI state
+│   ├── unit_manager.py           # HP/team/alive tracking
+│   ├── game_state.py             # Central system hub
+│   ├── ai_controller.py          # Simple AI logic
+│   ├── grid.py                   # Grid-based game world
+│   ├── input_state.py            # Input management
+│   ├── keyboard_controller.py    # Keyboard input handling
+│   ├── gamepad_controller.py     # Gamepad input handling
+│   ├── unit.py                   # Unit entity management
+│   ├── sprite_manager.py         # Asset management
+│   └── overlay/                  # Grid overlays for movement, threats, terrain
 │       ├── grid_overlay.py
 │       └── overlay_state.py
-├── tests/                  # Pytest unit tests for all modules
-│   └── utils/
-│       └── dummy_game.py
-├── bin/                    # Developer utilities
+│
+├── devtools/
+│   ├── sim_runner_demo.py        # CLI interactive demo
+│   ├── scenario_loader.py        # Loads YAML config into GameState
+│   └── scenarios/
+│       └── demo_battle.yaml      # YAML-defined test scenario
+│
+├── tests/                        # 94 tests, 85% coverage
+├── bin/                          # Developer utilities
 │   └── safe-commit.sh
-├── plan.md                 # Updated roadmap and weekly sprint plan
-├── resumegpt.md           # Personal learning + architecture continuity log
-├── context_registry.py    # Canonical API contracts across modules
-├── session_bootstrap.sh   # Loads persistent session context
-├── Makefile               # `make test`, `make lint`, `make typecheck`, etc.
-└── README.md              # This file
+├── plan.md                       # Updated roadmap and weekly sprint plan
+├── resumegpt.md                  # Personal learning + architecture continuity log
+├── context_registry.py           # Canonical API contracts across modules
+├── session_bootstrap.sh          # Loads persistent session context
+├── Makefile                      # Developer commands
+├── requirements.txt              # Python dependencies
+└── README.md                     # This file
 ```
 
 ---
 
-## 🧪 Testing & Quality Gates
+## 🚀 Getting Started
 
-This project is built with full CI discipline:
-- ✅ `pytest` + `pytest-cov` (non-integration tests only)
-- ✅ `mypy` (strict type checking)
-- ✅ `flake8`, `pylint`, `black`, `isort` (pre-commit hooks)
-- ✅ `make test`, `make lint`, `make typecheck`, `make clean`
-- ✅ `bin/safe-commit.sh` for VS Code push reliability
+```bash
+# Setup
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 
-**Current test coverage:** 97% across 61 tests
+# Run Tests
+make test
+make typecheck
+make lint
+
+# Play CLI demo
+make play-sim-demo
+make play-scenario-demo
+```
+
+---
+
+## 🧪 Testing Strategy
+
+- **Unit Tests** for each system (AP, FSM, AI, Sim, Turn)
+- **Scenario Tests** with CLI output validation
+- **mypy** for type safety
+- **flake8** for code quality
 
 ---
 
@@ -75,8 +113,43 @@ We use the following AI copilots:
 
 ---
 
-## 🔜 Coming Soon (added to plan)
+## 🎮 Current Status
 
-We will create:
-- `docs/architecture.md`: Overview of the component design
-- `docs/dev_guide.md`: How to contribute, run tests, extend systems
+### ✅ Completed (Technical Foundation Sprint)
+- **Test Integration**: 85%+ coverage across 94 tests
+- **Input System**: Keyboard, mouse, gamepad support
+- **AI Integration**: AIController with MCP support
+- **Code Quality**: All pre-commit checks passing
+- **Architecture**: Modular, testable, maintainable codebase
+- **Documentation**: Comprehensive API contracts and guides
+
+### 🚧 Next Phase (Game Development)
+- **Battle System**: Combat mechanics, damage calculations, battle UI
+- **Turn-Based Gameplay**: Action points, multiple action types, turn order
+- **Visual Improvements**: Enhanced Pygame graphics, animations, HUD
+- **Game Content**: Campaign levels, character progression, story elements
+
+---
+
+## 🔮 Roadmap
+
+- [ ] Battle mechanics (attacks, damage resolution)
+- [ ] Victory conditions and game objectives
+- [ ] Terrain effects and overlays
+- [ ] Pygame reintegration for graphical mode
+- [ ] Agent-based scenario replays
+- [ ] Audio narration from logs
+
+---
+
+## 👤 Author
+
+Rob Downing, assisted by ChatGPT and Cursor.dev
+
+Architecture, simulation, and AI by design — built as a learning lab and demo platform.
+
+---
+
+## 🧠 License
+
+MIT License — for educational and demonstration purposes.

@@ -9,6 +9,7 @@ import pygame
 
 if TYPE_CHECKING:
     from game.game import Game
+
     # Removed unused import
     from game.sprite_manager import SpriteManager
     from game.unit import Unit

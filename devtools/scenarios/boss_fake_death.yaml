@@ -1,0 +1,18 @@
+name: "Dread Revenant Awakens"
+description: "Defeat the Revenant — but beware its second form."
+map_id: "catacombs"
+objective: "Defeat the boss... twice."
+max_turns: 20
+
+units:
+  - id: player1
+    team: player
+    hp: 10
+    ap: 3
+
+  - id: revenant
+    team: ai
+    hp: 10
+    ap: 3
+    fake_death: true
+    revive_hp: 20

@@ -155,12 +155,14 @@ def main():
         )
 
         draw_debug_info(
-            screen, font, [
+            screen,
+            font,
+            [
                 f"Game: {game}",
                 f"InputState: {input_state.state}",
                 f"Turn: {turn_controller.current_turn}",
-                f"AI: {ai_controller}"
-            ]
+                f"AI: {ai_controller}",
+            ],
         )
 
         pygame.display.flip()

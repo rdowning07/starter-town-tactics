@@ -1,0 +1,14 @@
+name: "Hold the Line"
+description: "Survive long enough for reinforcements to arrive."
+map_id: "ruined_village"
+objective: "Survive until turn 10."
+max_turns: 10
+
+units:
+  - { id: defender1, team: player, hp: 10, ap: 3 }
+  - { id: defender2, team: player, hp: 10, ap: 3 }
+
+  - { id: zombie1, team: ai, hp: 5, ap: 2 }
+  - { id: zombie2, team: ai, hp: 5, ap: 2 }
+  - { id: zombie3, team: ai, hp: 5, ap: 2 }
+  - { id: zombie4, team: ai, hp: 5, ap: 2 }

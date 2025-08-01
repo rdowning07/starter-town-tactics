@@ -1,23 +1,33 @@
-import time
 import sys
-from game.turn_controller import TurnController
-from game.tactical_state_machine import TacticalStateMachine, TacticalState
-from game.action_point_manager import ActionPointManager
-from game.sim_runner import SimRunner
-from game.ai_controller import AIController
+import time
+
 from devtools.scenario_loader import load_scenario
+from game.action_point_manager import ActionPointManager
+from game.ai_controller import AIController
+from game.sim_runner import SimRunner
+from game.tactical_state_machine import TacticalState, TacticalStateMachine
+from game.turn_controller import TurnController
 
 
-class DemoAI:
+class DemoAI(AIController):
     """Simple AI controller for demo purposes that works with string IDs."""
 
     def __init__(self):
+        super().__init__([])  # Initialize with empty units list
         self.actions = []
 
-    def take_action(self, unit_id: str):
-        """Take action for a unit identified by string ID."""
-        self.actions.append(unit_id)
-        print(f"🤖 AI {unit_id} taking action...")
+    def take_action(self, unit):
+        """Take action for a unit. Handles both Unit objects and string IDs."""
+        if isinstance(unit, str):
+            # String ID case
+            unit_id = unit
+            self.actions.append(unit_id)
+            print(f"🤖 AI {unit_id} taking action...")
+        else:
+            # Unit object case (for compatibility with AIController)
+            unit_id = unit.name if hasattr(unit, "name") else str(unit)
+            self.actions.append(unit_id)
+            print(f"🤖 AI {unit_id} taking action...")
 
 
 def print_ap_state(apm: ActionPointManager):
@@ -36,6 +46,39 @@ def print_structured_log(logs):
         kind = entry.get("event", "UNKNOWN").upper()
         info = ", ".join(f"{k}={v}" for k, v in entry.items() if k != "event")
         print(f"  [{kind}] {info}")
+
+
+def handle_player_action(
+    choice: str, tc: TurnController, fsm: TacticalStateMachine
+) -> bool:
+    """Handle a single player action choice. Returns True if turn should end."""
+    if choice == "1":  # Move
+        if tc.can_act(1):
+            fsm.transition_to(TacticalState.PLANNING_MOVE)
+            print("🕹️  Moved!")
+            tc.spend_ap(1)
+            fsm.transition_to(TacticalState.SELECTING_UNIT)
+        else:
+            print("❌ Not enough AP to move.")
+    elif choice == "2":  # Attack
+        if tc.can_act(1):
+            fsm.transition_to(TacticalState.PLANNING_ATTACK)
+            print("💥 Attacked!")
+            tc.spend_ap(1)
+            fsm.transition_to(TacticalState.SELECTING_UNIT)
+        else:
+            print("❌ Not enough AP to attack.")
+    elif choice == "3":  # Pass
+        print("🛑 Passed.")
+        return True
+    elif choice == "4":  # Undo
+        fsm.cancel()
+    elif choice == "5":  # End Turn
+        print("🔚 Ending turn manually.")
+        return True
+    else:
+        print("❓ Invalid input. Try again.")
+    return False
 
 
 def player_action_menu(runner: SimRunner):
@@ -65,39 +108,15 @@ def player_action_menu(runner: SimRunner):
 
         choice = input("Enter action: ").strip()
 
-        if choice == "1":
-            if tc.can_act(1):
-                fsm.transition_to(TacticalState.PLANNING_MOVE)
-                print("🕹️  Moved!")
-                tc.spend_ap(1)
-                fsm.transition_to(TacticalState.SELECTING_UNIT)
-            else:
-                print("❌ Not enough AP to move.")
-        elif choice == "2":
-            if tc.can_act(1):
-                fsm.transition_to(TacticalState.PLANNING_ATTACK)
-                print("💥 Attacked!")
-                tc.spend_ap(1)
-                fsm.transition_to(TacticalState.SELECTING_UNIT)
-            else:
-                print("❌ Not enough AP to attack.")
-        elif choice == "3":
-            print("🛑 Passed.")
+        if handle_player_action(choice, tc, fsm):
             break
-        elif choice == "4":
-            fsm.cancel()
-        elif choice == "5":
-            print("🔚 Ending turn manually.")
-            break
-        else:
-            print("❓ Invalid input. Try again.")
 
         if apm.get_ap(unit) == 0:
             print("⚠️ Out of AP — turn must end.")
             break
 
 
-def run_basic_demo():
+def run_basic_demo(auto_run: bool = False):
     """Run the basic demo with hardcoded units."""
     print("=== SimRunner CLI Demo with Player Input and Unit Death ===")
     apm = ActionPointManager()
@@ -112,7 +131,7 @@ def run_basic_demo():
     runner = SimRunner(tc, ai)
 
     turn_limit = 12
-    for turn_num in range(turn_limit):
+    for _ in range(turn_limit):
         print(f"\n🔄 PHASE: {runner.phase}")
 
         if runner.phase == "GAME_OVER":
@@ -148,27 +167,27 @@ def run_basic_demo():
     print(f"💀 Dead units: {runner.dead_units}")
 
 
-def run_scenario_demo():
+def run_scenario_demo(
+    auto_run: bool = False, scenario_path: str = "devtools/scenarios/demo_battle.yaml"
+):
     """Run the scenario-based demo."""
     print("=== Scenario-Based SimRunner CLI Demo ===")
-    scenario = load_scenario("devtools/scenarios/demo_battle.yaml")
+    game_state = load_scenario(scenario_path)
 
-    print(f"📘 Scenario: {scenario['name']}")
-    print(f"📝 {scenario['description']}")
+    print(f"📘 Scenario: {game_state.name}")
+    print(f"📝 {game_state.description}")
 
-    tc = scenario["turn_controller"]
-    apm = scenario["action_point_manager"]
-    fsm = scenario["fsm"]
+    tc = game_state.turn_controller
     ai = DemoAI()
 
     runner = SimRunner(tc, ai)
-    runner.max_turns = scenario["max_turns"]
+    runner.max_turns = game_state.max_turns
 
-    # Get death configuration from scenario
-    death_on_turn = scenario["metadata"].get("death_on_turn")
-    death_unit = scenario["metadata"].get("death_unit")
+    # Get death configuration from scenario metadata
+    death_on_turn = game_state.metadata.get("death_on_turn")
+    death_unit = game_state.metadata.get("death_unit")
 
-    for turn_num in range(runner.max_turns + 1):
+    for _ in range(runner.max_turns + 1):
         print(f"\n🔄 PHASE: {runner.phase}")
         if runner.phase == "GAME_OVER":
             print("🏁 Game Over — Simulation Complete")
@@ -182,13 +201,16 @@ def run_scenario_demo():
             print(f"💀 {death_unit} has died and was removed from the battle.")
 
         unit_id = tc.get_current_unit()
-        if not unit_id.startswith("ai") and not auto_run:
+        # Check if unit is AI based on team, not just ID prefix
+        is_ai_unit = game_state.units.get_team(unit_id) == "ai"
+
+        if not is_ai_unit and not auto_run:
             try:
                 player_action_menu(runner)
             except KeyboardInterrupt:
                 print("\nDemo interrupted by user.")
                 break
-        elif not unit_id.startswith("ai") and auto_run:
+        elif not is_ai_unit and auto_run:
             print("⏸️  Player turn (auto-advancing in 2 seconds...)")
             time.sleep(2)
 
@@ -205,16 +227,25 @@ def run_scenario_demo():
 
 def main():
     # Check for auto-run mode
-    global auto_run
     auto_run = "--auto" in sys.argv or "-a" in sys.argv
+
+    # Auto-enable auto-run if a scenario file is provided as an argument
+    scenario_path = None
+    if len(sys.argv) > 1 and not any(arg.startswith("-") for arg in sys.argv[1:]):
+        auto_run = True
+        scenario_path = sys.argv[1]
+        print("🚀 Auto-run mode automatically enabled for scenario file")
+
     if auto_run:
         print("🚀 Auto-run mode enabled - no user input required")
 
     # Check for scenario mode
-    if "--scenario" in sys.argv or "-s" in sys.argv:
-        run_scenario_demo()
+    if "--scenario" in sys.argv or "-s" in sys.argv or scenario_path:
+        run_scenario_demo(
+            auto_run, scenario_path or "devtools/scenarios/demo_battle.yaml"
+        )
     else:
-        run_basic_demo()
+        run_basic_demo(auto_run)
 
 
 if __name__ == "__main__":

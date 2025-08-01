@@ -1,5 +1,7 @@
 import time
+
 from game.overlay_manager import OverlayManager
+
 
 def main():
     om = OverlayManager()
@@ -31,6 +33,7 @@ def main():
             print("Invalid input.")
 
         time.sleep(0.2)
+
 
 if __name__ == "__main__":
     main()

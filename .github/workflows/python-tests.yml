@@ -36,7 +36,17 @@ jobs:
           source venv/bin/activate
           mypy game tests
 
+      - name: Run Pylint
+        run: |
+          source venv/bin/activate
+          python -m pylint game devtools map_loader.py --disable=C0114,C0116
+
       - name: Run Linting
         run: |
           source venv/bin/activate
           flake8 game tests
+
+      - name: Test Asset Setup
+        run: |
+          source venv/bin/activate
+          python scripts/setup_assets.py validate
