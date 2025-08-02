@@ -19,6 +19,8 @@ help:
 	@echo "  make lint         - Run flake8 linting"
 	@echo "  make typecheck    - Run mypy static type checks"
 	@echo "  make format       - Format code with black and isort"
+	@echo "  make validate-assets - Validate asset structure and tilesets"
+	@echo "  make viewer       - Launch asset viewer"
 	@echo "  make check-all    - Run lint, typecheck, and test"
 	@echo "  make play-overlay-demo - Run CLI overlay visualizer"
 	@echo "  make play-sim-demo - Run SimRunner demo (interactive)"
@@ -38,7 +40,7 @@ install-dev:
 	pre-commit install
 
 .PHONY: test
-test:
+test: validate-assets
 	PYTHONPATH=. pytest -m "not integration" --cov=$(SRC_DIR) --cov-report=term-missing
 
 .PHONY: coverage
@@ -68,8 +70,13 @@ format:
 	black $(SRC_DIR) $(TEST_DIR)
 	isort $(SRC_DIR) $(TEST_DIR)
 
+.PHONY: validate-assets
+validate-assets:
+	PYTHONPATH=. $(PYTHON) scripts/validate_assets.py
+	PYTHONPATH=. $(PYTHON) scripts/validateassets.py
+
 .PHONY: check-all
-check-all: lint typecheck test
+check-all: lint typecheck validate-assets test
 
 .PHONY: play-overlay-demo
 play-overlay-demo:
@@ -98,3 +105,7 @@ play-scenario-demo:
 .PHONY: play-scenario-demo-auto
 play-scenario-demo-auto:
 	PYTHONPATH=. $(PYTHON) devtools/sim_runner_demo.py --scenario --auto
+
+.PHONY: viewer
+viewer:
+	PYTHONPATH=. $(PYTHON) scripts/asset_viewer.py

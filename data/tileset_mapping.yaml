@@ -1,0 +1,91 @@
+tilesets:
+- file: assets/tiles/castle/castle.png
+  layer: midground
+  name: castle
+  tags:
+  - stone
+  - indoors
+  - royalty
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/desert/desert.png
+  layer: midground
+  name: desert
+  tags:
+  - sand
+  - outdoors
+  - dry
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/dungeon/dungeon.png
+  layer: background
+  name: dungeon
+  tags:
+  - underground
+  - stone
+  - spooky
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/house/house.png
+  layer: foreground
+  name: house
+  tags:
+  - walls
+  - roofs
+  - buildings
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/interior/inside.png
+  layer: midground
+  name: interior
+  tags:
+  - furniture
+  - rooms
+  - indoors
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/village/outside.png
+  layer: foreground
+  name: village
+  tags:
+  - outdoors
+  - trees
+  - props
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/terrain/terrain.png
+  layer: background
+  name: terrain
+  tags:
+  - grass
+  - paths
+  - rocks
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/water/water.png
+  layer: background
+  name: water
+  tags:
+  - water
+  - lava
+  - coast
+  tile_size:
+  - 32
+  - 32
+- file: assets/tiles/worldmap/world.png
+  layer: background
+  name: worldmap
+  tags:
+  - overworld
+  - icons
+  - strategic
+  tile_size:
+  - 32
+  - 32

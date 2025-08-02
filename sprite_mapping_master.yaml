@@ -1,0 +1,155 @@
+# Sprite Mapping Master for Starter Town Tactics
+# Aligned with actual asset structure
+
+# Tier 1 - Basic Units
+Recruit:
+  sprite: assets/units/Recruit/blue_0_0.png
+  color: blue
+  tier: 1
+Acolyte:
+  sprite: assets/units/Acolyte/blue_1_0.png
+  color: green
+  tier: 1
+Apprentice:
+  sprite: assets/units/Apprentice/blue_2_0.png
+  color: red
+  tier: 1
+Squire:
+  sprite: assets/units/Squire/blue_3_0.png
+  color: blue
+  tier: 1
+Scavenger:
+  sprite: assets/units/Scavenger/blue_4_0.png
+  color: gray
+  tier: 1
+
+# Tier 2 - Intermediate Units
+Soulblade:
+  sprite: assets/units/Soulblade/blue_0_0.png
+  color: red
+  tier: 2
+Graveseer:
+  sprite: assets/units/Graveseer/blue_1_0.png
+  color: purple
+  tier: 2
+DuskMonk:
+  sprite: assets/units/DuskMonk/blue_2_0.png
+  color: gray
+  tier: 2
+OutlawSniper:
+  sprite: assets/units/OutlawSniper/blue_3_0.png
+  color: brown
+  tier: 2
+Summoner:
+  sprite: assets/units/Summoner/blue_4_0.png
+  color: yellow
+  tier: 2
+
+# Tier 3 - Elite Units
+Necroknight:
+  sprite: assets/units/Necroknight/blue_0_0.png
+  color: purple
+  tier: 3
+PhoenixBinder:
+  sprite: assets/units/PhoenixBinder/blue_1_0.png
+  color: orange
+  tier: 3
+CrystalArchon:
+  sprite: assets/units/CrystalArchon/blue_2_0.png
+  color: white
+  tier: 3
+SkygraveRider:
+  sprite: assets/units/SkygraveRider/blue_3_0.png
+  color: green
+  tier: 3
+Soulbreaker:
+  sprite: assets/units/Soulbreaker/blue_4_0.png
+  color: red
+  tier: 3
+
+# Tier 4 - Legendary Units
+DeathMagister:
+  sprite: assets/units/DeathMagister/blue_5_0.png
+  color: black
+  tier: 4
+SaintEidolon:
+  sprite: assets/units/SaintEidolon/blue_6_0.png
+  color: gold
+  tier: 4
+WyrmTemplar:
+  sprite: assets/units/WyrmTemplar/blue_7_0.png
+  color: yellow
+  tier: 4
+RadiantVirtue:
+  sprite: assets/units/RadiantVirtue/blue_8_0.png
+  color: white
+  tier: 4
+Hellborne:
+  sprite: assets/units/Hellborne/blue_9_0.png
+  color: red
+  tier: 4
+
+# Tier 5 - Mythic Units
+Berserker:
+  sprite: assets/units/Berserker/blue_0_0.png
+  color: red
+  tier: 5
+SoulSinger:
+  sprite: assets/units/SoulSinger/blue_1_0.png
+  color: violet
+  tier: 5
+Witchblade:
+  sprite: assets/units/Witchblade/blue_2_0.png
+  color: purple
+  tier: 5
+CryptSentinel:
+  sprite: assets/units/CryptSentinel/blue_3_0.png
+  color: gray
+  tier: 5
+BloodKnight:
+  sprite: assets/units/BloodKnight/blue_4_0.png
+  color: crimson
+  tier: 5
+AshDancer:
+  sprite: assets/units/AshDancer/blue_5_0.png
+  color: orange
+  tier: 5
+Oracle:
+  sprite: assets/units/Oracle/blue_6_0.png
+  color: blue
+  tier: 5
+HellChaplain:
+  sprite: assets/units/HellChaplain/blue_7_0.png
+  color: black
+  tier: 5
+Lichbound:
+  sprite: assets/units/Lichbound/blue_8_0.png
+  color: gray
+  tier: 5
+Possessed:
+  sprite: assets/units/Possessed/blue_9_0.png
+  color: green
+  tier: 5
+
+# Legacy Units (from original structure)
+Knight:
+  sprite: assets/units/knight/blue_0_0.png
+  color: silver
+  tier: 1
+Archer:
+  sprite: assets/units/archer/blue_0_0.png
+  color: green
+  tier: 1
+Mage:
+  sprite: assets/units/mage/blue_0_0.png
+  color: purple
+  tier: 1
+Goblin:
+  sprite: assets/units/goblin/ai_0_0.png
+  color: green
+  tier: 1
+  team: ai
+# Animation Frame Support
+# Each unit has 12 animation frames (0-11)
+# Format: blue_[unit_id]_[frame].png
+# Example: blue_0_0.png to blue_0_11.png for Recruit

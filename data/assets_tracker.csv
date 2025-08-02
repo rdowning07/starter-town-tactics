@@ -1,0 +1,52 @@
+asset_path,asset_type,unit_type,team_variant,status,license,source,notes
+assets/units/Recruit/blue_0_0.png,unit,Recruit,blue,actual,CC0,game_assets,Main sprite - frame 0
+assets/units/Recruit/blue_0_1.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 1
+assets/units/Recruit/blue_0_2.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 2
+assets/units/Recruit/blue_0_3.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 3
+assets/units/Recruit/blue_0_4.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 4
+assets/units/Recruit/blue_0_5.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 5
+assets/units/Recruit/blue_0_6.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 6
+assets/units/Recruit/blue_0_7.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 7
+assets/units/Recruit/blue_0_8.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 8
+assets/units/Recruit/blue_0_9.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 9
+assets/units/Recruit/blue_0_10.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 10
+assets/units/Recruit/blue_0_11.png,unit,Recruit,blue,actual,CC0,game_assets,Animation frame 11
+assets/units/PhoenixBinder/blue_1_0.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Main sprite - frame 0
+assets/units/PhoenixBinder/blue_1_1.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 1
+assets/units/PhoenixBinder/blue_1_2.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 2
+assets/units/PhoenixBinder/blue_1_3.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 3
+assets/units/PhoenixBinder/blue_1_4.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 4
+assets/units/PhoenixBinder/blue_1_5.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 5
+assets/units/PhoenixBinder/blue_1_6.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 6
+assets/units/PhoenixBinder/blue_1_7.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 7
+assets/units/PhoenixBinder/blue_1_8.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 8
+assets/units/PhoenixBinder/blue_1_9.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 9
+assets/units/PhoenixBinder/blue_1_10.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 10
+assets/units/PhoenixBinder/blue_1_11.png,unit,PhoenixBinder,blue,actual,CC0,game_assets,Animation frame 11
+assets/units/CrystalArchon/blue_2_0.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Main sprite - frame 0
+assets/units/CrystalArchon/blue_2_1.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 1
+assets/units/CrystalArchon/blue_2_2.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 2
+assets/units/CrystalArchon/blue_2_3.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 3
+assets/units/CrystalArchon/blue_2_4.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 4
+assets/units/CrystalArchon/blue_2_5.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 5
+assets/units/CrystalArchon/blue_2_6.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 6
+assets/units/CrystalArchon/blue_2_7.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 7
+assets/units/CrystalArchon/blue_2_8.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 8
+assets/units/CrystalArchon/blue_2_9.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 9
+assets/units/CrystalArchon/blue_2_10.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 10
+assets/units/CrystalArchon/blue_2_11.png,unit,CrystalArchon,blue,actual,CC0,game_assets,Animation frame 11
+assets/tiles/castle/castle.png,tile,castle,castle,actual,CC0,game_assets,544x272 tileset with 17x8 tiles
+assets/tiles/desert/desert.png,tile,desert,desert,actual,CC0,game_assets,288x368 tileset with 9x11 tiles
+assets/tiles/dungeon/dungeon.png,tile,dungeon,dungeon,actual,CC0,game_assets,816x464 tileset with 25x14 tiles
+assets/tiles/house/house.png,tile,house,house,actual,CC0,game_assets,1104x608 tileset with 34x19 tiles
+assets/tiles/interior/inside.png,tile,interior,inside,actual,CC0,game_assets,768x560 tileset with 24x17 tiles
+assets/tiles/village/outside.png,tile,village,outside,actual,CC0,game_assets,832x384 tileset with 26x12 tiles
+assets/tiles/terrain/terrain.png,tile,terrain,terrain,actual,CC0,game_assets,624x608 tileset with 19x19 tiles
+assets/tiles/water/water.png,tile,water,water,actual,CC0,game_assets,816x880 tileset with 25x27 tiles
+assets/tiles/worldmap/world.png,tile,worldmap,world,actual,CC0,game_assets,624x416 tileset with 19x13 tiles
+assets/effects/summoning/portal.png,effect,summoning,portal,placeholder,CC0,placeholder,Replace with actual effect
+assets/effects/summoning/sparkle.png,effect,summoning,sparkle,placeholder,CC0,placeholder,Replace with actual effect
+assets/effects/summoning/energy.png,effect,summoning,energy,placeholder,CC0,placeholder,Replace with actual effect
+assets/effects/aura/buff.png,effect,aura,buff,placeholder,CC0,placeholder,Replace with actual effect
+assets/effects/aura/debuff.png,effect,aura,debuff,placeholder,CC0,placeholder,Replace with actual effect
+assets/effects/aura/shield.png,effect,aura,shield,placeholder,CC0,placeholder,Replace with actual effect 

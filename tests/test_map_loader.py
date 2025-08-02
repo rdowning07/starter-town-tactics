@@ -1,8 +1,10 @@
 # test_map_loader.py
-import pytest
-import tempfile
 import os
-from map_loader import load_map, validate_map, get_map_dimensions
+import tempfile
+
+import pytest
+
+from map_loader import get_map_dimensions, load_map, validate_map
 
 
 def test_load_basic_map(tmp_path):
@@ -88,7 +90,7 @@ def test_validate_map_valid():
         ["W", "W", "G"],
         ["F", "F", "G"],
     ]
-    
+
     assert validate_map(valid_map) is True
 
 
@@ -104,7 +106,7 @@ def test_validate_map_inconsistent_rows():
         ["W", "W"],
         ["F", "F", "F", "F"],
     ]
-    
+
     assert validate_map(invalid_map) is False
 
 
@@ -115,7 +117,7 @@ def test_validate_map_non_string_cells():
         ["W", 123, "G"],  # Non-string cell
         ["F", "F", "G"],
     ]
-    
+
     assert validate_map(invalid_map) is False
 
 
@@ -126,7 +128,7 @@ def test_get_map_dimensions():
         ["W", "W", "G", "G"],
         ["F", "F", "G", "G"],
     ]
-    
+
     width, height = get_map_dimensions(terrain_grid)
     assert width == 4
     assert height == 3
