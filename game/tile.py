@@ -1,6 +1,11 @@
 # @api
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from game.unit import Unit
+
+# Constants
+TILE_SIZE = 32
 
 class Tile:
     """
@@ -16,7 +21,7 @@ class Tile:
             "terrain_type", "plains"
         )  # plains, forest, mountain, etc.
         self.movement_cost = kwargs.get("movement_cost", 1)
-        self.unit = None  # Unit object (for compatibility)
+        self.unit: Optional["Unit"] = None  # Unit object (for compatibility)
         self.unit_id: Optional[str] = None  # Unit ID string
 
     def is_walkable(self) -> bool:

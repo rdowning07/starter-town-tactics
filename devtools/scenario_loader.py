@@ -1,102 +1,133 @@
+# devtools/scenario_loader.py
+
 import yaml
-
+import os
+from typing import Dict, List, Optional
 from game.game_state import GameState
-from map_loader import load_map
+from game.unit import Unit
+from game.sprite_manager import SpriteManager
+from game.fx_manager import FXManager
+from game.sound_manager import SoundManager
 
-
-def load_scenario(path: str) -> GameState:
-    with open(path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
-
-    scenario_name = data.get("name", "Unnamed Scenario")
-    units = data.get("units", [])
-    metadata = data.get("metadata", {})
-
-    if not isinstance(units, list) or not units:
-        raise ValueError("Scenario must include a non-empty 'units' list.")
-
-    game_state = GameState()
-
-    # Handle map_id from both top-level and metadata
-    map_id = data.get("map_id") or metadata.get("map", "default_map")
-
-    # Use the new set_metadata method
-    game_state.set_metadata(
-        name=scenario_name,
-        map_id=map_id,
-        objective=metadata.get("objective", "Defeat all enemies"),
-        max_turns=metadata.get("max_turns", 20),
-    )
-
-    # Set additional metadata fields
-    game_state.description = data.get("description", "")
-    game_state.metadata = metadata
-
-    for unit in units:
-        if not all(k in unit for k in ("id", "team", "hp", "ap")):
-            raise ValueError(f"Unit definition incomplete: {unit}")
-
-        # Add the unit to the game state
-        game_state.add_unit(
-            unit_id=unit["id"], team=unit["team"], hp=unit["hp"], ap=unit["ap"]
+class ScenarioLoader:
+    """Loads and validates scenario files for the game."""
+    
+    def __init__(self):
+        self.supported_sprites = ["knight", "rogue", "mage", "archer", "paladin", "shadow", "berserker"]
+        self.supported_ai_types = ["aggressive", "defensive", "passive"]
+    
+    def load_scenario(self, scenario_path: str, sprite_manager: SpriteManager, 
+                     fx_manager: FXManager, sound_manager: SoundManager) -> GameState:
+        """Load a scenario from a YAML file."""
+        
+        if not os.path.exists(scenario_path):
+            raise FileNotFoundError(f"Scenario file not found: {scenario_path}")
+        
+        with open(scenario_path, 'r') as f:
+            scenario_data = yaml.safe_load(f)
+        
+        # Validate scenario data
+        self._validate_scenario(scenario_data)
+        
+        # Create game state
+        game_state = GameState()
+        
+        # Set scenario metadata
+        game_state.name = scenario_data.get("name", "Unknown Scenario")
+        game_state.description = scenario_data.get("description", "")
+        game_state.map_id = scenario_data.get("map_id", "default")
+        
+        # Load units
+        units_data = scenario_data.get("units", [])
+        for unit_data in units_data:
+            self._load_unit(unit_data, game_state, sprite_manager)
+        
+        return game_state
+    
+    def _validate_scenario(self, scenario_data: Dict) -> None:
+        """Validate scenario data structure."""
+        required_fields = ["name", "units"]
+        for field in required_fields:
+            if field not in scenario_data:
+                raise ValueError(f"Scenario missing required field: {field}")
+        
+        if not isinstance(scenario_data["units"], list):
+            raise ValueError("Scenario units must be a list")
+        
+        # Validate each unit
+        for i, unit_data in enumerate(scenario_data["units"]):
+            self._validate_unit(unit_data, i)
+    
+    def _validate_unit(self, unit_data: Dict, unit_index: int) -> None:
+        """Validate unit data structure."""
+        required_fields = ["name", "team", "sprite", "x", "y"]
+        for field in required_fields:
+            if field not in unit_data:
+                raise ValueError(f"Unit {unit_index} missing required field: {field}")
+        
+        # Validate sprite
+        sprite = unit_data["sprite"]
+        if sprite not in self.supported_sprites:
+            print(f"⚠️  Warning: Unit {unit_data['name']} uses unsupported sprite '{sprite}'")
+        
+        # Validate team
+        team = unit_data["team"]
+        if team not in ["player", "enemy", "neutral"]:
+            raise ValueError(f"Unit {unit_data['name']} has invalid team: {team}")
+        
+        # Validate coordinates
+        x, y = unit_data["x"], unit_data["y"]
+        if not isinstance(x, int) or not isinstance(y, int):
+            raise ValueError(f"Unit {unit_data['name']} has invalid coordinates: ({x}, {y})")
+        
+        # Validate AI type if present
+        if "ai" in unit_data:
+            ai_type = unit_data["ai"]
+            if ai_type not in self.supported_ai_types:
+                print(f"⚠️  Warning: Unit {unit_data['name']} uses unsupported AI type '{ai_type}'")
+    
+    def _load_unit(self, unit_data: Dict, game_state: GameState, sprite_manager: SpriteManager) -> None:
+        """Load a unit from scenario data."""
+        
+        # Create unit
+        unit = Unit(
+            name=unit_data["name"],
+            x=unit_data["x"],
+            y=unit_data["y"],
+            team=unit_data["team"],
+            health=unit_data.get("hp", 10)
         )
+        
+        # Set HP
+        unit.hp = unit_data.get("hp", unit.health)
+        
+        # Set initial animation
+        initial_animation = unit_data.get("animation", "idle")
+        unit.set_animation(initial_animation)
+        
+        # Add unit to game state with additional data
+        game_state.add_unit(unit.name, unit.team, ap=unit_data.get("ap", 3), hp=unit.hp)
+        
+        # Store additional unit data in the unit manager
+        unit_info = game_state.units.units[unit.name]
+        unit_info.update({
+            "x": unit_data["x"],
+            "y": unit_data["y"],
+            "sprite": unit_data["sprite"],
+            "animation": unit_data.get("animation", "idle"),
+            "ai": unit_data.get("ai", None)
+        })
+        
+        # Set AI behavior if specified
+        if "ai" in unit_data:
+            ai_type = unit_data["ai"]
+            # TODO: Implement AI behavior setting
+            print(f"📋 Unit {unit.name} has AI behavior: {ai_type}")
+        
+        print(f"✅ Loaded unit: {unit.name} ({unit.team}) at ({unit.x}, {unit.y}) with {unit.hp} HP")
 
-        # Handle fake death mechanics if present
-        if unit.get("fake_death", False):
-            game_state.units.mark_as_fake_dead(unit["id"])
-
-        # Store revival HP in metadata for future use
-        if "revive_hp" in unit:
-            if "revival_data" not in game_state.metadata:
-                game_state.metadata["revival_data"] = {}
-            game_state.metadata["revival_data"][unit["id"]] = {
-                "revive_hp": unit["revive_hp"]
-            }
-
-    # Load terrain grid based on map_id
-    try:
-        game_state.terrain_grid = load_map(game_state.map_id)
-    except (FileNotFoundError, ValueError) as e:
-        # If terrain loading fails, use empty grid and log warning
-        print(f"Warning: Could not load terrain for map '{game_state.map_id}': {e}")
-        game_state.terrain_grid = []
-
-    return game_state
-
-
-def load_scenario_from_file(filepath: str) -> GameState:
-    """
-    Alternative scenario loading function that uses direct unit registration.
-    This is kept for backward compatibility but load_scenario is preferred.
-    """
-    with open(filepath, "r", encoding="utf-8") as file:
-        data = yaml.safe_load(file)
-
-    state = GameState()
-    state.name = data.get("name", "Untitled Scenario")
-    state.description = data.get("description", "")
-    state.map_id = data.get("map_id", "default_map")
-    state.objective = data.get("objective", "Defeat all enemies")
-    state.max_turns = data.get("max_turns", 20)
-
-    for unit in data.get("units", []):
-        uid = unit["id"]
-        team = unit["team"]
-        hp = unit["hp"]
-        ap = unit["ap"]
-
-        # Use the proper add_unit method instead of direct access
-        state.add_unit(uid, team, ap=ap, hp=hp)
-
-        if unit.get("fake_death"):
-            state.units.mark_as_fake_dead(uid)
-
-    # Load terrain grid based on map_id
-    try:
-        state.terrain_grid = load_map(state.map_id)
-    except (FileNotFoundError, ValueError) as e:
-        # If terrain loading fails, use empty grid and log warning
-        print(f"Warning: Could not load terrain for map '{state.map_id}': {e}")
-        state.terrain_grid = []
-
-    return state
+def load_scenario(scenario_path: str, sprite_manager: SpriteManager, 
+                 fx_manager: FXManager, sound_manager: SoundManager) -> GameState:
+    """Convenience function to load a scenario."""
+    loader = ScenarioLoader()
+    return loader.load_scenario(scenario_path, sprite_manager, fx_manager, sound_manager)

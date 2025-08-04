@@ -1,0 +1,33 @@
+{
+  "idle": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "frames": 3,
+    "duration": 300,
+    "loop": true,
+    "fx_at": [],
+    "sound_at": []
+  },
+  "walk": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "frames": 3,
+    "duration": 300,
+    "loop": true,
+    "fx_at": [],
+    "sound_at": []
+  },
+  "attack": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "frames": 3,
+    "duration": 200,
+    "loop": false,
+    "fx_at": [
+      1
+    ],
+    "sound_at": [
+      0
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "knight": {
+    "name": "Knight",
+    "team": "player",
+    "tier": 1,
+    "color": "green",
+    "sprite": "assets/units/knight/idle/frame_0.png"
+  },
+  "shadow": {
+    "name": "Shadow",
+    "team": "ai",
+    "tier": 1,
+    "color": "grey",
+    "sprite": "assets/units/shadow/idle/frame_0.png"
+  },
+  "berserker": {
+    "name": "Berserker",
+    "team": "ai",
+    "tier": 1,
+    "color": "pink",
+    "sprite": "assets/units/berserker/idle/frame_0.png"
+  },
+  "paladin": {
+    "name": "Paladin",
+    "team": "player",
+    "tier": 1,
+    "color": "red",
+    "sprite": "assets/units/paladin/idle/frame_0.png"
+  },
+  "mage": {
+    "name": "Mage",
+    "team": "player",
+    "tier": 1,
+    "color": "blue",
+    "sprite": "assets/units/mage/idle/frame_0.png"
+  },
+  "ranger": {
+    "name": "Ranger",
+    "team": "ai",
+    "tier": 1,
+    "color": "brown",
+    "sprite": "assets/units/ranger/idle/frame_0.png"
+  }
+}

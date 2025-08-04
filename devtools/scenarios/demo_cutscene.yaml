@@ -1,0 +1,21 @@
+name: "Ashen War - Prologue"
+description: "A tragic last stand sets the tone..."
+map_id: basic_grasslands
+
+units:
+  - name: "Captain Arlen"
+    team: player
+    sprite: knight
+    x: 5
+    y: 5
+    hp: 2
+    animation: idle
+
+  - name: "Grave Raider"
+    team: enemy
+    sprite: rogue
+    x: 6
+    y: 5
+    hp: 3
+    animation: idle
+    ai: aggressive

@@ -33,10 +33,12 @@ class SimRunner:
             game = turn_controller_or_game
             self.turn_controller = game.turn_controller
             self.ai_controller = ai_controller or game.ai_controller
+            self.game_state = game  # Store reference for FX integration
         else:
             # It's a TurnController
             self.turn_controller = turn_controller_or_game
             self.ai_controller = ai_controller or AIController([])
+            self.game_state = None  # No game state reference
 
         self.turn_count = 0
         self.phase: Literal["INIT", "PLAYING", "GAME_OVER"] = "INIT"
@@ -129,6 +131,11 @@ class SimRunner:
                 "unit": unit_id,
             }
         )
+        
+        # Trigger FX for AI actions if game state has FX manager
+        if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
+            # Simulate AI action effects
+            self.game_state.trigger_fx("particle", (400, 300), 0.3, 0.8, (255, 0, 0))
 
     def _ensure_fsm_state(self):
         if self.turn_controller.get_state() != TacticalState.SELECTING_UNIT:
@@ -139,6 +146,10 @@ class SimRunner:
 
     def get_log(self) -> List[Dict]:
         return list(self.log)
+
+    def set_game_state(self, game_state) -> None:
+        """Set game state reference for FX integration."""
+        self.game_state = game_state
 
     def reset(self) -> None:
         self.turn_count = 0
@@ -157,6 +168,13 @@ class SimRunner:
                 "unit": unit_id,
             }
         )
+        
+        # Trigger death FX if game state has FX manager
+        if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
+            # Simulate death effects
+            self.game_state.trigger_fx("flash", (400, 300), 0.5, 1.5, (255, 0, 0))
+            self.game_state.trigger_screen_shake(5.0, 0.5)
+            self.game_state.trigger_particle((400, 300), "sparkle", 15, 1.0)
 
     def log_fake_death(self, unit_id: str) -> None:
         """Log a fake death event for a unit."""
@@ -191,3 +209,18 @@ class SimRunner:
         if turns == max_turns:
             print("WARNING: Simulation reached max_turns limit!")
             self.log.append({"event": "max_turns_reached"})
+
+# game/sim_runner.py
+
+def update(self):
+    unit = self.game.get_current_unit()
+    metadata = self.sprite_manager.get_animation_metadata(unit.sprite_name)
+
+    # Update animation frame
+    unit.update_animation(metadata)
+
+    # Skip to next phase if done
+    anim_data = metadata.get(unit.current_animation, {})
+    if not anim_data.get("loop", True):
+        if unit.animation_frame == anim_data["frame_count"] - 1:
+            self.turn_controller.end_turn()

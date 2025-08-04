@@ -1,0 +1,27 @@
+# Animation Configuration
+# This file defines animation settings for each unit type
+
+animations:
+  idle:
+    frame_duration: 500  # milliseconds
+    loop: true
+    frames: ["frame_0.png", "frame_1.png"]
+  
+  attack:
+    frame_duration: 200  # milliseconds
+    loop: false
+    frames: ["frame_0.png", "frame_1.png", "frame_2.png"]
+  
+  walk:
+    frame_duration: 300  # milliseconds
+    loop: true
+    frames: ["frame_0.png", "frame_1.png", "frame_2.png"]
+
+# Unit-specific overrides
+unit_overrides:
+  knight:
+    attack:
+      frame_duration: 150  # Faster attack
+  mage:
+    attack:
+      frame_duration: 400  # Slower attack

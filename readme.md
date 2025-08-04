@@ -1,155 +1,121 @@
 # 🧠 Starter Town Tactics
 
-A turn-based tactical combat simulation inspired by classic tactical RPGs (Final Fantasy Tactics, Fire Emblem), built for learning game architecture, AI integration, and simulation.
-
-**🎉 Technical Foundation Complete!** Ready for game development phase.
+A tactical, turn-based simulation game engine inspired by Final Fantasy Tactics and Fire Emblem. Designed as a learning platform to explore architecture, AI behavior, simulation loops, procedural storytelling, and now full visual rendering.
 
 ---
 
-## 🎮 Features
+## 📦 Features
 
-- 🔁 **Turn-based simulation engine**
-- ⚔️ **Action Point system**
-- 🎯 **Finite State Machine for tactical phases**
-- 🧠 **AI-controlled enemy turns**
-- 💀 **Unit death and turn skipping**
-- 🛠 **Scenario loader (YAML)**
-- 📋 **Structured logging with event history**
-- 🧪 **94 tests, 85% coverage, full mypy compliance**
+- ✅ Turn-based combat with AP and tactical states
+- ✅ AI unit simulation with `SimRunner`
+- ✅ Fully testable, type-checked codebase
+- ✅ YAML-driven scenario loading
+- ✅ Terrain-aware movement overlays
+- ✅ CLI and Pygame-ready demos
+- ✅ Rich pre-commit hooks and Makefile
+- ✅ Unit manager, GameState, FSM, AP system
+- ✅ Sprite-based visual rendering (`renderer.py`)
+- ✅ Animation system with metadata-driven configuration
+- ✅ Visual FX system (screen shake, flash, particles)
+- ✅ Sound system with animation frame triggers
+- ✅ Cutscene-style YAML demo with cinematic playback
 
 ---
 
-## 📂 Project Structure
+## 🗺 Scenario System
+
+Scenarios are defined in YAML and include:
+
+```yaml
+name: "Arena Skirmish"
+map_id: "arena"
+max_turns: 12
+units:
+  - id: knight
+    team: player
+    hp: 15
+    ap: 6
+  - id: bandit
+    team: ai
+    hp: 12
+    ap: 5
+```
+
+Terrain maps:
+
+```
+G G G G
+R G F G
+W G G G
+```
+
+---
+
+## 🧪 Development
+
+### 🛠 Makefile Targets
+
+```bash
+make test                        # Run full test suite
+make lint                        # Run flake8
+make typecheck                   # Run mypy type checks
+make validate-assets             # Validate asset structure
+make viewer                      # Launch asset viewer
+make play-sim-demo               # Interactive demo (basic)
+make play-sim-demo-auto          # Auto-run demo
+make play-scenario-demo          # Play YAML scenario
+make play-scenario-demo-auto     # Auto-run YAML scenario
+make play-scenario-animated      # Cinematic cutscene demo
+make test-animation-metadata     # Test animation system
+```
+
+### ✅ Test Status
+- 97/97 tests passing
+- 87%+ test coverage
+- mypy compliant
+- Lint: minor cosmetic issues
+
+---
+
+## 📁 Project Structure
 
 ```
 starter-town-tactics/
 ├── game/
-│   ├── sim_runner.py             # Simulation loop (player/AI turns)
-│   ├── turn_controller.py        # Turn order management
-│   ├── action_point_manager.py   # AP cost + tracking
-│   ├── tactical_state_machine.py # FSM for tactical UI state
-│   ├── unit_manager.py           # HP/team/alive tracking
-│   ├── game_state.py             # Central system hub
-│   ├── ai_controller.py          # Simple AI logic
-│   ├── grid.py                   # Grid-based game world
-│   ├── input_state.py            # Input management
-│   ├── keyboard_controller.py    # Keyboard input handling
-│   ├── gamepad_controller.py     # Gamepad input handling
-│   ├── unit.py                   # Unit entity management
-│   ├── sprite_manager.py         # Asset management
-│   └── overlay/                  # Grid overlays for movement, threats, terrain
-│       ├── grid_overlay.py
-│       └── overlay_state.py
-│
+│   ├── grid.py
+│   ├── tile.py
+│   ├── unit_manager.py
+│   ├── game_state.py
+│   ├── turn_controller.py
+│   ├── sim_runner.py
+│   ├── tactical_state_machine.py
+│   └── renderer.py              # NEW: visual renderer
 ├── devtools/
-│   ├── sim_runner_demo.py        # CLI interactive demo
-│   ├── scenario_loader.py        # Loads YAML config into GameState
-│   └── scenarios/
-│       └── demo_battle.yaml      # YAML-defined test scenario
-│
-├── tests/                        # 94 tests, 85% coverage
-├── bin/                          # Developer utilities
-│   └── safe-commit.sh
-├── plan.md                       # Updated roadmap and weekly sprint plan
-├── resumegpt.md                  # Personal learning + architecture continuity log
-├── context_registry.py           # Canonical API contracts across modules
-├── session_bootstrap.sh          # Loads persistent session context
-├── Makefile                      # Developer commands
-├── requirements.txt              # Python dependencies
-└── README.md                     # This file
+│   ├── scenario_loader.py
+│   ├── map_loader.py
+│   └── sim_runner_demo.py
+├── maps/
+│   ├── arena.map
+│   ├── catacombs.map
+├── assets/
+│   ├── tiles/
+│   ├── units/
+├── tests/
+├── README.md
+├── plan.md
+├── resumegpt.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚧 Roadmap
 
-```bash
-# Setup
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# Run Tests
-make test
-make typecheck
-make lint
-
-# Play CLI demo
-make play-sim-demo
-make play-scenario-demo
-```
-
----
-
-## 🧪 Testing Strategy
-
-- **Unit Tests** for each system (AP, FSM, AI, Sim, Turn)
-- **Scenario Tests** with CLI output validation
-- **mypy** for type safety
-- **flake8** for code quality
-
----
-
-## 🤖 AI-Driven Development
-
-We use the following AI copilots:
-
-| Tool     | Role                        |
-|----------|-----------------------------|
-| ChatGPT  | Lead architect & test driver |
-| Cursor   | Inline refactor & code copilot |
-| Claude   | Strategy review & test summarization |
-
----
-
-## 🧠 Context Continuity Tools
-
-| File | Purpose |
-|------|---------|
-| `context_registry.py` | Canonical interface contract tracker |
-| `session_bootstrap.sh` | Loads plan, resume, and context into ChatGPT |
-| `plan.md` | Sprint-by-sprint development plan |
-| `resumegpt.md` | Persistent session log and state tracker |
-
----
-
-## 🎮 Current Status
-
-### ✅ Completed (Technical Foundation Sprint)
-- **Test Integration**: 85%+ coverage across 94 tests
-- **Input System**: Keyboard, mouse, gamepad support
-- **AI Integration**: AIController with MCP support
-- **Code Quality**: All pre-commit checks passing
-- **Architecture**: Modular, testable, maintainable codebase
-- **Documentation**: Comprehensive API contracts and guides
-
-### 🚧 Next Phase (Game Development)
-- **Battle System**: Combat mechanics, damage calculations, battle UI
-- **Turn-Based Gameplay**: Action points, multiple action types, turn order
-- **Visual Improvements**: Enhanced Pygame graphics, animations, HUD
-- **Game Content**: Campaign levels, character progression, story elements
-
----
-
-## 🔮 Roadmap
-
-- [ ] Battle mechanics (attacks, damage resolution)
-- [ ] Victory conditions and game objectives
-- [ ] Terrain effects and overlays
-- [ ] Pygame reintegration for graphical mode
-- [ ] Agent-based scenario replays
-- [ ] Audio narration from logs
-
----
-
-## 👤 Author
-
-Rob Downing, assisted by ChatGPT and Cursor.dev
-
-Architecture, simulation, and AI by design — built as a learning lab and demo platform.
-
----
-
-## 🧠 License
-
-MIT License — for educational and demonstration purposes.
+- [x] 🎨 Visual rendering for grid + terrain + units
+- [x] 🌀 Add animation system (idle, move, attack, death)
+- [x] 🎭 Add visual FX system (screen shake, flash, particles)
+- [x] 🔊 Add sound system with animation triggers
+- [x] 🎬 Add cutscene-style cinematic playback
+- [ ] 🧠 Add enemy AI behavior for combat
+- [ ] 🧪 Add debugger viewer mode with overlays
+- [ ] 🗡️ Add attack system with effects + feedback
+- [ ] 📦 Polish scenario content and YAML validators

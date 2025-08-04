@@ -1,6 +1,7 @@
 # @api
 from game.action_point_manager import ActionPointManager
 from game.ai_controller import AIController
+from game.fx_manager import FXManager
 from game.sim_runner import SimRunner
 from game.tactical_state_machine import TacticalStateMachine
 from game.turn_controller import TurnController
@@ -20,6 +21,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         self.turn_controller = TurnController(self.ap_manager, self.fsm)
         self.ai_controller = AIController([])
         self.sim_runner = SimRunner(self.turn_controller, self.ai_controller)
+        self.fx_manager = FXManager()
 
         # Scenario metadata (set by loader)
         self.name: str = ""
@@ -81,3 +83,38 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         player_dead = not self.units.any_effectively_alive("player")
         turns_exceeded = self.turn_controller.current_turn > self.max_turns
         return player_dead or turns_exceeded
+
+    def trigger_fx(self, fx_type: str, position: tuple[int, int], 
+                   duration: float = 0.5, intensity: float = 1.0,
+                   color: tuple[int, int, int] = (255, 255, 255),
+                   size: int = 10) -> None:
+        """Trigger a visual effect."""
+        self.fx_manager.trigger_fx(fx_type, position, duration, intensity, color, size)
+
+    def trigger_flash(self, position: tuple[int, int], 
+                     color: tuple[int, int, int] = (255, 255, 255),
+                     duration: float = 0.3, intensity: float = 1.0) -> None:
+        """Trigger a flash effect."""
+        self.fx_manager.trigger_flash(position, color, duration, intensity)
+
+    def trigger_screen_shake(self, intensity: float = 5.0, duration: float = 0.5) -> None:
+        """Trigger screen shake effect."""
+        self.fx_manager.trigger_screen_shake(intensity, duration)
+
+    def trigger_particle(self, position: tuple[int, int], 
+                        particle_type: str = "sparkle",
+                        count: int = 5, duration: float = 1.0) -> None:
+        """Trigger particle effect."""
+        self.fx_manager.trigger_particle(position, particle_type, count, duration)
+
+    def update_fx(self) -> None:
+        """Update all visual effects."""
+        self.fx_manager.update()
+
+    def draw_fx(self, screen) -> None:
+        """Draw all visual effects."""
+        self.fx_manager.draw_fx(screen)
+
+    def clear_fx(self) -> None:
+        """Clear all visual effects."""
+        self.fx_manager.clear_effects()
