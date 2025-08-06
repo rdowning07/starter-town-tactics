@@ -5,27 +5,26 @@ Generate Placeholder Sound Effects
 This script creates simple WAV files for testing the sound system.
 """
 
-import wave
 import os
-import sys
+import wave
 
 def generate_simple_wav(filename, duration=0.3, freq=440, volume=0.5, sample_rate=44100):
     """Generate a simple sine wave without numpy dependency."""
-    
+
     try:
         import numpy as np
         amplitude = int(volume * 32767)
         t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
         data = (amplitude * np.sin(2 * np.pi * freq * t)).astype(np.int16)
-        
+
         with wave.open(filename, 'w') as f:
             f.setnchannels(1)  # mono
             f.setsampwidth(2)  # bytes per sample
             f.setframerate(sample_rate)
             f.writeframes(data.tobytes())
-        
+
         return True
-        
+
     except ImportError:
         print(f"⚠️  numpy not available, creating silent WAV: {filename}")
         # Create a silent WAV file as fallback
@@ -40,7 +39,7 @@ def generate_simple_wav(filename, duration=0.3, freq=440, volume=0.5, sample_rat
 
 def generate_fallback_wav(filename, duration=0.3, sample_rate=44100):
     """Generate a fallback WAV file without numpy."""
-    
+
     with wave.open(filename, 'w') as f:
         f.setnchannels(1)
         f.setsampwidth(2)
@@ -51,13 +50,13 @@ def generate_fallback_wav(filename, duration=0.3, sample_rate=44100):
 
 def main():
     """Main function to generate placeholder sounds."""
-    
+
     print("🎵 Generating Placeholder Sound Effects")
     print("=" * 40)
-    
+
     output_dir = "assets/sfx"
     os.makedirs(output_dir, exist_ok=True)
-    
+
     # Create simple tones for different effects
     sounds = {
         "slash.wav": {"freq": 880, "duration": 0.2, "desc": "Sword slash"},
@@ -69,35 +68,35 @@ def main():
         "select.wav": {"freq": 550, "duration": 0.1, "desc": "Unit selection"},
         "menu.wav": {"freq": 770, "duration": 0.15, "desc": "Menu navigation"}
     }
-    
+
     numpy_available = True
-    
+
     for name, config in sounds.items():
         path = os.path.join(output_dir, name)
-        
+
         try:
             success = generate_simple_wav(
-                path, 
-                freq=config["freq"], 
+                path,
+                freq=config["freq"],
                 duration=config["duration"]
             )
-            
+
             if success:
                 print(f"✅ Generated {name} ({config['desc']})")
             else:
                 print(f"⚠️  Created silent {name} ({config['desc']})")
                 numpy_available = False
-                
-        except Exception as e:
+
+        except (OSError, wave.Error) as e:
             print(f"❌ Failed to generate {name}: {e}")
             # Create fallback
             generate_fallback_wav(path, duration=config["duration"])
             print(f"⚠️  Created fallback {name}")
-    
+
     if not numpy_available:
-        print(f"\n💡 Install numpy for better sound generation:")
-        print(f"   pip install numpy")
-    
+        print("\n💡 Install numpy for better sound generation:")
+        print("   pip install numpy")
+
     print(f"\n🎉 Sound effects ready in: {output_dir}")
     print(f"📁 Total files: {len(sounds)}")
 

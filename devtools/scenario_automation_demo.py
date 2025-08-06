@@ -1,25 +1,26 @@
-# devtools/scenario_animation_demo.py
+# devtools/scenario_automation_demo.py
+
+import argparse
 
 import pygame
-import time
-import sys
-import argparse
+
 from devtools.scenario_loader import load_scenario
-from game.sprite_manager import SpriteManager
-from game.renderer import Renderer
 from game.fx_manager import FXManager
-from game.sound_manager import SoundManager
 from game.game_state import GameState
+from game.renderer import Renderer
+from game.sound_manager import SoundManager
+from game.sprite_manager import SpriteManager
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 
 def main():
+    """Main function for scenario automation demo."""
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Scenario Automation Demo')
     parser.add_argument('--scenario', type=str, help='Path to scenario YAML file')
     parser.add_argument('--auto', action='store_true', help='Run in auto mode')
     args = parser.parse_args()
-    
+
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
@@ -27,20 +28,21 @@ def main():
     sprite_manager = SpriteManager()
     fx_manager = FXManager()
     sound_manager = SoundManager()
-    
+
     # Load scenario if specified, otherwise create a simple game state
     if args.scenario:
         try:
             print(f"🎬 Loading scenario: {args.scenario}")
             game_state = load_scenario(args.scenario, sprite_manager, fx_manager, sound_manager)
             print(f"✅ Scenario loaded: {game_state.name}")
-        except Exception as e:
+        except (OSError, ValueError) as e:
             print(f"❌ Failed to load scenario: {e}")
             game_state = GameState()
     else:
         game_state = GameState()
-    
-    renderer = Renderer(screen, sprite_manager)
+
+    # Note: renderer is created but not used in this demo
+    _renderer = Renderer(screen, sprite_manager)
 
     running = True
     tick = 0
@@ -58,6 +60,7 @@ def main():
             for unit_name, unit_data in units_list.items():
                 # Create a simple unit object for animation
                 class AnimationUnit:
+                    """Simple unit class for animation demo."""
                     def __init__(self, name, data):
                         self.name = name
                         self.x = data.get('x', 0)
@@ -66,18 +69,20 @@ def main():
                         self.animation_frame = 0
                         self.sprite_name = data.get('sprite', 'knight')
                         self.team = data.get('team', 'player')
-                    
+
                     def update_animation(self):
-                        # Simple animation update
+                        """Simple animation update."""
                         self.animation_frame = (self.animation_frame + 1) % 4
-                    
+
                     def get_current_sprite(self, sprite_manager):
                         """Get the current sprite for this unit."""
-                        return sprite_manager.get_unit_sprite(self.sprite_name, self.current_animation, self.animation_frame)
-                
+                        return sprite_manager.get_unit_sprite(
+                            self.sprite_name, self.current_animation, self.animation_frame
+                        )
+
                 unit = AnimationUnit(unit_name, unit_data)
                 unit.update_animation()
-                
+
                 # Render the unit
                 try:
                     sprite = unit.get_current_sprite(sprite_manager)
@@ -85,13 +90,13 @@ def main():
                         # Convert position to screen coordinates (scale up for visibility)
                         screen_x = unit.x * 64 + 100  # 64 pixels per tile, offset by 100
                         screen_y = unit.y * 64 + 100
-                        
+
                         # If sprite is a string path, load it
                         if isinstance(sprite, str):
                             try:
                                 sprite_surface = pygame.image.load(sprite)
                                 sprite_surface = pygame.transform.scale(sprite_surface, (64, 64))
-                            except:
+                            except (OSError, pygame.error):
                                 # Create a colored rectangle as fallback
                                 sprite_surface = pygame.Surface((64, 64))
                                 if unit.team == "player":
@@ -103,22 +108,22 @@ def main():
                         else:
                             # Sprite is already a surface
                             sprite_surface = pygame.transform.scale(sprite, (64, 64))
-                        
+
                         # Draw the unit
                         screen.blit(sprite_surface, (screen_x, screen_y))
-                        
+
                         # Draw unit name
                         font = pygame.font.Font(None, 24)
                         name_text = font.render(unit.name, True, (255, 255, 255))
                         screen.blit(name_text, (screen_x, screen_y - 20))
-                        
+
                         # Draw HP
                         hp_text = font.render(f"HP: {unit_data.get('hp', 10)}", True, (255, 255, 0))
                         screen.blit(hp_text, (screen_x, screen_y + 70))
-                        
-                except Exception as e:
+
+                except (OSError, pygame.error) as e:
                     print(f"⚠️  Error rendering unit {unit.name}: {e}")
-                
+
                 # Inside the unit animation loop
                 if hasattr(unit, 'sprite_name') and hasattr(unit, 'current_animation'):
                     meta = sprite_manager.get_animation_metadata(unit.sprite_name).get(unit.current_animation, {})
@@ -135,15 +140,16 @@ def main():
 
         # Draw UI information
         font = pygame.font.Font(None, 24)
+        units_count = len(units_list) if 'units_list' in locals() else 0
         ui_lines = [
             f"Scenario: {game_state.name}",
             f"Description: {game_state.description}",
             f"Tick: {tick}",
-            f"Units: {len(units_list) if 'units_list' in locals() else 0}",
+            f"Units: {units_count}",
             "",
             "Controls: ESC to quit"
         ]
-        
+
         for i, line in enumerate(ui_lines):
             text_surface = font.render(line, True, (255, 255, 255))
             screen.blit(text_surface, (10, 10 + i * 25))
