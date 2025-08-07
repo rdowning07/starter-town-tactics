@@ -1,16 +1,17 @@
 # devtools/demo_animation.py
 
-import pygame
 import sys
-import os
+
+import pygame
+
+from game.grid import Grid
+from game.overlay.overlay_state import OverlayState
 from game.renderer import Renderer
 from game.sprite_manager import SpriteManager
-from game.overlay.overlay_state import OverlayState
-from game.grid import Grid
 from game.tile import Tile
+from game.unit_manager import UnitManager
 # Note: Unit import temporarily disabled due to syntax issues
 # from game.unit import Unit
-from game.unit_manager import UnitManager
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 160, 160
 TILE_SIZE = 32
@@ -40,9 +41,10 @@ def main():
     # unit = Unit("knight", 2, 2, "player", health=10)
     # unit.set_animation("attack", duration=30)
     # grid.place_unit(unit)
-    
+
     # Create a dummy unit for testing
     class DummyUnit:
+        """Dummy unit class for animation demo."""
         def __init__(self, name, x, y, team, health=10):
             self.name = name
             self.x = x
@@ -52,17 +54,19 @@ def main():
             self.hp = health
             self.current_animation = "idle"
             self.animation_timer = 0
-            
+
         def set_animation(self, name, duration=10):
+            """Set animation state."""
             self.current_animation = name
             self.animation_timer = duration
-            
+
         def update_animation(self):
+            """Update animation timer."""
             if self.animation_timer > 0:
                 self.animation_timer -= 1
             if self.animation_timer == 0:
                 self.current_animation = "idle"
-    
+
     unit = DummyUnit("knight", 2, 2, "player", 10)
     unit.set_animation("attack", 30)
 
@@ -101,6 +105,7 @@ def main():
         unit.update_animation()
 
         class DummyGameState:
+            """Dummy game state for demo."""
             def __init__(self):
                 self.terrain_grid = [
                     ["grass", "grass", "grass", "grass", "grass"],
@@ -120,4 +125,4 @@ def main():
     sys.exit()
 
 if __name__ == "__main__":
-    main() 
+    main()

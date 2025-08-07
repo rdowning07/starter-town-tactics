@@ -2,14 +2,16 @@
 # @api: provides rendering for tiles, units, and overlays using pygame
 # @refactor: will expand to include animation, UI, and FX layers
 
-import pygame
 from typing import TYPE_CHECKING, Optional
-from game.overlay.overlay_state import OverlayState
+
+import pygame
+
+from game.fx_manager import FXManager
 from game.grid import Grid
+from game.overlay.overlay_state import OverlayState
+from game.sprite_manager import SpriteManager
 from game.tile import TILE_SIZE
 from game.unit_manager import UnitManager
-from game.sprite_manager import SpriteManager
-from game.fx_manager import FXManager
 
 if TYPE_CHECKING:
     from game.game_state import GameState
@@ -92,7 +94,7 @@ class Renderer:
                         pygame.Rect(adjusted_position[0], adjusted_position[1], TILE_SIZE, TILE_SIZE),
                         width=2,
                     )
-        
+
         # Render threat tiles
         if overlay_state.show_threat:
             for (x, y) in overlay_state.threat_tiles:
@@ -112,57 +114,60 @@ class Renderer:
             for x in range(grid.width):
                 tile = grid.get_tile(x, y)
                 if tile.unit and tile.unit.is_alive():
-                    # This is a Unit object with x, y coordinates
-                    unit = tile.unit
-                    sprite_data = self.sprite_manager.get_unit_sprite(unit.name)
-                    if sprite_data:
-                        # Handle both file paths and pygame.Surface objects
-                        if isinstance(sprite_data, str):
-                            # It's a file path
-                            try:
-                                sprite = pygame.image.load(sprite_data)
-                                adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
-                                self.screen.blit(sprite, adjusted_position)
-                            except (pygame.error, FileNotFoundError):
-                                # Fallback: draw colored circle
-                                color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
-                                center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
-                                pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
-                        else:
-                            # It's already a pygame.Surface
-                            adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
-                            self.screen.blit(sprite_data, adjusted_position)
-                    else:
-                        # No sprite available, draw colored circle
-                        color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
-                        center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
-                        pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
-                    
-                    # Also check if this unit exists in UnitManager for additional data
-                    if unit_manager.unit_exists(unit.name):
-                        unit_data = unit_manager.get_all_units()[unit.name]
-                        # Could render HP/AP indicators here
-                        self._render_unit_indicators(x, y, unit_data)
+                    self._render_single_unit(unit_manager, tile.unit, x, y, offset_x, offset_y)
+
+    def _render_single_unit(self, unit_manager: UnitManager, unit, x: int, y: int, offset_x: int, offset_y: int) -> None:
+        """Render a single unit."""
+        # This is a Unit object with x, y coordinates
+        sprite_data = self.sprite_manager.get_unit_sprite(unit.name)
+        if sprite_data:
+            # Handle both file paths and pygame.Surface objects
+            if isinstance(sprite_data, str):
+                # It's a file path
+                try:
+                    sprite = pygame.image.load(sprite_data)
+                    adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                    self.screen.blit(sprite, adjusted_position)
+                except (pygame.error, FileNotFoundError):
+                    # Fallback: draw colored circle
+                    color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
+                    center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
+                    pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
+            else:
+                # It's already a pygame.Surface
+                adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                self.screen.blit(sprite_data, adjusted_position)
+        else:
+            # No sprite available, draw colored circle
+            color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
+            center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
+            pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
+
+        # Also check if this unit exists in UnitManager for additional data
+        if unit_manager.unit_exists(unit.name):
+            unit_data = unit_manager.get_all_units()[unit.name]
+            # Could render HP/AP indicators here
+            self._render_unit_indicators(x, y, unit_data)
 
     def _render_unit_indicators(self, x: int, y: int, unit_data: dict, offset_x: int = 0, offset_y: int = 0) -> None:
         """Render unit status indicators (HP, AP, etc.)."""
         # Render HP bar
         hp = unit_data.get("hp", 0)
-        max_hp = 10  # TODO: Make this configurable
+        max_hp = 10  # FIXME: Make this configurable
         hp_ratio = hp / max_hp if max_hp > 0 else 0
-        
+
         # HP bar background
         bar_width = TILE_SIZE - 4
         bar_height = 4
         bar_x = x * TILE_SIZE + 2
         bar_y = y * TILE_SIZE + 2
-        
+
         pygame.draw.rect(
             self.screen,
             (255, 0, 0),  # Red background
             pygame.Rect(bar_x, bar_y, bar_width, bar_height)
         )
-        
+
         # HP bar fill
         fill_width = int(bar_width * hp_ratio)
         if fill_width > 0:

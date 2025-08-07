@@ -4,8 +4,9 @@
 """Defines the Unit class for game entities."""
 from __future__ import annotations
 
-import pygame
 from typing import TYPE_CHECKING
+
+import pygame
 
 if TYPE_CHECKING:
     from game.grid import Grid
@@ -33,13 +34,14 @@ class Unit:
         self.health = health
         self.hp = hp if hp is not None else health
         self.remaining_moves = move_range
-        
+
         # Animation support
         self.current_animation = "idle"
         self.animation_timer = 0
 
     # @refactor - fixed movement to properly account for terrain cost only
     def move(self, new_x: int, new_y: int, grid: Grid) -> bool:
+        """Move unit to new position if valid."""
         # Disallow diagonal movement and enforce range
         dx = abs(new_x - self.x)
         dy = abs(new_y - self.y)
@@ -81,7 +83,7 @@ class Unit:
     def take_damage(self, amount: int) -> None:
         """Reduces HP by amount and sets appropriate animation."""
         self.hp = max(0, self.hp - amount)
-        
+
         # Set animation based on damage
         if self.hp <= 0:
             self.set_animation("die")
@@ -115,11 +117,13 @@ class Unit:
                     frame_index = (30 - self.animation_timer) % 2  # 2 frames for idle/walk
             else:
                 frame_index = 0
-            
-            sprite = sprite_manager.get_unit_sprite(self.name, state=self.current_animation, frame_index=frame_index)
+
+            sprite = sprite_manager.get_unit_sprite(
+                self.name, state=self.current_animation, frame_index=frame_index
+            )
             if sprite:
                 return sprite
-        
+
         # Fallback: create a colored rectangle based on team
         fallback = pygame.Surface((32, 32))
         if self.team == "player":
@@ -128,5 +132,5 @@ class Unit:
             fallback.fill((255, 0, 0))  # Red for AI
         else:
             fallback.fill((128, 128, 128))  # Gray for neutral
-        
+
         return fallback
