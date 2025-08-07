@@ -131,7 +131,7 @@ class SimRunner:
                 "unit": unit_id,
             }
         )
-        
+
         # Trigger FX for AI actions if game state has FX manager
         if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
             # Simulate AI action effects
@@ -168,7 +168,7 @@ class SimRunner:
                 "unit": unit_id,
             }
         )
-        
+
         # Trigger death FX if game state has FX manager
         if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
             # Simulate death effects

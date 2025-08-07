@@ -24,7 +24,7 @@ shutdown_requested = False
 
 def signal_handler(signum, frame):
     """Handle Ctrl+C gracefully."""
-    global shutdown_requested
+    global shutdown_requested  # pylint: disable=global-statement
     shutdown_requested = True
     print("\n⏹️  Shutdown requested...")
 
@@ -197,7 +197,7 @@ def main():
                 )
                 print(f"✅ Loaded {current_animation} with {anim_data.get('frame_count', 'unknown')} frames")
                 return True
-            except Exception as e:
+            except (OSError, pygame.error) as e:
                 print(f"❌ Failed to load animation: {e}")
                 return False
 
@@ -280,7 +280,7 @@ def main():
                 if sprite:
                     rect = sprite.get_rect(center=(WINDOW_SIZE[0]//2, WINDOW_SIZE[1]//2))
                     screen.blit(sprite, rect)
-            except Exception as e:
+            except (OSError, pygame.error) as e:
                 print(f"⚠️  Error rendering sprite: {e}")
 
             # Update FX and render with screen shake
@@ -314,7 +314,7 @@ def main():
     except KeyboardInterrupt:
         print("\n⏹️  Interrupted by user (Ctrl+C)")
         return 0
-    except Exception as e:
+    except (OSError, ValueError) as e:
         print(f"❌ Error in animation tester: {e}")
         return 1
 

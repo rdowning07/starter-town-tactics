@@ -23,7 +23,7 @@ def main():
     # Unit setup
     unit_manager = UnitManager()
     unit_manager.register_unit("knight", "player", hp=10)
-    
+
     # Create and place unit on grid
     knight = Unit("knight", 2, 2, "player", health=10)
     grid.place_unit(knight)
@@ -36,8 +36,10 @@ def main():
 
     # Sprite manager with dummy data
     sprite_manager = SpriteManager()
-    dummy_tile = pygame.Surface((32, 32)); dummy_tile.fill((50, 180, 50))
-    dummy_unit = pygame.Surface((32, 32)); dummy_unit.fill((180, 50, 50))
+    dummy_tile = pygame.Surface((32, 32))
+    dummy_tile.fill((50, 180, 50))
+    dummy_unit = pygame.Surface((32, 32))
+    dummy_unit.fill((180, 50, 50))
     sprite_manager.load_terrain_sprite("grass", dummy_tile)
     sprite_manager.load_unit_sprite("knight", "idle", dummy_unit)
 

@@ -27,7 +27,7 @@ def test_animation_slicing(unit_id: str, animation_name: str):
             print(f"   Expected: {metadata_path}")
             return False
 
-        with open(metadata_path) as f:
+        with open(metadata_path, encoding='utf-8') as f:
             metadata = json.load(f)
 
         anim_data = metadata.get(animation_name)
@@ -67,11 +67,11 @@ def test_animation_slicing(unit_id: str, animation_name: str):
             print(f"⚠️ Warning: Expected {expected_frames} frames, "
                   f"got {actual_frames}")
             return False
-        else:
-            print("✅ Frame count matches metadata.")
-            return True
 
-    except Exception as e:
+        print("✅ Frame count matches metadata.")
+        return True
+
+    except (OSError, ValueError) as e:
         print(f"❌ Error testing animation: {e}")
         return False
     finally:
@@ -86,7 +86,7 @@ def test_all_unit_animations():
     units_dir = Path(ASSET_DIR)
     if not units_dir.exists():
         print(f"❌ Units directory not found: {ASSET_DIR}")
-        return
+        return False
 
     total_tests = 0
     passed_tests = 0
@@ -105,7 +105,7 @@ def test_all_unit_animations():
         print(f"\n📁 Testing unit: {unit_id}")
 
         try:
-            with open(metadata_path) as f:
+            with open(metadata_path, encoding='utf-8') as f:
                 metadata = json.load(f)
 
             for animation_name in metadata.keys():
@@ -118,7 +118,7 @@ def test_all_unit_animations():
                 else:
                     print("❌ FAIL")
 
-        except Exception as e:
+        except (OSError, ValueError) as e:
             print(f"❌ Error loading metadata for {unit_id}: {e}")
 
     print(f"\n📊 Test Results: {passed_tests}/{total_tests} passed")
@@ -145,7 +145,7 @@ def main():
             print(f"❌ No metadata found for unit: {unit_id}")
             return 1
 
-        with open(metadata_path) as f:
+        with open(metadata_path, encoding='utf-8') as f:
             metadata = json.load(f)
 
         total_tests = len(metadata)
@@ -166,4 +166,4 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    sys.exit(main())
