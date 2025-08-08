@@ -1,8 +1,10 @@
 # devtools/scenario_loader.py
 
 import os
+import time
 from typing import Dict
 
+import pygame
 import yaml
 
 from game.fx_manager import FXManager
@@ -10,6 +12,7 @@ from game.game_state import GameState
 from game.sound_manager import SoundManager
 from game.sprite_manager import SpriteManager
 from game.unit import Unit
+
 
 class ScenarioLoader:
     """Loads and validates scenario files for the game."""
@@ -19,9 +22,8 @@ class ScenarioLoader:
         self.supported_ai_types = ["aggressive", "defensive", "passive"]
 
     def load_scenario(self, scenario_path: str, sprite_manager: SpriteManager,
-                     fx_manager: FXManager, sound_manager: SoundManager) -> GameState:
+                     fx_manager: FXManager, sound_manager: SoundManager, camera=None) -> GameState:
         """Load a scenario from a YAML file."""
-
         if not os.path.exists(scenario_path):
             raise FileNotFoundError(f"Scenario file not found: {scenario_path}")
 
@@ -44,7 +46,72 @@ class ScenarioLoader:
         for unit_data in units_data:
             self._load_unit(unit_data, game_state, sprite_manager)
 
+        # Process camera actions if camera is provided
+        if camera:
+            self._process_camera_actions(scenario_data.get('camera', []), camera)
+
+        # Process AI actions
+        self._process_ai_actions(scenario_data.get('ai', []), game_state)
+
+        # Process general actions
+        self._process_actions(scenario_data.get('actions', []), game_state)
+
         return game_state
+
+    def _process_camera_actions(self, camera_actions, camera):
+        """Process camera actions from YAML."""
+        for action in camera_actions:
+            if action['action'] == 'pan':
+                targets = action['targets']
+                speed = action.get('speed', 5)
+                delay = action.get('delay', 0)
+
+                # Convert targets to Vector2 objects
+                vector_targets = []
+                for target in targets:
+                    if isinstance(target, list) and len(target) == 2:
+                        vector_targets.append(pygame.Vector2(target[0], target[1]))
+
+                if vector_targets:
+                    camera.cinematic_pan(vector_targets, speed)
+                    if delay > 0:
+                        time.sleep(delay)  # Add delay between pans
+
+    def _process_ai_actions(self, ai_actions, game_state):
+        """Process AI actions from YAML."""
+        for action in ai_actions:
+            unit_name = action['unit']
+            ai_action = action['action']
+            target = action.get('target', None)
+
+            # Check if the AI unit exists in game state
+            if game_state.units.unit_exists(unit_name):
+                if ai_action == 'attack':
+                    # Check if target unit exists
+                    if game_state.units.unit_exists(target):
+                        # TODO: Implement attack logic
+                        print(f"🤖 AI unit {unit_name} attacks {target}")
+                    else:
+                        print(f"⚠️ Target unit {target} not found for AI attack")
+                elif ai_action == 'move':
+                    if isinstance(target, list) and len(target) == 2:
+                        # TODO: Implement move logic
+                        print(f"🤖 AI unit {unit_name} moves to {target}")
+            else:
+                print(f"⚠️ AI unit {unit_name} not found in game state")
+
+    def _process_actions(self, actions, game_state):
+        """Process general actions from YAML."""
+        for action in actions:
+            unit_name = action['unit']
+            action_type = action['action']
+
+            if game_state.units.unit_exists(unit_name):
+                if action_type == 'prepare_for_battle':
+                    # TODO: Implement prepare for battle logic
+                    print(f"⚔️ Unit {unit_name} prepares for battle")
+            else:
+                print(f"⚠️ Unit {unit_name} not found for action {action_type}")
 
     def _validate_scenario(self, scenario_data: Dict) -> None:
         """Validate scenario data structure."""
@@ -90,7 +157,6 @@ class ScenarioLoader:
 
     def _load_unit(self, unit_data: Dict, game_state: GameState, sprite_manager: SpriteManager) -> None:
         """Load a unit from scenario data."""
-
         # Create unit
         unit = Unit(
             name=unit_data["name"],
@@ -128,8 +194,26 @@ class ScenarioLoader:
 
         print(f"✅ Loaded unit: {unit.name} ({unit.team}) at ({unit.x}, {unit.y}) with {unit.hp} HP")
 
+
 def load_scenario(scenario_path: str, sprite_manager: SpriteManager,
-                 fx_manager: FXManager, sound_manager: SoundManager) -> GameState:
+                 fx_manager: FXManager, sound_manager: SoundManager, camera=None) -> GameState:
     """Convenience function to load a scenario."""
     loader = ScenarioLoader()
-    return loader.load_scenario(scenario_path, sprite_manager, fx_manager, sound_manager)
+    return loader.load_scenario(scenario_path, sprite_manager, fx_manager, sound_manager, camera)
+
+
+def trigger_battle_scenario(scenario_path: str, sprite_manager: SpriteManager,
+                          fx_manager: FXManager, sound_manager: SoundManager, camera=None):
+    """Trigger a battle scenario with camera integration."""
+    # Load the scenario
+    game_state = load_scenario(
+        scenario_path,
+        sprite_manager,
+        fx_manager,
+        sound_manager,
+        camera  # Pass the camera system to the loader
+    )
+
+    # Proceed with game logic after scenario is triggered
+    print(f"Scenario '{game_state.name}' started with description: {game_state.description}")
+    return game_state

@@ -2,18 +2,53 @@ name: "Demo Battle Scenario"
 description: "A simple battle scenario with AI and player units for testing the SimRunner"
 
 units:
-  - id: "ai_alpha"
-    team: "ai"
+  - name: "ai_alpha"
+    team: "enemy"
+    sprite: "knight"
+    x: 3
+    y: 3
     ap: 2
     hp: 10
-  - id: "p_bravo"
+    animation: "idle"
+    ai: "aggressive"
+  - name: "p_bravo"
     team: "player"
+    sprite: "knight"
+    x: 5
+    y: 5
     ap: 3
     hp: 15
-  - id: "ai_delta"
-    team: "ai"
+    animation: "idle"
+  - name: "ai_delta"
+    team: "enemy"
+    sprite: "rogue"
+    x: 4
+    y: 4
     ap: 2
     hp: 8
+    animation: "idle"
+    ai: "defensive"
+
+camera:
+  - action: "pan"
+    targets:
+      - [96, 96] # Starting position
+      - [192, 192] # Intermediate position
+      - [288, 288] # Final position
+    speed: 8
+    delay: 0.3
+
+ai:
+  - unit: "ai_alpha"
+    action: "attack"
+    target: "p_bravo"
+  - unit: "ai_delta"
+    action: "move"
+    target: [6, 6]
+
+actions:
+  - unit: "p_bravo"
+    action: "prepare_for_battle"
 
 metadata:
   max_turns: 12

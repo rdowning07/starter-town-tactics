@@ -5,12 +5,105 @@ objective: "Defeat all enemy units."
 max_turns: 12
 
 units:
-  - { id: p1, team: player, hp: 8, ap: 3 }
-  - { id: p2, team: player, hp: 8, ap: 3 }
-  - { id: p3, team: player, hp: 8, ap: 3 }
-  - { id: p4, team: player, hp: 8, ap: 3 }
+  - name: "p1"
+    team: player
+    sprite: "knight"
+    x: 2
+    y: 2
+    hp: 8
+    ap: 3
+    animation: "idle"
+  - name: "p2"
+    team: player
+    sprite: "archer"
+    x: 3
+    y: 2
+    hp: 8
+    ap: 3
+    animation: "idle"
+  - name: "p3"
+    team: player
+    sprite: "mage"
+    x: 2
+    y: 3
+    hp: 8
+    ap: 3
+    animation: "idle"
+  - name: "p4"
+    team: player
+    sprite: "paladin"
+    x: 3
+    y: 3
+    hp: 8
+    ap: 3
+    animation: "idle"
 
-  - { id: e1, team: ai, hp: 8, ap: 3 }
-  - { id: e2, team: ai, hp: 8, ap: 3 }
-  - { id: e3, team: ai, hp: 8, ap: 3 }
-  - { id: e4, team: ai, hp: 8, ap: 3 }
+  - name: "e1"
+    team: enemy
+    sprite: "rogue"
+    x: 6
+    y: 6
+    hp: 8
+    ap: 3
+    animation: "idle"
+    ai: "aggressive"
+  - name: "e2"
+    team: enemy
+    sprite: "berserker"
+    x: 7
+    y: 6
+    hp: 8
+    ap: 3
+    animation: "idle"
+    ai: "aggressive"
+  - name: "e3"
+    team: enemy
+    sprite: "shadow"
+    x: 6
+    y: 7
+    hp: 8
+    ap: 3
+    animation: "idle"
+    ai: "defensive"
+  - name: "e4"
+    team: enemy
+    sprite: "knight"
+    x: 7
+    y: 7
+    hp: 8
+    ap: 3
+    animation: "idle"
+    ai: "aggressive"
+
+camera:
+  - action: "pan"
+    targets:
+      - [64, 64] # Player squad position
+      - [224, 224] # Enemy squad position
+      - [144, 144] # Center of battlefield
+    speed: 12
+    delay: 0.4
+
+ai:
+  - unit: "e1"
+    action: "attack"
+    target: "p1"
+  - unit: "e2"
+    action: "attack"
+    target: "p2"
+  - unit: "e3"
+    action: "move"
+    target: [5, 5]
+  - unit: "e4"
+    action: "attack"
+    target: "p4"
+
+actions:
+  - unit: "p1"
+    action: "prepare_for_battle"
+  - unit: "p2"
+    action: "prepare_for_battle"
+  - unit: "p3"
+    action: "prepare_for_battle"
+  - unit: "p4"
+    action: "prepare_for_battle"

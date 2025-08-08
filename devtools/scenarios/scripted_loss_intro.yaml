@@ -5,6 +5,39 @@ objective: "Survive as long as you can."
 max_turns: 6
 
 units:
-  - { id: hero, team: player, hp: 10, ap: 3 }
+  - name: "hero"
+    team: player
+    sprite: "knight"
+    x: 4
+    y: 4
+    hp: 10
+    ap: 3
+    animation: "idle"
 
-  - { id: black_knight, team: ai, hp: 99, ap: 4 }
+  - name: "black_knight"
+    team: enemy
+    sprite: "shadow"
+    x: 8
+    y: 8
+    hp: 99
+    ap: 4
+    animation: "idle"
+    ai: "aggressive"
+
+camera:
+  - action: "pan"
+    targets: 
+      - [128, 128]  # Hero position
+      - [256, 256]  # Black Knight position
+      - [192, 192]  # Dramatic center
+    speed: 20
+    delay: 0.8
+
+ai:
+  - unit: "black_knight"
+    action: "attack"
+    target: "hero"
+
+actions:
+  - unit: "hero"
+    action: "prepare_for_battle"

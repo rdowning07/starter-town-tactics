@@ -5,10 +5,85 @@ objective: "Survive until turn 10."
 max_turns: 10
 
 units:
-  - { id: defender1, team: player, hp: 10, ap: 3 }
-  - { id: defender2, team: player, hp: 10, ap: 3 }
+  - name: "defender1"
+    team: player
+    sprite: "knight"
+    x: 3
+    y: 3
+    hp: 10
+    ap: 3
+    animation: "idle"
+  - name: "defender2"
+    team: player
+    sprite: "archer"
+    x: 4
+    y: 3
+    hp: 10
+    ap: 3
+    animation: "idle"
 
-  - { id: zombie1, team: ai, hp: 5, ap: 2 }
-  - { id: zombie2, team: ai, hp: 5, ap: 2 }
-  - { id: zombie3, team: ai, hp: 5, ap: 2 }
-  - { id: zombie4, team: ai, hp: 5, ap: 2 }
+  - name: "zombie1"
+    team: enemy
+    sprite: "rogue"
+    x: 6
+    y: 6
+    hp: 5
+    ap: 2
+    animation: "idle"
+    ai: "aggressive"
+  - name: "zombie2"
+    team: enemy
+    sprite: "rogue"
+    x: 7
+    y: 6
+    hp: 5
+    ap: 2
+    animation: "idle"
+    ai: "aggressive"
+  - name: "zombie3"
+    team: enemy
+    sprite: "rogue"
+    x: 6
+    y: 7
+    hp: 5
+    ap: 2
+    animation: "idle"
+    ai: "aggressive"
+  - name: "zombie4"
+    team: enemy
+    sprite: "rogue"
+    x: 7
+    y: 7
+    hp: 5
+    ap: 2
+    animation: "idle"
+    ai: "aggressive"
+
+camera:
+  - action: "pan"
+    targets: 
+      - [96, 96]   # Defenders position
+      - [224, 224] # Horde position
+      - [160, 160] # Battle line
+    speed: 10
+    delay: 0.5
+
+ai:
+  - unit: "zombie1"
+    action: "attack"
+    target: "defender1"
+  - unit: "zombie2"
+    action: "attack"
+    target: "defender2"
+  - unit: "zombie3"
+    action: "move"
+    target: [5, 5]
+  - unit: "zombie4"
+    action: "attack"
+    target: "defender1"
+
+actions:
+  - unit: "defender1"
+    action: "prepare_for_battle"
+  - unit: "defender2"
+    action: "prepare_for_battle"

@@ -19,3 +19,21 @@ units:
     hp: 3
     animation: idle
     ai: aggressive
+
+camera:
+  - action: "pan"
+    targets:
+      - [160, 160] # Starting position for cinematic pan
+      - [320, 320] # Intermediate position
+      - [480, 480] # Final position
+    speed: 10
+    delay: 0.5 # Delay between each target pan
+
+ai:
+  - unit: "Grave Raider"
+    action: "attack"
+    target: "Captain Arlen" # Define target for attack
+
+actions:
+  - unit: "Captain Arlen"
+    action: "prepare_for_battle"

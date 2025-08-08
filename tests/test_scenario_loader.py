@@ -3,7 +3,7 @@
 import pytest
 import tempfile
 import os
-from devtools.scenario_loader import ScenarioLoader, load_scenario
+from devtools.scenario_loader import ScenarioLoader, load_scenario, trigger_battle_scenario
 from game.sprite_manager import SpriteManager
 from game.fx_manager import FXManager
 from game.sound_manager import SoundManager
@@ -50,7 +50,41 @@ units:
     ap: 2
     animation: idle
     ai: aggressive
+
+camera:
+  - action: "pan"
+    targets: 
+      - [100, 100]
+      - [200, 200]
+      - [300, 300]
+    speed: 10
+    delay: 0.5
+
+ai:
+  - unit: "Test Enemy"
+    action: "attack"
+    target: "Test Knight"
+
+actions:
+  - unit: "Test Knight"
+    action: "prepare_for_battle"
 """
+
+@pytest.fixture
+def camera_mock():
+    """Mock camera object for testing."""
+    class MockCamera:
+        def __init__(self):
+            self.pan_called = False
+            self.pan_targets = None
+            self.pan_speed = None
+        
+        def cinematic_pan(self, targets, speed):
+            self.pan_called = True
+            self.pan_targets = targets
+            self.pan_speed = speed
+    
+    return MockCamera()
 
 def test_scenario_loader_initialization(scenario_loader):
     """Test that ScenarioLoader initializes correctly."""
@@ -197,3 +231,84 @@ def test_supported_sprites_and_ai_types(scenario_loader):
     # Check that we have some supported AI types
     assert len(scenario_loader.supported_ai_types) > 0
     assert "aggressive" in scenario_loader.supported_ai_types
+
+def test_camera_integration(scenario_loader, sprite_manager, fx_manager, sound_manager, camera_mock, valid_scenario_yaml):
+    """Test camera integration in scenario loading."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        f.write(valid_scenario_yaml)
+        temp_file = f.name
+    
+    try:
+        game_state = scenario_loader.load_scenario(temp_file, sprite_manager, fx_manager, sound_manager, camera_mock)
+        
+        # Check that camera pan was called
+        assert camera_mock.pan_called
+        assert camera_mock.pan_targets is not None
+        assert camera_mock.pan_speed == 10
+        
+        # Check that we have the expected number of targets
+        assert len(camera_mock.pan_targets) == 3
+        
+    finally:
+        os.unlink(temp_file)
+
+def test_ai_actions_processing(scenario_loader, sprite_manager, fx_manager, sound_manager, valid_scenario_yaml):
+    """Test AI actions processing from YAML."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        f.write(valid_scenario_yaml)
+        temp_file = f.name
+    
+    try:
+        game_state = scenario_loader.load_scenario(temp_file, sprite_manager, fx_manager, sound_manager)
+        
+        # The AI actions should be processed (currently just prints)
+        # This test ensures no exceptions are raised during processing
+        
+    finally:
+        os.unlink(temp_file)
+
+def test_actions_processing(scenario_loader, sprite_manager, fx_manager, sound_manager, valid_scenario_yaml):
+    """Test general actions processing from YAML."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        f.write(valid_scenario_yaml)
+        temp_file = f.name
+    
+    try:
+        game_state = scenario_loader.load_scenario(temp_file, sprite_manager, fx_manager, sound_manager)
+        
+        # The actions should be processed (currently just prints)
+        # This test ensures no exceptions are raised during processing
+        
+    finally:
+        os.unlink(temp_file)
+
+def test_trigger_battle_scenario(sprite_manager, fx_manager, sound_manager, camera_mock, valid_scenario_yaml):
+    """Test the trigger_battle_scenario function."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        f.write(valid_scenario_yaml)
+        temp_file = f.name
+    
+    try:
+        game_state = trigger_battle_scenario(temp_file, sprite_manager, fx_manager, sound_manager, camera_mock)
+        
+        assert game_state.name == "Test Scenario"
+        assert game_state.description == "A test scenario for unit testing"
+        assert camera_mock.pan_called
+        
+    finally:
+        os.unlink(temp_file)
+
+def test_load_scenario_without_camera(scenario_loader, sprite_manager, fx_manager, sound_manager, valid_scenario_yaml):
+    """Test loading scenario without camera (should not fail)."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        f.write(valid_scenario_yaml)
+        temp_file = f.name
+    
+    try:
+        game_state = scenario_loader.load_scenario(temp_file, sprite_manager, fx_manager, sound_manager)
+        
+        assert game_state.name == "Test Scenario"
+        # Should not fail even without camera
+        
+    finally:
+        os.unlink(temp_file)

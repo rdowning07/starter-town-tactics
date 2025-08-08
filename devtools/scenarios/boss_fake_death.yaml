@@ -5,14 +5,41 @@ objective: "Defeat the boss... twice."
 max_turns: 20
 
 units:
-  - id: player1
+  - name: "player1"
     team: player
+    sprite: "knight"
+    x: 5
+    y: 5
     hp: 10
     ap: 3
+    animation: "idle"
 
-  - id: revenant
-    team: ai
+  - name: "revenant"
+    team: enemy
+    sprite: "shadow"
+    x: 8
+    y: 8
     hp: 10
     ap: 3
+    animation: "idle"
+    ai: "aggressive"
     fake_death: true
     revive_hp: 20
+
+camera:
+  - action: "pan"
+    targets:
+      - [160, 160] # Player position
+      - [256, 256] # Boss position
+      - [208, 208] # Center of arena
+    speed: 15
+    delay: 0.6
+
+ai:
+  - unit: "revenant"
+    action: "attack"
+    target: "player1"
+
+actions:
+  - unit: "player1"
+    action: "prepare_for_battle"
