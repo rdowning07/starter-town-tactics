@@ -1,0 +1,44 @@
+name: "Battle Continues"
+description: "The battle rages on. More enemies approach."
+map_id: "arena"
+objective: "Continue fighting"
+max_turns: 8
+
+units:
+  - name: "p_bravo"
+    team: "player"
+    sprite: "knight"
+    x: 5
+    y: 5
+    ap: 3
+    hp: 12
+    animation: "idle"
+  - name: "ai_echo"
+    team: "enemy"
+    sprite: "mage"
+    x: 7
+    y: 7
+    ap: 3
+    hp: 15
+    animation: "idle"
+    ai: "aggressive"
+
+camera:
+  - action: "pan"
+    targets:
+      - [160, 160] # Center
+      - [224, 224] # New enemy position
+    speed: 6
+    delay: 0.5
+
+ai:
+  - unit: "ai_echo"
+    action: "attack"
+    target: "p_bravo"
+
+actions:
+  - unit: "p_bravo"
+    action: "prepare_for_battle"
+
+metadata:
+  continuation_sequence: true

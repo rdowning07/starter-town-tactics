@@ -1,0 +1,22 @@
+scenario: "Victory or Defeat"
+camera:
+  - action: "pan"
+    targets: 
+      - [200, 200]
+      - [400, 400]
+    speed: 10
+
+ai:
+  - unit: "enemy_unit_1"
+    action: "attack"
+    target: "player_unit"
+
+actions:
+  - unit: "player_unit"
+    action: "prepare_for_battle"
+
+branch_conditions:
+  - condition: "player_wins"
+    next_scenario: "devtools/scenarios/victory_celebration.yaml"
+  - condition: "player_loses"
+    next_scenario: "devtools/scenarios/defeat_ending.yaml"

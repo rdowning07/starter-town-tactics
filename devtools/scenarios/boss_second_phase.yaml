@@ -1,8 +1,8 @@
-name: "Dread Revenant Awakens"
-description: "Defeat the Revenant — but beware its second form."
+name: "Revenant's True Form"
+description: "The Revenant rises again with renewed strength!"
 map_id: "catacombs"
-objective: "Defeat the boss... twice."
-max_turns: 20
+objective: "Defeat the Revenant's true form"
+max_turns: 15
 
 units:
   - name: "player1"
@@ -10,33 +10,32 @@ units:
     sprite: "knight"
     x: 5
     y: 5
-    hp: 10
+    hp: 8
     ap: 3
     animation: "idle"
 
-  - name: "revenant"
+  - name: "revenant_true"
     team: enemy
     sprite: "shadow"
     x: 8
     y: 8
-    hp: 10
-    ap: 3
+    hp: 20
+    ap: 4
     animation: "idle"
     ai: "aggressive"
-    fake_death: true
-    revive_hp: 20
+    boss_phase: 2
 
 camera:
   - action: "pan"
     targets:
-      - [160, 160] # Player position
+      - [208, 208] # Center
       - [256, 256] # Boss position
-      - [208, 208] # Center of arena
-    speed: 15
-    delay: 0.6
+      - [160, 160] # Player position
+    speed: 20
+    delay: 0.8
 
 ai:
-  - unit: "revenant"
+  - unit: "revenant_true"
     action: "attack"
     target: "player1"
 
@@ -44,7 +43,11 @@ actions:
   - unit: "player1"
     action: "prepare_for_battle"
 
+metadata:
+  boss_phase: 2
+  final_battle: true
+
 next_scenario:
-  condition: "boss_defeated"
-  second_phase_scenario: "devtools/scenarios/boss_second_phase.yaml"
+  condition: "victory"
   victory_scenario: "devtools/scenarios/victory_ending.yaml"
+  defeat_scenario: "devtools/scenarios/defeat_ending.yaml"

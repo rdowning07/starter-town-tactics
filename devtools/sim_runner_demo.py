@@ -2,6 +2,7 @@ import sys
 import time
 
 from devtools.scenario_loader import load_scenario
+from devtools.scenario_manager import create_scenario_manager
 from game.action_point_manager import ActionPointManager
 from game.ai_controller import AIController
 from game.sim_runner import SimRunner
@@ -172,7 +173,32 @@ def run_scenario_demo(
 ):
     """Run the scenario-based demo."""
     print("=== Scenario-Based SimRunner CLI Demo ===")
-    game_state = load_scenario(scenario_path)
+    
+    # Create mock objects for ScenarioManager
+    class MockCamera:
+        def cinematic_pan(self, targets, speed):
+            print(f"📹 Camera panning to {targets} at speed {speed}")
+    
+    class MockAIController:
+        def get_unit(self, unit_name):
+            return unit_name
+        def attack(self, unit, target):
+            print(f"🤖 {unit} attacks {target}")
+        def move(self, unit, position):
+            print(f"🤖 {unit} moves to {position}")
+    
+    class MockPlayerUnit:
+        def prepare_for_battle(self):
+            print("⚔️ Player unit prepares for battle")
+    
+    camera = MockCamera()
+    ai_controller = MockAIController()
+    player_unit = MockPlayerUnit()
+    game_state = GameState()
+    
+    # Create scenario manager and load scenario
+    scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
+    game_state = scenario_manager.load_scenario(scenario_path)
 
     print(f"📘 Scenario: {game_state.name}")
     print(f"📝 {game_state.description}")

@@ -12,6 +12,7 @@ from game.game_state import GameState
 from game.sound_manager import SoundManager
 from game.sprite_manager import SpriteManager
 from game.unit import Unit
+from devtools.scenario_manager import ScenarioManager, create_scenario_manager
 
 
 class ScenarioLoader:
@@ -203,16 +204,18 @@ def load_scenario(scenario_path: str, sprite_manager: SpriteManager,
 
 
 def trigger_battle_scenario(scenario_path: str, sprite_manager: SpriteManager,
-                          fx_manager: FXManager, sound_manager: SoundManager, camera=None):
-    """Trigger a battle scenario with camera integration."""
+                          fx_manager: FXManager, sound_manager: SoundManager, camera=None, 
+                          ai_controller=None, player_unit=None):
+    """Trigger a battle scenario with camera integration using ScenarioManager."""
+    # Create game state
+    game_state = GameState()
+    
+    # Create scenario manager
+    scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
+    scenario_manager.set_managers(sprite_manager, fx_manager, sound_manager)
+    
     # Load the scenario
-    game_state = load_scenario(
-        scenario_path,
-        sprite_manager,
-        fx_manager,
-        sound_manager,
-        camera  # Pass the camera system to the loader
-    )
+    game_state = scenario_manager.load_scenario(scenario_path)
 
     # Proceed with game logic after scenario is triggered
     print(f"Scenario '{game_state.name}' started with description: {game_state.description}")

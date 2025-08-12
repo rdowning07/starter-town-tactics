@@ -5,6 +5,7 @@ import argparse
 import pygame
 
 from devtools.scenario_loader import load_scenario
+from devtools.scenario_manager import create_scenario_manager
 from game.fx_manager import FXManager
 from game.game_state import GameState
 from game.renderer import Renderer
@@ -33,8 +34,62 @@ def main():
     if args.scenario:
         try:
             print(f"🎬 Loading scenario: {args.scenario}")
-            game_state = load_scenario(args.scenario, sprite_manager, fx_manager, sound_manager)
+            
+            # Create mock objects for ScenarioManager
+            class MockCamera:
+                def cinematic_pan(self, targets, speed):
+                    print(f"📹 Camera panning to {targets} at speed {speed}")
+            
+            class MockAIController:
+                def get_unit(self, unit_name):
+                    return unit_name
+                def attack(self, unit, target):
+                    print(f"🤖 {unit} attacks {target}")
+                def move(self, unit, position):
+                    print(f"🤖 {unit} moves to {position}")
+            
+            class MockPlayerUnit:
+                def prepare_for_battle(self):
+                    print("⚔️ Player unit prepares for battle")
+            
+            camera = MockCamera()
+            ai_controller = MockAIController()
+            player_unit = MockPlayerUnit()
+            game_state = GameState()
+            
+            # Create scenario manager
+            scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
+            scenario_manager.set_managers(sprite_manager, fx_manager, sound_manager)
+            
+            # Load scenario
+            game_state = scenario_manager.load_scenario(args.scenario)
             print(f"✅ Scenario loaded: {game_state.name}")
+            
+            # Store scenario data for potential branching
+            scenario_data = scenario_manager._load_yaml(args.scenario)
+            
+            # Demo: Simulate battle progression and check for branching
+            print(f"🎮 Demo: Simulating battle progression...")
+            
+            # Simulate some battle events that might trigger branching
+            if args.auto:
+                import time
+                time.sleep(1)
+                
+                # Simulate defeating all enemies (victory condition)
+                print(f"⚔️ Simulating victory condition...")
+                # Remove enemy units to simulate victory
+                enemy_units = [name for name, data in game_state.units.get_all_units().items() 
+                              if data.get('team') == 'enemy']
+                for enemy in enemy_units:
+                    game_state.units.remove_unit(enemy)
+                    print(f"💀 {enemy} defeated")
+                
+                # Check for branching
+                if scenario_manager.check_and_trigger_branching(scenario_data):
+                    print(f"🎬 Branching triggered! New scenario loaded.")
+                else:
+                    print(f"📋 No branching conditions met.")
         except (OSError, ValueError) as e:
             print(f"❌ Failed to load scenario: {e}")
             game_state = GameState()
@@ -46,12 +101,17 @@ def main():
 
     running = True
     tick = 0
-    while running:
+    max_ticks = 100  # Run for 100 ticks (about 8 seconds at 12 FPS)
+    
+    while running and tick < max_ticks:
         screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
         # Play animations for all units (if any exist)
         if hasattr(game_state, 'units') and game_state.units:
@@ -144,10 +204,10 @@ def main():
         ui_lines = [
             f"Scenario: {game_state.name}",
             f"Description: {game_state.description}",
-            f"Tick: {tick}",
+            f"Tick: {tick}/{max_ticks}",
             f"Units: {units_count}",
             "",
-            "Controls: ESC to quit"
+            "Controls: ESC to quit, or wait for auto-exit"
         ]
 
         for i, line in enumerate(ui_lines):
@@ -161,6 +221,7 @@ def main():
         clock.tick(12)
         tick += 1
 
+    print(f"🎬 Demo completed after {tick} ticks")
     pygame.quit()
 
 

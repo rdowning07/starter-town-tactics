@@ -1,0 +1,15 @@
+scenario: "Victory Celebration"
+camera:
+  - action: "pan"
+    targets:
+      - [300, 300] # Center of celebration
+      - [500, 300] # Victory position
+    speed: 5
+    delay: 1.0
+
+actions:
+  - unit: "player_unit"
+    action: "celebrate_victory"
+
+# End of scenario sequence
+next_scenario: null

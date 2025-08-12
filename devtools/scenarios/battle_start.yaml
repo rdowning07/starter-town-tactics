@@ -1,0 +1,24 @@
+scenario: "Battle Start"
+camera:
+  - action: "pan"
+    targets: 
+      - [100, 100]  # Starting position for cinematic pan
+      - [400, 400]  # Intermediate position
+      - [600, 600]  # Final position
+    speed: 10
+    delay: 0.5  # Delay between each target pan
+
+ai:
+  - unit: "enemy_unit_1"
+    action: "attack"
+    target: "player_unit"  # Define target for attack
+  - unit: "enemy_unit_2"
+    action: "move"
+    target: [500, 500]  # Coordinates to move to
+
+actions:
+  - unit: "player_unit"
+    action: "prepare_for_battle"
+
+# Scenario branching
+next_scenario: "victory_celebration.yaml"  # If player wins, trigger the victory celebration scenario

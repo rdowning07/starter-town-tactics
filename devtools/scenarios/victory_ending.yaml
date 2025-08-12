@@ -1,0 +1,30 @@
+name: "Victory Celebration"
+description: "The battle is won! Celebrate your victory."
+map_id: "arena"
+objective: "Victory achieved"
+max_turns: 1
+
+units:
+  - name: "p_bravo"
+    team: "player"
+    sprite: "knight"
+    x: 5
+    y: 5
+    ap: 3
+    hp: 15
+    animation: "idle"
+
+camera:
+  - action: "pan"
+    targets:
+      - [160, 160] # Center of arena
+      - [320, 160] # Victory position
+    speed: 5
+    delay: 1.0
+
+actions:
+  - unit: "p_bravo"
+    action: "prepare_for_battle"
+
+metadata:
+  victory_sequence: true

@@ -1,7 +1,9 @@
 # @api
 from game.action_point_manager import ActionPointManager
 from game.ai_controller import AIController
+from game.event_manager import EventManager
 from game.fx_manager import FXManager
+from game.objectives_manager import ObjectivesManager
 from game.sim_runner import SimRunner
 from game.tactical_state_machine import TacticalStateMachine
 from game.turn_controller import TurnController
@@ -22,6 +24,10 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         self.ai_controller = AIController([])
         self.sim_runner = SimRunner(self.turn_controller, self.ai_controller)
         self.fx_manager = FXManager()
+        
+        # New managers for enhanced game flow
+        self.objectives_manager = ObjectivesManager(self)
+        self.event_manager = EventManager(self)
 
         # Scenario metadata (set by loader)
         self.name: str = ""
@@ -33,6 +39,9 @@ class GameState:  # pylint: disable=too-many-instance-attributes
 
         # Terrain data (loaded via map_loader)
         self.terrain_grid: list[list[str]] = []
+        
+        # Wire up AI controller with game state
+        self.ai_controller.set_game_state(self)
 
     def set_metadata(
         self, name: str, map_id: str, objective: str, max_turns: int
@@ -98,8 +107,32 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         self.fx_manager.trigger_flash(position, color, duration, intensity)
 
     def trigger_screen_shake(self, intensity: float = 5.0, duration: float = 0.5) -> None:
-        """Trigger screen shake effect."""
+        """Trigger a screen shake effect."""
         self.fx_manager.trigger_screen_shake(intensity, duration)
+
+    def advance_turn(self) -> None:
+        """Advance the game turn and update objectives and events."""
+        # Advance event manager
+        self.event_manager.advance_turn()
+        
+        # Update objectives based on current game state
+        self.objectives_manager.update_objectives()
+
+    def get_current_objective(self) -> str:
+        """Get the current objective."""
+        return self.objectives_manager.get_current_objective()
+
+    def get_turn_count(self) -> int:
+        """Get the current turn count."""
+        return self.event_manager.get_turn_count()
+
+    def get_triggered_events(self) -> list[str]:
+        """Get list of events that have been triggered."""
+        return self.event_manager.get_triggered_events()
+
+    def has_event_triggered(self, event_name: str) -> bool:
+        """Check if a specific event has been triggered."""
+        return self.event_manager.has_event_triggered(event_name)
 
     def trigger_particle(self, position: tuple[int, int], 
                         particle_type: str = "sparkle",

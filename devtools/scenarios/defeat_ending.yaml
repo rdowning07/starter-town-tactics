@@ -1,0 +1,32 @@
+name: "Defeat Sequence"
+description: "The battle is lost. Regroup and try again."
+map_id: "arena"
+objective: "Defeat - regroup needed"
+max_turns: 1
+
+units:
+  - name: "ai_alpha"
+    team: "enemy"
+    sprite: "knight"
+    x: 5
+    y: 5
+    ap: 2
+    hp: 10
+    animation: "idle"
+    ai: "aggressive"
+
+camera:
+  - action: "pan"
+    targets:
+      - [160, 160] # Center of arena
+      - [0, 160] # Defeat position
+    speed: 3
+    delay: 1.5
+
+ai:
+  - unit: "ai_alpha"
+    action: "attack"
+    target: "none"
+
+metadata:
+  defeat_sequence: true

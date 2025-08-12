@@ -1,5 +1,8 @@
 name: "Demo Battle Scenario"
 description: "A simple battle scenario with AI and player units for testing the SimRunner"
+map_id: "arena"
+objective: "Defeat all enemy units"
+max_turns: 12
 
 units:
   - name: "ai_alpha"
@@ -54,3 +57,9 @@ metadata:
   max_turns: 12
   death_on_turn: 3
   death_unit: "ai_delta"
+
+next_scenario:
+  condition: "victory"
+  victory_scenario: "devtools/scenarios/victory_ending.yaml"
+  defeat_scenario: "devtools/scenarios/defeat_ending.yaml"
+  default_scenario: "devtools/scenarios/continue_battle.yaml"
