@@ -38,7 +38,7 @@ class SimRunner:
             # It's a TurnController
             self.turn_controller = turn_controller_or_game
             self.ai_controller = ai_controller or AIController([])
-            self.game_state = None  # No game state reference
+            # No game state reference for TurnController mode
 
         self.turn_count = 0
         self.phase: Literal["INIT", "PLAYING", "GAME_OVER"] = "INIT"
@@ -133,7 +133,7 @@ class SimRunner:
         )
 
         # Trigger FX for AI actions if game state has FX manager
-        if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
+        if self.game_state is not None and hasattr(self.game_state, 'trigger_fx'):
             # Simulate AI action effects
             self.game_state.trigger_fx("particle", (400, 300), 0.3, 0.8, (255, 0, 0))
 
@@ -170,11 +170,14 @@ class SimRunner:
         )
 
         # Trigger death FX if game state has FX manager
-        if hasattr(self, 'game_state') and hasattr(self.game_state, 'fx_manager'):
+        if self.game_state is not None and hasattr(self.game_state, 'trigger_fx'):
             # Simulate death effects
-            self.game_state.trigger_fx("flash", (400, 300), 0.5, 1.5, (255, 0, 0))
-            self.game_state.trigger_screen_shake(5.0, 0.5)
-            self.game_state.trigger_particle((400, 300), "sparkle", 15, 1.0)
+            if hasattr(self.game_state, 'trigger_fx'):
+                self.game_state.trigger_fx("flash", (400, 300), 0.5, 1.5, (255, 0, 0))
+            if hasattr(self.game_state, 'trigger_screen_shake'):
+                self.game_state.trigger_screen_shake(5.0, 0.5)
+            if hasattr(self.game_state, 'trigger_particle'):
+                self.game_state.trigger_particle((400, 300), "sparkle", 15, 1.0)
 
     def log_fake_death(self, unit_id: str) -> None:
         """Log a fake death event for a unit."""

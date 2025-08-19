@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 
 class EventManager:
     """Manages turn-based events and their triggers."""
 
-    def __init__(self, game_state):
+    def __init__(self, game_state: Any) -> None:
         self.game_state = game_state
         self.turn_count = 0
         self.triggered_events: List[str] = []

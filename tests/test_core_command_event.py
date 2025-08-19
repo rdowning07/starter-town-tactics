@@ -168,7 +168,7 @@ class TestGameState:
         """Test GameState initializes with default values."""
         state = GameState()
         assert state.objectives is None
-        assert state.turn_controller is None
+        assert state.turn_controller is not None  # Now has default TurnController
         assert state._current_controller is None
         assert state._is_over is False
     
@@ -320,11 +320,12 @@ class TestIntegration:
                 return True
             
             def apply(self, s: GameState) -> List[Event]:
+                from core.events import EventType
                 return [
-                    Event(type="unit_moved", payload={
+                    Event(type=EventType.UNIT_MOVED, payload={
                         "unit_id": self.unit_id,
                         "to": self.to
-                    })
+                    }, tick=s.tick)
                 ]
         
         # Mock controller
@@ -349,7 +350,8 @@ class TestIntegration:
         
         # Verify
         assert len(events_received) == 1
-        assert events_received[0].type == "unit_moved"
+        from core.events import EventType
+        assert events_received[0].type == EventType.UNIT_MOVED
         assert events_received[0].payload["unit_id"] == "player1"
         assert events_received[0].payload["to"] == (5, 5)
         
@@ -369,10 +371,11 @@ class TestIntegration:
                 return True
             
             def apply(self, s: GameState) -> List[Event]:
+                from core.events import EventType
                 return [
-                    Event(type="attack_started", payload={"attacker": "player1"}),
-                    Event(type="damage_dealt", payload={"damage": 5}),
-                    Event(type="attack_ended", payload={"target": "enemy1"})
+                    Event(type=EventType.UNIT_ATTACKED, payload={"attacker": "player1"}, tick=s.tick),
+                    Event(type=EventType.UNIT_ATTACKED, payload={"damage": 5}, tick=s.tick),
+                    Event(type=EventType.UNIT_ATTACKED, payload={"target": "enemy1"}, tick=s.tick)
                 ]
         
         controller = Mock()
@@ -393,9 +396,9 @@ class TestIntegration:
         
         # Verify all events were received
         assert len(events_received) == 3
-        assert events_received[0].type == "attack_started"
-        assert events_received[1].type == "damage_dealt"
-        assert events_received[2].type == "attack_ended"
+        assert events_received[0].type == EventType.UNIT_ATTACKED
+        assert events_received[1].type == EventType.UNIT_ATTACKED
+        assert events_received[2].type == EventType.UNIT_ATTACKED
         
         # Verify each event was processed by subscriber
         assert events_received[0].payload["attacker"] == "player1"

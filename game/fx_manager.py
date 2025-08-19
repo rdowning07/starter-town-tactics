@@ -42,10 +42,10 @@ class FXEffect:
 class FXManager:
     """Manages visual effects for the game."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the FX manager."""
         self.effects: List[FXEffect] = []
-        self.screen_shake_offset = (0, 0)
+        self.screen_shake_offset: Tuple[float, float] = (0.0, 0.0)
         self.screen_shake_decay = 0.9
         self.flash_surface: Optional[pygame.Surface] = None
         self.particle_surfaces: Dict[str, pygame.Surface] = {}
@@ -249,7 +249,7 @@ class FXManager:
     def clear_effects(self) -> None:
         """Clear all active effects."""
         self.effects.clear()
-        self.screen_shake_offset = (0, 0)
+        self.screen_shake_offset = (0.0, 0.0)
 
     def get_active_effects_count(self) -> int:
         """Get the number of active effects."""
@@ -263,6 +263,6 @@ class FXManager:
         except ValueError:
             return False
 
-    def get_shake_offset(self) -> Tuple[int, int]:
+    def get_shake_offset(self) -> Tuple[float, float]:
         """Get current screen shake offset for rendering."""
         return self.screen_shake_offset

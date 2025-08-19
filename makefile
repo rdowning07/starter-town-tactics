@@ -47,6 +47,10 @@ help:
 	@echo "  make test-animation-metadata - Test animation metadata validation"
 	@echo "  make test-scenario-loader - Test scenario loader functionality"
 	@echo "  make play-cutscene-demo - Run cutscene demo"
+	@echo "  make play-demo - Run command-event architecture demo (text)"
+	@echo "  make play-demo-visual - Run command-event architecture demo (visual)"
+	@echo "  make soak - Run performance soak test"
+	@echo "  make replay - Run game replay (future)"
 
 .PHONY: install
 install:
@@ -195,6 +199,10 @@ play-cutscene-demo:
 .PHONY: play-demo
 play-demo:
 	PYTHONPATH=. python -m cli.play_demo
+
+.PHONY: play-demo-visual
+play-demo-visual:
+	PYTHONPATH=. python -m cli.play_demo_visual
 
 .PHONY: soak
 soak:

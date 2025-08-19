@@ -115,11 +115,17 @@ class InputState:
         """
         try:
             sprite = sprites.get_cursor_sprite()
+            if sprite is None:
+                # Fallback dummy sprite for test environments
+                sprite = pygame.Surface((tile_size, tile_size))  # type: ignore
+                sprite.fill((255, 255, 255))  # type: ignore
         except AttributeError:
             # Fallback dummy sprite for test environments
-            sprite = pygame.Surface((tile_size, tile_size))
-            sprite.fill((255, 255, 255))  # White block
+            sprite = pygame.Surface((tile_size, tile_size))  # type: ignore
+            sprite.fill((255, 255, 255))  # type: ignore
 
+        # At this point, sprite is guaranteed to be a pygame.Surface
+        sprite_surface: "pygame.Surface" = sprite  # type: ignore
         x = self.cursor_x * tile_size + offset_x
         y = self.cursor_y * tile_size + offset_y
-        surface.blit(sprite, (x, y))
+        surface.blit(sprite_surface, (x, y))

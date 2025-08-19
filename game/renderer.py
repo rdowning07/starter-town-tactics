@@ -29,7 +29,8 @@ class Renderer:
         # Get screen shake offset from FX manager
         offset_x, offset_y = 0, 0
         if fx_manager:
-            offset_x, offset_y = fx_manager.get_shake_offset()
+            shake_offset = fx_manager.get_shake_offset()
+            offset_x, offset_y = int(shake_offset[0]), int(shake_offset[1])
 
         # Create grid from terrain data if needed
         if hasattr(game_state, 'terrain_grid') and game_state.terrain_grid:

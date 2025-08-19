@@ -1,16 +1,58 @@
-schema_version: 1
-id: "demo_v1"
-seed: 1337
-map:
-  width: 24
-  height: 24
-  tiles: "generated_or_tiled_source"
-units:
-  - { id: "p1", side: "player", pos: [3,4], facing: "E", stats: {hp: 30, atk: 6, def: 3, h: 1}, ai: null }
-  - { id: "e1", side: "enemy",  pos: [8,8], facing: "W", stats: {hp: 24, atk: 5, def: 2, h: 2}, ai: "aggressive" }
-objectives:
-  type: "EliminateBoss"
-  boss_id: "e1"
-camera_script:
-  - { t: 0,  op: "pan",  to: [6,6], duration_ms: 800 }
-  - { t: 900, op: "focus", unit: "p1" }
+scenario:
+  name: "Demo Battle"
+  description: "A demonstration battle with compound objectives"
+
+  # Map configuration
+  map_id: "demo_arena"
+
+  # Units setup
+  units:
+    - id: "player1"
+      type: "knight"
+      team: "player"
+      position: [1, 1]
+      stats:
+        hp: 20
+        atk: 8
+        def: 3
+        h: 0
+    - id: "e1"
+      type: "goblin"
+      team: "enemy"
+      position: [8, 8]
+      stats:
+        hp: 15
+        atk: 6
+        def: 2
+        h: 0
+      boss: true
+
+  # Compound objectives
+  objectives:
+    type: "Compound"
+    list:
+      - { type: "EliminateBoss", boss_id: "e1" }
+      - { type: "SurviveNTurns", n: 10 }
+
+  # Turn limit
+  max_turns: 20
+
+  # Camera actions
+  camera_actions:
+    - action: "focus_unit"
+      unit_id: "player1"
+      duration: 1.0
+    - action: "pan_to"
+      position: [8, 8]
+      duration: 2.0
+
+  # Initial player actions
+  player_actions:
+    - action: "show_objective"
+      text: "Eliminate the boss and survive 10 turns!"
+      duration: 3.0
+
+  # Victory/defeat conditions
+  next_scenario:
+    victory: "victory_ending"
+    defeat: "defeat_ending"
