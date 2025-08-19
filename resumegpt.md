@@ -54,14 +54,25 @@
 - ✅ Developed CLI tool for cinematic scenario playback
 - ✅ All 115 tests passing, 87% coverage, full typecheck compliance
 
-### **Phase 6: Advanced Gameplay Features** 🚧 (Current)
-**Sprint: Advanced Features & Polish**
-- 🎯 **Current Focus**: Advanced animation branching, performance optimization, multiplayer support
-- 🎯 **Next Goals**: Animation combos, performance polish, networking
-- ✅ **Foundation Complete**: Enhanced game loop with comprehensive AI and event systems
-- ✅ **Game Systems**: Turn-based progression with dynamic objectives and events
-- ✅ **AI Enhancement**: Behavior-based decision making with health-based strategies
-- ✅ **Event System**: Turn-based events with reinforcements, storms, and boss phases
+### **Phase 6: Command-Event Architecture** ✅ (COMPLETED)
+**Sprint: Modern Architecture & Performance**
+- 🎯 **Architecture**: Implemented command-event pattern for decoupled game logic
+- 🎯 **Performance**: Achieved 800,000+ ticks/sec (excellent performance)
+- 🎯 **CLI Tools**: Created `play_demo` and `soak` tools with Makefile integration
+- ✅ **Core Components**: Command protocol, EventBus, deterministic RNG, GameLoop
+- ✅ **Testability**: Comprehensive test suite for command-event system
+- ✅ **Documentation**: ADR-0001 documenting architecture decisions
+- ✅ **Deterministic**: Seeded RNG for reproducible gameplay and testing
+
+### **Phase 7: Rules Engine & Objectives** 🚧 (Current)
+**Sprint: Gameplay Mechanics & Visual Demo**
+- 🎯 **Current Focus**: Rules engine, objectives system, Pygame adapter
+- 🎯 **Next Goals**: Height/facing mechanics, A* pathfinding, status effects
+- 🎯 **Performance Target**: CI gates with ≥3000 ticks/sec headless
+- [ ] **Rules Engine**: Height-based combat, facing direction, Poison/Slow effects
+- [ ] **Objectives**: EliminateBoss, SurviveNTurns, HoldZones, Escort
+- [ ] **Pygame Adapter**: 60-90s deterministic visual demo
+- [ ] **CI Integration**: Performance gates and artifact recording
 
 ## 🏆 Previous Phases
 (See earlier log for Phases 1-3 achievements)

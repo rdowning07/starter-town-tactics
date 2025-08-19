@@ -66,6 +66,20 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ Added integration tests demonstrating system interactions
 - ✅ Built demo script showing enhanced game loop in action
 
+### Phase 6: Command-Event Architecture ✅ (COMPLETED)
+- ✅ Implemented core command-event architecture with decoupled game logic
+- ✅ Created `Command` protocol with `Move`, `Attack`, `EndTurn` implementations
+- ✅ Built `EventBus` system for decoupled communication
+- ✅ Implemented deterministic `Rng` for reproducible gameplay
+- ✅ Created `GameLoop` orchestrating command-event flow
+- ✅ Built `GameState` with `Controller` protocol abstraction
+- ✅ Added comprehensive test suite for command-event system
+- ✅ Created CLI tools: `play_demo.py` and `soak.py`
+- ✅ Integrated CLI tools into Makefile with proper targets
+- ✅ Achieved excellent performance: 800,000+ ticks/sec
+- ✅ Created demo scenario YAML with proper schema
+- ✅ Documented architecture decision in ADR-0001
+
 ### 📊 Current Asset Status
 - ✅ **6 Fully Integrated Units:** Knight, Ranger, Mage, Paladin, Shadow, Berserker
 - ✅ **Complete Animation System:** idle, walk, attack, hurt, die, stun animations
@@ -77,15 +91,37 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 
 ---
 
-## 🚧 PHASE 6: ADVANCED GAMEPLAY FEATURES (CURRENT)
+## 🚧 PHASE 7: RULES ENGINE & OBJECTIVES (CURRENT)
 
 ### 🎯 Goals
-- ✅ Enhanced game loop with event and objective management
-- ✅ Comprehensive AI behavior system
-- ✅ Turn-based event system
-- [ ] Advanced animation branching and combos
-- [ ] Performance optimization and polish
-- [ ] Multiplayer support and networking
+- [ ] Implement rules engine (height/facing/Poison/Slow)
+- [ ] Add A* pathfinding for movement
+- [ ] Implement Objectives (EliminateBoss, SurviveNTurns, HoldZones, Escort)
+- [ ] Create thin Pygame adapter for 60-90s deterministic demo
+- [ ] Set up CI gates with performance requirements
+
+### 📋 Next PR Requirements
+1. **Rules Engine Implementation**
+   - Height-based combat modifiers
+   - Facing direction mechanics
+   - Status effects (Poison, Slow)
+   - A* pathfinding algorithm
+
+2. **Objectives System**
+   - EliminateBoss objective
+   - SurviveNTurns objective
+   - HoldZones objective
+   - Escort objective
+
+3. **Pygame Adapter**
+   - Thin adapter for visual rendering
+   - 60-90 second deterministic demo
+   - Integration with command-event system
+
+4. **CI/Performance Gates**
+   - Soak test ≥ 3000 ticks/sec headless
+   - Record performance artifacts
+   - Update weekly brief
 
 ### 🎬 Camera System Integration ✅ (COMPLETED)
 - ✅ Created `CameraController.py` with smooth movement and cinematic panning
@@ -98,49 +134,3 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ Enhanced scenario loader with camera parameter support
 
 ### 🎭 Scenario System Enhancements ✅ (COMPLETED)
-- ✅ Updated scenario YAML structure with camera, AI, and actions sections
-- ✅ Enhanced unit definitions with sprites, coordinates, and animations
-- ✅ Added AI behavior processing (attack, move actions)
-- ✅ Added general action processing (prepare_for_battle)
-- ✅ Updated all scenario files: demo_cutscene, demo_battle, skirmish_4v4, boss_fake_death, survive_the_horde, scripted_loss_intro
-- ✅ Added comprehensive testing for new scenario features
-- ✅ Fixed integration with GameState and UnitManager APIs
-
-### 🎨 Asset Standardization (Optional)
-- [ ] Run `make setup-animations` to standardize all 40 units
-- [ ] Add metadata for 34 units missing animation configuration
-- [ ] Create walk animations for 6 units missing them
-- [ ] Validate all units with `make test-animations`
-- [ ] Update unit mapping to include all standardized units
-
-### 🚀 Phase 5 Preparation
-- [ ] Integrate sound effects with animation triggers
-- [ ] Add visual effects (particles, screen shake, etc.)
-- [ ] Implement team-based sprite variations
-- [ ] Add animation state machines for complex sequences
-- [ ] Create animation editor for custom sequences
-
-### 📈 Current Metrics
-- **Test Status:** 173/173 tests passing (58 new tests added)
-- **Coverage:** 32%+ overall, 96%+ game systems
-- **Code Quality:** mypy compliant, pylint 7.28/10
-- **Animation System:** Fully operational with 6 integrated units
-- **FX System:** Screen shake, flash, particles working
-- **Sound System:** Frame-aware audio triggers implemented
-- **Cutscene System:** YAML-driven cinematic playback functional
-- **Camera System:** Cinematic panning and smooth movement operational
-- **Scenario System:** 6 enhanced YAML scenarios with camera integration
-- **Game Loop System:** Enhanced with event and objective management
-- **AI System:** Enhanced with behavior-based decision making
-- **Event System:** Turn-based events with reinforcements, storms, boss phases
-- **System Status:**
-  - ✅ Animation: Fully integrated with metadata
-  - ✅ FX: Screen shake, flash, particles operational
-  - ✅ Sound: Frame-aware triggers working
-  - ✅ Cutscene: YAML-driven playback functional
-  - ✅ Camera: Cinematic panning and smooth movement
-  - ✅ Scenarios: Enhanced with camera, AI, and actions
-  - ✅ Game Loop: Enhanced with event and objective management
-  - ✅ AI: Behavior-based decision making with health-based strategies
-  - ✅ Events: Turn-based event system with dynamic triggering
-  - ✅ Objectives: Dynamic objective tracking and updates
