@@ -1,6 +1,7 @@
 import os
 import tempfile
 import time
+from unittest.mock import Mock
 
 import pytest
 import yaml
@@ -237,14 +238,9 @@ def test_gamestate_with_scenario_loader():
     scenario_data = {
         "name": "Integration Test",
         "description": "Test scenario for integration",
-        "metadata": {
-            "objective": "Test objective",
-            "map": "test_map",
-            "max_turns": 10,
-        },
         "units": [
-            {"id": "p1", "team": "player", "hp": 10, "ap": 2},
-            {"id": "ai1", "team": "ai", "hp": 8, "ap": 3},
+            {"name": "p1", "team": "player", "sprite": "knight", "x": 1, "y": 1, "hp": 10, "ap": 2},
+            {"name": "ai1", "team": "ai", "sprite": "rogue", "x": 2, "y": 2, "hp": 8, "ap": 3},
         ],
     }
 
@@ -253,12 +249,17 @@ def test_gamestate_with_scenario_loader():
         path = tf.name
 
     try:
-        gs = load_scenario(path)
+        # Create mock managers for the test
+        sprite_manager = Mock()
+        fx_manager = Mock()
+        sound_manager = Mock()
+        
+        gs = load_scenario(path, sprite_manager, fx_manager, sound_manager)
 
         # Test that GameState was properly configured
         assert gs.name == "Integration Test"
-        assert gs.objective == "Test objective"
-        assert gs.max_turns == 10
+        assert gs.description == "Test scenario for integration"
+        assert gs.map_id == "default"
 
         # Test that units were properly added
         assert gs.units.get_team("p1") == "player"

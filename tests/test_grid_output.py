@@ -15,8 +15,8 @@ def test_ascii_output_with_title(capsys):
 
     captured = capsys.readouterr()
     assert "Grid (2x2):" in captured.out
-    assert ".F" in captured.out  # First row: plains, forest
-    assert ".." in captured.out  # Second row: plains, plains
+    assert "gF" in captured.out  # First row: grass, forest
+    assert "gg" in captured.out  # Second row: grass, grass
 
 
 def test_ascii_output_without_title(capsys):
@@ -32,5 +32,5 @@ def test_ascii_output_without_title(capsys):
 
     captured = capsys.readouterr()
     assert "Grid (2x2):" not in captured.out
-    assert ".F" in captured.out  # First row: plains, forest
-    assert ".." in captured.out  # Second row: plains, plains
+    assert "gF" in captured.out  # First row: grass, forest
+    assert "gg" in captured.out  # Second row: grass, grass

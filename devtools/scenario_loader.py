@@ -142,7 +142,7 @@ class ScenarioLoader:
 
         # Validate team
         team = unit_data["team"]
-        if team not in ["player", "enemy", "neutral"]:
+        if team not in ["player", "enemy", "neutral", "ai"]:
             raise ValueError(f"Unit {unit_data['name']} has invalid team: {team}")
 
         # Validate coordinates
