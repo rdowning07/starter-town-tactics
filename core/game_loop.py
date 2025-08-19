@@ -16,5 +16,7 @@ class GameLoop:
         if cmd.validate(s):
             events = list(cmd.apply(s))
             self.bus.publish(events)
-            s.objectives.update_from_events(events)
-            s.turn_controller.maybe_advance(s)
+            if s.objectives is not None:
+                s.objectives.update_from_events(events)
+            if s.turn_controller is not None:
+                s.turn_controller.maybe_advance(s)

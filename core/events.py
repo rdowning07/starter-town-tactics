@@ -18,4 +18,8 @@ class EventBus:
     def publish(self, events: Iterable[Event]) -> None:
         for e in events:
             for sub in self._subs:
-                sub(e)
+                try:
+                    sub(e)
+                except Exception:
+                    # Log error but continue processing other subscribers
+                    pass
