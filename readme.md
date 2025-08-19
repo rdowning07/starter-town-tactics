@@ -152,6 +152,8 @@ make play-scenario-demo          # Play YAML scenario
 make play-scenario-demo-auto     # Auto-run YAML scenario
 make play-scenario-animated      # Cinematic cutscene demo
 make test-animation-metadata     # Test animation system
+make play-demo                   # Command-event architecture demo
+make soak                        # Performance testing
 ```
 
 ### ✅ Test Status
@@ -166,6 +168,16 @@ make test-animation-metadata     # Test animation system
 
 ```
 starter-town-tactics/
+├── core/                        # Command-event architecture
+│   ├── command.py              # Command protocol and implementations
+│   ├── events.py               # Event system and EventBus
+│   ├── game_loop.py            # Main game loop orchestration
+│   ├── rng.py                  # Deterministic random number generation
+│   └── state.py                # Game state and controller protocol
+├── cli/                        # Command-line tools
+│   ├── play_demo.py            # Command-event architecture demo
+│   ├── soak.py                 # Performance testing tool
+│   └── replay.py               # Future game replay functionality
 ├── game/
 │   ├── grid.py
 │   ├── tile.py
@@ -200,8 +212,16 @@ starter-town-tactics/
 │   ├── tiles/                   # Terrain tiles
 │   ├── ui/                      # UI elements
 │   ├── effects/                 # Visual effects
+│   ├── scenarios/               # Demo scenarios
+│   │   └── demo.yaml           # Command-event demo scenario
 │   └── sfx/                     # Sound effects
+├── docs/                        # Architecture documentation
+│   ├── ADR-0001-command-event.md # Architecture decision record
+│   ├── architecture.md          # System architecture overview
+│   ├── perf.md                  # Performance documentation
+│   └── weekly-brief.md          # Development progress tracking
 └── tests/
+    ├── test_core_command_event.py # Command-event system tests
     ├── test_scenario_loader.py  # Enhanced with camera tests
     ├── test_cameracontroller.py # Camera system tests
     ├── test_game_loop.py        # Enhanced game loop tests
@@ -213,11 +233,11 @@ starter-town-tactics/
 
 ---
 
-## 🎯 Current Phase: Gameplay Polish
+## 🎯 Current Phase: Rules Engine & Objectives
 
-**Phase 5** focuses on enhancing the core gameplay experience:
+**Phase 7** focuses on implementing core gameplay mechanics and visual demo:
 
-### ✅ Completed
+### ✅ Completed (Phases 1-6)
 - 📷 Camera movement and cinematic panning
 - 🎭 Scripted scenario actions and branching
 - 🎬 YAML-driven camera integration
@@ -226,16 +246,38 @@ starter-town-tactics/
 - ⚡ **EventManager** for turn-based events (reinforcements, storms, boss phases)
 - 🤖 **Enhanced AIController** with behavior-based decision making
 - 🧪 **Comprehensive Testing** with 58 new tests and 96% coverage for game systems
+- 🏗️ **Command-Event Architecture** with decoupled game logic and event-driven communication
+- 🚀 **CLI Tools** for demos and performance testing (800k+ ticks/sec)
 
-### 🚧 In Progress
-- 🌀 Advanced animation branching and combos
-- 🧠 Enhanced AI behaviors and strategies
-- ⚡ Performance optimization and polish
+### 🚧 In Progress (Phase 7)
+- 🎲 **Rules Engine**: Height-based combat, facing direction, status effects (Poison/Slow)
+- 🗺️ **A* Pathfinding**: Advanced movement algorithms
+- 🎯 **Objectives System**: EliminateBoss, SurviveNTurns, HoldZones, Escort
+- 🎮 **Pygame Adapter**: 60-90s deterministic visual demo
+- ⚡ **CI Integration**: Performance gates (≥3000 ticks/sec)
 
-### 🎨 Optional Asset Standardization
-- Standardize unit sprite naming conventions
-- Create animation metadata for all units
-- Optimize asset file sizes and formats
+### 📋 Next PR Requirements
+1. **Rules Engine Implementation**
+   - Height-based combat modifiers
+   - Facing direction mechanics
+   - Status effects (Poison, Slow)
+   - A* pathfinding algorithm
+
+2. **Objectives System**
+   - EliminateBoss objective
+   - SurviveNTurns objective
+   - HoldZones objective
+   - Escort objective
+
+3. **Pygame Adapter**
+   - Thin adapter for visual rendering
+   - 60-90 second deterministic demo
+   - Integration with command-event system
+
+4. **CI/Performance Gates**
+   - Soak test ≥ 3000 ticks/sec headless
+   - Record performance artifacts
+   - Update weekly brief
 
 ---
 
@@ -251,9 +293,10 @@ make setup
 make test
 
 # Play demos
-make play-scenario-animated    # Cinematic demo
-make play-sim-demo            # Basic simulation
-python demo_enhanced_game_loop.py  # Enhanced game loop demo
+make play-demo                    # Command-event architecture demo
+make soak                         # Performance testing
+make play-scenario-animated       # Cinematic demo
+make play-sim-demo               # Basic simulation
 ```
 
 ---
@@ -266,6 +309,8 @@ python demo_enhanced_game_loop.py  # Enhanced game loop demo
 - **Scenarios**: 6 YAML scenarios with camera integration
 - **Code Quality**: Pylint 7.28/10, mypy compliant
 - **Game Systems**: Enhanced game loop with 58 new tests
+- **Performance**: 800,000+ ticks/sec (excellent)
+- **Architecture**: Command-event system with deterministic RNG
 
 ---
 
