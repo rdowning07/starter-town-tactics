@@ -49,7 +49,19 @@ help:
 	@echo "  make play-cutscene-demo - Run cutscene demo"
 	@echo "  make play-demo - Run command-event architecture demo (text)"
 	@echo "  make play-demo-visual - Run command-event architecture demo (visual)"
+	@echo "  make play-demo-fixed - Run fixed demo using game/ architecture"
+	@echo "  make play-demo-fixed-smoke - Run fixed demo with 3-second smoke test"
+	@echo "  make play-demo-enhanced - Run enhanced demo with asset integration"
+	@echo "  make play-demo-enhanced-smoke - Run enhanced demo with 3-second smoke test"
+	@echo "  make play-demo-fixed - Run fixed demo using game/ architecture"
+	@echo "  make play-demo-fixed-smoke - Run fixed demo with 3-second smoke test"
+	@echo "  make play-demo-enhanced - Run enhanced demo with asset integration"
+	@echo "  make play-demo-enhanced-smoke - Run enhanced demo with 3-second smoke test"
 	@echo "  make soak - Run performance soak test"
+	@echo "  make soak-integrated - Run integrated soak test with scenario loading"
+	@echo "  make play-demo-integrated - Run integrated demo with scenario loading"
+	@echo "  make play-demo-integrated-smoke - Run integrated demo with 3-second smoke test"
+	@echo "  make play-demo-integrated-enhanced - Run integrated demo with enhanced assets"
 	@echo "  make replay - Run game replay (future)"
 
 .PHONY: install
@@ -198,16 +210,68 @@ play-cutscene-demo:
 # === Command-Event Architecture CLI Tools ===
 .PHONY: play-demo
 play-demo:
-	PYTHONPATH=. python -m cli.play_demo
+	PYTHONPATH=. python cli/play_demo.py --scenario assets/scenarios/demo.yaml
+
+.PHONY: play-demo-smoke
+play-demo-smoke:
+	PYTHONPATH=. python cli/play_demo.py --scenario assets/scenarios/demo.yaml --smoke
 
 .PHONY: play-demo-visual
 play-demo-visual:
 	PYTHONPATH=. python -m cli.play_demo_visual
 
+.PHONY: play-demo-fixed
+play-demo-fixed:
+	PYTHONPATH=. python cli/play_demo_fixed.py
+
+.PHONY: play-demo-fixed-smoke
+play-demo-fixed-smoke:
+	PYTHONPATH=. python cli/play_demo_fixed.py --smoke
+
+.PHONY: play-demo-enhanced
+play-demo-enhanced:
+	PYTHONPATH=. python cli/play_demo_enhanced.py
+
+.PHONY: play-demo-enhanced-smoke
+play-demo-enhanced-smoke:
+	PYTHONPATH=. python cli/play_demo_enhanced.py --smoke
+
+.PHONY: play-demo-integrated
+play-demo-integrated:
+	PYTHONPATH=. python cli/play_demo_integrated.py
+
+.PHONY: play-demo-integrated-smoke
+play-demo-integrated-smoke:
+	PYTHONPATH=. python cli/play_demo_integrated.py --smoke
+
+.PHONY: play-demo-integrated-enhanced
+play-demo-integrated-enhanced:
+	PYTHONPATH=. python cli/play_demo_integrated.py --enhanced
+
+.PHONY: soak-integrated
+soak-integrated:
+	PYTHONPATH=. python cli/soak_integrated.py
+
 .PHONY: soak
 soak:
-	PYTHONPATH=. python -m cli.soak
+	PYTHONPATH=. python cli/soak.py
 
 .PHONY: replay
 replay:
 	PYTHONPATH=. python -m cli.replay
+
+.PHONY: play-demo-fixed
+play-demo-fixed:
+	PYTHONPATH=. python cli/play_demo_fixed.py
+
+.PHONY: play-demo-fixed-smoke
+play-demo-fixed-smoke:
+	PYTHONPATH=. python cli/play_demo_fixed.py --smoke
+
+.PHONY: play-demo-enhanced
+play-demo-enhanced:
+	PYTHONPATH=. python cli/play_demo_enhanced.py
+
+.PHONY: play-demo-enhanced-smoke
+play-demo-enhanced-smoke:
+	PYTHONPATH=. python cli/play_demo_enhanced.py --smoke

@@ -1,10 +1,15 @@
 import sys
 import time
+import os
+
+# Add the parent directory to the path so we can import modules
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from devtools.scenario_loader import load_scenario
 from devtools.scenario_manager import create_scenario_manager
 from game.action_point_manager import ActionPointManager
 from game.ai_controller import AIController
+from game.game_state import GameState
 from game.sim_runner import SimRunner
 from game.tactical_state_machine import TacticalState, TacticalStateMachine
 from game.turn_controller import TurnController
@@ -120,6 +125,18 @@ def player_action_menu(runner: SimRunner):
 def run_basic_demo(auto_run: bool = False):
     """Run the basic demo with hardcoded units."""
     print("=== SimRunner CLI Demo with Player Input and Unit Death ===")
+    
+    # Create a proper GameState
+    game_state = GameState()
+    game_state.name = "Basic Demo"
+    game_state.description = "A basic demo with hardcoded units"
+    game_state.max_turns = 12
+    
+    # Register units in the game state
+    game_state.units.register_unit("ai_alpha", "ai", hp=15)
+    game_state.units.register_unit("p_bravo", "player", hp=20)
+    game_state.units.register_unit("ai_delta", "ai", hp=15)
+    
     apm = ActionPointManager()
     fsm = TacticalStateMachine()
     tc = TurnController(apm, fsm)
@@ -130,6 +147,9 @@ def run_basic_demo(auto_run: bool = False):
 
     ai = DemoAI()
     runner = SimRunner(tc, ai)
+    
+    # Set the game state on the runner
+    runner.set_game_state(game_state)
 
     turn_limit = 12
     for _ in range(turn_limit):
@@ -207,6 +227,7 @@ def run_scenario_demo(
     ai = DemoAI()
 
     runner = SimRunner(tc, ai)
+    runner.set_game_state(game_state)
     runner.max_turns = game_state.max_turns
 
     # Get death configuration from scenario metadata
