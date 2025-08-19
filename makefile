@@ -190,3 +190,16 @@ play-scenario-animated-auto:
 # === Cutscene Demo ===
 play-cutscene-demo:
 	PYTHONPATH=. python devtools/scenario_automation_demo.py --scenario devtools/scenarios/demo_cutscene.yaml
+
+# === Command-Event Architecture CLI Tools ===
+.PHONY: play-demo
+play-demo:
+	PYTHONPATH=. python -m cli.play_demo
+
+.PHONY: soak
+soak:
+	PYTHONPATH=. python -m cli.soak
+
+.PHONY: replay
+replay:
+	PYTHONPATH=. python -m cli.replay
