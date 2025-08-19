@@ -53,14 +53,14 @@ class TestEventSystem:
     
     def test_event_creation(self):
         """Test Event can be created with type and payload."""
-        event = Event(type="unit_moved", payload={"unit_id": "player1", "to": (5, 5)})
+        event = Event(type="unit_moved", payload={"unit_id": "player1", "to": (5, 5)}, tick=0)
         assert event.type == "unit_moved"
         assert event.payload["unit_id"] == "player1"
         assert event.payload["to"] == (5, 5)
     
     def test_event_is_immutable(self):
         """Test that Event is frozen and immutable."""
-        event = Event(type="test", payload={"key": "value"})
+        event = Event(type="test", payload={"key": "value"}, tick=0)
         
         with pytest.raises(Exception):  # Should raise for frozen dataclass
             event.type = "modified"
@@ -77,7 +77,7 @@ class TestEventSystem:
         
         bus.subscribe(subscriber)
         assert len(bus._subs) == 1
-        assert subscriber in bus._subs
+        assert subscriber in [sub[0] for sub in bus._subs]
     
     def test_event_bus_publish_single_event(self):
         """Test EventBus publishes events to all subscribers."""
@@ -88,7 +88,7 @@ class TestEventSystem:
         bus.subscribe(subscriber1)
         bus.subscribe(subscriber2)
         
-        event = Event(type="test", payload={"message": "hello"})
+        event = Event(type="test", payload={"message": "hello"}, tick=0)
         bus.publish([event])
         
         subscriber1.assert_called_once_with(event)
@@ -101,9 +101,9 @@ class TestEventSystem:
         bus.subscribe(subscriber)
         
         events = [
-            Event(type="event1", payload={"id": 1}),
-            Event(type="event2", payload={"id": 2}),
-            Event(type="event3", payload={"id": 3})
+            Event(type="event1", payload={"id": 1}, tick=0),
+            Event(type="event2", payload={"id": 2}, tick=1),
+            Event(type="event3", payload={"id": 3}, tick=2)
         ]
         
         bus.publish(events)
@@ -117,7 +117,7 @@ class TestEventSystem:
     def test_event_bus_no_subscribers(self):
         """Test EventBus handles publishing with no subscribers gracefully."""
         bus = EventBus()
-        event = Event(type="test", payload={"message": "hello"})
+        event = Event(type="test", payload={"message": "hello"}, tick=0)
         
         # Should not raise any exception
         bus.publish([event])
@@ -239,7 +239,7 @@ class TestGameLoop:
         controller = Mock()
         command = Mock()
         command.validate.return_value = True
-        command.apply.return_value = [Event(type="test", payload={})]
+        command.apply.return_value = [Event(type="test", payload={}, tick=0)]
         
         controller.decide.return_value = command
         state.set_controller(controller)
@@ -247,6 +247,8 @@ class TestGameLoop:
         # Mock objectives and turn_controller
         state.objectives = Mock()
         state.turn_controller = Mock()
+        state.turn_controller.start_if_needed.return_value = []
+        state.turn_controller.maybe_advance.return_value = []
         
         # Subscribe to events to verify they're published
         events_received = []
@@ -287,6 +289,8 @@ class TestGameLoop:
         # Mock objectives and turn_controller
         state.objectives = Mock()
         state.turn_controller = Mock()
+        state.turn_controller.start_if_needed.return_value = []
+        state.turn_controller.maybe_advance.return_value = []
         
         loop.tick(state)
         
@@ -337,6 +341,8 @@ class TestIntegration:
         # Mock objectives and turn_controller
         state.objectives = Mock()
         state.turn_controller = Mock()
+        state.turn_controller.start_if_needed.return_value = []
+        state.turn_controller.maybe_advance.return_value = []
         
         # Subscribe to events
         events_received = []
@@ -385,6 +391,8 @@ class TestIntegration:
         
         state.objectives = Mock()
         state.turn_controller = Mock()
+        state.turn_controller.start_if_needed.return_value = []
+        state.turn_controller.maybe_advance.return_value = []
         
         events_received = []
         def test_subscriber(event):
@@ -395,6 +403,7 @@ class TestIntegration:
         loop.tick(state)
         
         # Verify all events were received
+        from core.events import EventType
         assert len(events_received) == 3
         assert events_received[0].type == EventType.UNIT_ATTACKED
         assert events_received[1].type == EventType.UNIT_ATTACKED
@@ -422,7 +431,7 @@ class TestEdgeCases:
         bus.subscribe(bad_subscriber)
         bus.subscribe(good_subscriber)
         
-        event = Event(type="test", payload={})
+        event = Event(type="test", payload={}, tick=0)
         
         # Should not raise exception, should continue processing
         bus.publish([event])

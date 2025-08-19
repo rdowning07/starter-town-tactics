@@ -19,6 +19,8 @@ class SimRunner:
     - Structured event logging (dicts)
     - Game phase tracking ("INIT" → "PLAYING" → "GAME_OVER")
     """
+    
+    game_state: Optional["Game"]  # Type annotation for game_state
 
     def __init__(
         self,
@@ -38,7 +40,7 @@ class SimRunner:
             # It's a TurnController
             self.turn_controller = turn_controller_or_game
             self.ai_controller = ai_controller or AIController([])
-            # No game state reference for TurnController mode
+            self.game_state = None  # Will be set later via set_game_state
 
         self.turn_count = 0
         self.phase: Literal["INIT", "PLAYING", "GAME_OVER"] = "INIT"
