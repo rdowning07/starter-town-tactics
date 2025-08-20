@@ -59,6 +59,7 @@ class SpriteManager:
 
     def load_terrain_assets(self):
         """Load terrain tile assets."""
+        # Original terrain mapping for backward compatibility
         terrain_mapping = {
             "castle": "castle.png",
             "desert": "desert.png",
@@ -75,6 +76,21 @@ class SpriteManager:
             path = f"assets/tiles/{terrain_type}/{filename}"
             if os.path.exists(path):
                 self.sprites[f"terrain_{terrain_type}"] = path
+        
+        # New terrain character mapping for terrain demo
+        terrain_char_mapping = {
+            "G": "grass.png",      # Grass
+            "F": "forest.png",     # Forest
+            "M": "mountain.png",   # Mountain
+            "W": "water.png",      # Water
+            "R": "road.png",       # Road
+            "#": "wall.png",       # Wall
+        }
+
+        for terrain_char, filename in terrain_char_mapping.items():
+            path = f"assets/tiles/terrain/{filename}"
+            if os.path.exists(path):
+                self.sprites[f"terrain_{terrain_char}"] = path
 
     def load_unit_assets(self):
         """Load unit sprite assets with animation frame support."""

@@ -1,0 +1,27 @@
+name: "Terrain Demo"
+description: "Visualize terrain rendering across all tile types"
+map_id: "terrain_demo"
+max_turns: 1
+
+units:
+  - name: "scout"
+    team: player
+    sprite: "knight"
+    x: 4
+    y: 4
+    hp: 10
+    ap: 6
+    animation: "idle"
+
+camera:
+  - action: "pan"
+    targets:
+      - [96, 96]
+      - [160, 160]
+      - [224, 224]
+    speed: 10
+    delay: 0.5
+
+ai: []
+
+actions: []
