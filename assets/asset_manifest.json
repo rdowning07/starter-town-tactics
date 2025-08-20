@@ -1,0 +1,6616 @@
+{
+  "ui": {
+    "cursor": {
+      "path": "ui/cursor.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/cursor.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 86,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "healthbar": {
+      "path": "ui/panels/healthbar.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/panels/healthbar.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 85,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "menu_bg": {
+      "path": "ui/panels/menu_bg.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/panels/menu_bg.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "button": {
+      "path": "ui/panels/button.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/panels/button.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "ap": {
+      "path": "ui/icons/ap.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/icons/ap.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 78,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "health": {
+      "path": "ui/icons/health.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/icons/health.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "move": {
+      "path": "ui/icons/move.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/icons/move.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "attack": {
+      "path": "ui/cursors/attack.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/cursors/attack.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "normal": {
+      "path": "ui/cursors/normal.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/cursors/normal.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "select": {
+      "path": "ui/cursors/select.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/ui/cursors/select.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "blue_0_9": {
+      "path": "units/Recruit/blue_0_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1035,
+        "errors": []
+      }
+    },
+    "blue_0_11": {
+      "path": "units/Recruit/blue_0_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "blue_0_10": {
+      "path": "units/Recruit/blue_0_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "blue_0_8": {
+      "path": "units/Recruit/blue_0_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1033,
+        "errors": []
+      }
+    },
+    "blue_0_0": {
+      "path": "units/Recruit/blue_0_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1000,
+        "errors": []
+      }
+    },
+    "blue_0_1": {
+      "path": "units/Recruit/blue_0_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1129,
+        "errors": []
+      }
+    },
+    "blue_0_3": {
+      "path": "units/Recruit/blue_0_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1153,
+        "errors": []
+      }
+    },
+    "blue_0_2": {
+      "path": "units/Recruit/blue_0_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1295,
+        "errors": []
+      }
+    },
+    "blue_0_6": {
+      "path": "units/Recruit/blue_0_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1114,
+        "errors": []
+      }
+    },
+    "blue_0_7": {
+      "path": "units/Recruit/blue_0_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1242,
+        "errors": []
+      }
+    },
+    "blue_0_5": {
+      "path": "units/Recruit/blue_0_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1037,
+        "errors": []
+      }
+    },
+    "blue_0_4": {
+      "path": "units/Recruit/blue_0_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Recruit/blue_0_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 952,
+        "errors": []
+      }
+    },
+    "frame_0": {
+      "path": "units/Squire/walk/frame_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/walk/frame_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 688,
+        "errors": []
+      }
+    },
+    "frame_1": {
+      "path": "units/Squire/walk/frame_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/walk/frame_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 821,
+        "errors": []
+      }
+    },
+    "frame_2": {
+      "path": "units/Squire/walk/frame_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/walk/frame_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 736,
+        "errors": []
+      }
+    },
+    "blue_3_8": {
+      "path": "units/Squire/blue_3_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 622,
+        "errors": []
+      }
+    },
+    "blue_3_9": {
+      "path": "units/Squire/blue_3_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 704,
+        "errors": []
+      }
+    },
+    "blue_3_1": {
+      "path": "units/Squire/blue_3_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 903,
+        "errors": []
+      }
+    },
+    "blue_3_0": {
+      "path": "units/Squire/blue_3_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 763,
+        "errors": []
+      }
+    },
+    "blue_3_2": {
+      "path": "units/Squire/blue_3_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 960,
+        "errors": []
+      }
+    },
+    "blue_3_3": {
+      "path": "units/Squire/blue_3_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 755,
+        "errors": []
+      }
+    },
+    "blue_3_7": {
+      "path": "units/Squire/blue_3_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 736,
+        "errors": []
+      }
+    },
+    "blue_3_10": {
+      "path": "units/Squire/blue_3_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "blue_3_11": {
+      "path": "units/Squire/blue_3_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "blue_3_6": {
+      "path": "units/Squire/blue_3_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 821,
+        "errors": []
+      }
+    },
+    "blue_3_4": {
+      "path": "units/Squire/blue_3_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 703,
+        "errors": []
+      }
+    },
+    "blue_3_5": {
+      "path": "units/Squire/blue_3_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Squire/blue_3_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 688,
+        "errors": []
+      }
+    }
+  },
+  "sfx": {
+    "move": {
+      "path": "sfx/move.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/move.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.2,
+        "format": "wav",
+        "size_bytes": 8864,
+        "errors": []
+      }
+    },
+    "heal": {
+      "path": "sfx/heal.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/heal.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.8,
+        "format": "wav",
+        "size_bytes": 35324,
+        "errors": []
+      }
+    },
+    "slash": {
+      "path": "sfx/slash.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/slash.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.4,
+        "format": "wav",
+        "size_bytes": 17684,
+        "errors": []
+      }
+    },
+    "fireball": {
+      "path": "sfx/fireball.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/fireball.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.6,
+        "format": "wav",
+        "size_bytes": 26504,
+        "errors": []
+      }
+    },
+    "select": {
+      "path": "sfx/select.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/select.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.2,
+        "format": "wav",
+        "size_bytes": 8864,
+        "errors": []
+      }
+    },
+    "death": {
+      "path": "sfx/death.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/death.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 1.0,
+        "format": "wav",
+        "size_bytes": 44144,
+        "errors": []
+      }
+    },
+    "menu": {
+      "path": "sfx/menu.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/menu.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.3,
+        "format": "wav",
+        "size_bytes": 13274,
+        "errors": []
+      }
+    },
+    "block": {
+      "path": "sfx/block.wav",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/sfx/block.wav",
+        "exists": true,
+        "is_stub": false,
+        "duration": 0.4,
+        "format": "wav",
+        "size_bytes": 17684,
+        "errors": []
+      }
+    }
+  },
+  "unit_sprites": {
+    "units_knight": {
+      "path": "units/knight.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/knight.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 104,
+        "errors": []
+      }
+    },
+    "units_goblin": {
+      "path": "units/goblin.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/goblin.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 104,
+        "errors": []
+      }
+    },
+    "void_revenant_neutral": {
+      "path": "units/void_revenant/neutral.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/void_revenant/neutral.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "void_revenant_blue": {
+      "path": "units/void_revenant/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/void_revenant/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "void_revenant_red": {
+      "path": "units/void_revenant/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/void_revenant/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "idle_frame_0": {
+      "path": "units/Possessed/idle/frame_0.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/idle/frame_0.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "idle_frame_1": {
+      "path": "units/Possessed/idle/frame_1.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/idle/frame_1.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "attack_frame_0": {
+      "path": "units/Possessed/attack/frame_0.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/attack/frame_0.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "attack_frame_1": {
+      "path": "units/Possessed/attack/frame_1.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/attack/frame_1.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "attack_frame_2": {
+      "path": "units/Possessed/attack/frame_2.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/attack/frame_2.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "CryptSentinel_blue_3_8": {
+      "path": "units/CryptSentinel/blue_3_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 724,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_9": {
+      "path": "units/CryptSentinel/blue_3_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 729,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_1": {
+      "path": "units/CryptSentinel/blue_3_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1094,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_0": {
+      "path": "units/CryptSentinel/blue_3_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 916,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_2": {
+      "path": "units/CryptSentinel/blue_3_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 998,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_3": {
+      "path": "units/CryptSentinel/blue_3_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 715,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_7": {
+      "path": "units/CryptSentinel/blue_3_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 850,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_10": {
+      "path": "units/CryptSentinel/blue_3_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "CryptSentinel_blue_3_11": {
+      "path": "units/CryptSentinel/blue_3_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "CryptSentinel_blue_3_6": {
+      "path": "units/CryptSentinel/blue_3_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 882,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_4": {
+      "path": "units/CryptSentinel/blue_3_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 661,
+        "errors": []
+      }
+    },
+    "CryptSentinel_blue_3_5": {
+      "path": "units/CryptSentinel/blue_3_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CryptSentinel/blue_3_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 811,
+        "errors": []
+      }
+    },
+    "walk_frame_0": {
+      "path": "units/Possessed/walk/frame_0.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/walk/frame_0.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "walk_frame_1": {
+      "path": "units/Possessed/walk/frame_1.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/walk/frame_1.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "walk_frame_2": {
+      "path": "units/Possessed/walk/frame_2.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/walk/frame_2.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Acolyte_blue_1_9": {
+      "path": "units/Acolyte/blue_1_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 774,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_8": {
+      "path": "units/Acolyte/blue_1_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 797,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_3": {
+      "path": "units/Acolyte/blue_1_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 901,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_2": {
+      "path": "units/Acolyte/blue_1_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1088,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_10": {
+      "path": "units/Acolyte/blue_1_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Acolyte_blue_1_0": {
+      "path": "units/Acolyte/blue_1_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 825,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_1": {
+      "path": "units/Acolyte/blue_1_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 900,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_11": {
+      "path": "units/Acolyte/blue_1_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Acolyte_blue_1_5": {
+      "path": "units/Acolyte/blue_1_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 828,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_4": {
+      "path": "units/Acolyte/blue_1_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 738,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_6": {
+      "path": "units/Acolyte/blue_1_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 871,
+        "errors": []
+      }
+    },
+    "Acolyte_blue_1_7": {
+      "path": "units/Acolyte/blue_1_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Acolyte/blue_1_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 920,
+        "errors": []
+      }
+    },
+    "ranger_idle": {
+      "path": "units/ranger/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/ranger/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1786,
+        "errors": []
+      }
+    },
+    "ranger_walk": {
+      "path": "units/ranger/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/ranger/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1811,
+        "errors": []
+      }
+    },
+    "ranger_attack": {
+      "path": "units/ranger/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/ranger/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2150,
+        "errors": []
+      }
+    },
+    "idle_frame_2": {
+      "path": "units/Berserker/idle/frame_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/idle/frame_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 911,
+        "errors": []
+      }
+    },
+    "Hellborne_blue_9_3": {
+      "path": "units/Hellborne/blue_9_3.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_3.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_2": {
+      "path": "units/Hellborne/blue_9_2.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_2.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_0": {
+      "path": "units/Hellborne/blue_9_0.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_0.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_1": {
+      "path": "units/Hellborne/blue_9_1.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_1.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_5": {
+      "path": "units/Hellborne/blue_9_5.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_5.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_4": {
+      "path": "units/Hellborne/blue_9_4.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_4.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_6": {
+      "path": "units/Hellborne/blue_9_6.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_6.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_7": {
+      "path": "units/Hellborne/blue_9_7.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_7.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_9": {
+      "path": "units/Hellborne/blue_9_9.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_9.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_8": {
+      "path": "units/Hellborne/blue_9_8.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_8.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_11": {
+      "path": "units/Hellborne/blue_9_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Hellborne_blue_9_10": {
+      "path": "units/Hellborne/blue_9_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Hellborne/blue_9_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "RadiantVirtue_blue_8_0": {
+      "path": "units/RadiantVirtue/blue_8_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 619,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_1": {
+      "path": "units/RadiantVirtue/blue_8_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 744,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_3": {
+      "path": "units/RadiantVirtue/blue_8_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1194,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_2": {
+      "path": "units/RadiantVirtue/blue_8_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1133,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_6": {
+      "path": "units/RadiantVirtue/blue_8_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1218,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_7": {
+      "path": "units/RadiantVirtue/blue_8_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1166,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_5": {
+      "path": "units/RadiantVirtue/blue_8_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1257,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_4": {
+      "path": "units/RadiantVirtue/blue_8_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1062,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_10": {
+      "path": "units/RadiantVirtue/blue_8_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "RadiantVirtue_blue_8_11": {
+      "path": "units/RadiantVirtue/blue_8_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "RadiantVirtue_blue_8_9": {
+      "path": "units/RadiantVirtue/blue_8_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 962,
+        "errors": []
+      }
+    },
+    "RadiantVirtue_blue_8_8": {
+      "path": "units/RadiantVirtue/blue_8_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/RadiantVirtue/blue_8_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 992,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_8": {
+      "path": "units/Apprentice/blue_2_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 768,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_9": {
+      "path": "units/Apprentice/blue_2_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 789,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_11": {
+      "path": "units/Apprentice/blue_2_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Apprentice_blue_2_10": {
+      "path": "units/Apprentice/blue_2_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Apprentice_blue_2_2": {
+      "path": "units/Apprentice/blue_2_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 974,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_3": {
+      "path": "units/Apprentice/blue_2_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 798,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_1": {
+      "path": "units/Apprentice/blue_2_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 933,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_0": {
+      "path": "units/Apprentice/blue_2_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 759,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_4": {
+      "path": "units/Apprentice/blue_2_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 763,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_5": {
+      "path": "units/Apprentice/blue_2_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 786,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_7": {
+      "path": "units/Apprentice/blue_2_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 864,
+        "errors": []
+      }
+    },
+    "Apprentice_blue_2_6": {
+      "path": "units/Apprentice/blue_2_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Apprentice/blue_2_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 912,
+        "errors": []
+      }
+    },
+    "archer_blue": {
+      "path": "units/archer/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/archer/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "archer_red": {
+      "path": "units/archer/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/archer/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "HellChaplain_blue_7_9": {
+      "path": "units/HellChaplain/blue_7_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 733,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_8": {
+      "path": "units/HellChaplain/blue_7_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 693,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_5": {
+      "path": "units/HellChaplain/blue_7_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 862,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_4": {
+      "path": "units/HellChaplain/blue_7_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 762,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_6": {
+      "path": "units/HellChaplain/blue_7_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 967,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_7": {
+      "path": "units/HellChaplain/blue_7_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 866,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_3": {
+      "path": "units/HellChaplain/blue_7_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 765,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_2": {
+      "path": "units/HellChaplain/blue_7_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1064,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_0": {
+      "path": "units/HellChaplain/blue_7_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 812,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_1": {
+      "path": "units/HellChaplain/blue_7_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 993,
+        "errors": []
+      }
+    },
+    "HellChaplain_blue_7_11": {
+      "path": "units/HellChaplain/blue_7_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "HellChaplain_blue_7_10": {
+      "path": "units/HellChaplain/blue_7_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/HellChaplain/blue_7_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "goblin_ai": {
+      "path": "units/goblin/ai.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/goblin/ai.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 78,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "mage_idle": {
+      "path": "units/mage/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/mage/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1898,
+        "errors": []
+      }
+    },
+    "mage_blue": {
+      "path": "units/mage/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/mage/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "mage_walk": {
+      "path": "units/mage/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/mage/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2130,
+        "errors": []
+      }
+    },
+    "mage_attack": {
+      "path": "units/mage/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/mage/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2343,
+        "errors": []
+      }
+    },
+    "mage_red": {
+      "path": "units/mage/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/mage/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "DeathMagister_blue_5_8": {
+      "path": "units/DeathMagister/blue_5_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 965,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_9": {
+      "path": "units/DeathMagister/blue_5_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 881,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_7": {
+      "path": "units/DeathMagister/blue_5_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1071,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_6": {
+      "path": "units/DeathMagister/blue_5_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1181,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_4": {
+      "path": "units/DeathMagister/blue_5_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1197,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_5": {
+      "path": "units/DeathMagister/blue_5_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1119,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_1": {
+      "path": "units/DeathMagister/blue_5_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 826,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_0": {
+      "path": "units/DeathMagister/blue_5_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 726,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_2": {
+      "path": "units/DeathMagister/blue_5_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1277,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_3": {
+      "path": "units/DeathMagister/blue_5_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1301,
+        "errors": []
+      }
+    },
+    "DeathMagister_blue_5_11": {
+      "path": "units/DeathMagister/blue_5_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "DeathMagister_blue_5_10": {
+      "path": "units/DeathMagister/blue_5_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/DeathMagister/blue_5_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Summoner_blue_4_8": {
+      "path": "units/Summoner/blue_4_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 835,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_9": {
+      "path": "units/Summoner/blue_4_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 806,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_10": {
+      "path": "units/Summoner/blue_4_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Summoner_blue_4_11": {
+      "path": "units/Summoner/blue_4_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Summoner_blue_4_4": {
+      "path": "units/Summoner/blue_4_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 810,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_5": {
+      "path": "units/Summoner/blue_4_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 863,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_7": {
+      "path": "units/Summoner/blue_4_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 940,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_6": {
+      "path": "units/Summoner/blue_4_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 901,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_2": {
+      "path": "units/Summoner/blue_4_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1087,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_3": {
+      "path": "units/Summoner/blue_4_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 861,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_1": {
+      "path": "units/Summoner/blue_4_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1011,
+        "errors": []
+      }
+    },
+    "Summoner_blue_4_0": {
+      "path": "units/Summoner/blue_4_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Summoner/blue_4_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 821,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_8": {
+      "path": "units/SkygraveRider/blue_3_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 656,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_9": {
+      "path": "units/SkygraveRider/blue_3_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 670,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_1": {
+      "path": "units/SkygraveRider/blue_3_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 879,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_0": {
+      "path": "units/SkygraveRider/blue_3_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 722,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_2": {
+      "path": "units/SkygraveRider/blue_3_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1012,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_3": {
+      "path": "units/SkygraveRider/blue_3_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 828,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_7": {
+      "path": "units/SkygraveRider/blue_3_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 706,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_10": {
+      "path": "units/SkygraveRider/blue_3_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SkygraveRider_blue_3_11": {
+      "path": "units/SkygraveRider/blue_3_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SkygraveRider_blue_3_6": {
+      "path": "units/SkygraveRider/blue_3_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 788,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_4": {
+      "path": "units/SkygraveRider/blue_3_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 789,
+        "errors": []
+      }
+    },
+    "SkygraveRider_blue_3_5": {
+      "path": "units/SkygraveRider/blue_3_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SkygraveRider/blue_3_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 733,
+        "errors": []
+      }
+    },
+    "shadow_idle": {
+      "path": "units/shadow/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/shadow/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1728,
+        "errors": []
+      }
+    },
+    "shadow_walk": {
+      "path": "units/shadow/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/shadow/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1747,
+        "errors": []
+      }
+    },
+    "shadow_attack": {
+      "path": "units/shadow/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/shadow/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1992,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_9": {
+      "path": "units/Oracle/blue_6_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 685,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_8": {
+      "path": "units/Oracle/blue_6_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 677,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_10": {
+      "path": "units/Oracle/blue_6_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Oracle_blue_6_11": {
+      "path": "units/Oracle/blue_6_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Oracle_blue_6_6": {
+      "path": "units/Oracle/blue_6_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 923,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_7": {
+      "path": "units/Oracle/blue_6_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 860,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_5": {
+      "path": "units/Oracle/blue_6_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 799,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_4": {
+      "path": "units/Oracle/blue_6_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 709,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_0": {
+      "path": "units/Oracle/blue_6_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 819,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_1": {
+      "path": "units/Oracle/blue_6_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 926,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_3": {
+      "path": "units/Oracle/blue_6_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 831,
+        "errors": []
+      }
+    },
+    "Oracle_blue_6_2": {
+      "path": "units/Oracle/blue_6_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Oracle/blue_6_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1059,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_9": {
+      "path": "units/PhoenixBinder/blue_1_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 726,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_8": {
+      "path": "units/PhoenixBinder/blue_1_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 785,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_3": {
+      "path": "units/PhoenixBinder/blue_1_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 903,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_2": {
+      "path": "units/PhoenixBinder/blue_1_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1030,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_10": {
+      "path": "units/PhoenixBinder/blue_1_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "PhoenixBinder_blue_1_0": {
+      "path": "units/PhoenixBinder/blue_1_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 759,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_1": {
+      "path": "units/PhoenixBinder/blue_1_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 850,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_11": {
+      "path": "units/PhoenixBinder/blue_1_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "PhoenixBinder_blue_1_5": {
+      "path": "units/PhoenixBinder/blue_1_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 766,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_4": {
+      "path": "units/PhoenixBinder/blue_1_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 749,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_6": {
+      "path": "units/PhoenixBinder/blue_1_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 784,
+        "errors": []
+      }
+    },
+    "PhoenixBinder_blue_1_7": {
+      "path": "units/PhoenixBinder/blue_1_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/PhoenixBinder/blue_1_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 862,
+        "errors": []
+      }
+    },
+    "knight_neutral": {
+      "path": "units/knight/neutral.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/knight/neutral.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "knight_idle": {
+      "path": "units/knight/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/knight/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2089,
+        "errors": []
+      }
+    },
+    "knight_blue": {
+      "path": "units/knight/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/knight/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "knight_walk": {
+      "path": "units/knight/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/knight/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2174,
+        "errors": []
+      }
+    },
+    "knight_attack": {
+      "path": "units/knight/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/knight/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 2390,
+        "errors": []
+      }
+    },
+    "knight_red": {
+      "path": "units/knight/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/knight/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "paladin_idle": {
+      "path": "units/paladin/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/paladin/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1612,
+        "errors": []
+      }
+    },
+    "paladin_walk": {
+      "path": "units/paladin/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/paladin/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1595,
+        "errors": []
+      }
+    },
+    "paladin_attack": {
+      "path": "units/paladin/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/paladin/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1899,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_9": {
+      "path": "units/WyrmTemplar/blue_7_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 832,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_8": {
+      "path": "units/WyrmTemplar/blue_7_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 803,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_5": {
+      "path": "units/WyrmTemplar/blue_7_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 888,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_4": {
+      "path": "units/WyrmTemplar/blue_7_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1130,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_6": {
+      "path": "units/WyrmTemplar/blue_7_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1097,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_7": {
+      "path": "units/WyrmTemplar/blue_7_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 868,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_3": {
+      "path": "units/WyrmTemplar/blue_7_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1198,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_2": {
+      "path": "units/WyrmTemplar/blue_7_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1360,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_0": {
+      "path": "units/WyrmTemplar/blue_7_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 709,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_1": {
+      "path": "units/WyrmTemplar/blue_7_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 779,
+        "errors": []
+      }
+    },
+    "WyrmTemplar_blue_7_11": {
+      "path": "units/WyrmTemplar/blue_7_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "WyrmTemplar_blue_7_10": {
+      "path": "units/WyrmTemplar/blue_7_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/WyrmTemplar/blue_7_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Soulbreaker_blue_4_8": {
+      "path": "units/Soulbreaker/blue_4_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 885,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_9": {
+      "path": "units/Soulbreaker/blue_4_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 814,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_10": {
+      "path": "units/Soulbreaker/blue_4_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Soulbreaker_blue_4_11": {
+      "path": "units/Soulbreaker/blue_4_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Soulbreaker_blue_4_4": {
+      "path": "units/Soulbreaker/blue_4_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 968,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_5": {
+      "path": "units/Soulbreaker/blue_4_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 969,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_7": {
+      "path": "units/Soulbreaker/blue_4_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1017,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_6": {
+      "path": "units/Soulbreaker/blue_4_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 980,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_2": {
+      "path": "units/Soulbreaker/blue_4_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1210,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_3": {
+      "path": "units/Soulbreaker/blue_4_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1114,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_1": {
+      "path": "units/Soulbreaker/blue_4_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 985,
+        "errors": []
+      }
+    },
+    "Soulbreaker_blue_4_0": {
+      "path": "units/Soulbreaker/blue_4_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulbreaker/blue_4_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 822,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_9": {
+      "path": "units/Necroknight/blue_0_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 850,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_11": {
+      "path": "units/Necroknight/blue_0_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Necroknight_blue_0_10": {
+      "path": "units/Necroknight/blue_0_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Necroknight_blue_0_8": {
+      "path": "units/Necroknight/blue_0_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 920,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_0": {
+      "path": "units/Necroknight/blue_0_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 976,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_1": {
+      "path": "units/Necroknight/blue_0_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1240,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_3": {
+      "path": "units/Necroknight/blue_0_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1072,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_2": {
+      "path": "units/Necroknight/blue_0_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1250,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_6": {
+      "path": "units/Necroknight/blue_0_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 956,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_7": {
+      "path": "units/Necroknight/blue_0_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 973,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_5": {
+      "path": "units/Necroknight/blue_0_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 939,
+        "errors": []
+      }
+    },
+    "Necroknight_blue_0_4": {
+      "path": "units/Necroknight/blue_0_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Necroknight/blue_0_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 966,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_9": {
+      "path": "units/SaintEidolon/blue_6_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 708,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_8": {
+      "path": "units/SaintEidolon/blue_6_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 737,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_10": {
+      "path": "units/SaintEidolon/blue_6_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SaintEidolon_blue_6_11": {
+      "path": "units/SaintEidolon/blue_6_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SaintEidolon_blue_6_6": {
+      "path": "units/SaintEidolon/blue_6_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 966,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_7": {
+      "path": "units/SaintEidolon/blue_6_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 864,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_5": {
+      "path": "units/SaintEidolon/blue_6_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 921,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_4": {
+      "path": "units/SaintEidolon/blue_6_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1014,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_0": {
+      "path": "units/SaintEidolon/blue_6_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 637,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_1": {
+      "path": "units/SaintEidolon/blue_6_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 753,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_3": {
+      "path": "units/SaintEidolon/blue_6_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1132,
+        "errors": []
+      }
+    },
+    "SaintEidolon_blue_6_2": {
+      "path": "units/SaintEidolon/blue_6_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SaintEidolon/blue_6_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1222,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_8": {
+      "path": "units/Scavenger/blue_4_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 919,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_9": {
+      "path": "units/Scavenger/blue_4_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 878,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_10": {
+      "path": "units/Scavenger/blue_4_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Scavenger_blue_4_11": {
+      "path": "units/Scavenger/blue_4_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Scavenger_blue_4_4": {
+      "path": "units/Scavenger/blue_4_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 817,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_5": {
+      "path": "units/Scavenger/blue_4_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 824,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_7": {
+      "path": "units/Scavenger/blue_4_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1047,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_6": {
+      "path": "units/Scavenger/blue_4_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 769,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_2": {
+      "path": "units/Scavenger/blue_4_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1051,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_3": {
+      "path": "units/Scavenger/blue_4_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 977,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_1": {
+      "path": "units/Scavenger/blue_4_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1019,
+        "errors": []
+      }
+    },
+    "Scavenger_blue_4_0": {
+      "path": "units/Scavenger/blue_4_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Scavenger/blue_4_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 855,
+        "errors": []
+      }
+    },
+    "crystal_archon_neutral": {
+      "path": "units/crystal_archon/neutral.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/crystal_archon/neutral.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "crystal_archon_blue": {
+      "path": "units/crystal_archon/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/crystal_archon/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "crystal_archon_red": {
+      "path": "units/crystal_archon/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/crystal_archon/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SoulSinger_blue_1_9": {
+      "path": "units/SoulSinger/blue_1_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 653,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_8": {
+      "path": "units/SoulSinger/blue_1_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 707,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_3": {
+      "path": "units/SoulSinger/blue_1_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 845,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_2": {
+      "path": "units/SoulSinger/blue_1_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1108,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_10": {
+      "path": "units/SoulSinger/blue_1_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SoulSinger_blue_1_0": {
+      "path": "units/SoulSinger/blue_1_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 896,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_1": {
+      "path": "units/SoulSinger/blue_1_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1068,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_11": {
+      "path": "units/SoulSinger/blue_1_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "SoulSinger_blue_1_5": {
+      "path": "units/SoulSinger/blue_1_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 803,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_4": {
+      "path": "units/SoulSinger/blue_1_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 726,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_6": {
+      "path": "units/SoulSinger/blue_1_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 859,
+        "errors": []
+      }
+    },
+    "SoulSinger_blue_1_7": {
+      "path": "units/SoulSinger/blue_1_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/SoulSinger/blue_1_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 801,
+        "errors": []
+      }
+    },
+    "ai_minion": {
+      "path": "units/ai/minion.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/ai/minion.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "ai_boss": {
+      "path": "units/ai/boss.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/ai/boss.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "AshDancer_blue_5_8": {
+      "path": "units/AshDancer/blue_5_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 867,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_9": {
+      "path": "units/AshDancer/blue_5_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 774,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_7": {
+      "path": "units/AshDancer/blue_5_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 965,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_6": {
+      "path": "units/AshDancer/blue_5_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 977,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_4": {
+      "path": "units/AshDancer/blue_5_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 785,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_5": {
+      "path": "units/AshDancer/blue_5_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 981,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_1": {
+      "path": "units/AshDancer/blue_5_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1056,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_0": {
+      "path": "units/AshDancer/blue_5_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 895,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_2": {
+      "path": "units/AshDancer/blue_5_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1106,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_3": {
+      "path": "units/AshDancer/blue_5_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 937,
+        "errors": []
+      }
+    },
+    "AshDancer_blue_5_11": {
+      "path": "units/AshDancer/blue_5_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "AshDancer_blue_5_10": {
+      "path": "units/AshDancer/blue_5_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/AshDancer/blue_5_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "OutlawSniper_blue_3_8": {
+      "path": "units/OutlawSniper/blue_3_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 728,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_9": {
+      "path": "units/OutlawSniper/blue_3_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 758,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_1": {
+      "path": "units/OutlawSniper/blue_3_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 945,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_0": {
+      "path": "units/OutlawSniper/blue_3_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 779,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_2": {
+      "path": "units/OutlawSniper/blue_3_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 979,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_3": {
+      "path": "units/OutlawSniper/blue_3_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 747,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_7": {
+      "path": "units/OutlawSniper/blue_3_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 862,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_10": {
+      "path": "units/OutlawSniper/blue_3_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "OutlawSniper_blue_3_11": {
+      "path": "units/OutlawSniper/blue_3_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "OutlawSniper_blue_3_6": {
+      "path": "units/OutlawSniper/blue_3_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 903,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_4": {
+      "path": "units/OutlawSniper/blue_3_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 691,
+        "errors": []
+      }
+    },
+    "OutlawSniper_blue_3_5": {
+      "path": "units/OutlawSniper/blue_3_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/OutlawSniper/blue_3_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 770,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_0": {
+      "path": "units/Lichbound/blue_8_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 837,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_1": {
+      "path": "units/Lichbound/blue_8_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 977,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_3": {
+      "path": "units/Lichbound/blue_8_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 747,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_2": {
+      "path": "units/Lichbound/blue_8_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 911,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_6": {
+      "path": "units/Lichbound/blue_8_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 696,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_7": {
+      "path": "units/Lichbound/blue_8_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 909,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_5": {
+      "path": "units/Lichbound/blue_8_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 685,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_4": {
+      "path": "units/Lichbound/blue_8_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 608,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_10": {
+      "path": "units/Lichbound/blue_8_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Lichbound_blue_8_11": {
+      "path": "units/Lichbound/blue_8_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Lichbound_blue_8_9": {
+      "path": "units/Lichbound/blue_8_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 752,
+        "errors": []
+      }
+    },
+    "Lichbound_blue_8_8": {
+      "path": "units/Lichbound/blue_8_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Lichbound/blue_8_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 833,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_8": {
+      "path": "units/DuskMonk/blue_2_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 794,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_9": {
+      "path": "units/DuskMonk/blue_2_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 813,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_11": {
+      "path": "units/DuskMonk/blue_2_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "DuskMonk_blue_2_10": {
+      "path": "units/DuskMonk/blue_2_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "DuskMonk_blue_2_2": {
+      "path": "units/DuskMonk/blue_2_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1023,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_3": {
+      "path": "units/DuskMonk/blue_2_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 826,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_1": {
+      "path": "units/DuskMonk/blue_2_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 843,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_0": {
+      "path": "units/DuskMonk/blue_2_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 756,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_4": {
+      "path": "units/DuskMonk/blue_2_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 802,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_5": {
+      "path": "units/DuskMonk/blue_2_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 803,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_7": {
+      "path": "units/DuskMonk/blue_2_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 859,
+        "errors": []
+      }
+    },
+    "DuskMonk_blue_2_6": {
+      "path": "units/DuskMonk/blue_2_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/DuskMonk/blue_2_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 912,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_9": {
+      "path": "units/Soulblade/blue_0_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1017,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_11": {
+      "path": "units/Soulblade/blue_0_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Soulblade_blue_0_10": {
+      "path": "units/Soulblade/blue_0_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Soulblade_blue_0_8": {
+      "path": "units/Soulblade/blue_0_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1075,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_0": {
+      "path": "units/Soulblade/blue_0_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 975,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_1": {
+      "path": "units/Soulblade/blue_0_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1121,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_3": {
+      "path": "units/Soulblade/blue_0_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 946,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_2": {
+      "path": "units/Soulblade/blue_0_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1217,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_6": {
+      "path": "units/Soulblade/blue_0_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1091,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_7": {
+      "path": "units/Soulblade/blue_0_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1198,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_5": {
+      "path": "units/Soulblade/blue_0_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1091,
+        "errors": []
+      }
+    },
+    "Soulblade_blue_0_4": {
+      "path": "units/Soulblade/blue_0_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Soulblade/blue_0_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 860,
+        "errors": []
+      }
+    },
+    "phoenix_binder_neutral": {
+      "path": "units/phoenix_binder/neutral.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/phoenix_binder/neutral.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "phoenix_binder_blue": {
+      "path": "units/phoenix_binder/blue.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/phoenix_binder/blue.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "phoenix_binder_red": {
+      "path": "units/phoenix_binder/red.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/phoenix_binder/red.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 79,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Graveseer_blue_1_9": {
+      "path": "units/Graveseer/blue_1_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 803,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_8": {
+      "path": "units/Graveseer/blue_1_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 811,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_3": {
+      "path": "units/Graveseer/blue_1_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 834,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_2": {
+      "path": "units/Graveseer/blue_1_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1079,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_10": {
+      "path": "units/Graveseer/blue_1_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Graveseer_blue_1_0": {
+      "path": "units/Graveseer/blue_1_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 762,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_1": {
+      "path": "units/Graveseer/blue_1_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 893,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_11": {
+      "path": "units/Graveseer/blue_1_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Graveseer_blue_1_5": {
+      "path": "units/Graveseer/blue_1_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 902,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_4": {
+      "path": "units/Graveseer/blue_1_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 724,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_6": {
+      "path": "units/Graveseer/blue_1_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 900,
+        "errors": []
+      }
+    },
+    "Graveseer_blue_1_7": {
+      "path": "units/Graveseer/blue_1_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Graveseer/blue_1_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 997,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_8": {
+      "path": "units/Witchblade/blue_2_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 679,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_9": {
+      "path": "units/Witchblade/blue_2_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 702,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_11": {
+      "path": "units/Witchblade/blue_2_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Witchblade_blue_2_10": {
+      "path": "units/Witchblade/blue_2_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Witchblade_blue_2_2": {
+      "path": "units/Witchblade/blue_2_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1047,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_3": {
+      "path": "units/Witchblade/blue_2_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 751,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_1": {
+      "path": "units/Witchblade/blue_2_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1059,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_0": {
+      "path": "units/Witchblade/blue_2_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 864,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_4": {
+      "path": "units/Witchblade/blue_2_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 747,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_5": {
+      "path": "units/Witchblade/blue_2_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 801,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_7": {
+      "path": "units/Witchblade/blue_2_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 787,
+        "errors": []
+      }
+    },
+    "Witchblade_blue_2_6": {
+      "path": "units/Witchblade/blue_2_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Witchblade/blue_2_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 910,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_8": {
+      "path": "units/BloodKnight/blue_4_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 787,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_9": {
+      "path": "units/BloodKnight/blue_4_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 710,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_10": {
+      "path": "units/BloodKnight/blue_4_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "BloodKnight_blue_4_11": {
+      "path": "units/BloodKnight/blue_4_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "BloodKnight_blue_4_4": {
+      "path": "units/BloodKnight/blue_4_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 755,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_5": {
+      "path": "units/BloodKnight/blue_4_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 868,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_7": {
+      "path": "units/BloodKnight/blue_4_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 827,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_6": {
+      "path": "units/BloodKnight/blue_4_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 960,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_2": {
+      "path": "units/BloodKnight/blue_4_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1044,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_3": {
+      "path": "units/BloodKnight/blue_4_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 909,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_1": {
+      "path": "units/BloodKnight/blue_4_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1170,
+        "errors": []
+      }
+    },
+    "BloodKnight_blue_4_0": {
+      "path": "units/BloodKnight/blue_4_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/BloodKnight/blue_4_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 942,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_8": {
+      "path": "units/CrystalArchon/blue_2_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 725,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_9": {
+      "path": "units/CrystalArchon/blue_2_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 760,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_11": {
+      "path": "units/CrystalArchon/blue_2_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "CrystalArchon_blue_2_10": {
+      "path": "units/CrystalArchon/blue_2_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "CrystalArchon_blue_2_2": {
+      "path": "units/CrystalArchon/blue_2_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1054,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_3": {
+      "path": "units/CrystalArchon/blue_2_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 816,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_1": {
+      "path": "units/CrystalArchon/blue_2_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 871,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_0": {
+      "path": "units/CrystalArchon/blue_2_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 725,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_4": {
+      "path": "units/CrystalArchon/blue_2_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 817,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_5": {
+      "path": "units/CrystalArchon/blue_2_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 767,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_7": {
+      "path": "units/CrystalArchon/blue_2_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 794,
+        "errors": []
+      }
+    },
+    "CrystalArchon_blue_2_6": {
+      "path": "units/CrystalArchon/blue_2_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/CrystalArchon/blue_2_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 816,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_9": {
+      "path": "units/Berserker/blue_0_9.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_9.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 850,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_11": {
+      "path": "units/Berserker/blue_0_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Berserker_blue_0_10": {
+      "path": "units/Berserker/blue_0_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Berserker_blue_0_8": {
+      "path": "units/Berserker/blue_0_8.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_8.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 924,
+        "errors": []
+      }
+    },
+    "Berserker_idle": {
+      "path": "units/Berserker/idle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/idle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1639,
+        "errors": []
+      }
+    },
+    "Berserker_walk": {
+      "path": "units/Berserker/walk.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/walk.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1696,
+        "errors": []
+      }
+    },
+    "Berserker_attack": {
+      "path": "units/Berserker/attack.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/attack.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 96,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1847,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_0": {
+      "path": "units/Berserker/blue_0_0.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_0.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1222,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_1": {
+      "path": "units/Berserker/blue_0_1.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_1.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1444,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_3": {
+      "path": "units/Berserker/blue_0_3.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_3.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1013,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_2": {
+      "path": "units/Berserker/blue_0_2.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_2.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1356,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_6": {
+      "path": "units/Berserker/blue_0_6.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_6.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1074,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_7": {
+      "path": "units/Berserker/blue_0_7.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_7.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1045,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_5": {
+      "path": "units/Berserker/blue_0_5.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_5.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 1066,
+        "errors": []
+      }
+    },
+    "Berserker_blue_0_4": {
+      "path": "units/Berserker/blue_0_4.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/units/Berserker/blue_0_4.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 32,
+        "height": 32,
+        "format": "valid_image",
+        "size_bytes": 862,
+        "errors": []
+      }
+    },
+    "Possessed_blue_9_3": {
+      "path": "units/Possessed/blue_9_3.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_3.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_2": {
+      "path": "units/Possessed/blue_9_2.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_2.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_0": {
+      "path": "units/Possessed/blue_9_0.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_0.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_1": {
+      "path": "units/Possessed/blue_9_1.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_1.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_5": {
+      "path": "units/Possessed/blue_9_5.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_5.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_4": {
+      "path": "units/Possessed/blue_9_4.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_4.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_6": {
+      "path": "units/Possessed/blue_9_6.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_6.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_7": {
+      "path": "units/Possessed/blue_9_7.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_7.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_9": {
+      "path": "units/Possessed/blue_9_9.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_9.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_8": {
+      "path": "units/Possessed/blue_9_8.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_8.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_11": {
+      "path": "units/Possessed/blue_9_11.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_11.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "Possessed_blue_9_10": {
+      "path": "units/Possessed/blue_9_10.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/units/Possessed/blue_9_10.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    }
+  },
+  "terrain": {
+    "water_water": {
+      "path": "tiles/water/water.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/water/water.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 816,
+        "height": 880,
+        "format": "valid_image",
+        "size_bytes": 99514,
+        "errors": []
+      }
+    },
+    "village_outside": {
+      "path": "tiles/village/outside.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/village/outside.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 832,
+        "height": 384,
+        "format": "valid_image",
+        "size_bytes": 66061,
+        "errors": []
+      }
+    },
+    "dungeon_dungeon": {
+      "path": "tiles/dungeon/dungeon.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/dungeon/dungeon.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 816,
+        "height": 464,
+        "format": "valid_image",
+        "size_bytes": 65058,
+        "errors": []
+      }
+    },
+    "terrain_terrain": {
+      "path": "tiles/terrain/terrain.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/terrain/terrain.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 624,
+        "height": 608,
+        "format": "valid_image",
+        "size_bytes": 75650,
+        "errors": []
+      }
+    },
+    "terrain_road": {
+      "path": "tiles/terrain/road.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/road.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "terrain_forest": {
+      "path": "tiles/terrain/forest.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/forest.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "terrain_grass": {
+      "path": "tiles/terrain/grass.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/grass.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 81,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "terrain_mountain": {
+      "path": "tiles/terrain/mountain.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/mountain.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 84,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "terrain_water": {
+      "path": "tiles/terrain/water.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/water.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 81,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "terrain_wall": {
+      "path": "tiles/terrain/wall.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/tiles/terrain/wall.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "house_house": {
+      "path": "tiles/house/house.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/house/house.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 1104,
+        "height": 608,
+        "format": "valid_image",
+        "size_bytes": 113972,
+        "errors": []
+      }
+    },
+    "castle_castle": {
+      "path": "tiles/castle/castle.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/castle/castle.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 544,
+        "height": 272,
+        "format": "valid_image",
+        "size_bytes": 23586,
+        "errors": []
+      }
+    },
+    "desert_desert": {
+      "path": "tiles/desert/desert.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/desert/desert.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 288,
+        "height": 368,
+        "format": "valid_image",
+        "size_bytes": 21574,
+        "errors": []
+      }
+    },
+    "interior_inside": {
+      "path": "tiles/interior/inside.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/interior/inside.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 768,
+        "height": 560,
+        "format": "valid_image",
+        "size_bytes": 72645,
+        "errors": []
+      }
+    },
+    "worldmap_world": {
+      "path": "tiles/worldmap/world.png",
+      "placeholder": false,
+      "validation": {
+        "path": "assets/tiles/worldmap/world.png",
+        "exists": true,
+        "is_stub": false,
+        "width": 624,
+        "height": 416,
+        "format": "valid_image",
+        "size_bytes": 34178,
+        "errors": []
+      }
+    }
+  },
+  "effects": {
+    "particles_heal": {
+      "path": "effects/particles/heal.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/particles/heal.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "particles_attack": {
+      "path": "effects/particles/attack.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/particles/attack.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "particles_death": {
+      "path": "effects/particles/death.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/particles/death.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 81,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "summoning_energy": {
+      "path": "effects/summoning/energy.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/summoning/energy.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "summoning_sparkle": {
+      "path": "effects/summoning/sparkle.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/summoning/sparkle.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 83,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "summoning_portal": {
+      "path": "effects/summoning/portal.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/summoning/portal.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "aura_buff": {
+      "path": "effects/aura/buff.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/aura/buff.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 80,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "aura_shield": {
+      "path": "effects/aura/shield.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/aura/shield.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    },
+    "aura_debuff": {
+      "path": "effects/aura/debuff.png",
+      "placeholder": true,
+      "validation": {
+        "path": "assets/effects/aura/debuff.png",
+        "exists": true,
+        "is_stub": true,
+        "width": 0,
+        "height": 0,
+        "format": "unknown",
+        "size_bytes": 82,
+        "errors": [
+          "File is too small (likely a stub)"
+        ]
+      }
+    }
+  },
+  "validation": {
+    "total_files": 759,
+    "stubs": 172,
+    "valid": 587,
+    "errors": 0
+  }
+}

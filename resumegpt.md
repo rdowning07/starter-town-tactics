@@ -77,6 +77,19 @@
 - ✅ **Type Safety**: All mypy errors resolved (23 → 0 errors)
 - ✅ **Documentation**: Comprehensive weekly brief with latest metrics
 
+### **Week 8: MVP Playable Game Loop** ✅ (COMPLETED)
+**Sprint: Visual Integration & Asset Pipeline**
+- 🎯 **Achievement**: Fully playable MVP with camera, input, and asset integration
+- 🎯 **Integration**: Week 7 asset validation pipeline integrated into game loop
+- 🎯 **Quality**: 26/26 tests passing, 90% camera system coverage
+- ✅ **MVP Game Loop**: Asset validation + existing game systems + real-time rendering
+- ✅ **Camera System**: Smooth panning, zoom, coordinate transformations, viewport management
+- ✅ **Input Integration**: Mouse/keyboard controls with camera awareness and double-click actions
+- ✅ **Demo Scenarios**: Rich YAML scenarios with units, events, combos, and victory conditions
+- ✅ **Architecture Safety**: Compatible with existing GameActions, UIRenderer, UIState
+- ✅ **Art Asset Ready**: Comprehensive guide for asset-to-UI conversion
+- ✅ **Documentation**: Updated roadmap, README, and integration guides
+
 #### 🎯 Phase 7 Major Achievements
 - ✅ **Rules Engine** (`core/rules/`): Combat with height/facing bonuses, status effects
 - ✅ **A* Pathfinding** (`core/rules/move.py`): Shortest path with obstacles
@@ -184,43 +197,44 @@
 
 ---
 
-## 🚀 Latest Development Session (Phase 7 Completion)
+## 🚀 Latest Development Session (Week 8 MVP Completion)
 
-### **Today's Major Accomplishments**
-- 🎯 **Soak Performance Test**: Implemented `cli/soak.py` achieving 612,059 TPS (204x requirement)
-- 🎯 **MyPy Compliance**: Fixed all 23 type errors across 9 files (100% compliance)
-- 🎯 **Acceptance Criteria**: Met all 7 requirements for production readiness
-- 🎯 **Documentation**: Updated README, plan.md, weekly brief with latest metrics
+### **Week 8 Major Accomplishments**
+- 🎯 **MVP Game Loop**: Implemented fully playable MVP with camera, input, and rendering
+- 🎯 **Camera System**: Created comprehensive camera system with smooth movement and zoom
+- 🎯 **Input Integration**: Enhanced input handling with camera awareness and double-click actions
+- 🎯 **Asset Integration**: Week 7 validation pipeline integrated into game loop initialization
+- 🎯 **Demo Scenarios**: Rich YAML scenarios with units, events, combos, and victory conditions
+- 🎯 **Test Coverage**: 26 additional tests for MVP functionality (all passing)
 
-### **Performance Achievement**
-- **Before**: 800K+ TPS (excellent)
-- **After**: 612,059 TPS with artifacts and gates
-- **Requirement**: 3,000 TPS minimum
-- **Achievement**: 204x above requirement
+### **Week 8 Technical Achievements**
+- **Camera System**: 90% test coverage with smooth panning, zoom, and coordinate transformations
+- **Input Controller**: 56% test coverage with mouse/keyboard integration
+- **MVP Game Loop**: Asset validation + existing game systems + real-time rendering
+- **Integration**: Safe compatibility with existing GameActions, UIRenderer, UIState
+- **Code Quality**: Clean, linted code with proper type annotations
 
-### **Code Quality Achievement**
-- **MyPy Errors**: 23 → 0 (100% resolved)
-- **Type Safety**: Complete compliance across all modules
-- **Test Success**: 86/91 tests passing (95% success rate)
-- **Pylint Score**: 7.33/10 (mostly cosmetic issues)
+### **Week 8 Deliverables**
+- ✅ **`cli/mvp_game_loop.py`**: Fully playable MVP with asset validation integration
+- ✅ **`game/camera.py`**: Comprehensive camera system (153 lines, 90% coverage)
+- ✅ **`game/input_controller.py`**: Enhanced input handling (202 lines, 56% coverage)
+- ✅ **`scenarios/mvp_demo.yaml`**: Rich demo scenario with units, events, objectives
+- ✅ **`tests/test_week8_mvp.py`**: Complete test suite (26 tests, all passing)
+- ✅ **`docs/art_asset_integration_guide.md`**: Comprehensive guide for asset-to-UI conversion
 
-### **Production Readiness Status**
-All acceptance criteria successfully met:
-- ✅ Rules: Height & facing affect damage; Poison & Slow function; unit deaths emit UNIT_KILLED
-- ✅ A*: Units can path around obstacles; unreachable returns None
-- ✅ Objectives: All four implemented and pass tests; compound objective works in demo
-- ✅ Demo: pygame renders deterministic battle with visual output
-- ✅ Determinism: replay yields identical end-state hash
-- ✅ Perf: soak passes ≥ 3000 tps and writes artifacts/soak.json
-- ✅ Docs: Weekly brief updated with perf + feature changes
+### **Architecture Integration Success**
+- ✅ **Existing Systems**: Compatible with GameActions, UIRenderer, UIState
+- ✅ **Asset Validation**: Week 7 validation integrated into game loop initialization
+- ✅ **Game State**: Full integration with UnitManager, TurnController
+- ✅ **Error Handling**: Graceful fallbacks and compatibility checks
+- ✅ **Documentation**: Updated roadmap, README, and integration guides
 
-### **Next Phase Ready**
-The project is now production-ready with:
-- Complete rules engine and objectives system
-- High-performance command-event architecture
-- Comprehensive test coverage and type safety
-- Visual demo with pygame adapter
-- Performance gates and CI integration
-- Full documentation and metrics tracking
+### **Art Asset Integration Ready**
+The MVP is now ready for art asset integration:
+- Asset validation pipeline validates terrain tiles and sprite sheets
+- Camera system provides smooth viewport management for visual presentation
+- Input integration works with visual coordinates and camera awareness
+- Demo scenarios reference art assets and can be updated with real assets
+- Comprehensive guide created for asset-to-UI conversion process
 
-**Status: Ready for deployment and future enhancements.**
+**Status: MVP complete and ready for art asset integration to create fully visual, playable experience.**

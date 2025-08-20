@@ -1,0 +1,388 @@
+# MVP Demo Scenario
+# Week 8 playable demo with validated assets and comprehensive gameplay
+
+name: "MVP Demo - Starter Town Tactics"
+description: "Playable MVP demonstration with asset validation integration"
+version: "1.0"
+author: "Week 8 Integration"
+
+# Map configuration
+map:
+  width: 20
+  height: 15
+  tile_size: 32
+  default_terrain: "grass"
+
+# Terrain layout (optional - can be procedurally generated)
+terrain:
+  # Define specific terrain tiles
+  tiles:
+    - { x: 0, y: 0, type: "stone", variant: "corner" }
+    - { x: 1, y: 0, type: "stone", variant: "edge" }
+    - { x: 2, y: 0, type: "stone", variant: "corner" }
+
+    # Water features
+    - { x: 10, y: 5, type: "water" }
+    - { x: 11, y: 5, type: "water" }
+    - { x: 12, y: 5, type: "water" }
+    - { x: 10, y: 6, type: "water" }
+    - { x: 11, y: 6, type: "water" }
+    - { x: 12, y: 6, type: "water" }
+
+    # Forest area
+    - { x: 15, y: 8, type: "forest" }
+    - { x: 16, y: 8, type: "forest" }
+    - { x: 15, y: 9, type: "forest" }
+    - { x: 16, y: 9, type: "forest" }
+
+    # Mountain range
+    - { x: 5, y: 12, type: "mountain" }
+    - { x: 6, y: 12, type: "mountain" }
+    - { x: 7, y: 12, type: "mountain" }
+
+# Units configuration
+units:
+  # Player units
+  - id: "player_hero"
+    name: "Hero"
+    team: "player"
+    unit_type: "knight"
+    position: { x: 3, y: 3 }
+    stats:
+      hp: 25
+      max_hp: 25
+      attack: 8
+      defense: 5
+      movement: 3
+      attack_range: 1
+    animations:
+      idle: "knight_idle"
+      walk: "knight_walk"
+      attack: "knight_attack"
+    ai_behavior: "player_controlled"
+
+  - id: "player_mage"
+    name: "Mage"
+    team: "player"
+    unit_type: "mage"
+    position: { x: 4, y: 3 }
+    stats:
+      hp: 20
+      max_hp: 20
+      attack: 12
+      defense: 3
+      movement: 2
+      attack_range: 3
+    animations:
+      idle: "mage_idle"
+      walk: "mage_walk"
+      attack: "mage_cast"
+    status_effects:
+      - type: "shield"
+        duration: 3
+        stacks: 1
+    ai_behavior: "player_controlled"
+
+  - id: "player_archer"
+    name: "Archer"
+    team: "player"
+    unit_type: "archer"
+    position: { x: 2, y: 4 }
+    stats:
+      hp: 18
+      max_hp: 18
+      attack: 10
+      defense: 4
+      movement: 3
+      attack_range: 4
+    animations:
+      idle: "archer_idle"
+      walk: "archer_walk"
+      attack: "archer_attack"
+    ai_behavior: "player_controlled"
+
+  # Enemy units
+  - id: "enemy_orc_chief"
+    name: "Orc Chief"
+    team: "enemy"
+    unit_type: "orc"
+    position: { x: 16, y: 6 }
+    stats:
+      hp: 30
+      max_hp: 30
+      attack: 12
+      defense: 6
+      movement: 2
+      attack_range: 1
+    animations:
+      idle: "orc_idle"
+      walk: "orc_walk"
+      attack: "orc_attack"
+    status_effects:
+      - type: "strength"
+        duration: 5
+        stacks: 2
+    ai_behavior: "aggressive"
+
+  - id: "enemy_goblin_scout"
+    name: "Goblin Scout"
+    team: "enemy"
+    unit_type: "goblin"
+    position: { x: 17, y: 7 }
+    stats:
+      hp: 15
+      max_hp: 15
+      attack: 6
+      defense: 2
+      movement: 4
+      attack_range: 1
+    animations:
+      idle: "goblin_idle"
+      walk: "goblin_walk"
+      attack: "goblin_attack"
+    status_effects:
+      - type: "haste"
+        duration: 3
+        stacks: 1
+    ai_behavior: "patrol"
+    ai_params:
+      patrol_points:
+        [{ x: 17, y: 7 }, { x: 15, y: 5 }, { x: 18, y: 4 }, { x: 17, y: 7 }]
+
+  - id: "enemy_goblin_archer"
+    name: "Goblin Archer"
+    team: "enemy"
+    unit_type: "goblin"
+    position: { x: 14, y: 8 }
+    stats:
+      hp: 12
+      max_hp: 12
+      attack: 8
+      defense: 2
+      movement: 3
+      attack_range: 3
+    animations:
+      idle: "goblin_idle"
+      walk: "goblin_walk"
+      attack: "goblin_attack"
+    ai_behavior: "defensive"
+
+# Victory conditions
+objectives:
+  primary:
+    type: "eliminate_all"
+    target_team: "enemy"
+    description: "Defeat all enemy units"
+
+  secondary:
+    - type: "survive_turns"
+      turns: 10
+      description: "Survive for 10 turns"
+    - type: "protect_unit"
+      unit_id: "player_hero"
+      description: "Keep the Hero alive"
+
+# Defeat conditions
+defeat_conditions:
+  - type: "all_units_dead"
+    team: "player"
+    description: "All player units defeated"
+  - type: "unit_death"
+    unit_id: "player_hero"
+    description: "Hero has fallen"
+  - type: "turn_limit"
+    max_turns: 20
+    description: "Turn limit exceeded"
+
+# Game events
+events:
+  - id: "reinforcements"
+    trigger:
+      type: "turn_count"
+      value: 5
+    action:
+      type: "spawn_units"
+      units:
+        - id: "reinforcement_knight"
+          name: "Knight Reinforcement"
+          team: "player"
+          unit_type: "knight"
+          position: { x: 1, y: 1 }
+          stats:
+            hp: 22
+            max_hp: 22
+            attack: 9
+            defense: 6
+            movement: 3
+            attack_range: 1
+    message: "🛡️ Knight reinforcements have arrived!"
+
+  - id: "enemy_reinforcements"
+    trigger:
+      type: "unit_count"
+      team: "enemy"
+      operator: "less_than"
+      value: 2
+    action:
+      type: "spawn_units"
+      units:
+        - id: "enemy_reinforcement"
+          name: "Orc Warrior"
+          team: "enemy"
+          unit_type: "orc"
+          position: { x: 19, y: 8 }
+          stats:
+            hp: 20
+            max_hp: 20
+            attack: 10
+            defense: 4
+            movement: 2
+            attack_range: 1
+    message: "⚔️ Enemy reinforcements approach!"
+    one_time: true
+
+  - id: "healing_fountain"
+    trigger:
+      type: "unit_at_position"
+      position: { x: 10, y: 10 }
+      team: "player"
+    action:
+      type: "heal_unit"
+      amount: 10
+    message: "💙 The healing fountain restores your strength!"
+    cooldown: 3
+
+# Combo attacks
+combos:
+  - id: "knight_mage_combo"
+    name: "Arcane Strike"
+    description: "Knight and Mage coordinate for a powerful attack"
+    participants: ["player_hero", "player_mage"]
+    range: 2
+    steps:
+      - unit: "player_hero"
+        action: "move_adjacent"
+        target_type: "enemy"
+      - unit: "player_mage"
+        action: "cast_spell"
+        effect: "strength"
+        target: "player_hero"
+      - unit: "player_hero"
+        action: "attack"
+        damage_multiplier: 1.5
+    cooldown: 4
+    fx_effects:
+      - type: "combo"
+        position: "target"
+      - type: "magic"
+        position: "caster"
+
+  - id: "archer_precision_shot"
+    name: "Precision Shot"
+    description: "Archer takes careful aim for a critical strike"
+    participants: ["player_archer"]
+    range: 4
+    steps:
+      - unit: "player_archer"
+        action: "skip_turn"
+        effect: "focus"
+      - unit: "player_archer"
+        action: "attack"
+        damage_multiplier: 2.0
+        critical_chance: 0.8
+    cooldown: 3
+    fx_effects:
+      - type: "critical"
+        position: "target"
+
+# Audio settings
+audio:
+  background_music: "battle_theme.ogg"
+  sound_effects:
+    unit_move: "footstep.wav"
+    unit_attack: "sword_clash.wav"
+    unit_death: "unit_death.wav"
+    spell_cast: "magic_cast.wav"
+    combo_activate: "combo.wav"
+    victory: "victory.wav"
+    defeat: "defeat.wav"
+  volume:
+    master: 0.8
+    music: 0.6
+    effects: 0.7
+
+# Camera settings
+camera:
+  initial_position: { x: 3, y: 3 } # Center on player hero
+  follow_active_unit: true
+  smooth_movement: true
+  zoom_enabled: false
+  pan_speed: 64
+
+# UI settings
+ui:
+  show_grid: true
+  show_coordinates: false
+  show_movement_range: true
+  show_attack_range: true
+  show_threat_zones: false
+  show_health_bars: true
+  show_status_icons: true
+  show_turn_indicator: true
+  animation_speed: 1.0
+
+# Asset validation settings
+asset_validation:
+  validate_on_load: true
+  required_assets:
+    terrain:
+      - "grass"
+      - "stone"
+      - "water"
+      - "forest"
+      - "mountain"
+    units:
+      - "knight"
+      - "mage"
+      - "archer"
+      - "orc"
+      - "goblin"
+    animations:
+      - "knight_idle"
+      - "knight_walk"
+      - "knight_attack"
+      - "mage_idle"
+      - "mage_walk"
+      - "mage_cast"
+      - "archer_idle"
+      - "archer_walk"
+      - "archer_attack"
+      - "orc_idle"
+      - "orc_walk"
+      - "orc_attack"
+      - "goblin_idle"
+      - "goblin_walk"
+      - "goblin_attack"
+  fallback_assets:
+    terrain_default: "grass"
+    unit_default: "knight"
+    animation_default: "idle"
+
+# Debug settings
+debug:
+  show_ai_debug: false
+  show_pathfinding: false
+  show_fps: true
+  show_camera_info: false
+  log_level: "INFO"
+  enable_cheats: false
+
+# Metadata
+metadata:
+  created: "2024-01-08"
+  last_modified: "2024-01-08"
+  version: "1.0.0"
+  compatible_engine_version: "0.8.0"
+  tags: ["demo", "mvp", "tutorial", "week8"]
+  difficulty: "easy"
+  estimated_duration: "10-15 minutes"
