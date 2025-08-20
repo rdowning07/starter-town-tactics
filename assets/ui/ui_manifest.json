@@ -1,0 +1,179 @@
+{
+  "ui_assets": {
+    "version": "1.0",
+    "description": "UI stub assets for Starter Town Tactics",
+    "assets": {
+      "healthbar": {
+        "path": "assets/ui/healthbar.png",
+        "size": [
+          64,
+          8
+        ],
+        "description": "Health bar background",
+        "type": "stub"
+      },
+      "apbar": {
+        "path": "assets/ui/apbar.png",
+        "size": [
+          64,
+          8
+        ],
+        "description": "AP bar background",
+        "type": "stub"
+      },
+      "cursors_cursor": {
+        "path": "assets/ui/cursors/cursor.png",
+        "size": [
+          16,
+          16
+        ],
+        "description": "Default cursor",
+        "type": "stub"
+      },
+      "cursors_select": {
+        "path": "assets/ui/cursors/select.png",
+        "size": [
+          16,
+          16
+        ],
+        "description": "Selection cursor",
+        "type": "stub"
+      },
+      "cursors_move": {
+        "path": "assets/ui/cursors/move.png",
+        "size": [
+          16,
+          16
+        ],
+        "description": "Movement cursor",
+        "type": "stub"
+      },
+      "cursors_attack": {
+        "path": "assets/ui/cursors/attack.png",
+        "size": [
+          16,
+          16
+        ],
+        "description": "Attack cursor",
+        "type": "stub"
+      },
+      "cursors_invalid": {
+        "path": "assets/ui/cursors/invalid.png",
+        "size": [
+          16,
+          16
+        ],
+        "description": "Invalid action cursor",
+        "type": "stub"
+      },
+      "icons_attack": {
+        "path": "assets/ui/icons/attack.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Attack ability icon",
+        "type": "stub"
+      },
+      "icons_move": {
+        "path": "assets/ui/icons/move.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Move ability icon",
+        "type": "stub"
+      },
+      "icons_heal": {
+        "path": "assets/ui/icons/heal.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Heal ability icon",
+        "type": "stub"
+      },
+      "icons_wait": {
+        "path": "assets/ui/icons/wait.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Wait ability icon",
+        "type": "stub"
+      },
+      "icons_special": {
+        "path": "assets/ui/icons/special.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Special ability icon",
+        "type": "stub"
+      },
+      "icons_defend": {
+        "path": "assets/ui/icons/defend.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Defend ability icon",
+        "type": "stub"
+      },
+      "icons_health": {
+        "path": "assets/ui/icons/health.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "Health icon",
+        "type": "stub"
+      },
+      "icons_ap": {
+        "path": "assets/ui/icons/ap.png",
+        "size": [
+          32,
+          32
+        ],
+        "description": "AP icon",
+        "type": "stub"
+      },
+      "panels_status_panel": {
+        "path": "assets/ui/panels/status_panel.png",
+        "size": [
+          128,
+          32
+        ],
+        "description": "Status panel background",
+        "type": "stub"
+      },
+      "panels_turn_panel": {
+        "path": "assets/ui/panels/turn_panel.png",
+        "size": [
+          128,
+          32
+        ],
+        "description": "Turn panel background",
+        "type": "stub"
+      },
+      "panels_action_panel": {
+        "path": "assets/ui/panels/action_panel.png",
+        "size": [
+          128,
+          32
+        ],
+        "description": "Action panel background",
+        "type": "stub"
+      },
+      "panels_health_panel": {
+        "path": "assets/ui/panels/health_panel.png",
+        "size": [
+          128,
+          32
+        ],
+        "description": "Health panel background",
+        "type": "stub"
+      }
+    }
+  }
+}

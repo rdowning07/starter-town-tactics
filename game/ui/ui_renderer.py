@@ -4,6 +4,7 @@ Integrated with GameState, SimRunner, and existing asset systems.
 """
 
 import pygame
+import os
 from typing import Optional, Dict, Tuple
 from game.ui.ui_state import UIState
 
@@ -22,6 +23,10 @@ class UIRenderer:
         # Cache for placeholder assets
         self._placeholder_cache: Dict[str, pygame.Surface] = {}
         self._render_stats = {"elements_rendered": 0, "placeholders_used": 0}
+        
+        # UI asset cache
+        self._ui_assets: Dict[str, pygame.Surface] = {}
+        self._load_ui_assets()
 
     def _get_placeholder(self, key: str, creator_func, *args, **kwargs) -> pygame.Surface:
         """Get or create a placeholder asset."""
@@ -57,6 +62,82 @@ class UIRenderer:
         text_color = (255, 255, 255) if state == "normal" else (200, 200, 200)
         self.draw_text(text, rect.center, text_color)
         self._render_stats["elements_rendered"] += 1
+
+    def _load_ui_assets(self):
+        """Load UI assets with fallback mechanisms."""
+        ui_assets = {
+            "healthbar": "assets/ui/healthbar.png",
+            "apbar": "assets/ui/apbar.png",
+            "cursor": "assets/ui/cursors/cursor.png",
+            "select_cursor": "assets/ui/cursors/select.png",
+            "move_cursor": "assets/ui/cursors/move.png",
+            "attack_cursor": "assets/ui/cursors/attack.png",
+            "invalid_cursor": "assets/ui/cursors/invalid.png",
+            "attack_icon": "assets/ui/icons/attack.png",
+            "move_icon": "assets/ui/icons/move.png",
+            "heal_icon": "assets/ui/icons/heal.png",
+            "wait_icon": "assets/ui/icons/wait.png",
+            "special_icon": "assets/ui/icons/special.png",
+            "defend_icon": "assets/ui/icons/defend.png",
+            "health_icon": "assets/ui/icons/health.png",
+            "ap_icon": "assets/ui/icons/ap.png",
+            "status_panel": "assets/ui/panels/status_panel.png",
+            "turn_panel": "assets/ui/panels/turn_panel.png",
+            "action_panel": "assets/ui/panels/action_panel.png",
+            "health_panel": "assets/ui/panels/health_panel.png",
+        }
+        
+        for key, path in ui_assets.items():
+            try:
+                if os.path.exists(path):
+                    self._ui_assets[key] = pygame.image.load(path).convert_alpha()
+                else:
+                    # Create fallback placeholder
+                    self._ui_assets[key] = self._create_ui_placeholder(key)
+            except Exception as e:
+                # Create fallback placeholder on error
+                self._ui_assets[key] = self._create_ui_placeholder(key)
+    
+    def _create_ui_placeholder(self, asset_type: str) -> pygame.Surface:
+        """Create a placeholder for UI assets."""
+        # Define placeholder specifications
+        placeholders = {
+            "healthbar": {"size": (64, 8), "color": (255, 0, 0)},
+            "apbar": {"size": (64, 8), "color": (0, 0, 255)},
+            "cursor": {"size": (16, 16), "color": (255, 255, 255)},
+            "select_cursor": {"size": (16, 16), "color": (255, 255, 0)},
+            "move_cursor": {"size": (16, 16), "color": (0, 255, 0)},
+            "attack_cursor": {"size": (16, 16), "color": (255, 0, 0)},
+            "invalid_cursor": {"size": (16, 16), "color": (128, 128, 128)},
+            "attack_icon": {"size": (32, 32), "color": (139, 0, 0)},
+            "move_icon": {"size": (32, 32), "color": (0, 100, 0)},
+            "heal_icon": {"size": (32, 32), "color": (0, 255, 0)},
+            "wait_icon": {"size": (32, 32), "color": (255, 255, 0)},
+            "special_icon": {"size": (32, 32), "color": (255, 0, 255)},
+            "defend_icon": {"size": (32, 32), "color": (0, 0, 255)},
+            "health_icon": {"size": (32, 32), "color": (255, 0, 0)},
+            "ap_icon": {"size": (32, 32), "color": (0, 0, 255)},
+            "status_panel": {"size": (128, 32), "color": (50, 50, 50)},
+            "turn_panel": {"size": (128, 32), "color": (100, 100, 100)},
+            "action_panel": {"size": (128, 32), "color": (150, 150, 150)},
+            "health_panel": {"size": (128, 32), "color": (75, 75, 75)},
+        }
+        
+        if asset_type in placeholders:
+            spec = placeholders[asset_type]
+            surface = pygame.Surface(spec["size"])
+            surface.fill(spec["color"])
+            pygame.draw.rect(surface, (255, 255, 255), surface.get_rect(), 1)
+            return surface
+        else:
+            # Default placeholder
+            surface = pygame.Surface((32, 32))
+            surface.fill((128, 128, 128))
+            return surface
+    
+    def get_ui_asset(self, asset_type: str) -> pygame.Surface:
+        """Get a UI asset with fallback."""
+        return self._ui_assets.get(asset_type, self._create_ui_placeholder(asset_type))
 
     def draw_text(self, text: str, pos: Tuple[int, int], color: Tuple[int, int, int] = (255, 255, 255),
                   font: Optional[pygame.font.Font] = None) -> None:
