@@ -116,8 +116,12 @@ class UIAssetDemo:
         self.screen.blit(title_text, (20, 20))
         
         # Current step
-        step_text = self.info_font.render(f"Step: {self.demo_steps[self.current_demo_step]}", True, (255, 255, 0))
-        self.screen.blit(step_text, (20, 60))
+        if 0 <= self.current_demo_step < len(self.demo_steps):
+            step_text = self.info_font.render(f"Step: {self.demo_steps[self.current_demo_step]}", True, (255, 255, 0))
+            self.screen.blit(step_text, (20, 60))
+        else:
+            step_text = self.info_font.render("Step: Unknown", True, (255, 255, 0))
+            self.screen.blit(step_text, (20, 60))
         
         # Progress
         progress = (self.current_demo_step + 1) / len(self.demo_steps) * 100
