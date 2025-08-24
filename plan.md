@@ -5,6 +5,15 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 
 ## ✅ COMPLETED PHASES
 
+### Phase 0: Code Quality Infrastructure ✅ (COMPLETED)
+- ✅ **Pre-commit Hooks**: Automated formatting, linting, and testing on every commit
+- ✅ **Coding Standards**: Documented patterns and architectural guidelines (`docs/coding_standards.md`)
+- ✅ **IDE Integration**: VS Code settings for real-time quality feedback
+- ✅ **Automated Scripts**: `scripts/code_quality.py` for comprehensive validation
+- ✅ **Quality Gates**: Enforced standards prevent issues from accumulating
+- ✅ **Makefile Integration**: `make quality`, `make pre-commit`, `make fix-imports` commands
+- ✅ **Architecture Guidelines**: Clear patterns for dependency injection, error handling, and testing
+
 ### Phase 1: Core Systems & Turn Controller
 - ✅ Unit AP, HP, death, and team tracking
 - ✅ TacticalStateMachine implemented
@@ -177,7 +186,7 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 
 **Assets Needed**:
 - `assets/terrain/grass.png` (32x32)
-- `assets/terrain/forest.png` (32x32) 
+- `assets/terrain/forest.png` (32x32)
 - `assets/terrain/mountain.png` (32x32)
 - `assets/terrain/water.png` (32x32)
 - `assets/terrain/road.png` (32x32)

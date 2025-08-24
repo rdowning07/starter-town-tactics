@@ -1,0 +1,32 @@
+name: "Units & FX Demo"
+description: "Demo for knight and goblin animations with spark and slash effects"
+map_id: "terrain_demo"
+max_turns: 20
+
+units:
+  - name: "knight"
+    team: player
+    sprite: "knight"
+    x: 4
+    y: 4
+    hp: 15
+    ap: 6
+    animation: "idle"
+  - name: "goblin"
+    team: enemy
+    sprite: "goblin"
+    x: 6
+    y: 5
+    hp: 12
+    ap: 5
+    animation: "idle"
+
+camera:
+  - action: "center"
+    target: [4, 4]
+    speed: 5
+
+# Keybind suggestions:
+# SPACE → spawn 'spark' at knight
+# A → play knight 'attack' once, then revert to 'idle'
+# W → toggle goblin 'walk'

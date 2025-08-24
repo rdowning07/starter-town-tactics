@@ -74,11 +74,11 @@ class AIController:
         """Decides what action to take based on AI behavior and health."""
         if not hasattr(ai_unit, 'ai'):
             return
-            
+
         # Check if health is low
         current_hp = getattr(ai_unit, 'hp', 10)
         max_hp = getattr(ai_unit, 'max_hp', 10)
-        
+
         if current_hp < max_hp / 2:  # If health is low
             if ai_unit.ai == "defensive":
                 self.retreat(ai_unit)  # Defensive AI retreats

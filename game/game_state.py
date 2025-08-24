@@ -24,7 +24,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         self.ai_controller = AIController([])
         self.sim_runner = SimRunner(self.turn_controller, self.ai_controller)
         self.fx_manager = FXManager()
-        
+
         # New managers for enhanced game flow
         self.objectives_manager = ObjectivesManager(self)
         self.event_manager = EventManager(self)
@@ -39,7 +39,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
 
         # Terrain data (loaded via map_loader)
         self.terrain_grid: list[list[str]] = []
-        
+
         # Wire up AI controller with game state
         self.ai_controller.set_game_state(self)
 
@@ -93,14 +93,14 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         turns_exceeded = self.turn_controller.current_turn > self.max_turns
         return player_dead or turns_exceeded
 
-    def trigger_fx(self, fx_type: str, position: tuple[int, int], 
+    def trigger_fx(self, fx_type: str, position: tuple[int, int],
                    duration: float = 0.5, intensity: float = 1.0,
                    color: tuple[int, int, int] = (255, 255, 255),
                    size: int = 10) -> None:
         """Trigger a visual effect."""
         self.fx_manager.trigger_fx(fx_type, position, duration, intensity, color, size)
 
-    def trigger_flash(self, position: tuple[int, int], 
+    def trigger_flash(self, position: tuple[int, int],
                      color: tuple[int, int, int] = (255, 255, 255),
                      duration: float = 0.3, intensity: float = 1.0) -> None:
         """Trigger a flash effect."""
@@ -114,7 +114,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         """Advance the game turn and update objectives and events."""
         # Advance event manager
         self.event_manager.advance_turn()
-        
+
         # Update objectives based on current game state
         self.objectives_manager.update_objectives()
 
@@ -134,7 +134,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         """Check if a specific event has been triggered."""
         return self.event_manager.has_event_triggered(event_name)
 
-    def trigger_particle(self, position: tuple[int, int], 
+    def trigger_particle(self, position: tuple[int, int],
                         particle_type: str = "sparkle",
                         count: int = 5, duration: float = 1.0) -> None:
         """Trigger particle effect."""

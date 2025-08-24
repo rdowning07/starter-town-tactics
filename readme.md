@@ -104,7 +104,7 @@ units:
 
 camera:
   - action: "pan"
-    targets: 
+    targets:
       - [160, 160]  # Starting position
       - [320, 320]  # Intermediate position
       - [480, 480]  # Final position
@@ -157,6 +157,10 @@ make lint                        # Run flake8
 make typecheck                   # Run mypy type checks
 make validate-assets             # Validate asset structure
 make viewer                      # Launch asset viewer
+make quality                     # Run comprehensive code quality checks
+make pre-commit                  # Run pre-commit workflow (fix-imports + format + lint + test)
+make fix-imports                 # Fix import order automatically
+make format                      # Format code with black and isort
 make play-sim-demo               # Interactive demo (basic)
 make play-sim-demo-auto          # Auto-run demo
 make play-scenario-demo          # Play YAML scenario
@@ -167,11 +171,27 @@ make play-demo                   # Command-event architecture demo
 make soak                        # Performance testing
 ```
 
+### 🔧 Code Quality Infrastructure
+
+The project now includes comprehensive code quality automation:
+
+- **Pre-commit Hooks**: Automatic formatting, linting, and testing on every commit
+- **Coding Standards**: Documented patterns and architectural guidelines (`docs/coding_standards.md`)
+- **IDE Integration**: VS Code settings for real-time quality feedback
+- **Automated Scripts**: `scripts/code_quality.py` for comprehensive validation
+- **Quality Gates**: Enforced standards prevent issues from accumulating
+
+**Quick Quality Check:**
+```bash
+make quality  # Runs all quality checks in sequence
+```
+
 ### ✅ Test Status
 - 86/91 tests passing (95% success rate)
 - Comprehensive test coverage for core systems
 - 100% mypy compliant (all type errors resolved)
-- Pylint: 7.33/10 (mostly cosmetic issues)
+- **Code Quality**: Automated pylint/flake8 enforcement with pre-commit hooks
+- **Standards**: Documented coding patterns and architectural guidelines
 
 ---
 
@@ -295,7 +315,7 @@ starter-town-tactics/
 
 **Asset Status**: 798 total assets, 95% are stubs needing replacement
 - ❌ **Unit Sprites**: 0/23 valid animation sheets (0% success)
-- ❌ **Terrain Tiles**: 0/1 valid terrain files (0% success)  
+- ❌ **Terrain Tiles**: 0/1 valid terrain files (0% success)
 - ✅ **UI Elements**: 19/19 UI assets (100% - working)
 - ✅ **Sound Effects**: 8/8 valid WAV files (100% - working)
 
@@ -332,10 +352,10 @@ starter-town-tactics/
 
 ### 📋 Future Enhancement Opportunities
 1. **Visual Assets**: Replace 95% stub assets with real art
-2. **Code Quality**: Address pylint cosmetic issues (7.33/10 → 9.0+)
-3. **Test Coverage**: Improve remaining 5 failing tests
-4. **Performance**: Further optimization opportunities
-5. **Features**: Additional objective types, enhanced AI behaviors
+2. **Test Coverage**: Improve remaining 5 failing tests
+3. **Performance**: Further optimization opportunities
+4. **Features**: Additional objective types, enhanced AI behaviors
+5. **Code Quality**: Leverage automated infrastructure for continuous improvement
 
 ---
 
@@ -363,7 +383,7 @@ make play-sim-demo               # Basic simulation
 
 - **Test Success Rate**: 86/91 tests passing (95% success rate)
 - **Type Safety**: 100% mypy compliance (all errors resolved)
-- **Code Quality**: Pylint 7.33/10 (mostly cosmetic issues)
+- **Code Quality**: Automated enforcement with pre-commit hooks and documented standards
 - **Performance**: 612,059 TPS (204x above 3000 TPS requirement)
 - **Total Assets**: 798 files validated and tracked (95% are stubs)
 - **UI Assets**: 19/19 working (100% success rate)

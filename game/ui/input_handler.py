@@ -18,12 +18,12 @@ def get_unit_at_tile(game_state, tile: Tuple[int, int]) -> Optional[str]:
     """Get unit at tile position from game state."""
     if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
         return None
-    
+
     # Check if any unit is at this tile
     for unit_id, unit_data in game_state.units.units.items():
         if (unit_data.get("x"), unit_data.get("y")) == tile:
             return unit_id
-    
+
     return None
 
 def handle_mouse_input(event: pygame.event.Event, ui_state: UIState, tile_size: int, game_state=None):
@@ -33,7 +33,7 @@ def handle_mouse_input(event: pygame.event.Event, ui_state: UIState, tile_size: 
 
     elif event.type == pygame.MOUSEBUTTONDOWN:
         tile = screen_to_tile(event.pos, tile_size)
-        
+
         # Try to get unit from game state if available
         unit_id = None
         if game_state:
@@ -41,7 +41,7 @@ def handle_mouse_input(event: pygame.event.Event, ui_state: UIState, tile_size: 
         else:
             # Fallback to stub for Week 1 compatibility
             unit_id = get_unit_at_tile_stub(tile)
-        
+
         if unit_id is not None:
             ui_state.select_unit(unit_id)
             ui_state.action_menu_pos = event.pos
@@ -67,13 +67,13 @@ def calculate_movement_range(game_state, unit_id: str, move_range: int = 3) -> l
     """Calculate valid movement tiles for unit."""
     if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
         return []
-    
+
     unit_data = game_state.units.units.get(unit_id, {})
     if not unit_data:
         return []
-    
+
     unit_x, unit_y = unit_data.get("x", 0), unit_data.get("y", 0)
-    
+
     valid_tiles = []
     for dx in range(-move_range, move_range + 1):
         for dy in range(-move_range, move_range + 1):
@@ -81,20 +81,20 @@ def calculate_movement_range(game_state, unit_id: str, move_range: int = 3) -> l
                 new_x, new_y = unit_x + dx, unit_y + dy
                 if is_valid_tile(new_x, new_y, game_state):
                     valid_tiles.append((new_x, new_y))
-    
+
     return valid_tiles
 
 def calculate_attack_targets(game_state, unit_id: str, attack_range: int = 1) -> list[Tuple[int, int]]:
     """Calculate valid attack targets for unit."""
     if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
         return []
-    
+
     unit_data = game_state.units.units.get(unit_id, {})
     if not unit_data:
         return []
-    
+
     unit_x, unit_y = unit_data.get("x", 0), unit_data.get("y", 0)
-    
+
     targets = []
     for dx in range(-attack_range, attack_range + 1):
         for dy in range(-attack_range, attack_range + 1):
@@ -106,7 +106,7 @@ def calculate_attack_targets(game_state, unit_id: str, attack_range: int = 1) ->
                     # Check if target is enemy
                     if target_data.get("team") != unit_data.get("team"):
                         targets.append((target_x, target_y))
-    
+
     return targets
 
 def is_valid_tile(x: int, y: int, game_state) -> bool:
@@ -114,11 +114,11 @@ def is_valid_tile(x: int, y: int, game_state) -> bool:
     # Map bounds (assume 20x20 grid for now)
     if x < 0 or y < 0 or x >= 20 or y >= 20:
         return False
-    
+
     # Check if tile is occupied by another unit
     if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
         for other_unit_id, other_unit_data in game_state.units.units.items():
             if (other_unit_data.get("x"), other_unit_data.get("y")) == (x, y):
                 return False
-    
+
     return True

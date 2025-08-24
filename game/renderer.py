@@ -22,7 +22,12 @@ class Renderer:
         self.screen = screen
         self.sprite_manager = sprite_manager
 
-    def render(self, game_state: "GameState", overlay_state: OverlayState, fx_manager: Optional[FXManager] = None) -> None:
+    def render(
+        self,
+        game_state: "GameState",
+        overlay_state: OverlayState,
+        fx_manager: Optional[FXManager] = None,
+    ) -> None:
         """Main render entrypoint per frame."""
         self.screen.fill((0, 0, 0))  # Clear screen
 
@@ -33,7 +38,7 @@ class Renderer:
             offset_x, offset_y = int(shake_offset[0]), int(shake_offset[1])
 
         # Create grid from terrain data if needed
-        if hasattr(game_state, 'terrain_grid') and game_state.terrain_grid:
+        if hasattr(game_state, "terrain_grid") and game_state.terrain_grid:
             grid = Grid.from_terrain(game_state.terrain_grid)
         else:
             # Fallback to default grid
@@ -57,82 +62,156 @@ class Renderer:
                         # It's a file path
                         try:
                             sprite = pygame.image.load(sprite_data)
-                            adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                            adjusted_position = (
+                                x * TILE_SIZE + offset_x,
+                                y * TILE_SIZE + offset_y,
+                            )
                             self.screen.blit(sprite, adjusted_position)
                         except (pygame.error, FileNotFoundError):
                             # Fallback: draw colored rectangle
                             color = self._get_terrain_color(tile.terrain)
-                            adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                            adjusted_position = (
+                                x * TILE_SIZE + offset_x,
+                                y * TILE_SIZE + offset_y,
+                            )
                             pygame.draw.rect(
                                 self.screen,
                                 color,
-                                pygame.Rect(adjusted_position[0], adjusted_position[1], TILE_SIZE, TILE_SIZE)
+                                pygame.Rect(
+                                    adjusted_position[0],
+                                    adjusted_position[1],
+                                    TILE_SIZE,
+                                    TILE_SIZE,
+                                ),
                             )
                     else:
                         # It's already a pygame.Surface
-                        adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                        adjusted_position = (
+                            x * TILE_SIZE + offset_x,
+                            y * TILE_SIZE + offset_y,
+                        )
                         self.screen.blit(sprite_data, adjusted_position)
                 else:
                     # No sprite available, draw colored rectangle
                     color = self._get_terrain_color(tile.terrain)
-                    adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                    adjusted_position = (
+                        x * TILE_SIZE + offset_x,
+                        y * TILE_SIZE + offset_y,
+                    )
                     pygame.draw.rect(
                         self.screen,
                         color,
-                        pygame.Rect(adjusted_position[0], adjusted_position[1], TILE_SIZE, TILE_SIZE)
+                        pygame.Rect(
+                            adjusted_position[0],
+                            adjusted_position[1],
+                            TILE_SIZE,
+                            TILE_SIZE,
+                        ),
                     )
 
-    def render_overlays(self, grid: Grid, overlay_state: OverlayState, offset_x: int = 0, offset_y: int = 0) -> None:
+    def render_overlays(
+        self,
+        grid: Grid,
+        overlay_state: OverlayState,
+        offset_x: int = 0,
+        offset_y: int = 0,
+    ) -> None:
         """Render movement and threat overlays."""
         # Render movement tiles
         if overlay_state.show_movement:
-            for (x, y) in overlay_state.movement_tiles:
+            for x, y in overlay_state.movement_tiles:
                 if grid.is_within_bounds(x, y):
-                    adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                    adjusted_position = (
+                        x * TILE_SIZE + offset_x,
+                        y * TILE_SIZE + offset_y,
+                    )
                     pygame.draw.rect(
                         self.screen,
                         (0, 0, 255, 100),  # Blue semi-transparent
-                        pygame.Rect(adjusted_position[0], adjusted_position[1], TILE_SIZE, TILE_SIZE),
+                        pygame.Rect(
+                            adjusted_position[0],
+                            adjusted_position[1],
+                            TILE_SIZE,
+                            TILE_SIZE,
+                        ),
                         width=2,
                     )
 
         # Render threat tiles
         if overlay_state.show_threat:
-            for (x, y) in overlay_state.threat_tiles:
+            for x, y in overlay_state.threat_tiles:
                 if grid.is_within_bounds(x, y):
-                    adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                    adjusted_position = (
+                        x * TILE_SIZE + offset_x,
+                        y * TILE_SIZE + offset_y,
+                    )
                     pygame.draw.rect(
                         self.screen,
                         (255, 0, 0, 100),  # Red semi-transparent
-                        pygame.Rect(adjusted_position[0], adjusted_position[1], TILE_SIZE, TILE_SIZE),
+                        pygame.Rect(
+                            adjusted_position[0],
+                            adjusted_position[1],
+                            TILE_SIZE,
+                            TILE_SIZE,
+                        ),
                         width=2,
                     )
 
-    def render_units(self, unit_manager: UnitManager, grid: Grid, offset_x: int = 0, offset_y: int = 0) -> None:
+    def render_units(
+        self,
+        unit_manager: UnitManager,
+        grid: Grid,
+        offset_x: int = 0,
+        offset_y: int = 0,
+    ) -> None:
         """Render all living units."""
         # Scan the grid for placed units
         for y in range(grid.height):
             for x in range(grid.width):
                 tile = grid.get_tile(x, y)
                 if tile.unit and tile.unit.is_alive():
-                    self._render_single_unit(unit_manager, tile.unit, x, y, offset_x, offset_y)
+                    self._render_single_unit(
+                        unit_manager, tile.unit, x, y, offset_x, offset_y
+                    )
 
-    def _render_single_unit(self, unit_manager: UnitManager, unit, x: int, y: int, offset_x: int, offset_y: int) -> None:
+    def _render_single_unit(
+        self,
+        unit_manager: UnitManager,
+        unit,
+        x: int,
+        y: int,
+        offset_x: int,
+        offset_y: int,
+    ) -> None:
         """Render a single unit."""
         # This is a Unit object with x, y coordinates
-        sprite_data = self.sprite_manager.get_unit_sprite(unit.name)
+
+        # Determine animation state for fighter units
+        state = "idle_down"  # Default state
+        if unit.name == "fighter":
+            # For fighter units, determine state based on unit properties
+            # This could be enhanced to track actual movement state
+            state = "idle_down"  # Default to idle facing down
+
+        sprite_data = self.sprite_manager.get_unit_sprite(unit.name, state=state)
         if sprite_data:
             # Handle both file paths and pygame.Surface objects
             if isinstance(sprite_data, str):
                 # It's a file path
                 try:
                     sprite = pygame.image.load(sprite_data)
-                    adjusted_position = (x * TILE_SIZE + offset_x, y * TILE_SIZE + offset_y)
+                    adjusted_position = (
+                        x * TILE_SIZE + offset_x,
+                        y * TILE_SIZE + offset_y,
+                    )
                     self.screen.blit(sprite, adjusted_position)
                 except (pygame.error, FileNotFoundError):
                     # Fallback: draw colored circle
                     color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
-                    center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
+                    center = (
+                        x * TILE_SIZE + TILE_SIZE // 2 + offset_x,
+                        y * TILE_SIZE + TILE_SIZE // 2 + offset_y,
+                    )
                     pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
             else:
                 # It's already a pygame.Surface
@@ -141,7 +220,10 @@ class Renderer:
         else:
             # No sprite available, draw colored circle
             color = (255, 255, 0) if unit.team == "player" else (255, 0, 0)
-            center = (x * TILE_SIZE + TILE_SIZE // 2 + offset_x, y * TILE_SIZE + TILE_SIZE // 2 + offset_y)
+            center = (
+                x * TILE_SIZE + TILE_SIZE // 2 + offset_x,
+                y * TILE_SIZE + TILE_SIZE // 2 + offset_y,
+            )
             pygame.draw.circle(self.screen, color, center, TILE_SIZE // 3)
 
         # Also check if this unit exists in UnitManager for additional data
@@ -150,7 +232,9 @@ class Renderer:
             # Could render HP/AP indicators here
             self._render_unit_indicators(x, y, unit_data)
 
-    def _render_unit_indicators(self, x: int, y: int, unit_data: dict, offset_x: int = 0, offset_y: int = 0) -> None:
+    def _render_unit_indicators(
+        self, x: int, y: int, unit_data: dict, offset_x: int = 0, offset_y: int = 0
+    ) -> None:
         """Render unit status indicators (HP, AP, etc.)."""
         # Render HP bar
         hp = unit_data.get("hp", 0)
@@ -166,7 +250,7 @@ class Renderer:
         pygame.draw.rect(
             self.screen,
             (255, 0, 0),  # Red background
-            pygame.Rect(bar_x, bar_y, bar_width, bar_height)
+            pygame.Rect(bar_x, bar_y, bar_width, bar_height),
         )
 
         # HP bar fill
@@ -175,21 +259,23 @@ class Renderer:
             pygame.draw.rect(
                 self.screen,
                 (0, 255, 0),  # Green fill
-                pygame.Rect(bar_x, bar_y, fill_width, bar_height)
+                pygame.Rect(bar_x, bar_y, fill_width, bar_height),
             )
 
     def _get_terrain_color(self, terrain: str) -> tuple[int, int, int]:
         """Get color for terrain type."""
         terrain_colors = {
-            "G": (34, 139, 34),    # Forest green
-            "F": (0, 100, 0),      # Dark green
-            "W": (0, 191, 255),    # Deep sky blue
-            "R": (139, 69, 19),    # Saddle brown
+            "G": (34, 139, 34),  # Forest green
+            "F": (0, 100, 0),  # Dark green
+            "W": (0, 191, 255),  # Deep sky blue
+            "R": (139, 69, 19),  # Saddle brown
             "M": (105, 105, 105),  # Dim gray
         }
         return terrain_colors.get(terrain, (128, 128, 128))  # Default gray
 
-    def _get_unit_position(self, unit_id: str, grid: Grid) -> tuple[int | None, int | None]:
+    def _get_unit_position(
+        self, unit_id: str, grid: Grid
+    ) -> tuple[int | None, int | None]:
         """Get unit position from grid or other source."""
         # This method is now deprecated since we scan the grid directly
         # Keeping for backward compatibility
@@ -200,12 +286,12 @@ class Renderer:
                     return x, y
         return None, None
 
+
 # game/renderer.py
+
 
 def draw_unit(self, unit, surface):
     sprite = self.sprite_manager.get_sprite(
-        unit.sprite_name,
-        unit.current_animation,
-        unit.animation_frame
+        unit.sprite_name, unit.current_animation, unit.animation_frame
     )
     surface.blit(sprite, unit.position)

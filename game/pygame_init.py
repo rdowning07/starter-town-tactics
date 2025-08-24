@@ -16,13 +16,13 @@ def init_pygame(
 ) -> bool:
     """
     Initialize pygame with proper configuration.
-    
+
     Args:
         window_size: Tuple of (width, height) for the game window
         window_title: Title for the game window
         enable_sound: Whether to initialize the sound system
         enable_joystick: Whether to initialize joystick support
-    
+
     Returns:
         True if initialization successful, False otherwise
     """
@@ -30,12 +30,12 @@ def init_pygame(
         # Initialize pygame core
         pygame.init()
         print("✅ Pygame core initialized")
-        
+
         # Set up display
         pygame.display.set_mode(window_size)
         pygame.display.set_caption(window_title)
         print(f"✅ Display initialized: {window_size[0]}x{window_size[1]}")
-        
+
         # Initialize sound system
         if enable_sound:
             try:
@@ -44,7 +44,7 @@ def init_pygame(
             except pygame.error as e:
                 print(f"⚠️  Sound system initialization failed: {e}")
                 print("   Game will continue without sound support")
-        
+
         # Initialize joystick support
         if enable_joystick:
             try:
@@ -56,7 +56,7 @@ def init_pygame(
                     print("ℹ️  No joystick devices found")
             except pygame.error as e:
                 print(f"⚠️  Joystick initialization failed: {e}")
-        
+
         # Set up event handling
         pygame.event.set_allowed([
             pygame.QUIT,
@@ -67,9 +67,9 @@ def init_pygame(
             pygame.MOUSEMOTION
         ])
         print("✅ Event handling configured")
-        
+
         return True
-        
+
     except pygame.error as e:
         print(f"❌ Pygame initialization failed: {e}")
         return False
@@ -113,4 +113,4 @@ def quick_init() -> bool:
         window_title="Starter Town Tactics",
         enable_sound=True,
         enable_joystick=False
-    ) 
+    )

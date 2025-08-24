@@ -19,7 +19,7 @@ class SimRunner:
     - Structured event logging (dicts)
     - Game phase tracking ("INIT" → "PLAYING" → "GAME_OVER")
     """
-    
+
     game_state: Optional["Game"]  # Type annotation for game_state
 
     def __init__(

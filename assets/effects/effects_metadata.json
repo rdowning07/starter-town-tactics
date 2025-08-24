@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "effects": {
+    "spark": {
+      "sheet": "assets/effects/spark/sheet.png",
+      "frame_size": [
+        32,
+        32
+      ],
+      "frames": 8,
+      "frame_duration_ms": 50,
+      "origin": [
+        16,
+        16
+      ],
+      "loop": false,
+      "z": "fx"
+    },
+    "slash": {
+      "sheet": "assets/effects/slash/sheet.png",
+      "frame_size": [
+        32,
+        32
+      ],
+      "frames": 6,
+      "frame_duration_ms": 60,
+      "origin": [
+        16,
+        16
+      ],
+      "loop": false,
+      "z": "fx"
+    }
+  }
+}

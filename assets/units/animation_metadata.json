@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "units": {
+    "knight": {
+      "idle": {
+        "sheet": "assets/units/knight/idle.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 125,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": true
+      },
+      "walk": {
+        "sheet": "assets/units/knight/walk.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 100,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": true
+      },
+      "attack": {
+        "sheet": "assets/units/knight/attack.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 80,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": false
+      }
+    },
+    "goblin": {
+      "idle": {
+        "sheet": "assets/units/goblin/idle.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 125,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": true
+      },
+      "walk": {
+        "sheet": "assets/units/goblin/walk.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 110,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": true
+      },
+      "attack": {
+        "sheet": "assets/units/goblin/attack.png",
+        "frame_size": [
+          32,
+          32
+        ],
+        "frames": 4,
+        "frame_duration_ms": 90,
+        "origin": [
+          16,
+          24
+        ],
+        "loop": false
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@ class EventManager:
         """Advances the game turn and triggers events based on turn count."""
         self.turn_count += 1
         print(f"🔄 Turn {self.turn_count} advanced")
-        
+
         # Check for turn-based events
         if self.turn_count == 5:
             self.trigger_reinforcements()
@@ -32,11 +32,11 @@ class EventManager:
         if "reinforcements" not in self.triggered_events:
             print("🆘 Reinforcements have arrived!")
             self.triggered_events.append("reinforcements")
-            
+
             # Add new units to game state
             self.game_state.add_unit("reinforcement_1", "player", ap=3, hp=15)
             self.game_state.add_unit("reinforcement_2", "player", ap=3, hp=15)
-            
+
             # Log the event
             self.event_history.append({
                 "turn": self.turn_count,
@@ -49,10 +49,10 @@ class EventManager:
         if "storm" not in self.triggered_events:
             print("⛈️ A storm has arrived! All units' vision is reduced.")
             self.triggered_events.append("storm")
-            
+
             # Apply weather effect through FX system
             self.game_state.trigger_fx("weather_storm", (0, 0), duration=5.0, intensity=0.8)
-            
+
             # Log the event
             self.event_history.append({
                 "turn": self.turn_count,
@@ -65,10 +65,10 @@ class EventManager:
         if "boss_phase" not in self.triggered_events:
             print("👹 Boss phase activated! Enemy units become more aggressive.")
             self.triggered_events.append("boss_phase")
-            
+
             # Apply boss phase effects
             self.game_state.trigger_fx("boss_aura", (400, 300), duration=3.0, intensity=1.0, color=(255, 0, 0))
-            
+
             # Log the event
             self.event_history.append({
                 "turn": self.turn_count,

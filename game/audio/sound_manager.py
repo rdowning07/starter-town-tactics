@@ -12,14 +12,14 @@ from game.ui.ui_state import UIState
 # @refactor
 class SoundManager:
     """Plays sounds for game events with full architecture integration."""
-    
+
     def __init__(self, logger=None):
         self.logger = logger
         self.sounds = {}
         self.sound_enabled = True
         self.volume = 0.7
         self.missing_sounds = []
-        
+
         # Initialize pygame mixer
         try:
             pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
@@ -27,7 +27,7 @@ class SoundManager:
         except Exception as e:
             print(f"⚠️  Sound system initialization failed: {e}")
             self.sound_enabled = False
-    
+
     def _load_sounds(self):
         """Load all sound files with fallback handling."""
         sound_files = {
@@ -40,13 +40,13 @@ class SoundManager:
             "heal": "assets/sfx/heal.wav",
             "block": "assets/sfx/block.wav"
         }
-        
+
         for sound_name, sound_path in sound_files.items():
             try:
                 if os.path.exists(sound_path):
                     self.sounds[sound_name] = pygame.mixer.Sound(sound_path)
                     self.sounds[sound_name].set_volume(self.volume)
-                    
+
                     if self.logger:
                         self.logger.log_event("sound_loaded", {
                             "sound": sound_name,
@@ -67,12 +67,12 @@ class SoundManager:
                         "path": sound_path,
                         "error": str(e)
                     })
-    
+
     def play(self, sound_name: str, volume: Optional[float] = None):
         """Play a sound with validation and logging."""
         if not self.sound_enabled:
             return
-        
+
         if sound_name not in self.sounds:
             if sound_name not in self.missing_sounds:
                 self.missing_sounds.append(sound_name)
@@ -81,28 +81,28 @@ class SoundManager:
                         "sound": sound_name
                     })
             return
-        
+
         try:
             # Set volume if specified
             if volume is not None:
                 self.sounds[sound_name].set_volume(volume)
-            
+
             # Play the sound
             self.sounds[sound_name].play()
-            
+
             if self.logger:
                 self.logger.log_event("sound_played", {
                     "sound": sound_name,
                     "volume": volume or self.volume
                 })
-        
+
         except Exception as e:
             if self.logger:
                 self.logger.log_event("sound_play_error", {
                     "sound": sound_name,
                     "error": str(e)
                 })
-    
+
     def play_game_event(self, event_type: str, game_state=None, **kwargs):
         """Play sound based on game event type."""
         sound_mapping = {
@@ -115,36 +115,36 @@ class SoundManager:
             "game_victory": "victory",
             "game_defeat": "defeat"
         }
-        
+
         sound_name = sound_mapping.get(event_type)
         if sound_name:
             self.play(sound_name)
-    
+
     def set_volume(self, volume: float):
         """Set global volume for all sounds."""
         self.volume = max(0.0, min(1.0, volume))
-        
+
         for sound in self.sounds.values():
             sound.set_volume(self.volume)
-        
+
         if self.logger:
             self.logger.log_event("volume_changed", {
                 "volume": self.volume
             })
-    
+
     def enable_sound(self, enabled: bool):
         """Enable or disable sound system."""
         self.sound_enabled = enabled
-        
+
         if self.logger:
             self.logger.log_event("sound_toggled", {
                 "enabled": enabled
             })
-    
+
     def get_missing_sounds(self) -> List[str]:
         """Get list of missing sound files."""
         return self.missing_sounds.copy()
-    
+
     def get_sound_status(self) -> Dict:
         """Get comprehensive sound system status."""
         return {
@@ -154,11 +154,11 @@ class SoundManager:
             "missing_sounds": self.missing_sounds,
             "total_sounds": len(self.sounds) + len(self.missing_sounds)
         }
-    
+
     def create_sound_report(self) -> str:
         """Create a detailed sound system report."""
         status = self.get_sound_status()
-        
+
         report = f"""
 🔊 Sound System Report
 =====================
@@ -168,17 +168,17 @@ Loaded Sounds: {len(status['loaded_sounds'])}/{status['total_sounds']}
 
 ✅ Loaded Sounds:
 """
-        
+
         for sound in status['loaded_sounds']:
             report += f"  - {sound}\n"
-        
+
         if status['missing_sounds']:
             report += f"\n❌ Missing Sounds:\n"
             for sound in status['missing_sounds']:
                 report += f"  - {sound}\n"
-        
+
         return report
-    
+
     def cleanup(self):
         """Clean up sound resources."""
         try:

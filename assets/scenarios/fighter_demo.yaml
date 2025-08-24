@@ -1,0 +1,55 @@
+# Fighter Demo Scenario
+# Tests fighter unit integration with the main game
+
+name: "Fighter Integration Demo"
+description: "Demo scenario with fighter units to test animation integration"
+
+# Map configuration
+map:
+  width: 10
+  height: 8
+  terrain: |
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+    GGGGGGGGGG
+
+# Units configuration
+units:
+  fighter_1:
+    name: "fighter"
+    team: "player"
+    hp: 10
+    x: 3
+    y: 3
+    unit_type: "fighter"
+
+  fighter_2:
+    name: "fighter"
+    team: "enemy"
+    hp: 8
+    x: 6
+    y: 4
+    unit_type: "fighter"
+
+# Game configuration
+game:
+  turn_limit: 20
+  victory_conditions:
+    - type: "eliminate_team"
+      team: "enemy"
+
+  defeat_conditions:
+    - type: "eliminate_team"
+      team: "player"
+    - type: "turn_limit"
+      turns: 20
+
+# AI configuration
+ai:
+  enemy_behavior: "aggressive"
+  difficulty: "normal"

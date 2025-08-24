@@ -4,8 +4,8 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import yaml
 import pygame
+import yaml
 
 
 class SpriteManager:
@@ -21,8 +21,12 @@ class SpriteManager:
         self.tier_groups = {}
         self.tilesets = {}
         self.unit_sprites = {}  # Add missing attribute for animation support
+        self.animation_catalog = (
+            None  # Will be initialized if fighter assets are available
+        )
         self._load_sprite_mapping()
         self._load_tileset_mapping()
+        self._load_fighter_animations()
 
     def _load_sprite_mapping(self):
         """Load sprite mapping from YAML configuration."""
@@ -50,6 +54,23 @@ class SpriteManager:
                     tileset["name"]: tileset for tileset in data.get("tilesets", [])
                 }
 
+    def _load_fighter_animations(self):
+        """Load fighter animations using AnimationCatalog."""
+        try:
+            from game.AnimationCatalog import AnimationCatalog
+
+            animation_metadata_path = Path(
+                "assets/units/_metadata/animation_metadata.json"
+            )
+            if animation_metadata_path.exists():
+                self.animation_catalog = AnimationCatalog(animation_metadata_path)
+                print(
+                    f"[SpriteManager] Loaded fighter animations with {len(self.animation_catalog._frames)} frames"
+                )
+        except Exception as e:
+            print(f"[SpriteManager] Could not load fighter animations: {e}")
+            self.animation_catalog = None
+
     def load_assets(self):
         """Load all game assets including animation frames."""
         self.load_terrain_assets()
@@ -76,15 +97,15 @@ class SpriteManager:
             path = f"assets/tiles/{terrain_type}/{filename}"
             if os.path.exists(path):
                 self.sprites[f"terrain_{terrain_type}"] = path
-        
+
         # New terrain character mapping for terrain demo
         terrain_char_mapping = {
-            "G": "grass.png",      # Grass
-            "F": "forest.png",     # Forest
-            "M": "mountain.png",   # Mountain
-            "W": "water.png",      # Water
-            "R": "road.png",       # Road
-            "#": "wall.png",       # Wall
+            "G": "grass.png",  # Grass
+            "F": "forest.png",  # Forest
+            "M": "mountain.png",  # Mountain
+            "W": "water.png",  # Water
+            "R": "road.png",  # Road
+            "#": "wall.png",  # Wall
         }
 
         for terrain_char, filename in terrain_char_mapping.items():
@@ -139,11 +160,25 @@ class SpriteManager:
         return self.sprites.get(f"terrain_{terrain_type}")
 
     def get_unit_sprite(
-        self, unit_type: str, team: str = "blue", frame: int = 0,
-        state: str = "idle", frame_index: int = 0
+        self,
+        unit_type: str,
+        team: str = "blue",
+        frame: int = 0,
+        state: str = "idle",
+        frame_index: int = 0,
     ) -> Optional[str | pygame.Surface]:
         """Get unit sprite with animation frame support and backward compatibility."""
-        # First try the new animation system
+        # First try fighter animations
+        if unit_type == "fighter" and self.animation_catalog:
+            import pygame
+            elapsed_ms = pygame.time.get_ticks() if pygame.get_init() else 0
+            meta = self.animation_catalog.get("fighter", state)
+            if meta:
+                frame_surface = self._get_current_frame_surface(meta, elapsed_ms)
+                if frame_surface:
+                    return frame_surface
+
+        # Then try the new animation system
         if unit_type in self.unit_sprites:
             animation = self.unit_sprites[unit_type].get(state)
             if animation and isinstance(animation, list):
@@ -155,12 +190,41 @@ class SpriteManager:
         key = f"unit_{unit_type}_{team}_{frame}"
         return self.sprites.get(key)
 
+    def _get_current_frame_surface(self, meta: dict, elapsed_ms: int) -> Optional[pygame.Surface]:
+        """Get the current frame surface for an animation."""
+        if "frame_files" in meta:
+            # Frame-based animation
+            frame_files = meta.get("frame_files", [])
+            if not frame_files:
+                return None
+            from game.AnimationCatalog import frame_index
+            idx = frame_index(meta, elapsed_ms)
+            if idx < len(frame_files):
+                frame_file = frame_files[idx]
+                return self.animation_catalog.get_frame(frame_file)
+        elif "sheet" in meta:
+            # Sheet-based animation (legacy)
+            sheet = self.animation_catalog.get_sheet(meta)
+            if sheet is None:
+                return None
+            w, h = meta.get("frame_size", [32, 32])
+            from game.AnimationCatalog import frame_index
+            idx = frame_index(meta, elapsed_ms)
+            src = pygame.Rect(idx * w, 0, w, h)
+            frame_surface = pygame.Surface((w, h), pygame.SRCALPHA)
+            frame_surface.blit(sheet, (0, 0), src)
+            return frame_surface
+        return None
+
     def get_unit_animation_frames(
         self, unit_type: str, team: str = "blue", animation_name: str = "idle"
     ) -> List[str | pygame.Surface]:
         """Get all animation frames for a unit from the new animation structure."""
         # Try new animation structure first
-        if unit_type in self.unit_sprites and animation_name in self.unit_sprites[unit_type]:
+        if (
+            unit_type in self.unit_sprites
+            and animation_name in self.unit_sprites[unit_type]
+        ):
             return self.unit_sprites[unit_type][animation_name]
 
         # Fallback to old method
@@ -260,7 +324,7 @@ class SpriteManager:
         metadata_path = f"assets/units/{unit_name}/animation_metadata.json"
         if os.path.exists(metadata_path):
             try:
-                with open(metadata_path, 'r', encoding='utf-8') as f:
+                with open(metadata_path, "r", encoding="utf-8") as f:
                     return json.load(f)
             except (OSError, json.JSONDecodeError) as e:
                 print(f"⚠️  Failed to load metadata for {unit_name}: {e}")
@@ -269,21 +333,37 @@ class SpriteManager:
         return {
             "idle": {"frame_count": 4, "frame_duration": 4, "loop": True},
             "attack": {
-                "frame_count": 5, "frame_duration": 2, "loop": False,
-                "fx_type": "spark", "fx_at": [2], "sound_at": [1]
+                "frame_count": 5,
+                "frame_duration": 2,
+                "loop": False,
+                "fx_type": "spark",
+                "fx_at": [2],
+                "sound_at": [1],
             },
             "hurt": {
-                "frame_count": 2, "frame_duration": 3, "loop": False,
-                "fx_type": "flash", "fx_at": [0], "sound_at": [0]
+                "frame_count": 2,
+                "frame_duration": 3,
+                "loop": False,
+                "fx_type": "flash",
+                "fx_at": [0],
+                "sound_at": [0],
             },
             "die": {
-                "frame_count": 6, "frame_duration": 3, "loop": False,
-                "fx_type": "shake", "fx_at": [2], "sound_at": [3]
+                "frame_count": 6,
+                "frame_duration": 3,
+                "loop": False,
+                "fx_type": "shake",
+                "fx_at": [2],
+                "sound_at": [3],
             },
             "stun": {
-                "frame_count": 3, "frame_duration": 3, "loop": False,
-                "fx_type": "flash", "fx_at": [1], "sound_at": [1]
-            }
+                "frame_count": 3,
+                "frame_duration": 3,
+                "loop": False,
+                "fx_type": "flash",
+                "fx_at": [1],
+                "sound_at": [1],
+            },
         }
 
     # Additional methods for visual debugger and tests
@@ -291,20 +371,28 @@ class SpriteManager:
         """Load a terrain sprite surface directly."""
         self.sprites[f"terrain_{terrain_type}"] = surface
 
-    def load_unit_sprite(self, unit_id: str, animation_state: str, surface: pygame.Surface) -> None:
+    def load_unit_sprite(
+        self, unit_id: str, animation_state: str, surface: pygame.Surface
+    ) -> None:
         """Load a unit sprite surface directly."""
         key = f"unit_{unit_id}_{animation_state}"
         self.sprites[key] = surface
 
-    def load_unit_animation(self, unit_id: str, animation_name: str, frame_list: list[pygame.Surface]) -> None:
+    def load_unit_animation(
+        self, unit_id: str, animation_name: str, frame_list: list[pygame.Surface]
+    ) -> None:
         """Load a unit animation with multiple frames."""
         if unit_id not in self.unit_sprites:
             self.unit_sprites[unit_id] = {}
         self.unit_sprites[unit_id][animation_name] = frame_list
 
     def load_unit_animation_from_sheet(
-        self, unit_id: str, animation_name: str, sheet_path: str,
-        frame_width: int, frame_height: int
+        self,
+        unit_id: str,
+        animation_name: str,
+        sheet_path: str,
+        frame_width: int,
+        frame_height: int,
     ) -> None:
         """Load a unit animation from a sprite sheet."""
         try:
@@ -322,7 +410,9 @@ class SpriteManager:
                 self.unit_sprites[unit_id] = {}
 
             self.unit_sprites[unit_id][animation_name] = frames
-            print(f"✅ Loaded {len(frames)} frames from sheet for {unit_id} {animation_name}")
+            print(
+                f"✅ Loaded {len(frames)} frames from sheet for {unit_id} {animation_name}"
+            )
 
         except pygame.error as e:
             print(f"⚠️  Failed to load sprite sheet {sheet_path}: {e}")
