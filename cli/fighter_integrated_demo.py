@@ -19,6 +19,7 @@ from game.overlay.overlay_state import OverlayState
 from game.renderer import Renderer
 from game.sim_runner import SimRunner
 from game.sprite_manager import SpriteManager
+from game.tile import Tile
 from game.turn_controller import TurnController
 from game.unit_manager import UnitManager
 
@@ -67,17 +68,27 @@ class FighterIntegratedDemo(DemoBase):
         self.start_time = pygame.time.get_ticks()
 
     def _setup_fighter_scenario(self):
-        """Setup a simple scenario with fighter units."""
-        # Create a simple grid
+        """Setup a simple scenario with fighter units and terrain."""
+        # Create a grid with proper terrain types
         self.grid = Grid(10, 8)
 
-        # Register fighter units
-        self.unit_manager.register_unit("fighter_1", "player", hp=10)
-        self.unit_manager.register_unit("fighter_2", "enemy", hp=8)
+        # Set terrain types for each tile (grass, forest, etc.)
+        for y in range(self.grid.height):
+            for x in range(self.grid.width):
+                tile = self.grid.get_tile(x, y)
+                # Alternate between grass and forest for visual variety
+                if (x + y) % 3 == 0:
+                    tile.terrain = "forest"
+                elif (x + y) % 2 == 0:
+                    tile.terrain = "grass"
+                else:
+                    tile.terrain = "dirt"
+
+        # Register fighter units with positions
+        self.unit_manager.register_unit("fighter_1", "player", hp=10, x=3, y=3)
+        self.unit_manager.register_unit("fighter_2", "enemy", hp=8, x=6, y=4)
 
         # Place units on the grid
-        # Note: This is a simplified placement - in a real scenario loader,
-        # this would be handled by the scenario loading system
         for y in range(self.grid.height):
             for x in range(self.grid.width):
                 tile = self.grid.get_tile(x, y)

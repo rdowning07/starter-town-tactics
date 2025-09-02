@@ -53,15 +53,15 @@ help:
 	@echo "  make play-demo-fixed-smoke - Run fixed demo with 3-second smoke test"
 	@echo "  make play-demo-enhanced - Run enhanced demo with asset integration"
 	@echo "  make play-demo-enhanced-smoke - Run enhanced demo with 3-second smoke test"
-	@echo "  make play-demo-fixed - Run fixed demo using game/ architecture"
-	@echo "  make play-demo-fixed-smoke - Run fixed demo with 3-second smoke test"
-	@echo "  make play-demo-enhanced - Run enhanced demo with asset integration"
-	@echo "  make play-demo-enhanced-smoke - Run enhanced demo with 3-second smoke test"
 	@echo "  make soak - Run performance soak test"
 	@echo "  make soak-integrated - Run integrated soak test with scenario loading"
 	@echo "  make play-demo-integrated - Run integrated demo with scenario loading"
 	@echo "  make play-demo-integrated-smoke - Run integrated demo with 3-second smoke test"
 	@echo "  make play-demo-integrated-enhanced - Run integrated demo with enhanced assets"
+	@echo "  make ai-bt-demo - Run Behavior Tree AI demo"
+	@echo "  make ai-bt-demo-enhanced - Run enhanced BT demo with performance metrics"
+	@echo "  make ai-bt-demo-visual - Run visual BT demo (Friday demo ready)"
+	@echo "  make test-bt - Run Behavior Tree tests"
 	@echo "  make replay - Run game replay (future)"
 
 .PHONY: install
@@ -101,8 +101,19 @@ typecheck:
 
 .PHONY: format
 format:
-	black $(SRC_DIR) $(TEST_DIR)
-	isort $(SRC_DIR) $(TEST_DIR)
+	black --line-length 120 $(SRC_DIR) $(TEST_DIR)
+	isort --profile black --line-length 120 $(SRC_DIR) $(TEST_DIR)
+
+.PHONY: fix-imports
+fix-imports:
+	isort --profile black --line-length 120 .
+
+.PHONY: quality
+quality:
+	python scripts/code_quality.py
+
+.PHONY: pre-commit
+pre-commit: fix-imports format lint test
 
 .PHONY: validate-assets
 validate-assets:
@@ -220,21 +231,7 @@ play-demo-smoke:
 play-demo-visual:
 	PYTHONPATH=. python -m cli.play_demo_visual
 
-.PHONY: play-demo-fixed
-play-demo-fixed:
-	PYTHONPATH=. python cli/play_demo_fixed.py
 
-.PHONY: play-demo-fixed-smoke
-play-demo-fixed-smoke:
-	PYTHONPATH=. python cli/play_demo_fixed.py --smoke
-
-.PHONY: play-demo-enhanced
-play-demo-enhanced:
-	PYTHONPATH=. python cli/play_demo_enhanced.py
-
-.PHONY: play-demo-enhanced-smoke
-play-demo-enhanced-smoke:
-	PYTHONPATH=. python cli/play_demo_enhanced.py --smoke
 
 .PHONY: play-demo-integrated
 play-demo-integrated:
@@ -248,6 +245,21 @@ play-demo-integrated-smoke:
 play-demo-integrated-enhanced:
 	PYTHONPATH=. python cli/play_demo_integrated.py --enhanced
 
+.PHONY: units-fx-demo new-terrain-demo fighter-demo fighter-integrated-demo
+units-fx-demo:
+	PYTHONPATH=. python cli/units_fx_demo.py
+
+new-terrain-demo:
+	PYTHONPATH=. python cli/test_new_terrain.py
+
+fighter-demo:
+	PYTHONPATH=. python cli/fighter_demo.py
+
+fighter-integrated-demo:
+	PYTHONPATH=. python cli/fighter_integrated_demo.py
+
+
+
 .PHONY: soak-integrated
 soak-integrated:
 	PYTHONPATH=. python cli/soak_integrated.py
@@ -256,22 +268,26 @@ soak-integrated:
 soak:
 	PYTHONPATH=. python cli/soak.py
 
+# === Behavior Tree AI System ===
+.PHONY: test-bt
+test-bt:
+	PYTHONPATH=. python -m pytest tests/test_bt_runtime.py -v
+
+.PHONY: ai-bt-demo
+ai-bt-demo:
+	PYTHONPATH=. python -m cli.ai_bt_demo
+
+.PHONY: ai-bt-demo-enhanced
+ai-bt-demo-enhanced:
+	PYTHONPATH=. python -m cli.ai_bt_demo_enhanced
+
+.PHONY: ai-bt-demo-visual
+ai-bt-demo-visual:
+	PYTHONPATH=. python -m cli.play_demo_visual
+
+ai-bt-fighter-vs-bandit:
+	PYTHONPATH=. python cli/ai_bt_fighter_demo.py
+
 .PHONY: replay
 replay:
 	PYTHONPATH=. python -m cli.replay
-
-.PHONY: play-demo-fixed
-play-demo-fixed:
-	PYTHONPATH=. python cli/play_demo_fixed.py
-
-.PHONY: play-demo-fixed-smoke
-play-demo-fixed-smoke:
-	PYTHONPATH=. python cli/play_demo_fixed.py --smoke
-
-.PHONY: play-demo-enhanced
-play-demo-enhanced:
-	PYTHONPATH=. python cli/play_demo_enhanced.py
-
-.PHONY: play-demo-enhanced-smoke
-play-demo-enhanced-smoke:
-	PYTHONPATH=. python cli/play_demo_enhanced.py --smoke

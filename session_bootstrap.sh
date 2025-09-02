@@ -1,4 +1,4 @@
-#!/bin/bash
+ on the#!/bin/bash
 # Enhanced bootstrap: restores session context + validates architecture contracts
 
 echo "🔁 [BOOTSTRAP] Loading Starter Town Tactics session context..."

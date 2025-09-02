@@ -12,7 +12,7 @@ class UnitManager:
         self.units: Dict[str, Dict] = {}
         self.fake_dead_units: set[str] = set()
 
-    def register_unit(self, unit_id: str, team: str, hp: int = 10) -> None:
+    def register_unit(self, unit_id: str, team: str, hp: int = 10, x: int = 0, y: int = 0) -> None:
         """Register a new unit with validation."""
         if not unit_id or not team:
             raise ValueError("Unit ID and team must be non-empty strings")
@@ -23,7 +23,33 @@ class UnitManager:
             "team": team,
             "hp": hp,
             "alive": True,
+            "x": x,
+            "y": y,
+            "attack_range": 1,  # Default attack range
         }
+
+    def get(self, unit_id: str) -> Optional[Dict]:
+        """Get unit data by ID, returns None if unit doesn't exist."""
+        return self.units.get(unit_id)
+
+    def update_unit_position(self, unit_id: str, x: int, y: int) -> bool:
+        """Update unit position, returns False if unit doesn't exist."""
+        if unit_id not in self.units:
+            return False
+        self.units[unit_id]["x"] = x
+        self.units[unit_id]["y"] = y
+        return True
+
+    def update_unit_hp(self, unit_id: str, new_hp: int) -> bool:
+        """Update unit HP, returns False if unit doesn't exist."""
+        if unit_id not in self.units:
+            return False
+        if new_hp < 0:
+            new_hp = 0
+        self.units[unit_id]["hp"] = new_hp
+        if new_hp == 0:
+            self.units[unit_id]["alive"] = False
+        return True
 
     def get_team(self, unit_id: str) -> Optional[str]:
         """Get the team of a unit, returns None if unit doesn't exist."""

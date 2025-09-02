@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from game.grid import Grid
 from game.unit import Unit
+from typing import Optional
 
 
 class AIController:
@@ -41,7 +42,7 @@ class AIController:
 
     def attack(self, ai_unit, target_unit):
         """AI attacks a target unit."""
-        if hasattr(ai_unit, 'can_attack') and ai_unit.can_attack(target_unit):
+        if hasattr(ai_unit, "can_attack") and ai_unit.can_attack(target_unit):
             ai_unit.attack(target_unit)
             print(f"{ai_unit.name} attacks {target_unit.name}")
         else:
@@ -50,13 +51,13 @@ class AIController:
     def retreat(self, ai_unit):
         """AI retreats to a safe spot."""
         safe_position = self.find_safe_position(ai_unit)
-        if hasattr(ai_unit, 'move_to'):
+        if hasattr(ai_unit, "move_to"):
             ai_unit.move_to(safe_position)
         print(f"{ai_unit.name} retreats to {safe_position}")
 
     def heal(self, ai_unit):
         """AI heals itself."""
-        if hasattr(ai_unit, 'heal'):
+        if hasattr(ai_unit, "heal"):
             ai_unit.heal(10)  # Example healing amount
             print(f"{ai_unit.name} heals itself")
         else:
@@ -64,7 +65,7 @@ class AIController:
 
     def move(self, ai_unit, target_position):
         """AI moves towards a target position."""
-        if hasattr(ai_unit, 'move_to'):
+        if hasattr(ai_unit, "move_to"):
             ai_unit.move_to(target_position)
             print(f"{ai_unit.name} moves to {target_position}")
         else:
@@ -96,11 +97,64 @@ class AIController:
             elif ai_unit.ai == "passive":
                 print(f"{ai_unit.name} is passive and waiting.")
 
+    def decide_action_bt(self, gs, unit_id: str) -> None:
+        """Behavior Tree-based AI decision making."""
+        if not self.game_state:
+            return
+            
+        # Find closest enemy target
+        target = self.find_closest_enemy(gs, unit_id)
+        if not target:
+            return
+
+        # Import here to avoid circular imports
+        try:
+            from core.ai.bt import make_basic_combat_tree
+            from game.ai_bt_adapter import BTAdapter
+            
+            # Behavior Tree path (new)
+            bt = make_basic_combat_tree()
+            ctx = BTAdapter(gs, unit_id, target)
+            status = bt.tick(ctx)
+            
+            # If BT failed (no move/attack possible), fall back to old heuristic:
+            if status not in ("SUCCESS", "RUNNING"):
+                print(f"BT failed for {unit_id}, falling back to heuristic")
+                self.decide_action_heuristic(gs, unit_id)
+        except ImportError as e:
+            print(f"BT system not available: {e}")
+            self.decide_action_heuristic(gs, unit_id)
+
+    def decide_action_heuristic(self, gs, unit_id: str) -> None:
+        """Fallback heuristic-based AI decision making."""
+        # This is your existing AI logic - keep it as fallback
+        print(f"Using heuristic AI for {unit_id}")
+        # TODO: Implement your existing heuristic logic here
+
+    def find_closest_enemy(self, gs, unit_id: str) -> Optional[str]:
+        """Find the closest enemy unit to the given unit."""
+        unit = gs.units.get(unit_id)
+        if not unit:
+            return None
+            
+        unit_team = unit.get("team")
+        if not unit_team:
+            return None
+            
+        # Find enemies (opposite team)
+        enemy_team = "player" if unit_team == "ai" else "ai"
+        enemies = gs.units.get_unit_ids_by_team(enemy_team)
+        
+        if not enemies:
+            return None
+            
+        # For now, just return the first enemy
+        # TODO: Implement actual distance calculation
+        return enemies[0]
+
     def find_safe_position(self, ai_unit):
         """Find a safe position for retreating."""
         # Simple implementation - move away from center
-        current_x = getattr(ai_unit, 'x', 0)
-        current_y = getattr(ai_unit, 'y', 0)
+        current_x = getattr(ai_unit, "x", 0)
+        current_y = getattr(ai_unit, "y", 0)
         return (max(0, current_x - 2), max(0, current_y - 2))
-
-

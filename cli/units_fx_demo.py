@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Units & FX Demo - Demonstrates knight/goblin animations with spark/slash effects.
+Units & FX Demo - Demonstrates fighter/bandit animations with spark/slash effects.
 """
 
 import json
@@ -43,8 +43,8 @@ class UnitsFXDemo(DemoBase):
         self.effect_sprites = self._load_effect_sprites()
 
         # Demo state
-        self.knight_animation = "idle"
-        self.goblin_animation = "idle"
+        self.fighter_animation = "idle"
+        self.bandit_animation = "idle"
         self.active_effects = []
         self.camera_x = 0
         self.camera_y = 0
@@ -56,7 +56,7 @@ class UnitsFXDemo(DemoBase):
         """Load animation metadata."""
         try:
             with open(
-                "assets/units/animation_metadata.json", "r", encoding="utf-8"
+                "assets/units/_metadata/animation_metadata.json", "r", encoding="utf-8"
             ) as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError) as e:
@@ -77,7 +77,7 @@ class UnitsFXDemo(DemoBase):
     def _load_unit_sprites(self) -> Dict[str, Dict[str, pygame.Surface]]:
         """Load unit sprite sheets."""
         sprites = {}
-        for unit_name in ["knight", "goblin"]:
+        for unit_name in ["fighter", "bandit"]:
             sprites[unit_name] = {}
             if unit_name in self.animation_metadata.get("units", {}):
                 unit_meta = self.animation_metadata["units"][unit_name]
@@ -198,42 +198,42 @@ class UnitsFXDemo(DemoBase):
 
     def _draw_units(self, surface: pygame.Surface) -> None:
         """Draw units with animations."""
-        # Knight at (4, 4)
+        # Fighter at (4, 4)
         if (
-            "knight" in self.unit_sprites
-            and self.knight_animation in self.unit_sprites["knight"]
+            "fighter" in self.unit_sprites
+            and self.fighter_animation in self.unit_sprites["fighter"]
         ):
-            knight_x = 4 * self.tile_size
-            knight_y = 4 * self.tile_size
-            knight_meta = self.animation_metadata["units"]["knight"][
-                self.knight_animation
+            fighter_x = 4 * self.tile_size
+            fighter_y = 4 * self.tile_size
+            fighter_meta = self.animation_metadata["units"]["fighter"][
+                self.fighter_animation
             ]
             self._blit_animation(
                 surface,
-                self.unit_sprites["knight"][self.knight_animation],
-                knight_meta,
-                knight_x,
-                knight_y,
-                "knight_idle",
+                self.unit_sprites["fighter"][self.fighter_animation],
+                fighter_meta,
+                fighter_x,
+                fighter_y,
+                "fighter_idle",
             )
 
-        # Goblin at (6, 5)
+        # Bandit at (6, 5)
         if (
-            "goblin" in self.unit_sprites
-            and self.goblin_animation in self.unit_sprites["goblin"]
+            "bandit" in self.unit_sprites
+            and self.bandit_animation in self.unit_sprites["bandit"]
         ):
-            goblin_x = 6 * self.tile_size
-            goblin_y = 5 * self.tile_size
-            goblin_meta = self.animation_metadata["units"]["goblin"][
-                self.goblin_animation
+            bandit_x = 6 * self.tile_size
+            bandit_y = 5 * self.tile_size
+            bandit_meta = self.animation_metadata["units"]["bandit"][
+                self.bandit_animation
             ]
             self._blit_animation(
                 surface,
-                self.unit_sprites["goblin"][self.goblin_animation],
-                goblin_meta,
-                goblin_x,
-                goblin_y,
-                "goblin_idle",
+                self.unit_sprites["bandit"][self.bandit_animation],
+                bandit_meta,
+                bandit_x,
+                bandit_y,
+                "bandit_idle",
             )
 
     def _draw_effects(self, surface: pygame.Surface) -> None:
@@ -257,9 +257,9 @@ class UnitsFXDemo(DemoBase):
         """Draw UI overlay."""
         # Instructions
         instructions = [
-            "SPACE: Spawn spark at knight",
-            "A: Knight attack animation",
-            "W: Toggle goblin walk",
+            "SPACE: Spawn spark at fighter",
+            "A: Fighter attack animation",
+            "W: Toggle bandit walk",
             "Arrow keys: Move camera",
             "ESC: Quit",
         ]
@@ -271,7 +271,9 @@ class UnitsFXDemo(DemoBase):
             y_offset += 25
 
         # Current animations
-        anim_text = f"Knight: {self.knight_animation}, Goblin: {self.goblin_animation}"
+        anim_text = (
+            f"Fighter: {self.fighter_animation}, Bandit: {self.bandit_animation}"
+        )
         text = self.font.render(anim_text, True, (255, 255, 255))
         surface.blit(text, (10, y_offset + 10))
 
@@ -287,22 +289,22 @@ class UnitsFXDemo(DemoBase):
                 return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    # Spawn spark at knight
+                    # Spawn spark at fighter
                     self._spawn_effect("spark", 4, 4)
                 elif event.key == pygame.K_a:
-                    # Knight attack animation
-                    self.knight_animation = "attack"
+                    # Fighter attack animation
+                    self.fighter_animation = "attack"
                     # Start attack animation
                     self.animation_clock.start_animation(
-                        "knight_attack",
-                        self.animation_metadata["units"]["knight"]["attack"],
+                        "fighter_attack",
+                        self.animation_metadata["units"]["fighter"]["attack"],
                     )
                 elif event.key == pygame.K_w:
-                    # Toggle goblin walk
-                    if self.goblin_animation == "idle":
-                        self.goblin_animation = "walk"
+                    # Toggle bandit walk
+                    if self.bandit_animation == "idle":
+                        self.bandit_animation = "walk"
                     else:
-                        self.goblin_animation = "idle"
+                        self.bandit_animation = "idle"
 
         # Handle continuous input
         keys = pygame.key.get_pressed()
@@ -321,11 +323,11 @@ class UnitsFXDemo(DemoBase):
         """Update animation states."""
         # Check if knight attack is finished
         if (
-            self.knight_animation == "attack"
-            and self.animation_clock.is_animation_finished("knight_attack")
+            self.fighter_animation == "attack"
+            and self.animation_clock.is_animation_finished("fighter_attack")
         ):
-            self.knight_animation = "idle"
-            self.animation_clock.clear_animation("knight_attack")
+            self.fighter_animation = "idle"
+            self.animation_clock.clear_animation("fighter_attack")
 
     def run(self) -> None:
         """Run the demo."""

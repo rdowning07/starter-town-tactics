@@ -98,6 +98,18 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ **Testing Coverage:** 11 new tests covering animation system and game integration
 - ✅ **UI System:** 19 UI assets with fallback mechanisms (100% working)
 - ✅ **Code Quality:** Pylint score improved from 8.09/10 to 9.72/10
+
+### 🧠 AI Integration & Friday Demo Preparation
+- ✅ **Behavior Tree Runtime:** Core BT system implemented in `core/ai/bt.py`
+- ✅ **BT Adapter:** `game/ai_bt_adapter.py` connects BT to GameState/UnitManager
+- ✅ **AIController Integration:** BT system wired into existing AI controller
+- ✅ **Unit Tests:** Comprehensive BT runtime validation (`tests/test_bt_runtime.py`)
+- ✅ **CLI Demo:** Basic BT functionality demonstration (`cli/ai_bt_demo.py`)
+- ✅ **Visual Demo Phase 1:** Pygame integration with playable fighter vs AI bandit
+- ✅ **Design Pattern Showcase:** Real-time display of Composite, Strategy, Observer, Factory patterns
+- ✅ **AI Architecture Display:** Live status showing BT decision-making and execution
+- 🔄 **Phase 2 Next:** Scale to 4v4 tactical combat (4 fighters vs 4 bandits)
+- ⏳ **Phase 3 Pending:** Polish and record 2-minute demo for Friday presentation
 - ⚠️ **22 Other Units:** Still need integration using the established fighter pattern
 - ⚠️ **Effect Assets:** Visual effects system ready for integration
 
@@ -198,6 +210,35 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ Created complete fighter unit with 24 individual frame files
 - ✅ Enhanced animation system with AnimationCatalog supporting frame-based animations
 - ✅ Implemented UnitRenderer component with proper positioning and timing
+
+### 🧠 Week 12: Behavior Tree AI System ✅ COMPLETED
+**Goal**: Implement sophisticated AI system demonstrating design patterns and architecture
+
+**Tasks COMPLETED**:
+- ✅ **Core BT Runtime** (`core/ai/bt.py`): Composite pattern, Strategy pattern, Protocol-based DI
+- ✅ **Game Integration** (`game/ai_bt_adapter.py`): Safe unit state management, AP integration
+- ✅ **AI Controller Enhancement** (`game/ai_controller.py`): BT codepath with fallback logic
+- ✅ **Comprehensive Testing** (`tests/test_bt_runtime.py`): 6 passing tests covering all BT logic
+- ✅ **Working Demo** (`cli/ai_bt_demo.py`): AI units move toward targets with AP consumption
+- ✅ **Documentation**: Updated README, plan, and resume with BT system details
+
+**Design Patterns Demonstrated**:
+- **Composite Pattern**: BT nodes (Sequence, Selector) compose complex behaviors
+- **Strategy Pattern**: Actions and conditions as swappable strategies
+- **Protocol-based DI**: Clean interfaces via Python Protocols
+- **Adapter Pattern**: Safe integration without breaking existing systems
+
+**Architecture Benefits**:
+- **Clean Separation**: BT runtime, adapter, and game integration layers
+- **Deterministic Behavior**: Predictable AI for testing and demo purposes
+- **Extensible Foundation**: Easy to add new behaviors and conditions
+- **Production Ready**: Integration with existing GameState and UnitManager
+
+**Next Phase Goals**:
+- 🎯 **Command System Integration**: Replace placeholder movement with real Move commands
+- 🎯 **Pathfinding Integration**: Add A* pathfinding to BT adapter
+- 🎯 **Visual Debugging**: Show BT execution in renderer
+- 🎯 **Advanced BT Nodes**: Decorators, memory, parallel execution
 - ✅ Created fighter demo with visual validation and movement controls
 - ✅ Integrated fighter into main game architecture (SpriteManager, Renderer, UnitManager)
 - ✅ Added comprehensive testing (11 new tests covering animation and integration)

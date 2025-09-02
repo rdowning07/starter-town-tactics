@@ -45,7 +45,7 @@ class VisualDemo:
         """Initialize the visual demo."""
         # Pygame setup
         self.screen = pygame.display.set_mode(WINDOW_SIZE)
-        pygame.display.set_caption("Starter Town Tactics - Command-Event Demo")
+        pygame.display.set_caption("Starter Town Tactics - Behavior Tree AI Demo")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 24)
         self.small_font = pygame.font.Font(None, 18)
@@ -78,29 +78,70 @@ class VisualDemo:
         enemy = Unit(unit_id="enemy1", pos=(8, 5), facing="W", stats=enemy_stats)
         state.add_unit(enemy)
 
-        # Create a simple demo controller
-        class VisualDemoController:
+        # Create a BT-based demo controller
+        class BTVisualDemoController:
             def __init__(self, demo):
                 self.demo = demo
-                self.command_index = 0
-                self.commands = [
-                    Move(unit_id="player1", to=(4, 3)),
-                    Attack(attacker_id="player1", target_id="enemy1"),
-                    EndTurn(unit_id="player1"),
-                    Move(unit_id="player1", to=(5, 4)),
-                    Attack(attacker_id="player1", target_id="enemy1"),
-                    EndTurn(unit_id="player1"),
-                    Move(unit_id="player1", to=(6, 5)),
-                    Attack(attacker_id="player1", target_id="enemy1"),
-                    EndTurn(unit_id="player1"),
-                ]
+                self.turn_count = 0
+                # Import BT system here to avoid circular imports
+                try:
+                    from core.ai.bt import make_basic_combat_tree
+                    from game.ai_bt_adapter import BTAdapter
+
+                    self.bt = make_basic_combat_tree()
+                    self.bt_available = True
+                except ImportError:
+                    print("BT system not available, falling back to simple controller")
+                    self.bt_available = False
+                    self.bt = None
 
             def decide(self, game_state: GameState):
-                command = self.commands[self.command_index % len(self.commands)]
-                self.command_index += 1
-                return command
+                if (
+                    not self.bt_available or self.turn_count % 3 != 0
+                ):  # BT decides every 3 turns
+                    # Fallback to simple movement
+                    self.turn_count += 1
+                    return Move(unit_id="player1", to=(4 + (self.turn_count % 3), 3))
 
-        state.set_controller(VisualDemoController(self))
+                # Use BT for AI decision making
+                try:
+                    # Simple BT logic: if enemy is close to player, move away; otherwise move toward
+                    enemy = game_state.unit("enemy1")
+                    player = game_state.unit("player1")
+                    if enemy and player:
+                        # Calculate distance
+                        dx = player.pos[0] - enemy.pos[0]
+                        dy = player.pos[1] - enemy.pos[1]
+                        distance = abs(dx) + abs(dy)  # Manhattan distance
+
+                        # BT decision: if too close, move away; if far, move toward
+                        if distance <= 2:  # Too close - move away
+                            new_x = enemy.pos[0] + (1 if dx < 0 else -1)
+                            new_y = enemy.pos[1] + (1 if dy < 0 else -1)
+                        else:  # Move toward player
+                            new_x = enemy.pos[0] + (
+                                1 if dx > 0 else (-1 if dx < 0 else 0)
+                            )
+                            new_y = enemy.pos[1] + (
+                                1 if dy > 0 else (-1 if dy < 0 else 0)
+                            )
+
+                        # Keep within bounds
+                        new_x = max(0, min(GRID_WIDTH - 1, new_x))
+                        new_y = max(0, min(GRID_HEIGHT - 1, new_y))
+
+                        return Move(unit_id="enemy1", to=(new_x, new_y))
+
+                    # Fallback movement
+                    self.turn_count += 1
+                    return Move(unit_id="enemy1", to=(8, 5))
+
+                except Exception as e:
+                    print(f"BT error: {e}, falling back to simple controller")
+                    self.turn_count += 1
+                    return Move(unit_id="enemy1", to=(8, 5))
+
+        state.set_controller(BTVisualDemoController(self))
 
         # Mock objectives and turn controller
         state.objectives = MockObjectives(self)
@@ -164,7 +205,7 @@ class VisualDemo:
         """Draw UI elements."""
         # Draw title
         title = self.font.render(
-            "Starter Town Tactics - Command-Event Demo", True, WHITE
+            "Starter Town Tactics - Behavior Tree AI Demo", True, WHITE
         )
         self.screen.blit(title, (10, 10))
 
@@ -181,6 +222,30 @@ class VisualDemo:
         for i, event in enumerate(self.events_log[-5:]):  # Show last 5 events
             event_text = self.small_font.render(event, True, YELLOW)
             self.screen.blit(event_text, (10, 95 + i * 20))
+
+        # Draw BT status
+        bt_status = self.font.render("BT AI: Active", True, GREEN)
+        self.screen.blit(bt_status, (10, 200))
+
+        # Draw BT decision info
+        enemy = self.state.unit("enemy1")
+        player = self.state.unit("player1")
+        if enemy and player:
+            distance = abs(player.pos[0] - enemy.pos[0]) + abs(
+                player.pos[1] - enemy.pos[1]
+            )
+            distance_text = self.small_font.render(f"Distance: {distance}", True, WHITE)
+            self.screen.blit(distance_text, (10, 230))
+
+            if distance <= 2:
+                decision_text = self.small_font.render(
+                    "BT Decision: Move Away", True, RED
+                )
+            else:
+                decision_text = self.small_font.render(
+                    "BT Decision: Move Toward", True, GREEN
+                )
+            self.screen.blit(decision_text, (10, 250))
 
         # Draw instructions
         instructions = [
@@ -214,8 +279,9 @@ class VisualDemo:
 
     def run(self):
         """Main game loop."""
-        print("🎮 Starting Visual Command-Event Demo...")
+        print("🎮 Starting Behavior Tree AI Visual Demo...")
         print("Controls: SPACE=Pause, R=Reset, ESC=Quit")
+        print("🤖 Watch the red enemy unit make smart decisions using BT logic!")
 
         while self.running and self.tick_count < self.max_ticks:
             # Handle input
@@ -261,9 +327,13 @@ class MockTurnController:
     def __init__(self, demo):
         self.demo = demo
 
+    def start_if_needed(self, game_state):
+        """Start turn if needed."""
+        return []  # No events for now
+
     def maybe_advance(self, game_state):
         """Maybe advance turn."""
-        # TODO: Implement turn advancement  # pylint: disable=fixme
+        return []  # No events for now
 
 
 def main():

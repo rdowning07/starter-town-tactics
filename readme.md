@@ -44,6 +44,7 @@ A tactical, turn-based simulation game engine inspired by Final Fantasy Tactics 
 - ✅ **Fighter Unit Integration**: Complete fighter unit with 8 animation states and frame-based animations
 - ✅ **Terrain System**: TileCatalog and TerrainRenderer with tiles_manifest.json support
 - ✅ **Animation System**: AnimationCatalog and UnitRenderer supporting both frame-based and sprite sheet animations
+- ✅ **Behavior Tree AI**: Sophisticated AI system with Composite/Strategy patterns and Protocol-based DI
 - ✅ **Code Quality**: Pylint score improved from 8.09/10 to 9.72/10 with comprehensive error fixes
 
 ---
@@ -66,6 +67,18 @@ make play-demo
 # Performance testing (target: 3000+ ticks/sec)
 make soak
 
+# Behavior Tree AI demo
+make ai-bt-demo
+
+# Enhanced BT demo (Friday demo ready)
+make ai-bt-demo-enhanced
+
+# Visual BT demo (Friday demo ready)
+make ai-bt-demo-visual
+
+# Test BT system
+make test-bt
+
 # Future: Game replay functionality
 make replay
 ```
@@ -76,6 +89,43 @@ make replay
 - **Deterministic**: Seeded RNG for reproducible gameplay
 
 ---
+
+## 🤖 Behavior Tree AI System
+
+The game now features a sophisticated Behavior Tree (BT) AI system that demonstrates advanced design patterns and clean architecture:
+
+### Design Patterns Demonstrated
+- **Composite Pattern**: BT nodes (Sequence, Selector) compose complex behaviors
+- **Strategy Pattern**: Actions and conditions as swappable strategies
+- **Protocol-based DI**: Clean interfaces via Python Protocols
+- **Adapter Pattern**: Safe integration with existing game systems
+
+### AI Capabilities
+- **Planning-based AI**: Structured decision trees beyond simple heuristics
+- **Deterministic Behavior**: Predictable AI for testing and debugging
+- **Extensible Foundation**: Easy to add new behaviors and conditions
+- **Fallback Logic**: Graceful degradation to heuristic AI when BT fails
+
+### CLI Tools
+```bash
+# Run Behavior Tree AI demo
+make ai-bt-demo
+
+# Test BT system
+make test-bt
+```
+
+### Example BT Logic
+```python
+# AI decision tree: If in range → Attack, else MoveToward target
+bt = Selector([
+    Sequence([Condition("enemy_in_attack_range"),
+              Condition("can_attack"),
+              Action("step_attack")]),
+    Sequence([Condition("can_move"),
+              Action("step_move_toward")])
+])
+```
 
 ## 🗺 Scenario System
 
@@ -362,7 +412,16 @@ starter-town-tactics/
 - ✅ Created fighter demo with visual validation and movement controls
 - ✅ Integrated fighter into main game architecture (SpriteManager, Renderer, UnitManager)
 
-**Week 12**: Visual Effects & Particles
+**Week 12**: AI Integration & Friday Demo Preparation ✅ MAJOR PROGRESS
+- ✅ **Behavior Tree AI System** - Core runtime implemented with Composite, Strategy, and Observer patterns
+- ✅ **BT Adapter Integration** - Clean separation between AI logic and game engine via BTContext protocol
+- ✅ **Visual Demo Phase 1 Complete** - Pygame integration showing fighter vs AI bandit with real-time BT decision display
+- ✅ **Design Pattern Showcase** - Live demonstration of architectural patterns in action
+- ✅ **Playable Demo** - WASD movement, SPACE attacks, working AI that executes actions
+- 🔄 **Phase 2 Next** - Scale to 4v4 tactical combat (4 fighters vs 4 bandits)
+- ⏳ **Phase 3 Pending** - Polish and record 2-minute demo for Friday presentation
+
+**Week 13**: Visual Effects & Particles
 - Create 59+ effect assets with smooth animations
 - Enhance FXManager with VisualEffect class
 - Implement particle system with performance optimization
@@ -421,10 +480,11 @@ make play-sim-demo               # Basic simulation
 - **Terrain Assets**: 300+ tiles organized and integrated (100% success)
 - **Sound Assets**: 8/8 valid WAV files (100% success)
 - **Animation Integration**: Fighter unit fully integrated with 8 animation states
+- **AI Integration**: Behavior Tree system with BT Adapter and working AI controller
 - **Scenarios**: 7 YAML scenarios including fighter demo
 - **Game Systems**: Complete rules engine with combat, pathfinding, objectives
-- **Architecture**: Command-event system with deterministic RNG
-- **Demo**: Multiple visual demos including fighter movement and integration
+- **Architecture**: Command-event system with deterministic RNG + BT AI system
+- **Demo**: Multiple visual demos including fighter vs AI bandit with BT decision display
 
 ---
 

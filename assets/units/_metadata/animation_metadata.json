@@ -3,31 +3,51 @@
   "units": {
     "fighter": {
       "idle_down": {
-        "frame_files": ["../fighter/down_stand.png"],
+        "frame_files": [
+          "../fighter/down_stand.png"
+        ],
         "frames": 1,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": false
       },
       "idle_up": {
-        "frame_files": ["../fighter/up_stand.png"],
+        "frame_files": [
+          "../fighter/up_stand.png"
+        ],
         "frames": 1,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": false
       },
       "idle_left": {
-        "frame_files": ["../fighter/left_stand.png"],
+        "frame_files": [
+          "../fighter/left_stand.png"
+        ],
         "frames": 1,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": false
       },
       "idle_right": {
-        "frame_files": ["../fighter/right_stand.png"],
+        "frame_files": [
+          "../fighter/right_stand.png"
+        ],
         "frames": 1,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": false
       },
       "walk_down": {
@@ -37,7 +57,10 @@
         ],
         "frames": 2,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": true
       },
       "walk_up": {
@@ -47,7 +70,10 @@
         ],
         "frames": 2,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": true
       },
       "walk_left": {
@@ -57,7 +83,10 @@
         ],
         "frames": 2,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": true
       },
       "walk_right": {
@@ -67,7 +96,10 @@
         ],
         "frames": 2,
         "frame_duration_ms": 125,
-        "origin": [16, 24],
+        "origin": [
+          16,
+          24
+        ],
         "loop": true
       }
     }

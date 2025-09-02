@@ -90,6 +90,39 @@
 - ✅ **Art Asset Ready**: Comprehensive guide for asset-to-UI conversion
 - ✅ **Documentation**: Updated roadmap, README, and integration guides
 
+### **Week 12: Behavior Tree AI System** ✅ (COMPLETED)
+**Sprint: Advanced AI Architecture & Design Patterns**
+- 🎯 **Achievement**: Sophisticated AI system demonstrating industry-standard design patterns
+- 🎯 **Architecture**: Clean separation of concerns with Protocol-based interfaces
+- 🎯 **Quality**: 6/6 BT tests passing, comprehensive pattern validation
+- ✅ **Core BT Runtime**: Composite pattern, Strategy pattern, Protocol-based DI
+- ✅ **Game Integration**: Safe unit state management, AP integration, position tracking
+- ✅ **AI Controller Enhancement**: BT codepath with graceful fallback to heuristic AI
+
+### **Week 13: AI Integration & Friday Demo Preparation** 🔄 (IN PROGRESS)
+**Sprint: Visual Demo & Tactical Combat Showcase**
+- 🎯 **Achievement**: Playable demo with working AI and design pattern showcase
+- 🎯 **Demo**: Fighter vs AI bandit with real-time BT decision display
+- 🎯 **Architecture**: Live demonstration of Composite, Strategy, Observer, Factory patterns
+- ✅ **Visual Demo Phase 1**: Pygame integration with playable fighter vs AI bandit
+- ✅ **Design Pattern Showcase**: Real-time display of architectural patterns in action
+- ✅ **AI Execution**: BT system now moves units and attacks (not just decides)
+- ✅ **Player Controls**: WASD movement, SPACE attacks, camera following
+- 🔄 **Phase 2 Next**: Scale to 4v4 tactical combat (4 fighters vs 4 bandits)
+- ⏳ **Phase 3 Pending**: Polish and record 2-minute demo for Friday presentation
+- ✅ **Comprehensive Testing**: All BT logic tested with mock contexts and pattern validation
+- ✅ **Working Demo**: AI units move toward targets with AP consumption and decision visualization
+- ✅ **Production Ready**: Integration with existing GameState, UnitManager, and ActionPointManager
+- ✅ **Documentation**: Updated README, plan, and resume with BT system details
+
+#### 🎯 Week 12 Major Achievements
+- ✅ **Design Patterns**: Composite, Strategy, Protocol-based DI, Adapter patterns implemented
+- ✅ **AI Expertise**: Planning-based decision trees beyond simple heuristics
+- ✅ **Clean Architecture**: Separation of concerns, extensible, testable
+- ✅ **Integration**: Safe integration without breaking existing systems
+- ✅ **Testing**: Comprehensive test suite with 100% BT logic coverage
+- ✅ **Demo**: Working CLI demo showing AI decision-making in action
+
 #### 🎯 Phase 7 Major Achievements
 - ✅ **Rules Engine** (`core/rules/`): Combat with height/facing bonuses, status effects
 - ✅ **A* Pathfinding** (`core/rules/move.py`): Shortest path with obstacles
