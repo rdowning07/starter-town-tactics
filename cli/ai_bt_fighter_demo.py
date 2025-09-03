@@ -91,6 +91,11 @@ class BTFighterDemo(DemoBase):
         # Register AI unit with scheduler
         self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
 
+        # Movement timing - prevent multiple moves per key press
+        self.last_move_time = 0
+        self.move_delay = 200  # milliseconds between moves
+        self.last_key_pressed: Optional[int] = None
+
     def _on_battle_outcome(self, outcome: BattleOutcome):
         """Handle battle outcome changes."""
         self.battle_outcome = outcome
@@ -693,60 +698,66 @@ class BTFighterDemo(DemoBase):
                         self._execute_attack()
                 elif event.key == pygame.K_a:
                     # Fighter attack animation - cycle through available animations
-                    if self.fighter_animation == "down_stand":
-                        self.fighter_animation = "down_walk1"
+                    if self.fighter_animation == "pose1":
+                        self.fighter_animation = "pose2"
                     else:
-                        self.fighter_animation = "down_stand"
+                        self.fighter_animation = "pose1"
                 elif event.key == pygame.K_w:
                     # Toggle bandit walk
-                    if self.bandit_animation == "down_stand":
-                        self.bandit_animation = "down_walk1"
+                    if self.bandit_animation == "pose1":
+                        self.bandit_animation = "pose2"
                     else:
-                        self.bandit_animation = "down_stand"
+                        self.bandit_animation = "pose1"
 
-        # Handle movement - ONE TILE AT A TIME with collision detection
+        # Handle movement - ONE TILE AT A TIME with proper timing
         keys = pygame.key.get_pressed()
-        old_pos = self.fighter_pos.copy()
         moved = False
 
-        # Only allow one movement per key press (not continuous)
-        if keys[pygame.K_w]:  # Up
-            new_pos = [self.fighter_pos[0], max(0, self.fighter_pos[1] - 1)]
-            if not self._positions_overlap(new_pos, self.bandit_pos):
-                self.fighter_pos = new_pos
-                self.fighter_animation = "up_walk1"
-                moved = True
-        elif keys[pygame.K_s]:  # Down
-            new_pos = [self.fighter_pos[0], min(14, self.fighter_pos[1] + 1)]
-            if not self._positions_overlap(new_pos, self.bandit_pos):
-                self.fighter_pos = new_pos
-                self.fighter_animation = "down_walk1"
-                moved = True
-        elif keys[pygame.K_a]:  # Left
-            new_pos = [max(0, self.fighter_pos[0] - 1), self.fighter_pos[1]]
-            if not self._positions_overlap(new_pos, self.bandit_pos):
-                self.fighter_pos = new_pos
-                self.fighter_animation = "left_walk1"
-                moved = True
-        elif keys[pygame.K_d]:  # Right
-            new_pos = [min(14, self.fighter_pos[0] + 1), self.fighter_pos[1]]
-            if not self._positions_overlap(new_pos, self.bandit_pos):
-                self.fighter_pos = new_pos
-                self.fighter_animation = "right_walk1"
-                moved = True
-        else:
-            # No movement keys pressed, return to idle
-            if "down" in self.fighter_animation:
-                self.fighter_animation = "down_stand"
-            elif "up" in self.fighter_animation:
-                self.fighter_animation = "up_stand"
-            elif "left" in self.fighter_animation:
-                self.fighter_animation = "left_stand"
-            elif "right" in self.fighter_animation:
-                self.fighter_animation = "right_stand"
+        # Only allow movement if enough time has passed AND key was just pressed
+        if current_time - self.last_move_time > self.move_delay:
+            # Check for key press (not continuous hold)
+            if keys[pygame.K_w] and self.last_key_pressed != pygame.K_w:  # Up
+                new_pos = [self.fighter_pos[0], max(0, self.fighter_pos[1] - 1)]
+                if not self._positions_overlap(new_pos, self.bandit_pos):
+                    self.fighter_pos = new_pos
+                    self.fighter_animation = "pose2"  # Use available sprite
+                    moved = True
+                    self.last_key_pressed = pygame.K_w
+            elif keys[pygame.K_s] and self.last_key_pressed != pygame.K_s:  # Down
+                new_pos = [self.fighter_pos[0], min(14, self.fighter_pos[1] + 1)]
+                if not self._positions_overlap(new_pos, self.bandit_pos):
+                    self.fighter_pos = new_pos
+                    self.fighter_animation = "pose2"  # Use available sprite
+                    moved = True
+                    self.last_key_pressed = pygame.K_s
+            elif keys[pygame.K_a] and self.last_key_pressed != pygame.K_a:  # Left
+                new_pos = [max(0, self.fighter_pos[0] - 1), self.fighter_pos[1]]
+                if not self._positions_overlap(new_pos, self.bandit_pos):
+                    self.fighter_pos = new_pos
+                    self.fighter_animation = "pose2"  # Use available sprite
+                    moved = True
+                    self.last_key_pressed = pygame.K_a
+            elif keys[pygame.K_d] and self.last_key_pressed != pygame.K_d:  # Right
+                new_pos = [min(14, self.fighter_pos[0] + 1), self.fighter_pos[1]]
+                if not self._positions_overlap(new_pos, self.bandit_pos):
+                    self.fighter_pos = new_pos
+                    self.fighter_animation = "pose2"  # Use available sprite
+                    moved = True
+                    self.last_key_pressed = pygame.K_d
+            else:
+                # No movement keys pressed, return to idle
+                self.fighter_animation = "pose1"
+                self.last_key_pressed = None
+
+        # Reset key tracking when no keys are pressed
+        if not any(
+            [keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]]
+        ):
+            self.last_key_pressed = None
 
         # Camera follows fighter
         if moved:
+            self.last_move_time = current_time
             self.camera_x = self.fighter_pos[0] * self.tile_size - 400
             self.camera_y = self.fighter_pos[1] * self.tile_size - 300
 
