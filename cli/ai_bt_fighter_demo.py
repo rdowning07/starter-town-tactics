@@ -138,6 +138,13 @@ class BTFighterDemo(DemoBase):
             for png_file in fighter_path.glob("*.png"):
                 try:
                     sprite = pygame.image.load(str(png_file))
+                    # Check if sprite is too small (stub file)
+                    if sprite.get_width() < 20 or sprite.get_height() < 20:
+                        print(
+                            f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})"
+                        )
+                        continue
+
                     # Map filename to animation state
                     anim_state = png_file.stem  # filename without extension
                     fighter_sprites[anim_state] = sprite
@@ -152,6 +159,14 @@ class BTFighterDemo(DemoBase):
             for png_file in bandit_path.glob("*.png"):
                 try:
                     sprite = pygame.image.load(str(png_file))
+                    # Check if sprite is too small (stub file)
+                    if sprite.get_width() < 20 or sprite.get_height() < 20:
+                        print(
+                            f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})"
+                        )
+                        continue
+
+                    # Map filename to animation state
                     anim_state = png_file.stem
                     bandit_sprites[anim_state] = sprite
                     print(f"Loaded bandit sprite: {anim_state}")
@@ -161,11 +176,11 @@ class BTFighterDemo(DemoBase):
         sprites["fighter"] = fighter_sprites
         sprites["bandit"] = bandit_sprites
 
-        # Set default animations based on available sprites
-        if "down_stand" in fighter_sprites:
-            self.fighter_animation = "down_stand"
-        if "down_stand" in bandit_sprites:
-            self.bandit_animation = "down_stand"
+        # Set default animations - use fallback if no real sprites
+        if not fighter_sprites:
+            print("No real fighter sprites found, using fallback")
+        if not bandit_sprites:
+            print("No real bandit sprites found, using fallback")
 
         return sprites
 
@@ -279,6 +294,16 @@ class BTFighterDemo(DemoBase):
             self.bandit_hp = max(0, self.bandit_hp - damage)
             self.fighter_ap = max(0, self.fighter_ap - 2)
 
+            # Set attack animation
+            if "down" in self.fighter_animation:
+                self.fighter_animation = "shake1"  # Use shake animation for attack
+            elif "up" in self.fighter_animation:
+                self.fighter_animation = "shake1"
+            elif "left" in self.fighter_animation:
+                self.fighter_animation = "shake1"
+            elif "right" in self.fighter_animation:
+                self.fighter_animation = "shake1"
+
             # Spawn slash effect
             self._spawn_effect("slash", self.bandit_pos[0], self.bandit_pos[1])
 
@@ -290,6 +315,44 @@ class BTFighterDemo(DemoBase):
                 self.victory_service.on_unit_defeated(2)
         else:
             self.ai_decision_text = "❌ Cannot attack - out of range or no AP!"
+
+    def _show_victory_message(self, surface: pygame.Surface, is_victory: bool):
+        """Show big victory or defeat message."""
+        # Create semi-transparent overlay
+        overlay = pygame.Surface((800, 600))
+        overlay.set_alpha(180)
+        overlay.fill((0, 0, 0))
+        surface.blit(overlay, (0, 0))
+
+        # Big message
+        if is_victory:
+            message = "🎉 VICTORY! 🎉"
+            color = (0, 255, 0)
+            subtitle = "You defeated the bandit!"
+        else:
+            message = "💀 DEFEAT! 💀"
+            color = (255, 0, 0)
+            subtitle = "The bandit defeated you!"
+
+        # Main title
+        title_font = pygame.font.Font(None, 72)
+        title_text = title_font.render(message, True, color)
+        title_rect = title_text.get_rect(center=(400, 250))
+        surface.blit(title_text, title_rect)
+
+        # Subtitle
+        subtitle_font = pygame.font.Font(None, 36)
+        subtitle_text = subtitle_font.render(subtitle, True, (255, 255, 255))
+        subtitle_rect = subtitle_text.get_rect(center=(400, 320))
+        surface.blit(subtitle_text, subtitle_rect)
+
+        # Instructions
+        instruction_font = pygame.font.Font(None, 24)
+        instruction_text = instruction_font.render(
+            "Press ESC to exit", True, (200, 200, 200)
+        )
+        instruction_rect = instruction_text.get_rect(center=(400, 380))
+        surface.blit(instruction_text, instruction_rect)
 
     def _create_simple_game_state(self):
         """Create a simple game state for the BT."""
@@ -618,6 +681,8 @@ class BTFighterDemo(DemoBase):
 
     def _handle_input(self) -> bool:
         """Handle input events. Returns False to quit."""
+        current_time = pygame.time.get_ticks()
+
         for event in pygame.event.get():
             if self.handle_exit_events(event):
                 return False
@@ -639,28 +704,36 @@ class BTFighterDemo(DemoBase):
                     else:
                         self.bandit_animation = "down_stand"
 
-        # Handle movement - ONE TILE AT A TIME with proper animation
+        # Handle movement - ONE TILE AT A TIME with collision detection
         keys = pygame.key.get_pressed()
         old_pos = self.fighter_pos.copy()
         moved = False
 
         # Only allow one movement per key press (not continuous)
         if keys[pygame.K_w]:  # Up
-            self.fighter_pos[1] = max(0, self.fighter_pos[1] - 1)
-            self.fighter_animation = "up_walk1"
-            moved = True
+            new_pos = [self.fighter_pos[0], max(0, self.fighter_pos[1] - 1)]
+            if not self._positions_overlap(new_pos, self.bandit_pos):
+                self.fighter_pos = new_pos
+                self.fighter_animation = "up_walk1"
+                moved = True
         elif keys[pygame.K_s]:  # Down
-            self.fighter_pos[1] = min(14, self.fighter_pos[1] + 1)
-            self.fighter_animation = "down_walk1"
-            moved = True
+            new_pos = [self.fighter_pos[0], min(14, self.fighter_pos[1] + 1)]
+            if not self._positions_overlap(new_pos, self.bandit_pos):
+                self.fighter_pos = new_pos
+                self.fighter_animation = "down_walk1"
+                moved = True
         elif keys[pygame.K_a]:  # Left
-            self.fighter_pos[0] = max(0, self.fighter_pos[0] - 1)
-            self.fighter_animation = "left_walk1"
-            moved = True
+            new_pos = [max(0, self.fighter_pos[0] - 1), self.fighter_pos[1]]
+            if not self._positions_overlap(new_pos, self.bandit_pos):
+                self.fighter_pos = new_pos
+                self.fighter_animation = "left_walk1"
+                moved = True
         elif keys[pygame.K_d]:  # Right
-            self.fighter_pos[0] = min(14, self.fighter_pos[0] + 1)
-            self.fighter_animation = "right_walk1"
-            moved = True
+            new_pos = [min(14, self.fighter_pos[0] + 1), self.fighter_pos[1]]
+            if not self._positions_overlap(new_pos, self.bandit_pos):
+                self.fighter_pos = new_pos
+                self.fighter_animation = "right_walk1"
+                moved = True
         else:
             # No movement keys pressed, return to idle
             if "down" in self.fighter_animation:
@@ -682,6 +755,10 @@ class BTFighterDemo(DemoBase):
         self.camera_y = max(0, min(15 * self.tile_size - 600, self.camera_y))
 
         return True
+
+    def _positions_overlap(self, pos1: list, pos2: list) -> bool:
+        """Check if two positions overlap."""
+        return pos1[0] == pos2[0] and pos1[1] == pos2[1]
 
     def run(self) -> None:
         """Run the demo."""
@@ -705,6 +782,13 @@ class BTFighterDemo(DemoBase):
             self._draw_units(self.screen)
             self._draw_effects(self.screen)
             self._draw_ui(self.screen)
+
+            # Show victory/defeat message if battle is over
+            if self.battle_outcome:
+                if self.battle_outcome == BattleOutcome.PLAYER_WIN:
+                    self._show_victory_message(self.screen, True)
+                elif self.battle_outcome == BattleOutcome.PLAYER_LOSE:
+                    self._show_victory_message(self.screen, False)
 
             # Update display
             pygame.display.flip()
