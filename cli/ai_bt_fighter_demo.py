@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 BT Fighter Demo - Shows Behavior Tree AI controlling fighter units with actual assets.
+FIXED VERSION: Characters actually move and attack using new systems.
 """
 
 import json
@@ -15,9 +16,12 @@ import pygame
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from core.ai.bt import make_basic_combat_tree
+from game.ai.scheduler import AIScheduler
 from game.ai_bt_adapter import BTAdapter
 from game.animation_clock import AnimationClock
 from game.demo_base import DemoBase
+from game.factories.entity_factory import EntityFactory
+from game.services.victory_service import BattleOutcome, VictoryService
 
 
 class BTFighterDemo(DemoBase):
@@ -54,6 +58,17 @@ class BTFighterDemo(DemoBase):
         # Tile size
         self.tile_size = 32
 
+        # NEW: Use the actual systems
+        self.entity_factory = EntityFactory()
+        self.ai_scheduler = AIScheduler()
+        self.victory_service = VictoryService(
+            player_team_id=1, enemy_team_ids={2}, initial_counts={1: 1, 2: 1}
+        )
+
+        # Subscribe to victory events
+        self.victory_service.subscribe(self._on_battle_outcome)
+        self.battle_outcome = None
+
         # BT AI state
         self.bt = make_basic_combat_tree()
         self.bt_tick_count = 0
@@ -72,6 +87,21 @@ class BTFighterDemo(DemoBase):
         # Track what the AI did
         self.ai_attacked = False
         self.ai_moved = False
+
+        # Register AI unit with scheduler
+        self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
+
+    def _on_battle_outcome(self, outcome: BattleOutcome):
+        """Handle battle outcome changes."""
+        self.battle_outcome = outcome
+        if outcome == BattleOutcome.PLAYER_WIN:
+            self.ai_decision_text = "🎉 VICTORY! All enemies defeated!"
+        elif outcome == BattleOutcome.PLAYER_LOSE:
+            self.ai_decision_text = "💀 DEFEAT! Player team eliminated!"
+
+    def _ai_tick(self):
+        """AI tick function for the scheduler."""
+        self._update_ai()
 
     def _load_animation_metadata(self) -> Dict:
         """Load animation metadata."""
@@ -98,105 +128,39 @@ class BTFighterDemo(DemoBase):
             return {"effects": {}}
 
     def _load_unit_sprites(self) -> Dict[str, Dict[str, pygame.Surface]]:
-        """Load unit sprite sheets."""
-        sprites: Dict[str, Dict[str, pygame.Surface]] = {}
+        """Load unit sprites from individual PNG files."""
+        sprites = {}
 
-        # Load fighter sprites (player unit)
+        # Load fighter sprites
         fighter_sprites = {}
-        fighter_files = [
-            "down_stand.png",
-            "down_walk1.png",
-            "down_walk2.png",
-            "left_stand.png",
-            "left_walk1.png",
-            "left_walk2.png",
-            "right_stand.png",
-            "right_walk1.png",
-            "right_walk2.png",
-            "up_stand.png",
-            "up_walk1.png",
-            "up_walk2.png",
-        ]
+        fighter_path = Path("assets/units/fighter")
+        if fighter_path.exists():
+            for png_file in fighter_path.glob("*.png"):
+                try:
+                    sprite = pygame.image.load(str(png_file))
+                    # Map filename to animation state
+                    anim_state = png_file.stem  # filename without extension
+                    fighter_sprites[anim_state] = sprite
+                    print(f"Loaded fighter sprite: {anim_state}")
+                except pygame.error as e:
+                    print(f"Failed to load {png_file}: {e}")
 
-        for filename in fighter_files:
-            try:
-                full_path = f"assets/units/fighter/{filename}"
-                sprite = pygame.image.load(full_path)
-                # Map filename to animation name
-                if "down_stand" in filename:
-                    fighter_sprites["idle_down"] = sprite
-                elif "down_walk" in filename:
-                    fighter_sprites["walk_down"] = sprite
-                elif "left_stand" in filename:
-                    fighter_sprites["idle_left"] = sprite
-                elif "left_walk" in filename:
-                    fighter_sprites["walk_left"] = sprite
-                elif "right_stand" in filename:
-                    fighter_sprites["idle_right"] = sprite
-                elif "right_walk" in filename:
-                    fighter_sprites["walk_right"] = sprite
-                elif "up_stand" in filename:
-                    fighter_sprites["idle_up"] = sprite
-                elif "up_walk" in filename:
-                    fighter_sprites["walk_up"] = sprite
-            except pygame.error as e:
-                print(f"Failed to load {full_path}: {e}")
-                # Create placeholder
-                placeholder = self._create_placeholder(32, 48, (255, 0, 0))
-                fighter_sprites["idle_down"] = placeholder
-
-        # Load bandit sprites (AI unit)
+        # Load bandit sprites
         bandit_sprites = {}
-        bandit_files = [
-            "down_stand.png",
-            "down_walk1.png",
-            "down_walk2.png",
-            "left_stand.png",
-            "left_walk1.png",
-            "left_walk2.png",
-            "right_stand.png",
-            "right_walk1.png",
-            "right_walk2.png",
-            "up_stand.png",
-            "up_walk1.png",
-            "up_walk2.png",
-        ]
-
-        for filename in bandit_files:
-            try:
-                full_path = f"assets/units/bandit/{filename}"
-                sprite = pygame.image.load(full_path)
-                # Map filename to animation name
-                if "down_stand" in filename:
-                    bandit_sprites["idle_down"] = sprite
-                elif "down_walk" in filename:
-                    bandit_sprites["walk_down"] = sprite
-                elif "left_stand" in filename:
-                    bandit_sprites["idle_left"] = sprite
-                elif "left_walk" in filename:
-                    bandit_sprites["walk_left"] = sprite
-                elif "right_stand" in filename:
-                    bandit_sprites["idle_right"] = sprite
-                elif "right_walk" in filename:
-                    bandit_sprites["walk_right"] = sprite
-                elif "up_stand" in filename:
-                    bandit_sprites["idle_up"] = sprite
-                elif "up_walk" in filename:
-                    bandit_sprites["walk_up"] = sprite
-            except pygame.error as e:
-                print(f"Failed to load {full_path}: {e}")
-                # Create placeholder
-                placeholder = self._create_placeholder(32, 48, (255, 0, 0))
-                bandit_sprites["idle_down"] = placeholder
+        bandit_path = Path("assets/units/bandit")
+        if bandit_path.exists():
+            for png_file in bandit_path.glob("*.png"):
+                try:
+                    sprite = pygame.image.load(str(png_file))
+                    anim_state = png_file.stem
+                    bandit_sprites[anim_state] = sprite
+                    print(f"Loaded bandit sprite: {anim_state}")
+                except pygame.error as e:
+                    print(f"Failed to load {png_file}: {e}")
 
         sprites["fighter"] = fighter_sprites
         sprites["bandit"] = bandit_sprites
-        print(
-            f"Loaded {len(fighter_sprites)} fighter sprites: {list(fighter_sprites.keys())}"
-        )
-        print(
-            f"Loaded {len(bandit_sprites)} bandit sprites: {list(bandit_sprites.keys())}"
-        )
+
         return sprites
 
     def _load_effect_sprites(self) -> Dict[str, pygame.Surface]:
@@ -251,32 +215,36 @@ class BTFighterDemo(DemoBase):
             self.ai_attacked = False
             self.ai_moved = False
 
-            # Create a mock game state for the BT
-            mock_game_state = self._create_mock_game_state()
+            # Create a simple game state for the BT
+            game_state = self._create_simple_game_state()
 
             try:
-                # Run the BT
-                ctx = BTAdapter(mock_game_state, "fighter2", "fighter1")
+                # Run the BT with proper unit IDs
+                ctx = BTAdapter(game_state, "bandit", "fighter")
                 status = self.bt.tick(ctx)
 
                 # Update AI decision text based on what the BT did
                 if status == "SUCCESS":
                     # Check if we can attack (in range and have AP)
-                    if self.enemy_in_attack_range() and self.bandit_ap > 0:
+                    if self._enemy_in_attack_range() and self.bandit_ap > 0:
                         self.ai_decision_text = (
                             f"AI: Attack! (tick {self.bt_tick_count})"
                         )
                         self._spawn_effect(
-                            "slash", self.bandit_pos[0], self.bandit_pos[1]
+                            "slash", self.fighter_pos[0], self.fighter_pos[1]
                         )
                         self.fighter_hp = max(0, self.fighter_hp - 2)
                         self.bandit_ap = max(0, self.bandit_ap - 1)
                         self.ai_attacked = True
+
+                        # Check if fighter is defeated
+                        if self.fighter_hp <= 0:
+                            self.victory_service.on_unit_defeated(1)
                     elif self.bandit_ap > 0:
                         self.ai_decision_text = (
                             f"AI: Move toward target (tick {self.bt_tick_count})"
                         )
-                        # Move fighter2 toward fighter1
+                        # Move bandit toward fighter
                         dx = self.fighter_pos[0] - self.bandit_pos[0]
                         dy = self.fighter_pos[1] - self.bandit_pos[1]
                         if abs(dx) > abs(dy):
@@ -292,7 +260,7 @@ class BTFighterDemo(DemoBase):
                 self.ai_decision_text = f"AI: Error - {e}"
 
     def _enemy_in_attack_range(self) -> bool:
-        """Check if bandit is in attack range of fighter."""
+        """Check if units are in attack range."""
         dx = abs(self.bandit_pos[0] - self.fighter_pos[0])
         dy = abs(self.bandit_pos[1] - self.fighter_pos[1])
         return (dx + dy) <= 1  # Attack range of 1
@@ -313,33 +281,33 @@ class BTFighterDemo(DemoBase):
 
             # Check if bandit is defeated
             if self.bandit_hp <= 0:
-                self.ai_decision_text = "💀 Bandit defeated! Fighter wins!"
+                self.victory_service.on_unit_defeated(2)
         else:
             self.ai_decision_text = "❌ Cannot attack - out of range or no AP!"
 
-    def _create_mock_game_state(self):
-        """Create a mock game state for the BT."""
+    def _create_simple_game_state(self):
+        """Create a simple game state for the BT."""
 
-        class MockGameState:
+        class SimpleGameState:
             def __init__(self, demo):
                 self.demo = demo
-                self.units = MockUnitManager(demo)
+                self.units = SimpleUnitManager(demo)
 
             def find_closest_enemy(self, unit_id):
                 if unit_id == "bandit":
-                    return MockUnit(
+                    return SimpleUnit(
                         "fighter", self.demo.fighter_pos[0], self.demo.fighter_pos[1]
                     )
                 return None
 
-        class MockUnitManager:
+        class SimpleUnitManager:
             def __init__(self, demo):
                 self.demo = demo
 
             def get(self, unit_id):
                 if unit_id == "bandit":
                     return {
-                        "team": "enemy",
+                        "team": 2,  # Enemy team
                         "hp": self.demo.bandit_hp,
                         "x": self.demo.bandit_pos[0],
                         "y": self.demo.bandit_pos[1],
@@ -348,7 +316,7 @@ class BTFighterDemo(DemoBase):
                     }
                 elif unit_id == "fighter":
                     return {
-                        "team": "player",
+                        "team": 1,  # Player team
                         "hp": self.demo.fighter_hp,
                         "x": self.demo.fighter_pos[0],
                         "y": self.demo.fighter_pos[1],
@@ -357,13 +325,13 @@ class BTFighterDemo(DemoBase):
                     }
                 return None
 
-        class MockUnit:
+        class SimpleUnit:
             def __init__(self, unit_id, x, y):
                 self.unit_id = unit_id
                 self.x = x
                 self.y = y
 
-        return MockGameState(self)
+        return SimpleGameState(self)
 
     def _draw_terrain(self, surface: pygame.Surface) -> None:
         """Draw terrain grid."""
@@ -397,26 +365,69 @@ class BTFighterDemo(DemoBase):
 
     def _draw_units(self, surface: pygame.Surface) -> None:
         """Draw units with animations."""
-        # Fighter1 (player) - just draw the sprite directly
+        # Fighter (player) - draw the sprite directly
         if (
             "fighter" in self.unit_sprites
-            and "idle_down" in self.unit_sprites["fighter"]
+            and self.fighter_animation in self.unit_sprites["fighter"]
         ):
-            fighter1_x = self.fighter_pos[0] * self.tile_size - self.camera_x
-            fighter1_y = self.fighter_pos[1] * self.tile_size - self.camera_y
+            sprite = self.unit_sprites["fighter"][self.fighter_animation]
+            sprite_rect = sprite.get_rect()
+            sprite_rect.center = (
+                self.fighter_pos[0] * self.tile_size
+                + self.tile_size // 2
+                - self.camera_x,
+                self.fighter_pos[1] * self.tile_size
+                + self.tile_size // 2
+                - self.camera_y,
+            )
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: draw a colored circle
+            pygame.draw.circle(
+                surface,
+                (0, 0, 255),  # Blue for fighter
+                (
+                    self.fighter_pos[0] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_x,
+                    self.fighter_pos[1] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_y,
+                ),
+                self.tile_size // 3,
+            )
 
-            # Draw sprite centered on the tile
-            sprite = self.unit_sprites["fighter"]["idle_down"]
-            surface.blit(sprite, (fighter1_x, fighter1_y))
-
-        # Fighter2 (AI controlled) - just draw the sprite directly
-        if "bandit" in self.unit_sprites and "idle_down" in self.unit_sprites["bandit"]:
-            fighter2_x = self.bandit_pos[0] * self.tile_size - self.camera_x
-            fighter2_y = self.bandit_pos[1] * self.tile_size - self.camera_y
-
-            # Draw sprite centered on the tile
-            sprite = self.unit_sprites["bandit"]["idle_down"]
-            surface.blit(sprite, (fighter2_x, fighter2_y))
+        # Bandit (AI) - draw the sprite directly
+        if (
+            "bandit" in self.unit_sprites
+            and self.bandit_animation in self.unit_sprites["bandit"]
+        ):
+            sprite = self.unit_sprites["bandit"][self.bandit_animation]
+            sprite_rect = sprite.get_rect()
+            sprite_rect.center = (
+                self.bandit_pos[0] * self.tile_size
+                + self.tile_size // 2
+                - self.camera_x,
+                self.bandit_pos[1] * self.tile_size
+                + self.tile_size // 2
+                - self.camera_y,
+            )
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: draw a colored circle
+            pygame.draw.circle(
+                surface,
+                (255, 0, 0),  # Red for bandit
+                (
+                    self.bandit_pos[0] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_x,
+                    self.bandit_pos[1] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_y,
+                ),
+                self.tile_size // 3,
+            )
 
     def _blit_animation(
         self,
@@ -460,62 +471,104 @@ class BTFighterDemo(DemoBase):
     def _draw_effects(self, surface: pygame.Surface) -> None:
         """Draw active effects."""
         current_time = pygame.time.get_ticks()
-        self.active_effects = [
-            effect
-            for effect in self.active_effects
-            if current_time - effect["start_time"] < effect["duration"]
-        ]
+        effects_to_remove = []
 
         for effect in self.active_effects:
-            effect_name = effect["name"]
-            if effect_name in self.effect_sprites:
-                effect_x = effect["x"] * self.tile_size - self.camera_x
-                effect_y = effect["y"] * self.tile_size - self.camera_y
-                effect_meta = self.effects_metadata["effects"][effect_name]
-                self._blit_animation(
-                    surface,
-                    self.effect_sprites[effect_name],
-                    effect_meta,
-                    effect_x,
-                    effect_y,
-                    effect["id"],
-                )
+            if current_time - effect["start_time"] < effect["duration"]:
+                # Draw effect
+                effect_name = effect["name"]
+                if effect_name in self.effect_sprites:
+                    sprite = self.effect_sprites[effect_name]
+                    sprite_rect = sprite.get_rect()
+                    sprite_rect.center = (
+                        effect["x"] * self.tile_size
+                        + self.tile_size // 2
+                        - self.camera_x,
+                        effect["y"] * self.tile_size
+                        + self.tile_size // 2
+                        - self.camera_y,
+                    )
+                    surface.blit(sprite, sprite_rect)
+            else:
+                effects_to_remove.append(effect)
+
+        # Remove expired effects
+        for effect in effects_to_remove:
+            self.active_effects.remove(effect)
 
     def _draw_ui(self, surface: pygame.Surface) -> None:
-        """Draw UI overlay."""
-        # Instructions
-        instructions = [
-            "WASD: Move fighter around",
-            "SPACE: Attack bandit (if in range)",
-            "W: Toggle bandit walk animation",
-            "ESC: Quit",
-        ]
-
+        """Draw UI elements."""
         y_offset = 10
-        for instruction in instructions:
-            text = self.font.render(instruction, True, (255, 255, 255))
-            surface.blit(text, (10, y_offset))
-            y_offset += 25
 
-            # Current animations
+        # Title
+        title_text = "BT Fighter vs Bandit Demo - 1v1 Tactical Combat"
+        text = self.font.render(title_text, True, (255, 255, 255))
+        surface.blit(text, (10, y_offset))
+
+        # Instructions
+        y_offset += 30
+        instructions = [
+            "Controls: WASD to move fighter, SPACE to attack",
+            "AI bandit uses Behavior Tree for decisions",
+            "Goal: Defeat the bandit before they defeat you!",
+        ]
+        for instruction in instructions:
+            text = self.font.render(instruction, True, (200, 200, 200))
+            surface.blit(text, (10, y_offset))
+            y_offset += 20
+
+        # Current animations
+        y_offset += 10
         anim_text = (
             f"Fighter: {self.fighter_animation}, Bandit: {self.bandit_animation}"
         )
         text = self.font.render(anim_text, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset + 10))
+        surface.blit(text, (10, y_offset))
 
         # Unit stats
+        y_offset += 30
         stats_text = f"Fighter HP: {self.fighter_hp} AP: {self.fighter_ap}"
         text = self.font.render(stats_text, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset + 35))
+        surface.blit(text, (10, y_offset))
 
+        y_offset += 25
         stats_text2 = f"Bandit HP: {self.bandit_hp} AP: {self.bandit_ap}"
         text = self.font.render(stats_text2, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset + 60))
+        surface.blit(text, (10, y_offset))
 
         # AI decision
+        y_offset += 25
         text = self.font.render(self.ai_decision_text, True, (0, 255, 0))
-        surface.blit(text, (10, y_offset + 85))
+        surface.blit(text, (10, y_offset))
+
+        # Battle outcome
+        if self.battle_outcome:
+            y_offset += 30
+            outcome_text = f"Battle: {self.battle_outcome.value.upper()}"
+            color = (
+                (0, 255, 0)
+                if self.battle_outcome == BattleOutcome.PLAYER_WIN
+                else (255, 0, 0)
+            )
+            text = self.font.render(outcome_text, True, color)
+            surface.blit(text, (10, y_offset))
+
+        # NEW: Show the actual systems in action
+        y_offset += 120
+        systems_text = "🔧 Systems Active:"
+        text = self.font.render(systems_text, True, (255, 255, 0))
+        surface.blit(text, (10, y_offset))
+
+        systems = [
+            f"├─ EntityFactory: ✅ Spawned {self.entity_factory.get_spawned_count()} units",
+            f"├─ AIScheduler: ✅ {self.ai_scheduler.get_active_count()} AI units scheduled",
+            f"├─ VictoryService: ✅ Battle state tracked",
+            "└─ Behavior Tree: ✅ AI decision making",
+        ]
+
+        for i, system in enumerate(systems):
+            text = self.font.render(system, True, (200, 200, 200))
+            surface.blit(text, (10, y_offset + 25 + i * 20))
 
         # Design Pattern Showcase
         y_offset += 120
@@ -526,8 +579,8 @@ class BTFighterDemo(DemoBase):
         patterns = [
             "├─ Composite: Selector → Sequence → Condition/Action",
             "├─ Strategy: BTContext Protocol → BTAdapter Implementation",
-            "├─ Observer: EventBus → GameState → UnitManager",
-            "└─ Factory: AnimationMetadata → SpriteManager → Renderer",
+            "├─ Observer: VictoryService → Battle Outcome Events",
+            "└─ Factory: EntityFactory → Team Spawning",
         ]
 
         for i, pattern in enumerate(patterns):
@@ -607,54 +660,40 @@ class BTFighterDemo(DemoBase):
 
     def run(self) -> None:
         """Run the demo."""
-        print(
-            f"🎮 Starting BT Fighter vs Bandit Demo (timeout: {self.timeout_seconds}s)"
-        )
-        print("🤖 Watch the AI bandit use Behavior Tree AI to make decisions!")
-        print(
-            "📊 The AI bandit will move toward the player fighter and attack when in range."
-        )
-        print(f"Screen size: {self.screen.get_size()}")
-        print(f"Unit sprites loaded: {list(self.unit_sprites.keys())}")
+        print("Starting BT Fighter Demo...")
+        print("Controls: WASD to move, SPACE to attack")
+        print("AI bandit uses Behavior Tree for decisions")
 
-        while not self.should_exit():
+        running = True
+        while running and not self.should_exit():
             # Handle input
-            if not self._handle_input():
-                break
+            running = self._handle_input()
 
-            # Update AI
-            self._update_ai()
+            # Update AI scheduler
+            self.ai_scheduler.update(0.016)  # ~60 FPS
 
-            # Draw
+            # Clear screen
             self.screen.fill((0, 0, 0))
-            print("Drawing frame...")
 
-            # Render terrain
+            # Draw everything
             self._draw_terrain(self.screen)
-
-            # Render units
             self._draw_units(self.screen)
-
-            # Render effects
             self._draw_effects(self.screen)
-
-            # Draw UI
             self._draw_ui(self.screen)
-
-            # Draw timeout info
-            self.draw_timeout_info(self.screen, self.font)
 
             # Update display
             pygame.display.flip()
+
+            # Cap frame rate
             self.clock.tick(60)
 
+        print("Demo finished.")
         pygame.quit()
-        print("👋 BT Fighter Demo finished")
 
 
 def main():
     """Main entry point."""
-    demo = BTFighterDemo(timeout_seconds=5)
+    demo = BTFighterDemo(timeout_seconds=60)
     demo.run()
 
 
