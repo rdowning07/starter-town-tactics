@@ -1,66 +1,158 @@
 """
-Entity Factory - Creates teams of units for tactical combat.
+Entity Factory for spawning teams of units.
+
+This module provides a factory pattern for creating teams of units with
+configurable layouts and positioning.
 """
 
-from __future__ import annotations
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
 
-from typing import Any, Dict, List, Tuple
+
+@dataclass
+class UnitConfig:
+    """Configuration for a unit."""
+
+    name: str
+    team: int
+    sprite: str
+    x: int
+    y: int
+    hp: int = 10
+    ap: int = 3
+    attack_range: int = 1
+    is_player: bool = False
+    team_name: str = ""
+
+
+@dataclass
+class TeamConfig:
+    """Configuration for a team."""
+
+    team_id: int
+    team_name: str
+    units: List[UnitConfig]
+    is_player_team: bool = False
 
 
 class EntityFactory:
     """Factory for creating teams of units."""
 
-    def __init__(self):
-        self.unit_counter = 0
+    def __init__(self, unit_ctor=None):
+        """Initialize the factory.
+
+        Args:
+            unit_ctor: Unit constructor class (optional)
+        """
+        self.unit_ctor = unit_ctor
 
     def spawn_team(
         self,
         team_id: int,
         unit_type: str,
         count: int,
-        start_pos: Tuple[int, int],
+        start_xy: Tuple[int, int] = (0, 0),
         layout: str = "line",
         step: Tuple[int, int] = (1, 0),
         is_player: bool = False,
-    ) -> List[Dict[str, Any]]:
-        """Spawn a team of units with the specified layout."""
+        team_name: str = "",
+        **unit_kwargs,
+    ) -> TeamConfig:
+        """Spawn a team of units.
+
+        Args:
+            team_id: Team identifier
+            unit_type: Type of unit to spawn
+            count: Number of units to spawn
+            start_xy: Starting position (x, y)
+            layout: Layout pattern ("line", "grid", "random")
+            step: Step size for positioning (dx, dy)
+            is_player: Whether this is the player team
+            team_name: Name of the team
+            **unit_kwargs: Additional unit configuration
+
+        Returns:
+            TeamConfig with spawned units
+        """
         units = []
+        start_x, start_y = start_xy
+        dx, dy = step
 
         for i in range(count):
-            unit_id = f"{unit_type}_{team_id}_{i}"
-            position = self._calculate_position(start_pos, i, layout, step)
+            if layout == "line":
+                x = start_x + i * dx
+                y = start_y + i * dy
+            elif layout == "grid":
+                cols = int(count**0.5) + (1 if count % int(count**0.5) > 0 else 0)
+                x = start_x + (i % cols) * dx
+                y = start_y + (i // cols) * dy
+            else:  # random or default to line
+                x = start_x + i * dx
+                y = start_y + i * dy
 
-            unit = {
-                "id": unit_id,
-                "type": unit_type,
-                "team": team_id,
-                "x": position[0],
-                "y": position[1],
-                "hp": 12 if unit_type == "fighter" else 10,
-                "ap": 6,
-                "is_player": is_player,
-                "attack_range": 1,
-            }
+            unit_name = f"{unit_type}_{i+1}" if count > 1 else unit_type
 
-            units.append(unit)
-            self.unit_counter += 1
+            unit_config = UnitConfig(
+                name=unit_name,
+                team=team_id,
+                sprite=unit_type,
+                x=x,
+                y=y,
+                is_player=is_player and i == 0,  # First unit is player
+                team_name=team_name,
+                **unit_kwargs,
+            )
+            units.append(unit_config)
 
-        return units
+        return TeamConfig(team_id=team_id, team_name=team_name, units=units, is_player_team=is_player)
 
-    def _calculate_position(
-        self, start_pos: Tuple[int, int], index: int, layout: str, step: Tuple[int, int]
-    ) -> Tuple[int, int]:
-        """Calculate position for a unit based on layout."""
-        if layout == "line":
-            return (start_pos[0] + index * step[0], start_pos[1] + index * step[1])
-        elif layout == "square":
-            side = int(index**0.5)
-            offset = index % side
-            return (start_pos[0] + offset, start_pos[1] + side)
-        else:
-            # Default to line layout
-            return (start_pos[0] + index * step[0], start_pos[1] + index * step[1])
+    def create_demo_teams(self) -> Tuple[TeamConfig, TeamConfig]:
+        """Create demo teams for 4v4 tactical combat.
 
-    def get_spawned_count(self) -> int:
-        """Get total number of units spawned by this factory."""
-        return self.unit_counter
+        Returns:
+            Tuple of (allies_team, bandits_team)
+        """
+        # Player team (Allies)
+        allies = self.spawn_team(
+            team_id=1,
+            unit_type="fighter",
+            count=4,
+            start_xy=(2, 2),
+            layout="line",
+            step=(1, 0),
+            is_player=True,
+            team_name="Allies",
+            hp=10,
+            ap=6,
+            attack_range=1,
+        )
+
+        # Override individual unit types for variety
+        allies.units[0].sprite = "fighter"
+        allies.units[0].name = "fighter"
+        allies.units[1].sprite = "mage"
+        allies.units[1].name = "mage"
+        allies.units[1].attack_range = 3
+        allies.units[2].sprite = "healer"
+        allies.units[2].name = "healer"
+        allies.units[2].attack_range = 2
+        allies.units[3].sprite = "ranger"
+        allies.units[3].name = "ranger"
+        allies.units[3].attack_range = 2
+
+        # Enemy team (Bandits)
+        bandits = self.spawn_team(
+            team_id=2,
+            unit_type="bandit",
+            count=4,
+            start_xy=(10, 10),
+            layout="line",
+            step=(1, 0),
+            is_player=False,
+            team_name="Bandits",
+            hp=8,
+            ap=6,
+            attack_range=1,
+        )
+
+        return allies, bandits

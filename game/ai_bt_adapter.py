@@ -11,7 +11,6 @@ from game.game_state import GameState
 # (none)
 
 
-
 class BTAdapter(BTContext):
     """
     Adapts GameState/Unit APIs to the BTContext Protocol.
