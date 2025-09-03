@@ -49,8 +49,9 @@ class BTFighterDemo(DemoBase):
         self.effect_sprites = self._load_effect_sprites()
 
         # Demo state - fighter for player, bandit for AI
-        self.fighter_animation = "idle_down"
-        self.bandit_animation = "idle_down"
+        # Animation states
+        self.fighter_animation = "pose1"  # Use available sprite
+        self.bandit_animation = "pose1"  # Use available sprite
         self.active_effects: list = []
         self.camera_x = 0
         self.camera_y = 0
@@ -366,6 +367,7 @@ class BTFighterDemo(DemoBase):
             def __init__(self, demo):
                 self.demo = demo
                 self.units = SimpleUnitManager(demo)
+                self.ap_manager = SimpleAPManager(demo)
 
             def find_closest_enemy(self, unit_id):
                 if unit_id == "bandit":
@@ -404,6 +406,26 @@ class BTFighterDemo(DemoBase):
                 self.unit_id = unit_id
                 self.x = x
                 self.y = y
+
+        class SimpleAPManager:
+            def __init__(self, demo):
+                self.demo = demo
+            
+            def get_ap(self, unit_id):
+                if unit_id == "bandit":
+                    return self.demo.bandit_ap
+                elif unit_id == "fighter":
+                    return self.demo.fighter_ap
+                return 0
+            
+            def can_spend(self, unit_id, amount):
+                return self.get_ap(unit_id) >= amount
+            
+            def spend(self, unit_id, amount):
+                if unit_id == "bandit":
+                    self.demo.bandit_ap = max(0, self.demo.bandit_ap - amount)
+                elif unit_id == "fighter":
+                    self.demo.fighter_ap = max(0, self.demo.fighter_ap - amount)
 
         return SimpleGameState(self)
 
