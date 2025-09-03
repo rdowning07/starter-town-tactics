@@ -48,10 +48,20 @@ class BTFighterDemo(DemoBase):
         self.unit_sprites = self._load_unit_sprites()
         self.effect_sprites = self._load_effect_sprites()
 
-        # Demo state - fighter for player, bandit for AI
-        # Animation states
+        # Demo state - fighter for player, bandit for AI, black mage for ranged testing
         self.fighter_animation = "pose1"  # Use available sprite
         self.bandit_animation = "pose1"  # Use available sprite
+        self.mage_animation = "pose1"  # Use available sprite
+
+        # Add mage position and stats
+        self.mage_pos = [7, 7]  # Position mage between fighter and bandit
+        self.mage_hp = 15
+        self.mage_ap = 3
+        self.mage_attack_range = 3  # Ranged attacks!
+
+        # Projectile system for flying fireballs
+        self.active_projectiles = []
+
         self.active_effects: list = []
         self.camera_x = 0
         self.camera_y = 0
@@ -89,13 +99,18 @@ class BTFighterDemo(DemoBase):
         self.ai_attacked = False
         self.ai_moved = False
 
-        # Register AI unit with scheduler
-        self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
-
         # Movement timing - prevent multiple moves per key press
         self.last_move_time = 0
         self.move_delay = 200  # milliseconds between moves
         self.last_key_pressed: Optional[int] = None
+
+        # AI decision timing
+        self.last_ai_decision = 0
+        self.last_mage_decision = 0
+        self.bt_tick_count = 0
+
+        # Register AI unit with scheduler
+        self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
 
     def _on_battle_outcome(self, outcome: BattleOutcome):
         """Handle battle outcome changes."""
@@ -179,8 +194,30 @@ class BTFighterDemo(DemoBase):
                 except pygame.error as e:
                     print(f"Failed to load {png_file}: {e}")
 
+        # Load black mage sprites
+        mage_sprites = {}
+        mage_path = Path("assets/units/black_mage")
+        if mage_path.exists():
+            for png_file in mage_path.glob("*.png"):
+                try:
+                    sprite = pygame.image.load(str(png_file))
+                    # Check if sprite is too small (stub file) - lower threshold for mage
+                    if sprite.get_width() < 15 or sprite.get_height() < 15:
+                        print(
+                            f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})"
+                        )
+                        continue
+
+                    # Map filename to animation state
+                    anim_state = png_file.stem
+                    mage_sprites[anim_state] = sprite
+                    print(f"Loaded mage sprite: {anim_state}")
+                except pygame.error as e:
+                    print(f"Failed to load {png_file}: {e}")
+
         sprites["fighter"] = fighter_sprites
         sprites["bandit"] = bandit_sprites
+        sprites["mage"] = mage_sprites
 
         # Set default animations - use fallback if no real sprites
         if not fighter_sprites:
@@ -198,14 +235,16 @@ class BTFighterDemo(DemoBase):
                 effect_meta = self.effects_metadata["effects"][effect_name]
                 sheet_path = effect_meta["sheet"]
                 try:
-                                        # Load the sprite sheet with alpha channel preserved
+                    # Load the sprite sheet with alpha channel preserved
                     sheet = pygame.image.load(sheet_path).convert_alpha()
                     frame_width = effect_meta["frame_size"][0]
                     frame_height = effect_meta["frame_size"][1]
                     frames = effect_meta["frames"]
-                    
+
                     # Extract the first frame with transparency
-                    first_frame = pygame.Surface((frame_width, frame_height), pygame.SRCALPHA)
+                    first_frame = pygame.Surface(
+                        (frame_width, frame_height), pygame.SRCALPHA
+                    )
                     first_frame.blit(sheet, (0, 0), (0, 0, frame_width, frame_height))
                     sprites[effect_name] = first_frame
 
@@ -226,6 +265,30 @@ class BTFighterDemo(DemoBase):
         """Create a placeholder surface with transparency."""
         surface = pygame.Surface((width, height), pygame.SRCALPHA)
         surface.fill(color)
+        return surface
+
+    def _create_fireball_effect(self, size: int = 32) -> pygame.Surface:
+        """Create a simple fireball effect for mage attacks."""
+        surface = pygame.Surface((size, size), pygame.SRCALPHA)
+
+        # Create a glowing fireball effect
+        center = size // 2
+        radius = size // 3
+
+        # Outer glow (orange)
+        for r in range(radius + 4, radius - 1, -1):
+            alpha = max(0, 255 - (r - radius) * 50)
+            color = (255, 165, 0, alpha)  # Orange with fade
+            pygame.draw.circle(surface, color, (center, center), r)
+
+        # Core fireball (red-yellow)
+        pygame.draw.circle(
+            surface, (255, 255, 0, 200), (center, center), radius - 2
+        )  # Yellow core
+        pygame.draw.circle(
+            surface, (255, 100, 0, 255), (center, center), radius - 4
+        )  # Red center
+
         return surface
 
     def _spawn_effect(self, effect_name: str, x: int, y: int) -> None:
@@ -413,6 +476,15 @@ class BTFighterDemo(DemoBase):
                         "ap": self.demo.fighter_ap,
                         "attack_range": 1,
                     }
+                elif unit_id == "mage":
+                    return {
+                        "team": 1,  # Player team
+                        "hp": self.demo.mage_hp,
+                        "x": self.demo.mage_pos[0],
+                        "y": self.demo.mage_pos[1],
+                        "ap": self.demo.mage_ap,
+                        "attack_range": 3,  # Ranged attacks!
+                    }
                 return None
 
         class SimpleUnit:
@@ -430,6 +502,8 @@ class BTFighterDemo(DemoBase):
                     return self.demo.bandit_ap
                 elif unit_id == "fighter":
                     return self.demo.fighter_ap
+                elif unit_id == "mage":
+                    return self.demo.mage_ap
                 return 0
 
             def can_spend(self, unit_id, amount):
@@ -440,6 +514,8 @@ class BTFighterDemo(DemoBase):
                     self.demo.bandit_ap = max(0, self.demo.bandit_ap - amount)
                 elif unit_id == "fighter":
                     self.demo.fighter_ap = max(0, self.demo.fighter_ap - amount)
+                elif unit_id == "mage":
+                    self.demo.mage_ap = max(0, self.demo.mage_ap - amount)
 
         return SimpleGameState(self)
 
@@ -539,6 +615,34 @@ class BTFighterDemo(DemoBase):
                 self.tile_size // 3,
             )
 
+        # Mage (Ranged) - draw the sprite directly
+        if (
+            "mage" in self.unit_sprites
+            and self.mage_animation in self.unit_sprites["mage"]
+        ):
+            sprite = self.unit_sprites["mage"][self.mage_animation]
+            sprite_rect = sprite.get_rect()
+            sprite_rect.center = (
+                self.mage_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x,
+                self.mage_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y,
+            )
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: draw a colored circle
+            pygame.draw.circle(
+                surface,
+                (0, 255, 255),  # Cyan for mage
+                (
+                    self.mage_pos[0] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_x,
+                    self.mage_pos[1] * self.tile_size
+                    + self.tile_size // 2
+                    - self.camera_y,
+                ),
+                self.tile_size // 3,
+            )
+
     def _blit_animation(
         self,
         surface: pygame.Surface,
@@ -599,12 +703,57 @@ class BTFighterDemo(DemoBase):
                         - self.camera_y,
                     )
                     surface.blit(sprite, sprite_rect)
+                elif effect_name == "fireball":
+                    # Draw fireball effect
+                    sprite = self._create_fireball_effect()
+                    sprite_rect = sprite.get_rect()
+                    sprite_rect.center = (
+                        effect["x"] * self.tile_size
+                        + self.tile_size // 2
+                        - self.camera_x,
+                        effect["y"] * self.tile_size
+                        + self.tile_size // 2
+                        - self.camera_y,
+                    )
+                    surface.blit(sprite, sprite_rect)
             else:
                 effects_to_remove.append(effect)
 
         # Remove expired effects
         for effect in effects_to_remove:
             self.active_effects.remove(effect)
+
+    def _draw_projectiles(self, surface: pygame.Surface) -> None:
+        """Draw active fireball projectiles."""
+        current_time = pygame.time.get_ticks()
+        projectiles_to_remove = []
+
+        for projectile in self.active_projectiles:
+            # Check if projectile has expired
+            if current_time - projectile["start_time"] > projectile["duration"]:
+                projectiles_to_remove.append(projectile)
+                continue
+
+            # Calculate current position
+            current_x = projectile["x"] + projectile["dx"] * (
+                current_time - projectile["start_time"]
+            )
+            current_y = projectile["y"] + projectile["dy"] * (
+                current_time - projectile["start_time"]
+            )
+
+            # Draw projectile
+            sprite = self._create_fireball_effect(16)  # Smaller fireball for projectile
+            sprite_rect = sprite.get_rect()
+            sprite_rect.center = (
+                current_x - self.camera_x,
+                current_y - self.camera_y,
+            )
+            surface.blit(sprite, sprite_rect)
+
+        # Remove expired/hit projectiles
+        for projectile in projectiles_to_remove:
+            self.active_projectiles.remove(projectile)
 
     def _draw_ui(self, surface: pygame.Surface) -> None:
         """Draw UI elements."""
@@ -644,6 +793,11 @@ class BTFighterDemo(DemoBase):
         y_offset += 25
         stats_text2 = f"Bandit HP: {self.bandit_hp} AP: {self.bandit_ap}"
         text = self.font.render(stats_text2, True, (255, 255, 255))
+        surface.blit(text, (10, y_offset))
+
+        y_offset += 25
+        stats_text3 = f"Mage HP: {self.mage_hp} AP: {self.mage_ap} Range: {self.mage_attack_range}"
+        text = self.font.render(stats_text3, True, (0, 255, 255))  # Cyan for mage
         surface.blit(text, (10, y_offset))
 
         # AI decision
@@ -807,6 +961,165 @@ class BTFighterDemo(DemoBase):
         """Check if two positions overlap."""
         return pos1[0] == pos2[0] and pos1[1] == pos2[1]
 
+    def _update_mage_ai(self) -> None:
+        """Update mage AI behavior - ranged attacks."""
+        current_time = pygame.time.get_ticks()
+
+        # Run mage AI every 1.5 seconds (different from bandit)
+        if current_time - self.last_mage_decision > 1500:
+            self.last_mage_decision = current_time
+
+            # Debug: show current positions and distance
+            distance = abs(self.mage_pos[0] - self.bandit_pos[0]) + abs(
+                self.mage_pos[1] - self.bandit_pos[1]
+            )
+            print(
+                f"🧙‍♂️ Mage at ({self.mage_pos[0]}, {self.mage_pos[1]}), Bandit at ({self.bandit_pos[0]}, {self.bandit_pos[1]}), Distance: {distance}, Range: {self.mage_attack_range}"
+            )
+
+            # Check if mage can attack bandit (ranged attack)
+            if self._mage_can_attack_bandit() and self.mage_ap > 0:
+                # Mage attacks bandit from range!
+                damage = 2  # Less damage than melee but from range
+                self.bandit_hp = max(0, self.bandit_hp - damage)
+                self.mage_ap = max(0, self.mage_ap - 1)
+
+                # Spawn flying fireball projectile from mage to bandit
+                self._spawn_fireball_projectile(
+                    self.mage_pos[0],
+                    self.mage_pos[1],
+                    self.bandit_pos[0],
+                    self.bandit_pos[1],
+                )
+
+                print(f"🔥 Mage casts fireball! Bandit HP: {self.bandit_hp}")
+
+                # Check if bandit is defeated
+                if self.bandit_hp <= 0:
+                    self.victory_service.on_unit_defeated(2)
+
+            # If mage can't attack, move toward bandit
+            elif self.mage_ap > 0 and not self._mage_can_attack_bandit():
+                # Move mage toward bandit to get in range
+                dx = self.bandit_pos[0] - self.mage_pos[0]
+                dy = self.bandit_pos[1] - self.mage_pos[1]
+
+                # Move in the direction with larger distance
+                if abs(dx) > abs(dy):
+                    # Move horizontally
+                    new_x = self.mage_pos[0] + (1 if dx > 0 else -1)
+                    if not self._positions_overlap(
+                        [new_x, self.mage_pos[1]], self.fighter_pos
+                    ):
+                        self.mage_pos[0] = new_x
+                        self.mage_ap = max(0, self.mage_ap - 1)
+                        print(
+                            f"🧙‍♂️ Mage moves toward bandit: ({self.mage_pos[0]}, {self.mage_pos[1]})"
+                        )
+                else:
+                    # Move vertically
+                    new_y = self.mage_pos[1] + (1 if dy > 0 else -1)
+                    if not self._positions_overlap(
+                        [self.mage_pos[0], new_y], self.fighter_pos
+                    ):
+                        self.mage_pos[1] = new_y
+                        self.mage_ap = max(0, self.mage_ap - 1)
+                        print(
+                            f"🧙‍♂️ Mage moves toward bandit: ({self.mage_pos[0]}, {self.mage_pos[1]})"
+                        )
+
+    def _mage_can_attack_bandit(self) -> bool:
+        """Check if mage can attack bandit from range."""
+        dx = abs(self.mage_pos[0] - self.bandit_pos[0])
+        dy = abs(self.mage_pos[1] - self.bandit_pos[1])
+        return (dx + dy) <= self.mage_attack_range  # Range 3!
+
+    def _spawn_fireball_projectile(
+        self, start_x: int, start_y: int, end_x: int, end_y: int
+    ) -> None:
+        """Spawn a fireball projectile from start to end."""
+        # Calculate trajectory
+        dx = end_x - start_x
+        dy = end_y - start_y
+        distance = max(1, abs(dx) + abs(dy))  # Manhattan distance
+
+        # Normalize direction for smooth movement
+        if distance > 0:
+            dx_norm = dx / distance
+            dy_norm = dy / distance
+        else:
+            dx_norm = dy_norm = 0
+
+        # Create projectile data
+        projectile = {
+            "id": f"fireball_{len(self.active_projectiles)}",
+            "x": start_x * self.tile_size + self.tile_size // 2,  # Pixel position
+            "y": start_y * self.tile_size + self.tile_size // 2,
+            "target_x": end_x * self.tile_size + self.tile_size // 2,
+            "target_y": end_y * self.tile_size + self.tile_size // 2,
+            "dx": dx_norm * 4,  # Speed: 4 pixels per frame
+            "dy": dy_norm * 4,
+            "start_time": pygame.time.get_ticks(),
+            "duration": 2000,  # 2 seconds max flight time
+            "hit_target": False,
+        }
+
+        self.active_projectiles.append(projectile)
+        print(f"🔥 Fireball launched from ({start_x}, {start_y}) to ({end_x}, {end_y})")
+
+    def _update_projectiles(self) -> None:
+        """Update projectile positions and check for hits."""
+        current_time = pygame.time.get_ticks()
+        projectiles_to_remove = []
+
+        for projectile in self.active_projectiles:
+            # Check if projectile has expired
+            if current_time - projectile["start_time"] > projectile["duration"]:
+                projectiles_to_remove.append(projectile)
+                continue
+
+            # Move projectile
+            old_x, old_y = projectile["x"], projectile["y"]
+            projectile["x"] += projectile["dx"]
+            projectile["y"] += projectile["dy"]
+
+            # Check if projectile hit target or passed it
+            start_x = projectile["x"] - projectile["dx"]  # Previous position
+            start_y = projectile["y"] - projectile["dy"]
+            target_x = projectile["target_x"]
+            target_y = projectile["target_y"]
+
+            # Check if we've crossed the target line (prevents overshooting)
+            if not projectile["hit_target"]:
+                # Check if we've moved past the target in either direction
+                crossed_x = (start_x <= target_x <= projectile["x"]) or (
+                    projectile["x"] <= target_x <= start_x
+                )
+                crossed_y = (start_y <= target_y <= projectile["y"]) or (
+                    projectile["y"] <= target_y <= start_y
+                )
+
+                # Hit if we're close to target AND we've crossed it
+                target_distance = abs(projectile["x"] - target_x) + abs(
+                    projectile["y"] - target_y
+                )
+                if target_distance < 15 and (
+                    crossed_x or crossed_y
+                ):  # 15 pixel hit radius
+                    projectile["hit_target"] = True
+                    # Spawn explosion effect at target
+                    target_tile_x = int(target_x // self.tile_size)
+                    target_tile_y = int(target_y // self.tile_size)
+                    self._spawn_effect("fireball", target_tile_x, target_tile_y)
+                    print(
+                        f"💥 Fireball hit target at ({target_tile_x}, {target_tile_y})!"
+                    )
+                    projectiles_to_remove.append(projectile)
+
+        # Remove expired/hit projectiles
+        for projectile in projectiles_to_remove:
+            self.active_projectiles.remove(projectile)
+
     def run(self) -> None:
         """Run the demo."""
         print("Starting BT Fighter Demo...")
@@ -821,6 +1134,12 @@ class BTFighterDemo(DemoBase):
             # Update AI scheduler
             self.ai_scheduler.update(0.016)  # ~60 FPS
 
+            # Simple mage AI - attack bandit if in range
+            self._update_mage_ai()
+
+            # Update projectiles
+            self._update_projectiles()
+
             # Clear screen
             self.screen.fill((0, 0, 0))
 
@@ -828,6 +1147,7 @@ class BTFighterDemo(DemoBase):
             self._draw_terrain(self.screen)
             self._draw_units(self.screen)
             self._draw_effects(self.screen)
+            self._draw_projectiles(self.screen)
             self._draw_ui(self.screen)
 
             # Show victory/defeat message if battle is over
