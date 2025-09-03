@@ -191,27 +191,40 @@ class BTFighterDemo(DemoBase):
         return sprites
 
     def _load_effect_sprites(self) -> Dict[str, pygame.Surface]:
-        """Load effect sprite sheets."""
+        """Load effect sprite sheets and slice them into frames."""
         sprites = {}
         for effect_name in ["spark", "slash"]:
             if effect_name in self.effects_metadata.get("effects", {}):
                 effect_meta = self.effects_metadata["effects"][effect_name]
                 sheet_path = effect_meta["sheet"]
                 try:
-                    sprites[effect_name] = pygame.image.load(sheet_path)
+                                        # Load the sprite sheet with alpha channel preserved
+                    sheet = pygame.image.load(sheet_path).convert_alpha()
+                    frame_width = effect_meta["frame_size"][0]
+                    frame_height = effect_meta["frame_size"][1]
+                    frames = effect_meta["frames"]
+                    
+                    # Extract the first frame with transparency
+                    first_frame = pygame.Surface((frame_width, frame_height), pygame.SRCALPHA)
+                    first_frame.blit(sheet, (0, 0), (0, 0, frame_width, frame_height))
+                    sprites[effect_name] = first_frame
+
+                    print(
+                        f"Loaded {effect_name} effect: {frame_width}x{frame_height}, {frames} frames"
+                    )
                 except pygame.error as e:
                     print(f"Failed to load {sheet_path}: {e}")
                     # Create placeholder
                     sprites[effect_name] = self._create_placeholder(
-                        32, 32, (255, 255, 0)
+                        32, 32, (255, 255, 0, 128)  # Semi-transparent yellow
                     )
         return sprites
 
     def _create_placeholder(
-        self, width: int, height: int, color: Tuple[int, int, int]
+        self, width: int, height: int, color: Tuple[int, int, int, int]
     ) -> pygame.Surface:
-        """Create a placeholder surface."""
-        surface = pygame.Surface((width, height))
+        """Create a placeholder surface with transparency."""
+        surface = pygame.Surface((width, height), pygame.SRCALPHA)
         surface.fill(color)
         return surface
 
@@ -257,8 +270,9 @@ class BTFighterDemo(DemoBase):
                         self.ai_decision_text = (
                             f"AI: Attack! (tick {self.bt_tick_count})"
                         )
+                        # Spawn slash effect at BANDIT's position (attacker), not fighter's
                         self._spawn_effect(
-                            "slash", self.fighter_pos[0], self.fighter_pos[1]
+                            "slash", self.bandit_pos[0], self.bandit_pos[1]
                         )
                         self.fighter_hp = max(0, self.fighter_hp - 2)
                         self.bandit_ap = max(0, self.bandit_ap - 1)
@@ -410,17 +424,17 @@ class BTFighterDemo(DemoBase):
         class SimpleAPManager:
             def __init__(self, demo):
                 self.demo = demo
-            
+
             def get_ap(self, unit_id):
                 if unit_id == "bandit":
                     return self.demo.bandit_ap
                 elif unit_id == "fighter":
                     return self.demo.fighter_ap
                 return 0
-            
+
             def can_spend(self, unit_id, amount):
                 return self.get_ap(unit_id) >= amount
-            
+
             def spend(self, unit_id, amount):
                 if unit_id == "bandit":
                     self.demo.bandit_ap = max(0, self.demo.bandit_ap - amount)
