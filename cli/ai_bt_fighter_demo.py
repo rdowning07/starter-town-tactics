@@ -67,7 +67,7 @@ class BTFighterDemo(DemoBase):
 
         # Subscribe to victory events
         self.victory_service.subscribe(self._on_battle_outcome)
-        self.battle_outcome = None
+        self.battle_outcome: Optional[BattleOutcome] = None
 
         # BT AI state
         self.bt = make_basic_combat_tree()
@@ -160,6 +160,12 @@ class BTFighterDemo(DemoBase):
 
         sprites["fighter"] = fighter_sprites
         sprites["bandit"] = bandit_sprites
+
+        # Set default animations based on available sprites
+        if "down_stand" in fighter_sprites:
+            self.fighter_animation = "down_stand"
+        if "down_stand" in bandit_sprites:
+            self.bandit_animation = "down_stand"
 
         return sprites
 
@@ -622,33 +628,52 @@ class BTFighterDemo(DemoBase):
                         self._execute_attack()
                 elif event.key == pygame.K_a:
                     # Fighter attack animation - cycle through available animations
-                    if self.fighter_animation == "idle_down":
-                        self.fighter_animation = "walk_down"
+                    if self.fighter_animation == "down_stand":
+                        self.fighter_animation = "down_walk1"
                     else:
-                        self.fighter_animation = "idle_down"
+                        self.fighter_animation = "down_stand"
                 elif event.key == pygame.K_w:
                     # Toggle bandit walk
-                    if self.bandit_animation == "idle_down":
-                        self.bandit_animation = "walk_down"
+                    if self.bandit_animation == "down_stand":
+                        self.bandit_animation = "down_walk1"
                     else:
-                        self.bandit_animation = "idle_down"
+                        self.bandit_animation = "down_stand"
 
-        # Handle continuous input (fighter movement + camera)
+        # Handle movement - ONE TILE AT A TIME with proper animation
         keys = pygame.key.get_pressed()
-
-        # Fighter movement with WASD
         old_pos = self.fighter_pos.copy()
+        moved = False
+
+        # Only allow one movement per key press (not continuous)
         if keys[pygame.K_w]:  # Up
             self.fighter_pos[1] = max(0, self.fighter_pos[1] - 1)
-        if keys[pygame.K_s]:  # Down
+            self.fighter_animation = "up_walk1"
+            moved = True
+        elif keys[pygame.K_s]:  # Down
             self.fighter_pos[1] = min(14, self.fighter_pos[1] + 1)
-        if keys[pygame.K_a]:  # Left
+            self.fighter_animation = "down_walk1"
+            moved = True
+        elif keys[pygame.K_a]:  # Left
             self.fighter_pos[0] = max(0, self.fighter_pos[0] - 1)
-        if keys[pygame.K_d]:  # Right
+            self.fighter_animation = "left_walk1"
+            moved = True
+        elif keys[pygame.K_d]:  # Right
             self.fighter_pos[0] = min(14, self.fighter_pos[0] + 1)
+            self.fighter_animation = "right_walk1"
+            moved = True
+        else:
+            # No movement keys pressed, return to idle
+            if "down" in self.fighter_animation:
+                self.fighter_animation = "down_stand"
+            elif "up" in self.fighter_animation:
+                self.fighter_animation = "up_stand"
+            elif "left" in self.fighter_animation:
+                self.fighter_animation = "left_stand"
+            elif "right" in self.fighter_animation:
+                self.fighter_animation = "right_stand"
 
         # Camera follows fighter
-        if old_pos != self.fighter_pos:
+        if moved:
             self.camera_x = self.fighter_pos[0] * self.tile_size - 400
             self.camera_y = self.fighter_pos[1] * self.tile_size - 300
 
