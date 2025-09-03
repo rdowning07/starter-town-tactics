@@ -4,8 +4,8 @@ Handles visual effects like flashes, particles, screen shake,
 and other visual feedback.
 """
 
-import time
 import math
+import time
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
@@ -15,6 +15,7 @@ import pygame
 
 class FXType(Enum):
     """Types of visual effects."""
+
     FLASH = "flash"
     SCREEN_SHAKE = "screen_shake"
     PARTICLE = "particle"
@@ -40,6 +41,7 @@ class FXType(Enum):
 @dataclass
 class FXEffect:
     """Represents a single visual effect."""
+
     fx_type: FXType
     position: Tuple[int, int]
     duration: float
@@ -67,10 +69,14 @@ class FXManager:
         self.particle_surfaces: Dict[str, pygame.Surface] = {}
 
     def trigger_fx(
-        self, fx_type: str, position: Tuple[int, int],
-        duration: float = 0.5, intensity: float = 1.0,
+        self,
+        fx_type: str,
+        position: Tuple[int, int],
+        duration: float = 0.5,
+        intensity: float = 1.0,
         color: Tuple[int, int, int] = (255, 255, 255),
-        size: int = 10, metadata: Optional[Dict[str, Any]] = None
+        size: int = 10,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Trigger a visual effect."""
         try:
@@ -86,88 +92,91 @@ class FXManager:
             intensity=intensity,
             color=color,
             size=size,
-            metadata=metadata or {}
+            metadata=metadata or {},
         )
         self.effects.append(effect)
         print(f"✨ Triggered {fx_type} at {position}")
 
     def trigger_flash(
-        self, position: Tuple[int, int],
+        self,
+        position: Tuple[int, int],
         color: Tuple[int, int, int] = (255, 255, 255),
-        duration: float = 0.3, intensity: float = 1.0
+        duration: float = 0.3,
+        intensity: float = 1.0,
     ) -> None:
         """Trigger a flash effect."""
-        self.trigger_fx(
-            "flash", position, duration, intensity, color, size=10
-        )
+        self.trigger_fx("flash", position, duration, intensity, color, size=10)
 
-    def trigger_screen_shake(
-        self, intensity: float = 5.0, duration: float = 0.5
-    ) -> None:
+    def trigger_screen_shake(self, intensity: float = 5.0, duration: float = 0.5) -> None:
         """Trigger screen shake effect."""
         self.trigger_fx(
-            "screen_shake", (0, 0), duration, intensity,
-            color=(255, 255, 255), size=10,
-            metadata={"shake_intensity": intensity}
+            "screen_shake",
+            (0, 0),
+            duration,
+            intensity,
+            color=(255, 255, 255),
+            size=10,
+            metadata={"shake_intensity": intensity},
         )
 
     def trigger_particle(
-        self, position: Tuple[int, int],
-        particle_type: str = "sparkle",
-        count: int = 5, duration: float = 1.0
+        self, position: Tuple[int, int], particle_type: str = "sparkle", count: int = 5, duration: float = 1.0
     ) -> None:
         """Trigger particle effect."""
         for i in range(count):
             offset = (i * 2 - count, i * 2 - count)  # Spread particles
             pos = (position[0] + offset[0], position[1] + offset[1])
             self.trigger_fx(
-                "particle", pos, duration, intensity=1.0,
-                color=(255, 255, 255), size=10,
-                metadata={"particle_type": particle_type}
+                "particle",
+                pos,
+                duration,
+                intensity=1.0,
+                color=(255, 255, 255),
+                size=10,
+                metadata={"particle_type": particle_type},
             )
 
     # Week 4 FX Methods
     def trigger_damage_fx(self, position: Tuple[int, int], damage: int) -> None:
         """Trigger damage visual effect."""
         self.trigger_fx(
-            "damage", position, duration=1.0, intensity=1.0,
-            color=(255, 0, 0), size=15,
-            metadata={"damage_amount": damage}
+            "damage",
+            position,
+            duration=1.0,
+            intensity=1.0,
+            color=(255, 0, 0),
+            size=15,
+            metadata={"damage_amount": damage},
         )
 
     def trigger_heal_fx(self, position: Tuple[int, int], healing: int) -> None:
         """Trigger healing visual effect."""
         self.trigger_fx(
-            "heal", position, duration=1.0, intensity=1.0,
-            color=(0, 255, 0), size=15,
-            metadata={"heal_amount": healing}
+            "heal", position, duration=1.0, intensity=1.0, color=(0, 255, 0), size=15, metadata={"heal_amount": healing}
         )
 
     def trigger_critical_fx(self, position: Tuple[int, int]) -> None:
         """Trigger critical hit visual effect."""
-        self.trigger_fx(
-            "critical", position, duration=1.5, intensity=1.5,
-            color=(255, 255, 0), size=20
-        )
+        self.trigger_fx("critical", position, duration=1.5, intensity=1.5, color=(255, 255, 0), size=20)
         # Add screen shake for critical hits
         self.trigger_screen_shake(intensity=3.0, duration=0.3)
 
-    def trigger_status_apply_fx(self, position: Tuple[int, int],
-                               effect_type: str = "buff") -> None:
+    def trigger_status_apply_fx(self, position: Tuple[int, int], effect_type: str = "buff") -> None:
         """Trigger status effect application visual."""
         color = (0, 255, 0) if effect_type == "buff" else (255, 0, 0)
         self.trigger_fx(
-            "status_apply", position, duration=0.8, intensity=1.0,
-            color=color, size=12,
-            metadata={"status_type": effect_type}
+            "status_apply",
+            position,
+            duration=0.8,
+            intensity=1.0,
+            color=color,
+            size=12,
+            metadata={"status_type": effect_type},
         )
 
     def trigger_status_remove_fx(self, position: Tuple[int, int]) -> None:
         """Trigger status effect removal visual."""
-        self.trigger_fx(
-            "status_remove", position, duration=0.5, intensity=1.0,
-            color=(255, 255, 255), size=8
-        )
+        self.trigger_fx("status_remove", position, duration=0.5, intensity=1.0, color=(255, 255, 255), size=8)
 
     # Week 5 Advanced Particle FX Methods
     def trigger_spark_fx(self, position: Tuple[int, int], count: int = 8) -> None:
@@ -176,42 +185,62 @@ class FXManager:
             offset = (i * 3 - count * 1.5, i * 2 - count)
             pos = (position[0] + offset[0], position[1] + offset[1])
             self.trigger_fx(
-                "spark", pos, duration=0.8, intensity=1.0,
-                color=(255, 255, 0), size=4,
-                metadata={"particle_type": "spark", "index": i}
+                "spark",
+                pos,
+                duration=0.8,
+                intensity=1.0,
+                color=(255, 255, 0),
+                size=4,
+                metadata={"particle_type": "spark", "index": i},
             )
 
     def trigger_fire_fx(self, position: Tuple[int, int], intensity: float = 1.0) -> None:
         """Trigger fire particle effect."""
         self.trigger_fx(
-            "fire", position, duration=1.2, intensity=intensity,
-            color=(255, 100, 0), size=15,
-            metadata={"particle_type": "fire", "flicker": True}
+            "fire",
+            position,
+            duration=1.2,
+            intensity=intensity,
+            color=(255, 100, 0),
+            size=15,
+            metadata={"particle_type": "fire", "flicker": True},
         )
 
     def trigger_ice_fx(self, position: Tuple[int, int], intensity: float = 1.0) -> None:
         """Trigger ice particle effect."""
         self.trigger_fx(
-            "ice", position, duration=1.0, intensity=intensity,
-            color=(100, 200, 255), size=12,
-            metadata={"particle_type": "ice", "crystal": True}
+            "ice",
+            position,
+            duration=1.0,
+            intensity=intensity,
+            color=(100, 200, 255),
+            size=12,
+            metadata={"particle_type": "ice", "crystal": True},
         )
 
     def trigger_combo_fx(self, position: Tuple[int, int], combo_level: int = 1) -> None:
         """Trigger combo visual effect."""
         self.trigger_fx(
-            "combo", position, duration=1.0, intensity=1.0 + combo_level * 0.2,
-            color=(255, 255, 255), size=10 + combo_level * 2,
-            metadata={"particle_type": "combo", "level": combo_level}
+            "combo",
+            position,
+            duration=1.0,
+            intensity=1.0 + combo_level * 0.2,
+            color=(255, 255, 255),
+            size=10 + combo_level * 2,
+            metadata={"particle_type": "combo", "level": combo_level},
         )
 
     def trigger_explosion_fx(self, position: Tuple[int, int], radius: int = 20) -> None:
         """Trigger explosion effect with particles."""
         # Main explosion
         self.trigger_fx(
-            "explosion", position, duration=1.5, intensity=1.5,
-            color=(255, 200, 0), size=radius,
-            metadata={"particle_type": "explosion", "radius": radius}
+            "explosion",
+            position,
+            duration=1.5,
+            intensity=1.5,
+            color=(255, 200, 0),
+            size=radius,
+            metadata={"particle_type": "explosion", "radius": radius},
         )
 
         # Add screen shake
@@ -222,18 +251,17 @@ class FXManager:
 
     def trigger_magic_fx(self, position: Tuple[int, int], magic_type: str = "arcane") -> None:
         """Trigger magic visual effect."""
-        colors = {
-            "arcane": (200, 100, 255),
-            "fire": (255, 100, 0),
-            "ice": (100, 200, 255),
-            "lightning": (255, 255, 0)
-        }
+        colors = {"arcane": (200, 100, 255), "fire": (255, 100, 0), "ice": (100, 200, 255), "lightning": (255, 255, 0)}
         color = colors.get(magic_type, (200, 100, 255))
 
         self.trigger_fx(
-            "magic", position, duration=1.2, intensity=1.0,
-            color=color, size=18,
-            metadata={"particle_type": "magic", "type": magic_type}
+            "magic",
+            position,
+            duration=1.2,
+            intensity=1.0,
+            color=color,
+            size=18,
+            metadata={"particle_type": "magic", "type": magic_type},
         )
 
     def update(self) -> None:
@@ -256,10 +284,7 @@ class FXManager:
             if effect.fx_type == FXType.SCREEN_SHAKE:
                 progress = elapsed / effect.duration
                 intensity = effect.intensity * (1.0 - progress)
-                shake_intensity = (
-                    effect.metadata.get("shake_intensity", 5.0)
-                    if effect.metadata else 5.0
-                )
+                shake_intensity = effect.metadata.get("shake_intensity", 5.0) if effect.metadata else 5.0
                 shake_x = intensity * shake_intensity
                 shake_y = intensity * shake_intensity
                 self.screen_shake_offset = (shake_x, shake_y)
@@ -313,9 +338,7 @@ class FXManager:
         elif effect.fx_type == FXType.MAGIC:
             self._draw_magic(screen, effect, progress)
 
-    def _draw_flash(
-        self, screen: pygame.Surface, effect: FXEffect, progress: float
-    ) -> None:
+    def _draw_flash(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw a flash effect."""
         # Create flash surface if needed
         if self.flash_surface is None:
@@ -334,16 +357,11 @@ class FXManager:
             else:
                 # Local flash around position
                 flash_rect = pygame.Rect(
-                    effect.position[0] - effect.size,
-                    effect.position[1] - effect.size,
-                    effect.size * 2,
-                    effect.size * 2
+                    effect.position[0] - effect.size, effect.position[1] - effect.size, effect.size * 2, effect.size * 2
                 )
                 screen.blit(flash_surface, flash_rect, flash_rect)
 
-    def _draw_particle(
-        self, screen: pygame.Surface, effect: FXEffect, progress: float
-    ) -> None:
+    def _draw_particle(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw a particle effect."""
         # Simple particle as a colored circle
         if progress < 0.8:  # Particles fade out in last 20%
@@ -352,25 +370,14 @@ class FXManager:
             if alpha > 0:
                 # Create particle surface
                 particle_size = max(2, int(effect.size * (1.0 - progress)))
-                particle_surface = pygame.Surface(
-                    (particle_size * 2, particle_size * 2), pygame.SRCALPHA
-                )
+                particle_surface = pygame.Surface((particle_size * 2, particle_size * 2), pygame.SRCALPHA)
                 # Draw particle
                 pygame.draw.circle(
-                    particle_surface,
-                    (*effect.color, alpha),
-                    (particle_size, particle_size),
-                    particle_size
+                    particle_surface, (*effect.color, alpha), (particle_size, particle_size), particle_size
                 )
-                screen.blit(
-                    particle_surface,
-                    (effect.position[0] - particle_size,
-                     effect.position[1] - particle_size)
-                )
+                screen.blit(particle_surface, (effect.position[0] - particle_size, effect.position[1] - particle_size))
 
-    def _draw_glow(
-        self, screen: pygame.Surface, effect: FXEffect, progress: float
-    ) -> None:
+    def _draw_glow(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw a glow effect."""
         # Simple glow as expanding circle
         if progress < 0.8:
@@ -378,21 +385,10 @@ class FXManager:
             alpha = max(0, min(255, alpha))
             if alpha > 0:
                 glow_size = int(effect.size * (1.0 + progress * 2))
-                glow_surface = pygame.Surface(
-                    (glow_size * 2, glow_size * 2), pygame.SRCALPHA
-                )
+                glow_surface = pygame.Surface((glow_size * 2, glow_size * 2), pygame.SRCALPHA)
                 # Draw glow
-                pygame.draw.circle(
-                    glow_surface,
-                    (*effect.color, alpha),
-                    (glow_size, glow_size),
-                    glow_size
-                )
-                screen.blit(
-                    glow_surface,
-                    (effect.position[0] - glow_size,
-                     effect.position[1] - glow_size)
-                )
+                pygame.draw.circle(glow_surface, (*effect.color, alpha), (glow_size, glow_size), glow_size)
+                screen.blit(glow_surface, (effect.position[0] - glow_size, effect.position[1] - glow_size))
 
     def clear_effects(self) -> None:
         """Clear all active effects."""
@@ -465,10 +461,8 @@ class FXManager:
             glow_alpha = int(64 * (1.0 - progress))
             if glow_alpha > 0:
                 glow_surface = pygame.Surface((glow_size * 2, glow_size * 2), pygame.SRCALPHA)
-                pygame.draw.circle(glow_surface, (*effect.color, glow_alpha),
-                                 (glow_size, glow_size), glow_size)
-                screen.blit(glow_surface, (effect.position[0] - glow_size,
-                                         effect.position[1] - glow_size))
+                pygame.draw.circle(glow_surface, (*effect.color, glow_alpha), (glow_size, glow_size), glow_size)
+                screen.blit(glow_surface, (effect.position[0] - glow_size, effect.position[1] - glow_size))
 
     def _draw_critical(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw critical hit effect with burst and text."""
@@ -544,10 +538,8 @@ class FXManager:
                 # Spark as small bright circle
                 spark_size = max(1, int(effect.size * (1.0 - progress * 0.5)))
                 spark_surface = pygame.Surface((spark_size * 2, spark_size * 2), pygame.SRCALPHA)
-                pygame.draw.circle(spark_surface, (*effect.color, alpha),
-                                 (spark_size, spark_size), spark_size)
-                screen.blit(spark_surface, (effect.position[0] - spark_size,
-                                          effect.position[1] - spark_size))
+                pygame.draw.circle(spark_surface, (*effect.color, alpha), (spark_size, spark_size), spark_size)
+                screen.blit(spark_surface, (effect.position[0] - spark_size, effect.position[1] - spark_size))
 
     def _draw_fire(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw fire particle effect."""
@@ -563,10 +555,8 @@ class FXManager:
                 flicker = 1.0 + 0.2 * math.sin(progress * 20)
                 flicker_alpha = int(alpha * flicker)
 
-                pygame.draw.circle(fire_surface, (*effect.color, flicker_alpha),
-                                 (fire_size, fire_size), fire_size)
-                screen.blit(fire_surface, (effect.position[0] - fire_size,
-                                         effect.position[1] - fire_size))
+                pygame.draw.circle(fire_surface, (*effect.color, flicker_alpha), (fire_size, fire_size), fire_size)
+                screen.blit(fire_surface, (effect.position[0] - fire_size, effect.position[1] - fire_size))
 
     def _draw_ice(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw ice particle effect."""
@@ -583,11 +573,10 @@ class FXManager:
                     (ice_size, ice_size - ice_size // 2),
                     (ice_size + ice_size // 2, ice_size),
                     (ice_size, ice_size + ice_size // 2),
-                    (ice_size - ice_size // 2, ice_size)
+                    (ice_size - ice_size // 2, ice_size),
                 ]
                 pygame.draw.polygon(ice_surface, (*effect.color, alpha), points)
-                screen.blit(ice_surface, (effect.position[0] - ice_size,
-                                        effect.position[1] - ice_size))
+                screen.blit(ice_surface, (effect.position[0] - ice_size, effect.position[1] - ice_size))
 
     def _draw_combo(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw combo visual effect."""
@@ -600,10 +589,8 @@ class FXManager:
                 combo_surface = pygame.Surface((combo_size * 2, combo_size * 2), pygame.SRCALPHA)
 
                 # Draw ring
-                pygame.draw.circle(combo_surface, (*effect.color, alpha),
-                                 (combo_size, combo_size), combo_size, 3)
-                screen.blit(combo_surface, (effect.position[0] - combo_size,
-                                          effect.position[1] - combo_size))
+                pygame.draw.circle(combo_surface, (*effect.color, alpha), (combo_size, combo_size), combo_size, 3)
+                screen.blit(combo_surface, (effect.position[0] - combo_size, effect.position[1] - combo_size))
 
     def _draw_explosion(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw explosion effect."""
@@ -616,17 +603,20 @@ class FXManager:
                 explosion_surface = pygame.Surface((explosion_size * 2, explosion_size * 2), pygame.SRCALPHA)
 
                 # Main explosion
-                pygame.draw.circle(explosion_surface, (*effect.color, alpha),
-                                 (explosion_size, explosion_size), explosion_size)
+                pygame.draw.circle(
+                    explosion_surface, (*effect.color, alpha), (explosion_size, explosion_size), explosion_size
+                )
 
                 # Inner glow
                 inner_alpha = int(alpha * 0.5)
                 inner_size = explosion_size // 2
-                pygame.draw.circle(explosion_surface, (*effect.color, inner_alpha),
-                                 (explosion_size, explosion_size), inner_size)
+                pygame.draw.circle(
+                    explosion_surface, (*effect.color, inner_alpha), (explosion_size, explosion_size), inner_size
+                )
 
-                screen.blit(explosion_surface, (effect.position[0] - explosion_size,
-                                              effect.position[1] - explosion_size))
+                screen.blit(
+                    explosion_surface, (effect.position[0] - explosion_size, effect.position[1] - explosion_size)
+                )
 
     def _draw_magic(self, screen: pygame.Surface, effect: FXEffect, progress: float) -> None:
         """Draw magic visual effect."""
@@ -649,5 +639,4 @@ class FXManager:
                     points.append((x, y))
 
                 pygame.draw.polygon(magic_surface, (*effect.color, alpha), points)
-                screen.blit(magic_surface, (effect.position[0] - magic_size,
-                                          effect.position[1] - magic_size))
+                screen.blit(magic_surface, (effect.position[0] - magic_size, effect.position[1] - magic_size))

@@ -3,9 +3,12 @@ Input Handler - manages mouse and keyboard input with game state integration.
 Integrated with GameState, SimRunner, and TurnController architecture.
 """
 
+from typing import Callable, Optional, Tuple
+
 import pygame
-from typing import Optional, Callable, Tuple
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -14,9 +17,10 @@ def screen_to_tile(pos: tuple[int, int], tile_size: int) -> tuple[int, int]:
     x, y = pos
     return (x // tile_size, y // tile_size)
 
+
 def get_unit_at_tile(game_state, tile: Tuple[int, int]) -> Optional[str]:
     """Get unit at tile position from game state."""
-    if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+    if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
         return None
 
     # Check if any unit is at this tile
@@ -25,6 +29,7 @@ def get_unit_at_tile(game_state, tile: Tuple[int, int]) -> Optional[str]:
             return unit_id
 
     return None
+
 
 def handle_mouse_input(event: pygame.event.Event, ui_state: UIState, tile_size: int, game_state=None):
     """Handle mouse click/hover events with game state integration."""
@@ -48,6 +53,7 @@ def handle_mouse_input(event: pygame.event.Event, ui_state: UIState, tile_size: 
         else:
             ui_state.deselect_unit()
 
+
 def handle_keyboard_input(event: pygame.event.Event, ui_state: UIState, game_state=None):
     """Handle keyboard input with game state integration."""
     if event.type == pygame.KEYDOWN:
@@ -55,17 +61,19 @@ def handle_keyboard_input(event: pygame.event.Event, ui_state: UIState, game_sta
             ui_state.reset_selection()
         elif event.key == pygame.K_SPACE and game_state:
             # End turn if it's player's turn
-            if hasattr(game_state, 'sim_runner') and not game_state.sim_runner.is_ai_turn():
+            if hasattr(game_state, "sim_runner") and not game_state.sim_runner.is_ai_turn():
                 game_state.sim_runner.run_turn()
+
 
 def get_unit_at_tile_stub(tile: Tuple[int, int]) -> Optional[str]:
     """Stub get_unit_at_tile for Week 1 compatibility - return 1 if top-left tile clicked."""
     # For demo, return 1 if top-left tile clicked
     return "1" if tile == (0, 0) else None
 
+
 def calculate_movement_range(game_state, unit_id: str, move_range: int = 3) -> list[Tuple[int, int]]:
     """Calculate valid movement tiles for unit."""
-    if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+    if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
         return []
 
     unit_data = game_state.units.units.get(unit_id, {})
@@ -84,9 +92,10 @@ def calculate_movement_range(game_state, unit_id: str, move_range: int = 3) -> l
 
     return valid_tiles
 
+
 def calculate_attack_targets(game_state, unit_id: str, attack_range: int = 1) -> list[Tuple[int, int]]:
     """Calculate valid attack targets for unit."""
-    if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+    if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
         return []
 
     unit_data = game_state.units.units.get(unit_id, {})
@@ -109,6 +118,7 @@ def calculate_attack_targets(game_state, unit_id: str, attack_range: int = 1) ->
 
     return targets
 
+
 def is_valid_tile(x: int, y: int, game_state) -> bool:
     """Check if tile is valid (within bounds, not occupied, etc.)."""
     # Map bounds (assume 20x20 grid for now)
@@ -116,7 +126,7 @@ def is_valid_tile(x: int, y: int, game_state) -> bool:
         return False
 
     # Check if tile is occupied by another unit
-    if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+    if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
         for other_unit_id, other_unit_data in game_state.units.units.items():
             if (other_unit_data.get("x"), other_unit_data.get("y")) == (x, y):
                 return False

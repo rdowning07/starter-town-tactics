@@ -3,14 +3,17 @@ Asset Validator - comprehensive asset validation with full architecture integrat
 Validates terrain tiles, sprites, animations, and integrates with existing QA systems.
 """
 
-from typing import Dict, List, Optional, Tuple, Any, Set
-import os
-import json
-from pathlib import Path
-from PIL import Image
 import hashlib
+import json
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+from PIL import Image
+
 from game.ui.asset_qa_scene import AssetQAScene
 from game.ui.particle_qa_scene import ParticleQAScene
+
 
 # @api
 # @refactor
@@ -33,6 +36,7 @@ class AssetValidationResult:
         """Add validation warning."""
         self.warnings.append(warning)
 
+
 class AssetValidator:
     """Comprehensive asset validation with full architecture integration."""
 
@@ -51,7 +55,7 @@ class AssetValidator:
                 "allowed_extensions": [".png"],
                 "required_subdirs": ["grass", "stone", "water", "forest", "mountain"],
                 "max_file_size_mb": 1,
-                "naming_pattern": r"^[a-z_]+\.(png)$"
+                "naming_pattern": r"^[a-z_]+\.(png)$",
             },
             "units": {
                 "expected_resolution": (64, 64),
@@ -59,29 +63,29 @@ class AssetValidator:
                 "required_subdirs": ["idle", "walk", "attack"],
                 "max_file_size_mb": 2,
                 "naming_pattern": r"^[a-zA-Z_0-9]+\.(png)$",
-                "animation_frames": {"idle": 2, "walk": 3, "attack": 3}
+                "animation_frames": {"idle": 2, "walk": 3, "attack": 3},
             },
             "ui": {
                 "expected_resolution": None,  # Variable resolution
                 "allowed_extensions": [".png"],
                 "required_subdirs": ["buttons", "panels", "cursors", "icons"],
                 "max_file_size_mb": 0.5,
-                "naming_pattern": r"^[a-z_]+\.(png)$"
+                "naming_pattern": r"^[a-z_]+\.(png)$",
             },
             "effects": {
                 "expected_resolution": None,  # Variable resolution
                 "allowed_extensions": [".png"],
                 "required_subdirs": ["particles", "animations"],
                 "max_file_size_mb": 1,
-                "naming_pattern": r"^[a-z_0-9]+\.(png)$"
+                "naming_pattern": r"^[a-z_0-9]+\.(png)$",
             },
             "sfx": {
                 "expected_resolution": None,  # Not applicable
                 "allowed_extensions": [".wav", ".ogg", ".mp3"],
                 "required_subdirs": [],
                 "max_file_size_mb": 5,
-                "naming_pattern": r"^[a-z_]+\.(wav|ogg|mp3)$"
-            }
+                "naming_pattern": r"^[a-z_]+\.(wav|ogg|mp3)$",
+            },
         }
 
     def validate_all_assets(self) -> Dict[str, List[AssetValidationResult]]:
@@ -90,9 +94,9 @@ class AssetValidator:
 
         if not self.asset_dir.exists():
             if self.logger:
-                self.logger.log_event("asset_validation_error", {
-                    "error": f"Asset directory not found: {self.asset_dir}"
-                })
+                self.logger.log_event(
+                    "asset_validation_error", {"error": f"Asset directory not found: {self.asset_dir}"}
+                )
             return all_results
 
         # Validate each asset type
@@ -115,7 +119,9 @@ class AssetValidator:
 
         return all_results
 
-    def _validate_asset_type(self, asset_type: str, type_dir: Path, rules: Dict[str, Any]) -> List[AssetValidationResult]:
+    def _validate_asset_type(
+        self, asset_type: str, type_dir: Path, rules: Dict[str, Any]
+    ) -> List[AssetValidationResult]:
         """Validate assets of a specific type."""
         results = []
 
@@ -140,7 +146,9 @@ class AssetValidator:
 
         return results
 
-    def _validate_individual_asset(self, file_path: Path, rules: Dict[str, Any], asset_type: str) -> AssetValidationResult:
+    def _validate_individual_asset(
+        self, file_path: Path, rules: Dict[str, Any], asset_type: str
+    ) -> AssetValidationResult:
         """Validate an individual asset file."""
         result = AssetValidationResult(str(file_path))
 
@@ -159,6 +167,7 @@ class AssetValidator:
 
         # Check naming pattern
         import re
+
         if "naming_pattern" in rules:
             if not re.match(rules["naming_pattern"], file_path.name):
                 result.add_warning(f"File name doesn't match expected pattern: {rules['naming_pattern']}")
@@ -193,7 +202,9 @@ class AssetValidator:
                 # Check resolution
                 expected_resolution = rules.get("expected_resolution")
                 if expected_resolution and (width, height) != expected_resolution:
-                    result.add_error(f"Invalid resolution: {width}x{height}. Expected: {expected_resolution[0]}x{expected_resolution[1]}")
+                    result.add_error(
+                        f"Invalid resolution: {width}x{height}. Expected: {expected_resolution[0]}x{expected_resolution[1]}"
+                    )
 
                 # Check if image has transparency (for PNGs)
                 if img.format == "PNG" and img.mode in ("RGBA", "LA", "P"):
@@ -226,7 +237,9 @@ class AssetValidator:
                     # Count frames
                     frame_files = [f for f in anim_dir.iterdir() if f.suffix.lower() == ".png"]
                     if len(frame_files) != expected_frames:
-                        result.add_error(f"Animation {anim_name} has {len(frame_files)} frames, expected {expected_frames}")
+                        result.add_error(
+                            f"Animation {anim_name} has {len(frame_files)} frames, expected {expected_frames}"
+                        )
 
                     # Check frame naming consistency
                     expected_names = [f"frame_{i:02d}.png" for i in range(expected_frames)]
@@ -247,11 +260,7 @@ class AssetValidator:
 
         for file_hash, file_paths in self.duplicate_hashes.items():
             if len(file_paths) > 1:
-                duplicates_found.append({
-                    "hash": file_hash,
-                    "files": file_paths,
-                    "count": len(file_paths)
-                })
+                duplicates_found.append({"hash": file_hash, "files": file_paths, "count": len(file_paths)})
 
                 # Add warnings to affected results
                 for asset_type, results in all_results.items():
@@ -261,10 +270,13 @@ class AssetValidator:
                             result.add_warning(f"Duplicate file detected. Also found at: {', '.join(other_files[:2])}")
 
         if self.logger and duplicates_found:
-            self.logger.log_event("asset_duplicates_found", {
-                "duplicate_groups": len(duplicates_found),
-                "total_duplicates": sum(d["count"] for d in duplicates_found)
-            })
+            self.logger.log_event(
+                "asset_duplicates_found",
+                {
+                    "duplicate_groups": len(duplicates_found),
+                    "total_duplicates": sum(d["count"] for d in duplicates_found),
+                },
+            )
 
     def _calculate_file_hash(self, file_path: Path) -> str:
         """Calculate SHA-256 hash of file."""
@@ -281,9 +293,9 @@ class AssetValidator:
         total_warnings = sum(sum(len(r.warnings) for r in results) for results in all_results.values())
         valid_assets = sum(sum(1 for r in results if r.is_valid) for results in all_results.values())
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("🎨 COMPREHENSIVE ASSET VALIDATION REPORT")
-        print("="*60)
+        print("=" * 60)
 
         print(f"📊 Summary:")
         print(f"  ✅ Total Assets Checked: {total_assets}")
@@ -340,18 +352,21 @@ class AssetValidator:
                         print(f"    - ... and {len(file_paths) - 2} more")
                     shown += 1
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
         # Log report
         if self.logger:
-            self.logger.log_event("asset_validation_complete", {
-                "total_assets": total_assets,
-                "valid_assets": valid_assets,
-                "total_errors": total_errors,
-                "total_warnings": total_warnings,
-                "success_rate": (valid_assets / total_assets * 100) if total_assets > 0 else 0,
-                "duplicate_groups": duplicate_groups
-            })
+            self.logger.log_event(
+                "asset_validation_complete",
+                {
+                    "total_assets": total_assets,
+                    "valid_assets": valid_assets,
+                    "total_errors": total_errors,
+                    "total_warnings": total_warnings,
+                    "success_rate": (valid_assets / total_assets * 100) if total_assets > 0 else 0,
+                    "duplicate_groups": duplicate_groups,
+                },
+            )
 
     def validate_scenario_assets(self, scenario_file: Path) -> List[AssetValidationResult]:
         """Validate assets referenced in a scenario file."""
@@ -364,7 +379,8 @@ class AssetValidator:
 
         try:
             import yaml
-            with open(scenario_file, 'r') as f:
+
+            with open(scenario_file, "r") as f:
                 scenario_data = yaml.safe_load(f)
 
             # Check assets referenced in scenario
@@ -403,25 +419,18 @@ class AssetValidator:
             "generated_at": "2024-01-01",  # Could use actual timestamp
             "asset_types": {},
             "total_assets": 0,
-            "validation_summary": {}
+            "validation_summary": {},
         }
 
         # Validate all assets first
         validation_results = self.validate_all_assets()
 
         for asset_type, results in validation_results.items():
-            type_manifest = {
-                "count": len(results),
-                "valid_count": sum(1 for r in results if r.is_valid),
-                "files": []
-            }
+            type_manifest = {"count": len(results), "valid_count": sum(1 for r in results if r.is_valid), "files": []}
 
             for result in results:
                 if result.is_valid:
-                    file_info = {
-                        "path": result.asset_path,
-                        "metadata": result.metadata
-                    }
+                    file_info = {"path": result.asset_path, "metadata": result.metadata}
                     type_manifest["files"].append(file_info)
 
             manifest["asset_types"][asset_type] = type_manifest
@@ -430,20 +439,17 @@ class AssetValidator:
         # Save manifest if output file specified
         if output_file:
             try:
-                with open(output_file, 'w') as f:
+                with open(output_file, "w") as f:
                     json.dump(manifest, f, indent=2)
 
                 if self.logger:
-                    self.logger.log_event("asset_manifest_generated", {
-                        "output_file": str(output_file),
-                        "total_assets": manifest["total_assets"]
-                    })
+                    self.logger.log_event(
+                        "asset_manifest_generated",
+                        {"output_file": str(output_file), "total_assets": manifest["total_assets"]},
+                    )
             except Exception as e:
                 if self.logger:
-                    self.logger.log_event("asset_manifest_error", {
-                        "output_file": str(output_file),
-                        "error": str(e)
-                    })
+                    self.logger.log_event("asset_manifest_error", {"output_file": str(output_file), "error": str(e)})
 
         return manifest
 
@@ -460,14 +466,16 @@ class AssetValidator:
             "valid_assets": valid_assets,
             "success_rate": (valid_assets / total_assets * 100) if total_assets > 0 else 0,
             "asset_types": list(self.validation_results.keys()),
-            "duplicate_groups": sum(1 for paths in self.duplicate_hashes.values() if len(paths) > 1)
+            "duplicate_groups": sum(1 for paths in self.duplicate_hashes.values() if len(paths) > 1),
         }
+
 
 # Standalone validation functions for backward compatibility
 def validate_assets(asset_dir: Path = None, logger=None) -> Dict[str, List[AssetValidationResult]]:
     """Standalone asset validation function."""
     validator = AssetValidator(asset_dir, logger)
     return validator.validate_all_assets()
+
 
 def generate_asset_report(asset_dir: Path = None, output_file: Path = None) -> bool:
     """Generate comprehensive asset report."""

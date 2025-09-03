@@ -170,9 +170,7 @@ class Renderer:
             for x in range(grid.width):
                 tile = grid.get_tile(x, y)
                 if tile.unit and tile.unit.is_alive():
-                    self._render_single_unit(
-                        unit_manager, tile.unit, x, y, offset_x, offset_y
-                    )
+                    self._render_single_unit(unit_manager, tile.unit, x, y, offset_x, offset_y)
 
     def _render_single_unit(
         self,
@@ -232,9 +230,7 @@ class Renderer:
             # Could render HP/AP indicators here
             self._render_unit_indicators(x, y, unit_data)
 
-    def _render_unit_indicators(
-        self, x: int, y: int, unit_data: dict, offset_x: int = 0, offset_y: int = 0
-    ) -> None:
+    def _render_unit_indicators(self, x: int, y: int, unit_data: dict, offset_x: int = 0, offset_y: int = 0) -> None:
         """Render unit status indicators (HP, AP, etc.)."""
         # Render HP bar
         hp = unit_data.get("hp", 0)
@@ -273,9 +269,7 @@ class Renderer:
         }
         return terrain_colors.get(terrain, (128, 128, 128))  # Default gray
 
-    def _get_unit_position(
-        self, unit_id: str, grid: Grid
-    ) -> tuple[int | None, int | None]:
+    def _get_unit_position(self, unit_id: str, grid: Grid) -> tuple[int | None, int | None]:
         """Get unit position from grid or other source."""
         # This method is now deprecated since we scan the grid directly
         # Keeping for backward compatibility
@@ -291,7 +285,5 @@ class Renderer:
 
 
 def draw_unit(self, unit, surface):
-    sprite = self.sprite_manager.get_sprite(
-        unit.sprite_name, unit.current_animation, unit.animation_frame
-    )
+    sprite = self.sprite_manager.get_sprite(unit.sprite_name, unit.current_animation, unit.animation_frame)
     surface.blit(sprite, unit.position)

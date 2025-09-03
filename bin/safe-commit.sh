@@ -29,4 +29,3 @@ echo "🌐 Opening GitHub repository in your browser: $web_url"
 open "$web_url"
 
 echo "🎉 Done!"
-

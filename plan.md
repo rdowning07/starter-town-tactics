@@ -108,8 +108,11 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ **Visual Demo Phase 1:** Pygame integration with playable fighter vs AI bandit
 - ✅ **Design Pattern Showcase:** Real-time display of Composite, Strategy, Observer, Factory patterns
 - ✅ **AI Architecture Display:** Live status showing BT decision-making and execution
-- 🔄 **Phase 2 Next:** Scale to 4v4 tactical combat (4 fighters vs 4 bandits)
-- ⏳ **Phase 3 Pending:** Polish and record 2-minute demo for Friday presentation
+- ✅ **4v4 Tactical Combat System:** Complete 4v4 tactical combat with 4 player units vs 4 AI bandits
+- ✅ **Multi-Unit AI:** Smart targeting, collision detection, individual unit tracking
+- ✅ **Professional Combat Flow:** Damage, healing, projectiles, visual effects
+- ✅ **Phase 2 Complete:** 4v4 tactical combat system fully functional
+- 🔄 **Phase 3 Next:** Architecture improvements (Factory, Scheduler, VictoryService)
 - ⚠️ **22 Other Units:** Still need integration using the established fighter pattern
 - ⚠️ **Effect Assets:** Visual effects system ready for integration
 
@@ -234,7 +237,30 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - **Extensible Foundation**: Easy to add new behaviors and conditions
 - **Production Ready**: Integration with existing GameState and UnitManager
 
+### ⚔️ Week 12: 4v4 Tactical Combat System ✅ COMPLETED
+**Goal**: Scale from 1v1 to full 4v4 tactical combat with professional gameplay mechanics
+
+**Tasks COMPLETED**:
+- ✅ **Multi-Unit System**: Expanded from single bandit to 4 bandits with individual tracking
+- ✅ **Smart AI Targeting**: Mage/ranger target closest bandit, bandits pursue fighter
+- ✅ **Collision Detection**: No units can occupy the same tile
+- ✅ **Individual Unit Stats**: Separate HP/AP tracking for each bandit
+- ✅ **Visual Variety**: Different bandit poses using same sprite assets
+- ✅ **Professional Combat Flow**: Damage, healing, projectiles, visual effects
+- ✅ **Player Team**: Fighter (player), Mage (AI), Healer (AI), Ranger (AI)
+- ✅ **Enemy Team**: 4 Bandits (AI) with independent behavior
+
+**Combat Features Delivered**:
+- ✅ **8 Units Total**: 4 player team vs 4 enemy bandits
+- ✅ **Smart Targeting**: AI units intelligently select targets
+- ✅ **Collision System**: Prevents tile sharing between units
+- ✅ **Individual Tracking**: Each unit has separate HP/AP/position
+- ✅ **Visual Effects**: Fireball and arrow projectiles with hit detection
+- ✅ **Healing System**: Healer targets lowest HP ally
+- ✅ **AP Management**: All units consume and regenerate AP appropriately
+
 **Next Phase Goals**:
+- 🎯 **Architecture Improvements**: Factory spawn, AI scheduler, victory service
 - 🎯 **Command System Integration**: Replace placeholder movement with real Move commands
 - 🎯 **Pathfinding Integration**: Add A* pathfinding to BT adapter
 - 🎯 **Visual Debugging**: Show BT execution in renderer

@@ -156,9 +156,7 @@ def demo_game_loop(scenario_path: str, max_turns: int = 10) -> None:
     game_state = GameState()
 
     # Create scenario manager and load scenario
-    scenario_manager = create_scenario_manager(
-        camera, ai_controller, player_unit, game_state
-    )
+    scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
 
     try:
         # Load the scenario

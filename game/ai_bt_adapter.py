@@ -1,19 +1,23 @@
 # Standard library imports
 from __future__ import annotations
-from typing import Optional
 
-# Third-party imports
-# (none)
+from typing import Optional
 
 # Local imports
 from core.ai.bt import BTContext
 from game.game_state import GameState
+
+# Third-party imports
+# (none)
+
+
 
 class BTAdapter(BTContext):
     """
     Adapts GameState/Unit APIs to the BTContext Protocol.
     Keep this tiny and deterministic.
     """
+
     def __init__(self, gs: GameState, unit_id: str, target_id: Optional[str] = None):
         self.gs = gs
         self.unit_id = unit_id
@@ -47,20 +51,20 @@ class BTAdapter(BTContext):
         t = self.gs.units.get(self.target_id) if self.target_id else None
         if not u or not t:
             return False
-        
+
         # Get current positions
         ux = u.get("x", 0)
         uy = u.get("y", 0)
         tx = t.get("x", 0)
         ty = t.get("y", 0)
-        
+
         # Single-step greedy move toward target (placeholder)
         dx = 1 if tx > ux else (-1 if tx < ux else 0)
         dy = 1 if ty > uy else (-1 if ty < uy else 0)
-        
+
         # Prefer horizontal then vertical; use your Move command if available
         nx, ny = (ux + dx, uy) if dx != 0 else (ux, uy + dy)
-        
+
         # For now, just update the unit's position and consume AP
         # TODO: Integrate with your actual movement system
         if self.gs.ap_manager.can_spend(self.unit_id, 1):
@@ -78,7 +82,7 @@ class BTAdapter(BTContext):
             return False
         if not self.enemy_in_attack_range():
             return False
-        
+
         # For now, just damage the target and consume AP
         # TODO: Integrate with your actual combat system
         if self.gs.ap_manager.can_spend(self.unit_id, 1):

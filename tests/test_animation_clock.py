@@ -146,9 +146,7 @@ class TestAnimationClock(unittest.TestCase):
 
         # Should use defaults
         frame_idx = self.clock.get_frame_index(meta)
-        self.assertEqual(
-            frame_idx, 0
-        )  # Default frame duration is 100ms, so at 0ms = frame 0
+        self.assertEqual(frame_idx, 0)  # Default frame duration is 100ms, so at 0ms = frame 0
 
 
 if __name__ == "__main__":

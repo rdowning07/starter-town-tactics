@@ -103,7 +103,7 @@ mock_scenario_data = {
 def test_camera_pan_with_parameters(scenario_manager, mock_camera, mock_scenario_data):
     mock_camera.cinematic_pan.reset_mock()
     scenario_manager._process_camera_actions(mock_scenario_data['camera'])
-    
+
     # Assert specific parameters
     mock_camera.cinematic_pan.assert_called_once()
     call_args = mock_camera.cinematic_pan.call_args
@@ -117,7 +117,7 @@ def test_branching_scenario_win_condition(scenario_manager, mock_scenario_data):
     # Mock game state to simulate win condition
     scenario_manager._is_battle_won = Mock(return_value=True)
     scenario_manager._is_battle_lost = Mock(return_value=False)
-    
+
     # Test branching behavior
     result = scenario_manager._check_branch_conditions(mock_scenario_data)
     assert result is True
@@ -130,10 +130,10 @@ def test_full_scenario_execution_integration(scenario_manager, mock_scenario_dat
     scenario_manager._process_camera_actions = Mock()
     scenario_manager._process_ai_actions = Mock()
     scenario_manager._process_player_actions = Mock()
-    
+
     # Execute complete scenario
     scenario_manager._execute_scenario(mock_scenario_data)
-    
+
     # Verify all components were called
     scenario_manager._process_camera_actions.assert_called_once()
     scenario_manager._process_ai_actions.assert_called_once()

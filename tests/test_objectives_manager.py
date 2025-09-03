@@ -1,7 +1,8 @@
 """Tests for ObjectivesManager."""
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 
 from game.objectives_manager import ObjectivesManager
 
@@ -61,9 +62,9 @@ def test_update_objectives_victory(objectives_manager, mock_game_state):
     """Test objective update when player wins."""
     mock_game_state.has_won.return_value = True
     mock_game_state.has_lost.return_value = False
-    
+
     objectives_manager.update_objectives()
-    
+
     assert objectives_manager.current_objective == "Victory! The enemies have been defeated."
 
 
@@ -71,9 +72,9 @@ def test_update_objectives_defeat(objectives_manager, mock_game_state):
     """Test objective update when player loses."""
     mock_game_state.has_won.return_value = False
     mock_game_state.has_lost.return_value = True
-    
+
     objectives_manager.update_objectives()
-    
+
     assert objectives_manager.current_objective == "Defeat. You lost the battle."
 
 
@@ -82,9 +83,9 @@ def test_update_objectives_survive(objectives_manager, mock_game_state):
     mock_game_state.has_won.return_value = False
     mock_game_state.has_lost.return_value = False
     mock_game_state.units.any_effectively_alive.return_value = False
-    
+
     objectives_manager.update_objectives()
-    
+
     assert objectives_manager.current_objective == "Survive until reinforcements arrive!"
 
 
@@ -93,9 +94,9 @@ def test_update_objectives_defeat_enemies(objectives_manager, mock_game_state):
     mock_game_state.has_won.return_value = False
     mock_game_state.has_lost.return_value = False
     mock_game_state.units.any_effectively_alive.return_value = True
-    
+
     objectives_manager.update_objectives()
-    
+
     assert objectives_manager.current_objective == "Defeat all enemies!"
 
 
@@ -103,7 +104,7 @@ def test_reset(objectives_manager):
     """Test resetting objectives."""
     objectives_manager.set_objective("Test Objective")
     objectives_manager.reset()
-    
+
     assert objectives_manager.current_objective == ""
     assert objectives_manager.objective_history == []
 
@@ -111,38 +112,38 @@ def test_reset(objectives_manager):
 def test_objective_flow_victory(mock_game_state):
     """Test the objective flow function with victory."""
     from game.objectives_manager import update_objective_flow
-    
+
     mock_game_state.has_won.return_value = True
     mock_game_state.has_lost.return_value = False
-    
+
     objectives_manager = ObjectivesManager(mock_game_state)
     update_objective_flow(mock_game_state, objectives_manager)
-    
+
     assert objectives_manager.current_objective == "Victory! The enemies have been defeated."
 
 
 def test_objective_flow_defeat(mock_game_state):
     """Test the objective flow function with defeat."""
     from game.objectives_manager import update_objective_flow
-    
+
     mock_game_state.has_won.return_value = False
     mock_game_state.has_lost.return_value = True
-    
+
     objectives_manager = ObjectivesManager(mock_game_state)
     update_objective_flow(mock_game_state, objectives_manager)
-    
+
     assert objectives_manager.current_objective == "Defeat. You lost the battle."
 
 
 def test_objective_flow_ongoing(mock_game_state):
     """Test the objective flow function with ongoing game."""
     from game.objectives_manager import update_objective_flow
-    
+
     mock_game_state.has_won.return_value = False
     mock_game_state.has_lost.return_value = False
     mock_game_state.units.any_effectively_alive.return_value = True
-    
+
     objectives_manager = ObjectivesManager(mock_game_state)
     update_objective_flow(mock_game_state, objectives_manager)
-    
+
     assert objectives_manager.current_objective == "Defeat all enemies!"

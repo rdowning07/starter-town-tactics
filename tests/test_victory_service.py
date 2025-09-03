@@ -12,9 +12,7 @@ class TestVictoryService:
 
     def test_initial_state(self):
         """Test initial service state."""
-        service = VictoryService(
-            player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4}
-        )
+        service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4})
 
         assert service.get_outcome() == BattleOutcome.ONGOING
         assert service.get_alive_counts() == {1: 4, 2: 4}
@@ -22,9 +20,7 @@ class TestVictoryService:
 
     def test_enemy_defeat_sequence(self):
         """Test enemy defeat leading to victory."""
-        service = VictoryService(
-            player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4}
-        )
+        service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4})
 
         # Defeat all enemies
         for _ in range(4):
@@ -35,9 +31,7 @@ class TestVictoryService:
 
     def test_player_defeat_sequence(self):
         """Test player defeat leading to loss."""
-        service = VictoryService(
-            player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4}
-        )
+        service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4})
 
         # Defeat all player units
         for _ in range(4):
@@ -53,9 +47,7 @@ class TestVictoryService:
         def observer(outcome):
             outcomes.append(outcome)
 
-        service = VictoryService(
-            player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4}
-        )
+        service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4})
         service.subscribe(observer)
 
         # Trigger victory

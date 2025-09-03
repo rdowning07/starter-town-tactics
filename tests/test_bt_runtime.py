@@ -109,18 +109,18 @@ def test_bt_selector_behavior():
 def test_bt_composite_pattern():
     """Test that the composite pattern works correctly with nested nodes."""
     from core.ai.bt import Selector, Sequence
-    
+
     bt = make_basic_combat_tree()
-    
+
     # Verify the tree structure
     assert isinstance(bt, Selector)
     assert len(bt.children) == 2
-    
+
     # First child should be attack sequence
     attack_seq = bt.children[0]
     assert isinstance(attack_seq, Sequence)
     assert len(attack_seq.children) == 3
-    
+
     # Second child should be move sequence
     move_seq = bt.children[1]
     assert isinstance(move_seq, Sequence)

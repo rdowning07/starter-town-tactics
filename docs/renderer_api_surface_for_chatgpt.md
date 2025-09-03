@@ -85,24 +85,24 @@ def load_unit_animation_from_sheet(self, unit_id: str, animation_name: str, shee
 ```python
 {
     "idle": {
-        "frame_count": 4, 
-        "frame_duration": 4, 
+        "frame_count": 4,
+        "frame_duration": 4,
         "loop": True
     },
     "attack": {
-        "frame_count": 5, 
-        "frame_duration": 2, 
+        "frame_count": 5,
+        "frame_duration": 2,
         "loop": False,
-        "fx_type": "spark", 
-        "fx_at": [2], 
+        "fx_type": "spark",
+        "fx_at": [2],
         "sound_at": [1]
     },
     "hurt": {
-        "frame_count": 2, 
-        "frame_duration": 3, 
+        "frame_count": 2,
+        "frame_duration": 3,
         "loop": False,
-        "fx_type": "flash", 
-        "fx_at": [0], 
+        "fx_type": "flash",
+        "fx_at": [0],
         "sound_at": [0]
     }
 }
@@ -177,19 +177,19 @@ class Animation:
 ```python
 class AnimationClock:
     """Manages animation timing and frame updates."""
-    
+
     def __init__(self, sprite_manager: SpriteManager, fx_manager: Optional[FXManager] = None):
         self.sprite_manager = sprite_manager
         self.fx_manager = fx_manager
         self.animations: Dict[str, Animation] = {}
         self.unit_animations: Dict[str, Dict[str, Animation]] = {}
-        
+
     def update(self, dt: int) -> None:
         """Update all active animations."""
-        
+
     def get_unit_animation(self, unit_id: str, animation_name: str) -> Optional[Animation]:
         """Get animation for specific unit and animation type."""
-        
+
     def trigger_unit_animation(self, unit_id: str, animation_name: str, position: Tuple[int, int]) -> None:
         """Trigger animation and associated FX."""
 ```
@@ -198,14 +198,14 @@ class AnimationClock:
 ```python
 class UnitRenderer:
     """Enhanced unit rendering with animation support."""
-    
+
     def __init__(self, sprite_manager: SpriteManager, animation_clock: AnimationClock):
         self.sprite_manager = sprite_manager
         self.animation_clock = animation_clock
-        
+
     def render_unit(self, screen: pygame.Surface, unit, x: int, y: int, offset_x: int = 0, offset_y: int = 0) -> None:
         """Render unit with current animation frame."""
-        
+
     def render_all_units(self, screen: pygame.Surface, unit_manager: UnitManager, grid: Grid, offset_x: int = 0, offset_y: int = 0) -> None:
         """Render all units with animations."""
 ```

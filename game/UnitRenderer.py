@@ -1,5 +1,5 @@
 # Standard library imports
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 # Third-party imports
 import pygame
@@ -11,9 +11,7 @@ from .AnimationCatalog import AnimationCatalog, frame_index, get_current_frame
 class UnitRenderer:
     """Renders units on the game grid."""
 
-    def __init__(
-        self, catalog: AnimationCatalog, tile_size: Tuple[int, int] = (32, 32)
-    ) -> None:
+    def __init__(self, catalog: AnimationCatalog, tile_size: Tuple[int, int] = (32, 32)) -> None:
         self.catalog = catalog
         self.tile_w, self.tile_h = tile_size
 

@@ -162,9 +162,7 @@ class TestTerrainRenderer(unittest.TestCase):
         terrain_map = [["G", "W"], ["R", "#"]]
 
         # Should not raise any exceptions
-        self.terrain_renderer.render_terrain(
-            surface, terrain_map, camera_x=100, camera_y=50
-        )
+        self.terrain_renderer.render_terrain(surface, terrain_map, camera_x=100, camera_y=50)
 
     def test_render_terrain_with_custom_tile_size(self):
         """Test rendering terrain with custom tile size."""

@@ -5,9 +5,10 @@ Validates asset structure, files, and metadata consistency.
 """
 
 import csv
-import yaml
 from pathlib import Path
 from typing import List
+
+import yaml
 
 
 class AssetValidator:
@@ -114,9 +115,7 @@ class AssetValidator:
                 "source",
                 "notes",
             ]
-            missing_fields = [
-                field for field in required_fields if field not in entries[0].keys()
-            ]
+            missing_fields = [field for field in required_fields if field not in entries[0].keys()]
 
             if missing_fields:
                 self.errors.append(f"Assets tracker missing fields: {missing_fields}")
@@ -187,14 +186,10 @@ class AssetValidator:
                     continue
 
                 required_fields = ["sprite", "color", "tier"]
-                missing_fields = [
-                    field for field in required_fields if field not in unit_data
-                ]
+                missing_fields = [field for field in required_fields if field not in unit_data]
 
                 if missing_fields:
-                    self.errors.append(
-                        f"Unit {unit_name} missing fields: {missing_fields}"
-                    )
+                    self.errors.append(f"Unit {unit_name} missing fields: {missing_fields}")
                     continue
 
                 # Check if sprite file exists
@@ -229,14 +224,10 @@ class AssetValidator:
 
             for tileset in tilesets:
                 required_fields = ["file", "name", "tile_size"]
-                missing_fields = [
-                    field for field in required_fields if field not in tileset
-                ]
+                missing_fields = [field for field in required_fields if field not in tileset]
 
                 if missing_fields:
-                    self.errors.append(
-                        f"Tileset {tileset.get('name', 'unknown')} missing fields: {missing_fields}"
-                    )
+                    self.errors.append(f"Tileset {tileset.get('name', 'unknown')} missing fields: {missing_fields}")
                     continue
 
                 # Check if tileset file exists
@@ -244,9 +235,7 @@ class AssetValidator:
                 if not (self.project_root / file_path).exists():
                     self.warnings.append(f"Tileset file not found: {file_path}")
 
-            self.info.append(
-                f"✅ Tileset mapping validated with {len(tilesets)} tilesets"
-            )
+            self.info.append(f"✅ Tileset mapping validated with {len(tilesets)} tilesets")
             return True
 
         except Exception as e:

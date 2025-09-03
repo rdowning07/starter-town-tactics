@@ -1,5 +1,6 @@
 import pygame
 
+from CameraController import CameraController
 from game.ai_controller import AIController
 from game.game import Game
 from game.gamepad_controller import GamepadController
@@ -11,7 +12,6 @@ from game.sprite_manager import SpriteManager
 from game.turn_controller import TurnController
 from game.ui.debug_overlay import draw_debug_info
 from game.unit import Unit
-from CameraController import CameraController
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600  # Increased for better visibility
 TILE_SIZE = 32
@@ -163,11 +163,7 @@ def main():
                 # Camera controls
                 if event.key == pygame.K_SPACE:
                     # Trigger cinematic pan for testing
-                    cinematic_targets = [
-                        pygame.Vector2(200, 200),
-                        pygame.Vector2(400, 400),
-                        pygame.Vector2(600, 600)
-                    ]
+                    cinematic_targets = [pygame.Vector2(200, 200), pygame.Vector2(400, 400), pygame.Vector2(600, 600)]
                     camera.cinematic_pan(cinematic_targets, speed=10)
 
                 if input_state.state == "idle":

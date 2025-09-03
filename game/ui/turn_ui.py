@@ -3,9 +3,12 @@ Turn UI - displays current turn indicator with full architecture integration.
 Integrated with GameState, SimRunner, and TurnController.
 """
 
-import pygame
 from typing import Optional, Tuple
+
+import pygame
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -17,20 +20,21 @@ class TurnUI:
         self.font = pygame.font.Font(None, 24)
         self.small_font = pygame.font.Font(None, 18)
 
-    def draw_turn_indicator(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                           width: int = 800, height: int = 30):
+    def draw_turn_indicator(
+        self, screen: pygame.Surface, game_state, ui_state: UIState, width: int = 800, height: int = 30
+    ):
         """Draw turn indicator with full game state integration."""
-        if not hasattr(game_state, 'sim_runner') or not hasattr(game_state, 'turn_controller'):
+        if not hasattr(game_state, "sim_runner") or not hasattr(game_state, "turn_controller"):
             return
 
         # Get current turn info
         current_unit = game_state.turn_controller.get_current_unit()
-        turn_count = getattr(game_state.sim_runner, 'turn_count', 0)
+        turn_count = getattr(game_state.sim_runner, "turn_count", 0)
         is_ai_turn = game_state.sim_runner.is_ai_turn()
 
         # Determine current team
         current_team = "AI" if is_ai_turn else "Player"
-        if current_unit and hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+        if current_unit and hasattr(game_state, "units") and hasattr(game_state.units, "units"):
             unit_data = game_state.units.units.get(current_unit, {})
             current_team = unit_data.get("team", "Unknown").title()
 
@@ -51,24 +55,26 @@ class TurnUI:
         screen.blit(status_surface, (width - 120, 8))
 
         # Log turn change if needed
-        if self.logger and hasattr(self, '_last_turn_count') and self._last_turn_count != turn_count:
-            self.logger.log_event("turn_changed", {
-                "turn_count": turn_count,
-                "current_team": current_team,
-                "is_ai_turn": is_ai_turn,
-                "current_unit": current_unit
-            })
+        if self.logger and hasattr(self, "_last_turn_count") and self._last_turn_count != turn_count:
+            self.logger.log_event(
+                "turn_changed",
+                {
+                    "turn_count": turn_count,
+                    "current_team": current_team,
+                    "is_ai_turn": is_ai_turn,
+                    "current_unit": current_unit,
+                },
+            )
 
         self._last_turn_count = turn_count
 
-    def draw_unit_turn_highlight(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                                tile_size: int = 32):
+    def draw_unit_turn_highlight(self, screen: pygame.Surface, game_state, ui_state: UIState, tile_size: int = 32):
         """Highlight the unit whose turn it is."""
-        if not hasattr(game_state, 'turn_controller'):
+        if not hasattr(game_state, "turn_controller"):
             return
 
         current_unit = game_state.turn_controller.get_current_unit()
-        if not current_unit or not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not current_unit or not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         unit_data = game_state.units.units.get(current_unit, {})
@@ -91,14 +97,13 @@ class TurnUI:
         text_rect = text_surface.get_rect(center=(screen_x + tile_size // 2, screen_y))
         screen.blit(text_surface, text_rect)
 
-    def draw_turn_progress(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                          x: int = 10, y: int = 40):
+    def draw_turn_progress(self, screen: pygame.Surface, game_state, ui_state: UIState, x: int = 10, y: int = 40):
         """Draw turn order and progress."""
-        if not hasattr(game_state, 'turn_controller'):
+        if not hasattr(game_state, "turn_controller"):
             return
 
         # Get turn order
-        turn_order = getattr(game_state.turn_controller, 'turn_order', [])
+        turn_order = getattr(game_state.turn_controller, "turn_order", [])
         current_unit = game_state.turn_controller.get_current_unit()
 
         if not turn_order:
@@ -118,9 +123,9 @@ class TurnUI:
             if unit_id == current_unit:
                 color = (255, 255, 0)  # Yellow for current
             elif unit_data.get("team") == "player":
-                color = (0, 255, 0)    # Green for player
+                color = (0, 255, 0)  # Green for player
             else:
-                color = (255, 0, 0)    # Red for enemy
+                color = (255, 0, 0)  # Red for enemy
 
             # Draw unit in turn order
             unit_text = f"{i+1}. {unit_id}"

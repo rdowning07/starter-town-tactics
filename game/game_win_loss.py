@@ -5,6 +5,7 @@ Integrated with GameState, SimRunner, and includes validation and logging.
 
 from typing import Dict
 
+
 # @api
 # @refactor
 class GameWinLoss:
@@ -20,7 +21,7 @@ class GameWinLoss:
 
     def check_victory_conditions(self, game_state) -> bool:
         """Check all victory conditions with validation and logging."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return False
 
         # Get all units
@@ -28,16 +29,12 @@ class GameWinLoss:
 
         # Check if all enemies are dead
         enemies_alive = any(
-            unit_data.get("alive", True)
-            for unit_data in all_units.values()
-            if unit_data.get("team") == "enemy"
+            unit_data.get("alive", True) for unit_data in all_units.values() if unit_data.get("team") == "enemy"
         )
 
         # Check if all players are dead
         players_alive = any(
-            unit_data.get("alive", True)
-            for unit_data in all_units.values()
-            if unit_data.get("team") == "player"
+            unit_data.get("alive", True) for unit_data in all_units.values() if unit_data.get("team") == "player"
         )
 
         # Determine game status
@@ -55,23 +52,25 @@ class GameWinLoss:
 
     def check_custom_victory_conditions(self, game_state) -> bool:
         """Check custom victory conditions (e.g., reach objective, survive turns)."""
-        if not hasattr(game_state, 'sim_runner'):
+        if not hasattr(game_state, "sim_runner"):
             return False
 
         # Check turn-based victory (survive X turns)
-        turn_count = getattr(game_state.sim_runner, 'turn_count', 0)
-        if hasattr(game_state, 'victory_turns') and turn_count >= game_state.victory_turns:
+        turn_count = getattr(game_state.sim_runner, "turn_count", 0)
+        if hasattr(game_state, "victory_turns") and turn_count >= game_state.victory_turns:
             self._set_victory(game_state, f"Survived {turn_count} turns")
             return True
 
         # Check objective-based victory (reach specific tile)
-        if hasattr(game_state, 'objective_tile'):
+        if hasattr(game_state, "objective_tile"):
             objective_x, objective_y = game_state.objective_tile
             for unit_data in game_state.units.units.values():
-                if (unit_data.get("team") == "player" and
-                    unit_data.get("alive", True) and
-                    unit_data.get("x") == objective_x and
-                    unit_data.get("y") == objective_y):
+                if (
+                    unit_data.get("team") == "player"
+                    and unit_data.get("alive", True)
+                    and unit_data.get("x") == objective_x
+                    and unit_data.get("y") == objective_y
+                ):
                     self._set_victory(game_state, f"Reached objective at ({objective_x}, {objective_y})")
                     return True
 
@@ -79,12 +78,12 @@ class GameWinLoss:
 
     def check_defeat_conditions(self, game_state) -> bool:
         """Check custom defeat conditions."""
-        if not hasattr(game_state, 'sim_runner'):
+        if not hasattr(game_state, "sim_runner"):
             return False
 
         # Check turn-based defeat (time limit)
-        turn_count = getattr(game_state.sim_runner, 'turn_count', 0)
-        if hasattr(game_state, 'defeat_turns') and turn_count >= game_state.defeat_turns:
+        turn_count = getattr(game_state.sim_runner, "turn_count", 0)
+        if hasattr(game_state, "defeat_turns") and turn_count >= game_state.defeat_turns:
             self._set_defeat(game_state, f"Time limit exceeded ({turn_count} turns)")
             return True
 
@@ -96,11 +95,11 @@ class GameWinLoss:
 
     def get_victory_message(self) -> str:
         """Get victory message."""
-        return getattr(self, '_victory_message', "Victory!")
+        return getattr(self, "_victory_message", "Victory!")
 
     def get_defeat_message(self) -> str:
         """Get defeat message."""
-        return getattr(self, '_defeat_message', "Defeat!")
+        return getattr(self, "_defeat_message", "Defeat!")
 
     def reset_game_status(self):
         """Reset game status to playing."""
@@ -114,17 +113,20 @@ class GameWinLoss:
         self._victory_message = message
 
         # Set game state status
-        if hasattr(game_state, 'status'):
+        if hasattr(game_state, "status"):
             game_state.status = "victory"
 
         # Log victory
         if self.logger:
-            self.logger.log_event("game_victory", {
-                "message": message,
-                "turn_count": getattr(game_state.sim_runner, 'turn_count', 0),
-                "player_units": self._count_team_units(game_state, "player"),
-                "enemy_units": self._count_team_units(game_state, "enemy")
-            })
+            self.logger.log_event(
+                "game_victory",
+                {
+                    "message": message,
+                    "turn_count": getattr(game_state.sim_runner, "turn_count", 0),
+                    "player_units": self._count_team_units(game_state, "player"),
+                    "enemy_units": self._count_team_units(game_state, "enemy"),
+                },
+            )
 
         print(f"🎉 VICTORY: {message}")
 
@@ -134,17 +136,20 @@ class GameWinLoss:
         self._defeat_message = message
 
         # Set game state status
-        if hasattr(game_state, 'status'):
+        if hasattr(game_state, "status"):
             game_state.status = "defeat"
 
         # Log defeat
         if self.logger:
-            self.logger.log_event("game_defeat", {
-                "message": message,
-                "turn_count": getattr(game_state.sim_runner, 'turn_count', 0),
-                "player_units": self._count_team_units(game_state, "player"),
-                "enemy_units": self._count_team_units(game_state, "enemy")
-            })
+            self.logger.log_event(
+                "game_defeat",
+                {
+                    "message": message,
+                    "turn_count": getattr(game_state.sim_runner, "turn_count", 0),
+                    "player_units": self._count_team_units(game_state, "player"),
+                    "enemy_units": self._count_team_units(game_state, "enemy"),
+                },
+            )
 
         print(f"💀 DEFEAT: {message}")
 
@@ -153,21 +158,20 @@ class GameWinLoss:
         self.game_status = "draw"
 
         # Set game state status
-        if hasattr(game_state, 'status'):
+        if hasattr(game_state, "status"):
             game_state.status = "draw"
 
         # Log draw
         if self.logger:
-            self.logger.log_event("game_draw", {
-                "message": message,
-                "turn_count": getattr(game_state.sim_runner, 'turn_count', 0)
-            })
+            self.logger.log_event(
+                "game_draw", {"message": message, "turn_count": getattr(game_state.sim_runner, "turn_count", 0)}
+            )
 
         print(f"🤝 DRAW: {message}")
 
     def _count_team_units(self, game_state, team: str) -> Dict[str, int]:
         """Count units by team and status."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return {"alive": 0, "dead": 0}
 
         alive_count = 0
@@ -184,10 +188,10 @@ class GameWinLoss:
 
     def get_game_summary(self, game_state) -> Dict:
         """Get comprehensive game summary."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return {}
 
-        turn_count = getattr(game_state.sim_runner, 'turn_count', 0)
+        turn_count = getattr(game_state.sim_runner, "turn_count", 0)
         player_units = self._count_team_units(game_state, "player")
         enemy_units = self._count_team_units(game_state, "enemy")
 
@@ -197,8 +201,9 @@ class GameWinLoss:
             "player_units": player_units,
             "enemy_units": enemy_units,
             "victory_message": self.get_victory_message(),
-            "defeat_message": self.get_defeat_message()
+            "defeat_message": self.get_defeat_message(),
         }
+
 
 # Backward compatibility function
 def check_victory(game_state) -> bool:

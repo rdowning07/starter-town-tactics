@@ -3,10 +3,13 @@ Sound Manager - plays sounds for game events with full architecture integration.
 Integrated with GameState and includes fallback handling and logging.
 """
 
-import pygame
 import os
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
+
+import pygame
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -38,7 +41,7 @@ class SoundManager:
             "select": "assets/sfx/select.wav",
             "death": "assets/sfx/death.wav",
             "heal": "assets/sfx/heal.wav",
-            "block": "assets/sfx/block.wav"
+            "block": "assets/sfx/block.wav",
         }
 
         for sound_name, sound_path in sound_files.items():
@@ -48,25 +51,17 @@ class SoundManager:
                     self.sounds[sound_name].set_volume(self.volume)
 
                     if self.logger:
-                        self.logger.log_event("sound_loaded", {
-                            "sound": sound_name,
-                            "path": sound_path
-                        })
+                        self.logger.log_event("sound_loaded", {"sound": sound_name, "path": sound_path})
                 else:
                     self.missing_sounds.append(sound_name)
                     if self.logger:
-                        self.logger.log_event("sound_missing", {
-                            "sound": sound_name,
-                            "path": sound_path
-                        })
+                        self.logger.log_event("sound_missing", {"sound": sound_name, "path": sound_path})
             except Exception as e:
                 self.missing_sounds.append(sound_name)
                 if self.logger:
-                    self.logger.log_event("sound_load_error", {
-                        "sound": sound_name,
-                        "path": sound_path,
-                        "error": str(e)
-                    })
+                    self.logger.log_event(
+                        "sound_load_error", {"sound": sound_name, "path": sound_path, "error": str(e)}
+                    )
 
     def play(self, sound_name: str, volume: Optional[float] = None):
         """Play a sound with validation and logging."""
@@ -77,9 +72,7 @@ class SoundManager:
             if sound_name not in self.missing_sounds:
                 self.missing_sounds.append(sound_name)
                 if self.logger:
-                    self.logger.log_event("sound_not_found", {
-                        "sound": sound_name
-                    })
+                    self.logger.log_event("sound_not_found", {"sound": sound_name})
             return
 
         try:
@@ -91,17 +84,11 @@ class SoundManager:
             self.sounds[sound_name].play()
 
             if self.logger:
-                self.logger.log_event("sound_played", {
-                    "sound": sound_name,
-                    "volume": volume or self.volume
-                })
+                self.logger.log_event("sound_played", {"sound": sound_name, "volume": volume or self.volume})
 
         except Exception as e:
             if self.logger:
-                self.logger.log_event("sound_play_error", {
-                    "sound": sound_name,
-                    "error": str(e)
-                })
+                self.logger.log_event("sound_play_error", {"sound": sound_name, "error": str(e)})
 
     def play_game_event(self, event_type: str, game_state=None, **kwargs):
         """Play sound based on game event type."""
@@ -113,7 +100,7 @@ class SoundManager:
             "unit_healed": "heal",
             "attack_blocked": "block",
             "game_victory": "victory",
-            "game_defeat": "defeat"
+            "game_defeat": "defeat",
         }
 
         sound_name = sound_mapping.get(event_type)
@@ -128,18 +115,14 @@ class SoundManager:
             sound.set_volume(self.volume)
 
         if self.logger:
-            self.logger.log_event("volume_changed", {
-                "volume": self.volume
-            })
+            self.logger.log_event("volume_changed", {"volume": self.volume})
 
     def enable_sound(self, enabled: bool):
         """Enable or disable sound system."""
         self.sound_enabled = enabled
 
         if self.logger:
-            self.logger.log_event("sound_toggled", {
-                "enabled": enabled
-            })
+            self.logger.log_event("sound_toggled", {"enabled": enabled})
 
     def get_missing_sounds(self) -> List[str]:
         """Get list of missing sound files."""
@@ -152,7 +135,7 @@ class SoundManager:
             "volume": self.volume,
             "loaded_sounds": list(self.sounds.keys()),
             "missing_sounds": self.missing_sounds,
-            "total_sounds": len(self.sounds) + len(self.missing_sounds)
+            "total_sounds": len(self.sounds) + len(self.missing_sounds),
         }
 
     def create_sound_report(self) -> str:
@@ -169,12 +152,12 @@ Loaded Sounds: {len(status['loaded_sounds'])}/{status['total_sounds']}
 ✅ Loaded Sounds:
 """
 
-        for sound in status['loaded_sounds']:
+        for sound in status["loaded_sounds"]:
             report += f"  - {sound}\n"
 
-        if status['missing_sounds']:
+        if status["missing_sounds"]:
             report += f"\n❌ Missing Sounds:\n"
-            for sound in status['missing_sounds']:
+            for sound in status["missing_sounds"]:
                 report += f"  - {sound}\n"
 
         return report
@@ -185,12 +168,12 @@ Loaded Sounds: {len(status['loaded_sounds'])}/{status['total_sounds']}
             pygame.mixer.quit()
         except Exception as e:
             if self.logger:
-                self.logger.log_event("sound_cleanup_error", {
-                    "error": str(e)
-                })
+                self.logger.log_event("sound_cleanup_error", {"error": str(e)})
+
 
 # Global sound manager instance
 _sound_manager = None
+
 
 def get_sound_manager(logger=None) -> SoundManager:
     """Get global sound manager instance."""
@@ -199,10 +182,12 @@ def get_sound_manager(logger=None) -> SoundManager:
         _sound_manager = SoundManager(logger)
     return _sound_manager
 
+
 def play_sound(sound_name: str, volume: Optional[float] = None):
     """Global function to play sounds."""
     sound_manager = get_sound_manager()
     sound_manager.play(sound_name, volume)
+
 
 def play_game_event_sound(event_type: str, game_state=None, **kwargs):
     """Global function to play game event sounds."""

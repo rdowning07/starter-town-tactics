@@ -5,12 +5,7 @@ import pytest
 
 from game.grid import Grid
 from game.overlay.overlay_state import OverlayState
-from game.ui.grid_overlay_draw import (
-    draw_attack_range,
-    draw_movement_range,
-    draw_terrain_overlay,
-    draw_threat_zone,
-)
+from game.ui.grid_overlay_draw import draw_attack_range, draw_movement_range, draw_terrain_overlay, draw_threat_zone
 
 
 class TestGridOverlayDraw:

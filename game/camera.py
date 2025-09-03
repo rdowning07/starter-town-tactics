@@ -3,8 +3,8 @@ Camera system for smooth panning and viewport management.
 Integrates with existing renderer and UI systems.
 """
 
-from typing import Tuple, Optional
 import math
+from typing import Optional, Tuple
 
 
 class Camera:
@@ -273,7 +273,7 @@ class Camera:
             "target_zoom": self.target_zoom,
             "visible_tiles": self.get_visible_tiles(),
             "world_bounds": (self.world_width, self.world_height),
-            "screen_size": (self.screen_width, self.screen_height)
+            "screen_size": (self.screen_width, self.screen_height),
         }
 
     def _apply_bounds(self):
@@ -344,13 +344,13 @@ class CameraController:
         """
         speed = self.fast_pan_speed if fast else self.pan_speed
 
-        if direction == 'up':
+        if direction == "up":
             self.camera.move_target(0, -speed)
-        elif direction == 'down':
+        elif direction == "down":
             self.camera.move_target(0, speed)
-        elif direction == 'left':
+        elif direction == "left":
             self.camera.move_target(-speed, 0)
-        elif direction == 'right':
+        elif direction == "right":
             self.camera.move_target(speed, 0)
 
     def follow_unit(self, unit_pos: Tuple[float, float], offset: Tuple[float, float] = (0, 0)):
@@ -397,7 +397,9 @@ _global_camera: Optional[Camera] = None
 _global_camera_controller: Optional[CameraController] = None
 
 
-def initialize_camera(screen_size: Tuple[int, int], tile_size: int = 32, world_size: Optional[Tuple[int, int]] = None) -> Camera:
+def initialize_camera(
+    screen_size: Tuple[int, int], tile_size: int = 32, world_size: Optional[Tuple[int, int]] = None
+) -> Camera:
     """
     Initialize global camera instance.
 

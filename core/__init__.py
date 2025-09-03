@@ -11,19 +11,40 @@ This module provides the command-event architecture foundation:
 - Objectives system for victory/defeat conditions
 """
 
-from .command import Command, Move, Attack, EndTurn
+from .command import Attack, Command, EndTurn, Move
 from .events import Event, EventBus, Subscriber
 from .game_loop import GameLoop
+from .objectives import EliminateBoss, Escort, HoldZones, Objective, SurviveNTurns
 from .rng import Rng
-from .state import GameState, Controller, Unit, UnitStats, Map, Tile, UnitRef, TurnController
-from .rules import DamageResult, apply_attack, Status, on_unit_turn_start, a_star
-from .objectives import Objective, EliminateBoss, SurviveNTurns, HoldZones, Escort
+from .rules import DamageResult, Status, a_star, apply_attack, on_unit_turn_start
+from .state import Controller, GameState, Map, Tile, TurnController, Unit, UnitRef, UnitStats
 
 __all__ = [
-    'Command', 'Move', 'Attack', 'EndTurn',
-    'Event', 'EventBus', 'Subscriber',
-    'GameLoop', 'Rng', 'GameState', 'Controller',
-    'Unit', 'UnitStats', 'Map', 'Tile', 'UnitRef', 'TurnController',
-    'DamageResult', 'apply_attack', 'Status', 'on_unit_turn_start', 'a_star',
-    'Objective', 'EliminateBoss', 'SurviveNTurns', 'HoldZones', 'Escort'
+    "Command",
+    "Move",
+    "Attack",
+    "EndTurn",
+    "Event",
+    "EventBus",
+    "Subscriber",
+    "GameLoop",
+    "Rng",
+    "GameState",
+    "Controller",
+    "Unit",
+    "UnitStats",
+    "Map",
+    "Tile",
+    "UnitRef",
+    "TurnController",
+    "DamageResult",
+    "apply_attack",
+    "Status",
+    "on_unit_turn_start",
+    "a_star",
+    "Objective",
+    "EliminateBoss",
+    "SurviveNTurns",
+    "HoldZones",
+    "Escort",
 ]

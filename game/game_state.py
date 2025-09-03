@@ -43,9 +43,7 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         # Wire up AI controller with game state
         self.ai_controller.set_game_state(self)
 
-    def set_metadata(
-        self, name: str, map_id: str, objective: str, max_turns: int
-    ) -> None:
+    def set_metadata(self, name: str, map_id: str, objective: str, max_turns: int) -> None:
         self.name = name
         self.map_id = map_id
         self.objective = objective
@@ -93,16 +91,25 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         turns_exceeded = self.turn_controller.current_turn > self.max_turns
         return player_dead or turns_exceeded
 
-    def trigger_fx(self, fx_type: str, position: tuple[int, int],
-                   duration: float = 0.5, intensity: float = 1.0,
-                   color: tuple[int, int, int] = (255, 255, 255),
-                   size: int = 10) -> None:
+    def trigger_fx(
+        self,
+        fx_type: str,
+        position: tuple[int, int],
+        duration: float = 0.5,
+        intensity: float = 1.0,
+        color: tuple[int, int, int] = (255, 255, 255),
+        size: int = 10,
+    ) -> None:
         """Trigger a visual effect."""
         self.fx_manager.trigger_fx(fx_type, position, duration, intensity, color, size)
 
-    def trigger_flash(self, position: tuple[int, int],
-                     color: tuple[int, int, int] = (255, 255, 255),
-                     duration: float = 0.3, intensity: float = 1.0) -> None:
+    def trigger_flash(
+        self,
+        position: tuple[int, int],
+        color: tuple[int, int, int] = (255, 255, 255),
+        duration: float = 0.3,
+        intensity: float = 1.0,
+    ) -> None:
         """Trigger a flash effect."""
         self.fx_manager.trigger_flash(position, color, duration, intensity)
 
@@ -134,9 +141,9 @@ class GameState:  # pylint: disable=too-many-instance-attributes
         """Check if a specific event has been triggered."""
         return self.event_manager.has_event_triggered(event_name)
 
-    def trigger_particle(self, position: tuple[int, int],
-                        particle_type: str = "sparkle",
-                        count: int = 5, duration: float = 1.0) -> None:
+    def trigger_particle(
+        self, position: tuple[int, int], particle_type: str = "sparkle", count: int = 5, duration: float = 1.0
+    ) -> None:
         """Trigger particle effect."""
         self.fx_manager.trigger_particle(position, particle_type, count, duration)
 

@@ -3,11 +3,14 @@ Particle QA Scene - validates particle FX assets with full architecture integrat
 Integrated with existing asset QA system and provides comprehensive particle validation.
 """
 
-import pygame
-import time
 import os
+import time
 from typing import Dict, List, Optional
+
+import pygame
+
 from game.ui.asset_qa_scene import AssetQAScene
+
 
 # @api
 # @refactor
@@ -28,56 +31,31 @@ class ParticleQAScene:
                 "frames": 8,
                 "color": (255, 255, 0),
                 "size": (4, 4),
-                "description": "Spark particles for critical hits"
+                "description": "Spark particles for critical hits",
             },
             "fire": {
                 "frames": 6,
                 "color": (255, 100, 0),
                 "size": (15, 15),
-                "description": "Fire particles for fire spells"
+                "description": "Fire particles for fire spells",
             },
             "ice": {
                 "frames": 5,
                 "color": (100, 200, 255),
                 "size": (12, 12),
-                "description": "Ice particles for ice spells"
+                "description": "Ice particles for ice spells",
             },
-            "combo": {
-                "frames": 4,
-                "color": (255, 255, 255),
-                "size": (10, 10),
-                "description": "Combo effect particles"
-            },
-            "explosion": {
-                "frames": 8,
-                "color": (255, 200, 0),
-                "size": (20, 20),
-                "description": "Explosion particles"
-            },
-            "magic": {
-                "frames": 6,
-                "color": (200, 100, 255),
-                "size": (18, 18),
-                "description": "Magic spell particles"
-            },
-            "damage": {
-                "frames": 3,
-                "color": (255, 0, 0),
-                "size": (15, 15),
-                "description": "Damage number particles"
-            },
-            "heal": {
-                "frames": 3,
-                "color": (0, 255, 0),
-                "size": (15, 15),
-                "description": "Heal number particles"
-            },
+            "combo": {"frames": 4, "color": (255, 255, 255), "size": (10, 10), "description": "Combo effect particles"},
+            "explosion": {"frames": 8, "color": (255, 200, 0), "size": (20, 20), "description": "Explosion particles"},
+            "magic": {"frames": 6, "color": (200, 100, 255), "size": (18, 18), "description": "Magic spell particles"},
+            "damage": {"frames": 3, "color": (255, 0, 0), "size": (15, 15), "description": "Damage number particles"},
+            "heal": {"frames": 3, "color": (0, 255, 0), "size": (15, 15), "description": "Heal number particles"},
             "critical": {
                 "frames": 5,
                 "color": (255, 255, 0),
                 "size": (20, 20),
-                "description": "Critical hit particles"
-            }
+                "description": "Critical hit particles",
+            },
         }
 
     def run_particle_qa(self, auto_cycle: bool = True, delay: float = 0.5):
@@ -96,7 +74,7 @@ class ParticleQAScene:
         return {
             "missing": self.missing_particles,
             "valid": self.valid_particles,
-            "total_expected": len(self.particle_definitions)
+            "total_expected": len(self.particle_definitions),
         }
 
     def _test_particle_assets(self):
@@ -122,12 +100,15 @@ class ParticleQAScene:
                             self.valid_particles.append(f"{particle_name}_frame_{frame_num:02d}")
 
                             if self.logger:
-                                self.logger.log_event("particle_frame_valid", {
-                                    "particle": particle_name,
-                                    "frame": frame_num,
-                                    "path": frame_path,
-                                    "size": img.get_size()
-                                })
+                                self.logger.log_event(
+                                    "particle_frame_valid",
+                                    {
+                                        "particle": particle_name,
+                                        "frame": frame_num,
+                                        "path": frame_path,
+                                        "size": img.get_size(),
+                                    },
+                                )
                     except Exception as e:
                         missing_frames.append(f"frame_{frame_num:02d} (load error: {e})")
                 else:
@@ -135,25 +116,30 @@ class ParticleQAScene:
 
             # Record missing frames for this particle type
             if missing_frames:
-                self.missing_particles.append({
-                    "particle": particle_name,
-                    "missing_frames": missing_frames,
-                    "expected_frames": expected_frames,
-                    "description": particle_info["description"]
-                })
+                self.missing_particles.append(
+                    {
+                        "particle": particle_name,
+                        "missing_frames": missing_frames,
+                        "expected_frames": expected_frames,
+                        "description": particle_info["description"],
+                    }
+                )
             else:
                 if self.logger:
-                    self.logger.log_event("particle_type_complete", {
-                        "particle": particle_name,
-                        "frames": expected_frames,
-                        "description": particle_info["description"]
-                    })
+                    self.logger.log_event(
+                        "particle_type_complete",
+                        {
+                            "particle": particle_name,
+                            "frames": expected_frames,
+                            "description": particle_info["description"],
+                        },
+                    )
 
     def _generate_particle_qa_report(self):
         """Generate comprehensive particle QA report."""
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("🎆 PARTICLE FX QA REPORT")
-        print("="*60)
+        print("=" * 60)
 
         total_expected = len(self.particle_definitions)
         total_missing = len(self.missing_particles)
@@ -175,14 +161,14 @@ class ParticleQAScene:
                 print(f"  🎆 {missing['particle']}: {missing['description']}")
                 print(f"     Expected {missing['expected_frames']} frames")
                 print(f"     Missing: {', '.join(missing['missing_frames'][:3])}")
-                if len(missing['missing_frames']) > 3:
+                if len(missing["missing_frames"]) > 3:
                     print(f"     ... and {len(missing['missing_frames']) - 3} more")
                 print()
 
         # Show complete particle types
         complete_particles = []
         for particle_name in self.particle_definitions.keys():
-            if not any(missing['particle'] == particle_name for missing in self.missing_particles):
+            if not any(missing["particle"] == particle_name for missing in self.missing_particles):
                 complete_particles.append(particle_name)
 
         if complete_particles:
@@ -191,18 +177,21 @@ class ParticleQAScene:
                 info = self.particle_definitions[particle]
                 print(f"  🎆 {particle}: {info['description']} ({info['frames']} frames)")
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
         # Log report
         if self.logger:
-            self.logger.log_event("particle_qa_report", {
-                "valid_frames": total_valid,
-                "missing_types": total_missing,
-                "expected_types": total_expected,
-                "coverage_percentage": coverage_percentage,
-                "missing_particles": self.missing_particles,
-                "complete_particles": complete_particles
-            })
+            self.logger.log_event(
+                "particle_qa_report",
+                {
+                    "valid_frames": total_valid,
+                    "missing_types": total_missing,
+                    "expected_types": total_expected,
+                    "coverage_percentage": coverage_percentage,
+                    "missing_particles": self.missing_particles,
+                    "complete_particles": complete_particles,
+                },
+            )
 
     def _cycle_through_particles(self, delay: float):
         """Cycle through all valid particle assets for visual review."""
@@ -217,7 +206,7 @@ class ParticleQAScene:
             self.screen.fill((0, 0, 0))
 
             # Parse particle frame info
-            parts = particle_frame.split('_')
+            parts = particle_frame.split("_")
             particle_name = parts[0]
             frame_num = int(parts[2])
 
@@ -228,7 +217,7 @@ class ParticleQAScene:
                 f"Frame: {frame_num:02d}",
                 f"Description: {info.get('description', 'Unknown')}",
                 f"Expected Size: {info.get('size', 'Unknown')}",
-                f"Color: {info.get('color', 'Unknown')}"
+                f"Color: {info.get('color', 'Unknown')}",
             ]
 
             y_offset = 10
@@ -254,8 +243,7 @@ class ParticleQAScene:
                     self.screen.blit(img, (x, y))
 
                     # Draw border
-                    pygame.draw.rect(self.screen, (255, 255, 255),
-                                   (x, y, display_size[0], display_size[1]), 2)
+                    pygame.draw.rect(self.screen, (255, 255, 255), (x, y, display_size[0], display_size[1]), 2)
                 else:
                     error_text = font.render("File not found", True, (255, 0, 0))
                     self.screen.blit(error_text, (300, 200))
@@ -294,8 +282,9 @@ class ParticleQAScene:
             "expected_types": total_expected,
             "coverage_percentage": coverage_percentage,
             "missing_particles": self.missing_particles,
-            "particle_definitions": self.particle_definitions
+            "particle_definitions": self.particle_definitions,
         }
+
 
 def run_particle_qa_standalone(screen: pygame.Surface, auto_cycle: bool = True):
     """Standalone function to run particle QA (for backward compatibility)."""

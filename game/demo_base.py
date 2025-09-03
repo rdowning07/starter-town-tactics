@@ -64,9 +64,7 @@ class DemoBase:
         remaining = max(0, self.timeout_seconds - elapsed)
         return remaining
 
-    def draw_timeout_info(
-        self, surface: pygame.Surface, font: pygame.font.Font
-    ) -> None:
+    def draw_timeout_info(self, surface: pygame.Surface, font: pygame.font.Font) -> None:
         """Draw timeout information on the surface."""
         if self.timeout_seconds <= 0:
             return

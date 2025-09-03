@@ -38,7 +38,7 @@ This document summarizes the successful implementation of the enhanced game loop
 def game_loop(game_state: GameState, max_turns: Optional[int] = None) -> None:
     """
     Enhanced game loop using integrated GameState methods.
-    
+
     Features:
     - Turn-based progression
     - Event triggering
@@ -74,7 +74,7 @@ def game_loop(game_state: GameState, max_turns: Optional[int] = None) -> None:
 
 ### All Tests Passing ✅
 - **Game Loop Tests**: 22/22 passed
-- **Objectives Manager Tests**: 13/13 passed  
+- **Objectives Manager Tests**: 13/13 passed
 - **Event Manager Tests**: 15/15 passed
 - **Integration Tests**: 8/8 passed
 - **Total**: 58/58 tests passing
@@ -108,7 +108,7 @@ The enhanced game loop was successfully demonstrated with:
 ==================================================
 📦 Setting up initial game state...
 ✅ Added 4 units
-🎯 Initial objective: 
+🎯 Initial objective:
 
 🔄 Starting game loop...
 🎮 Starting enhanced game loop...

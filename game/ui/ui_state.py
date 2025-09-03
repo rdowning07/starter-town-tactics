@@ -3,8 +3,9 @@ UI State Manager - tracks UI interactions and state.
 Integrated with GameState, SimRunner, and TurnController architecture.
 """
 
-from typing import Optional, Tuple, List
 from dataclasses import dataclass, field
+from typing import List, Optional, Tuple
+
 
 # @api
 # @refactor

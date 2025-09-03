@@ -1,28 +1,40 @@
 """
 Tests for the enhanced event system with stable event types and canonical factories.
 """
-import pytest
 from unittest.mock import Mock
+
+import pytest
+
+from core.command import Attack, EndTurn, Move
 from core.events import (
-    Event, EventType, EventBus, 
-    ev_unit_moved, ev_unit_attacked, ev_unit_killed, 
-    ev_turn_started, ev_turn_ended
+    Event,
+    EventBus,
+    EventType,
+    ev_turn_ended,
+    ev_turn_started,
+    ev_unit_attacked,
+    ev_unit_killed,
+    ev_unit_moved,
 )
-from core.command import Move, Attack, EndTurn
-from core.state import GameState, Unit, UnitStats
 from core.objectives import EliminateBoss, Escort, HoldZones
+from core.state import GameState, Unit, UnitStats
+
 
 class EventCollector:
-    def __init__(self): 
+    def __init__(self):
         self.events = []
-    def __call__(self, e): 
+
+    def __call__(self, e):
         self.events.append(e)
 
+
 def subscribe_types(bus, types):
-    def deco(fn): 
+    def deco(fn):
         bus.subscribe(fn, types)
         return fn
+
     return deco
+
 
 class TestEventFactories:
     def test_ev_unit_moved(self):
@@ -69,19 +81,20 @@ class TestEventFactories:
         assert event.payload["index"] == 3
         assert event.tick == 5
 
+
 class TestEventBusFiltering:
     def test_subscribe_without_filter(self):
         """Test subscribing without type filter receives all events."""
         bus = EventBus()
         collector = EventCollector()
         bus.subscribe(collector)
-        
+
         events = [
             ev_unit_moved("unit1", (1, 1), (2, 2), 1),
             ev_unit_attacked("attacker1", "target1", 5, 2),
-            ev_unit_killed("unit1", "killer1", 3)
+            ev_unit_killed("unit1", "killer1", 3),
         ]
-        
+
         bus.publish(events)
         assert len(collector.events) == 3
 
@@ -90,13 +103,13 @@ class TestEventBusFiltering:
         bus = EventBus()
         collector = EventCollector()
         bus.subscribe(collector, types=[EventType.UNIT_KILLED, EventType.UNIT_ATTACKED])
-        
+
         events = [
             ev_unit_moved("unit1", (1, 1), (2, 2), 1),
             ev_unit_attacked("attacker1", "target1", 5, 2),
-            ev_unit_killed("unit1", "killer1", 3)
+            ev_unit_killed("unit1", "killer1", 3),
         ]
-        
+
         bus.publish(events)
         assert len(collector.events) == 2
         assert all(e.type in [EventType.UNIT_KILLED, EventType.UNIT_ATTACKED] for e in collector.events)
@@ -107,20 +120,18 @@ class TestEventBusFiltering:
         all_events = EventCollector()
         kill_events = EventCollector()
         move_events = EventCollector()
-        
+
         bus.subscribe(all_events)  # No filter
         bus.subscribe(kill_events, types=[EventType.UNIT_KILLED])
         bus.subscribe(move_events, types=[EventType.UNIT_MOVED])
-        
-        events = [
-            ev_unit_moved("unit1", (1, 1), (2, 2), 1),
-            ev_unit_killed("unit1", "killer1", 2)
-        ]
-        
+
+        events = [ev_unit_moved("unit1", (1, 1), (2, 2), 1), ev_unit_killed("unit1", "killer1", 2)]
+
         bus.publish(events)
         assert len(all_events.events) == 2
         assert len(kill_events.events) == 1
         assert len(move_events.events) == 1
+
 
 class TestCommandEventIntegration:
     def test_move_command_emits_unit_moved(self):
@@ -129,10 +140,10 @@ class TestCommandEventIntegration:
         unit = Unit("unit1", (1, 1), team="player")
         state.add_unit(unit)
         state.tick = 5
-        
+
         move_cmd = Move("unit1", (2, 2))
         events = list(move_cmd.apply(state))
-        
+
         assert len(events) == 1
         assert events[0].type == EventType.UNIT_MOVED
         assert events[0].payload["unit_id"] == "unit1"
@@ -148,10 +159,10 @@ class TestCommandEventIntegration:
         state.add_unit(attacker)
         state.add_unit(target)
         state.tick = 5
-        
+
         attack_cmd = Attack("attacker1", "target1")
         events = list(attack_cmd.apply(state))
-        
+
         assert len(events) == 2  # UNIT_ATTACKED + UNIT_KILLED
         assert events[0].type == EventType.UNIT_ATTACKED
         assert events[1].type == EventType.UNIT_KILLED
@@ -160,18 +171,19 @@ class TestCommandEventIntegration:
         assert events[1].payload["unit_id"] == "target1"
         assert events[1].payload["by"] == "attacker1"
 
+
 class TestObjectiveEventIntegration:
     def test_eliminate_boss_updates_on_unit_killed(self):
         """Test that EliminateBoss objective updates on UNIT_KILLED event."""
         objective = EliminateBoss("boss1")
         state = GameState()
-        
+
         # Create kill event
         kill_event = ev_unit_killed("boss1", "player1", 5)
-        
+
         # Update objective
         objective.update_from_events([kill_event], state)
-        
+
         assert objective.is_complete(state) == True
         assert objective._dead == True
 
@@ -179,13 +191,13 @@ class TestObjectiveEventIntegration:
         """Test that Escort objective updates on UNIT_MOVED event."""
         objective = Escort("unit1", (5, 5))
         state = GameState()
-        
+
         # Create move event to goal
         move_event = ev_unit_moved("unit1", (1, 1), (5, 5), 5)
-        
+
         # Update objective
         objective.update_from_events([move_event], state)
-        
+
         assert objective.is_complete(state) == True
         assert objective._done == True
 
@@ -194,17 +206,18 @@ class TestObjectiveEventIntegration:
         zones = [(1, 1), (2, 2)]
         objective = HoldZones(zones, 1, 3)
         state = GameState()
-        
+
         # Mock controlled_by_player to return True for one zone
         state.controlled_by_player = Mock(side_effect=lambda pos: pos == (1, 1))
-        
+
         # Create turn end event
         turn_event = ev_turn_ended("player1", "player", 1, 5)
-        
+
         # Update objective
         objective.update_from_events([turn_event], state)
-        
+
         assert objective.counter == 1
+
 
 class TestEventOrdering:
     def test_attack_that_kills_ordering(self):
@@ -215,10 +228,10 @@ class TestEventOrdering:
         state.add_unit(attacker)
         state.add_unit(target)
         state.tick = 5
-        
+
         attack_cmd = Attack("attacker1", "target1")
         events = list(attack_cmd.apply(state))
-        
+
         # Check ordering: UNIT_ATTACKED first, then UNIT_KILLED
         assert len(events) == 2
         assert events[0].type == EventType.UNIT_ATTACKED
@@ -233,35 +246,37 @@ class TestEventOrdering:
         unit = Unit("unit1", (1, 1), team="player")
         state.add_unit(unit)
         state.tick = 5
-        
+
         # Move command
         move_cmd = Move("unit1", (2, 2))
         move_events = list(move_cmd.apply(state))
-        
+
         assert len(move_events) == 1
         assert move_events[0].type == EventType.UNIT_MOVED
+
 
 class TestEventBusErrorHandling:
     def test_subscriber_exception_does_not_stop_others(self):
         """Test that subscriber exceptions don't stop other subscribers."""
         bus = EventBus()
-        
+
         def failing_subscriber(e):
             raise Exception("Subscriber error")
-        
+
         def working_subscriber(e):
             working_subscriber.called = True
-        
+
         working_subscriber.called = False
-        
+
         bus.subscribe(failing_subscriber)
         bus.subscribe(working_subscriber)
-        
+
         event = ev_unit_moved("unit1", (1, 1), (2, 2), 1)
         bus.publish([event])
-        
+
         # Working subscriber should still be called
         assert working_subscriber.called == True
+
 
 class TestEventTypeEnum:
     def test_event_type_values(self):

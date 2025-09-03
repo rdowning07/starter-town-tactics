@@ -23,7 +23,7 @@ class GameState:
     def __init__(self) -> None:
         # ... other managers ...
         self.fx_manager = FXManager()
-    
+
     # FX methods
     def trigger_fx(self, fx_type, position, duration, intensity, color, size)
     def trigger_flash(self, position, color, duration, intensity)
@@ -42,7 +42,7 @@ def render(self, game_state, overlay_state, fx_manager=None):
     offset_x, offset_y = 0, 0
     if fx_manager:
         offset_x, offset_y = fx_manager.get_shake_offset()
-    
+
     # Apply offsets to all rendering
     self.render_grid(grid, offset_x, offset_y)
     self.render_overlays(grid, overlay_state, offset_x, offset_y)
@@ -87,12 +87,12 @@ def on_attack(attacker_id, target_id):
     # Game logic
     damage = calculate_damage(attacker_id, target_id)
     apply_damage(target_id, damage)
-    
+
     # Visual feedback
     target_pos = get_unit_position(target_id)
     game_state.trigger_fx("flash", target_pos, 0.3, 1.0, (255, 0, 0))
     game_state.trigger_screen_shake(4.0, 0.3)
-    
+
     if damage > 10:
         game_state.trigger_particle(target_pos, "sparkle", 15, 1.0)
 ```
@@ -155,7 +155,7 @@ def on_unit_damaged(unit_id, damage):
     unit_pos = get_unit_position(unit_id)
     game_state.trigger_fx("flash", unit_pos, 0.2, 1.0, (255, 0, 0))  # Red flash
     game_state.trigger_screen_shake(2.0, 0.3)  # Damage shake
-    
+
     if damage > 5:
         game_state.trigger_particle(unit_pos, "sparkle", 8, 1.0)  # Heavy damage particles
         game_state.trigger_screen_shake(4.0, 0.4)  # Stronger shake
@@ -166,16 +166,16 @@ def on_unit_damaged(unit_id, damage):
 # In main game loop
 def game_loop():
     # ... game logic ...
-    
+
     # Update effects
     game_state.update_fx()
-    
+
     # Render game with screen shake
     renderer.render(game_state, overlay_state, game_state.fx_manager)
-    
+
     # Draw effects on top
     game_state.draw_fx(screen)
-    
+
     # ... continue loop ...
 ```
 
@@ -263,16 +263,16 @@ PYTHONPATH=. python devtools/visual_animation_tester.py mage
 # In main game loop
 def game_loop():
     # ... game logic ...
-    
+
     # Update effects
     game_state.update_fx()
-    
+
     # Render game with screen shake
     renderer.render(game_state, overlay_state, game_state.fx_manager)
-    
+
     # Draw effects on top
     game_state.draw_fx(screen)
-    
+
     # ... continue loop ...
 ```
 
@@ -283,13 +283,13 @@ def on_attack(attacker_id, target_id):
     # Game logic
     damage = calculate_damage(attacker_id, target_id)
     apply_damage(target_id, damage)
-    
+
     # Visual feedback with screen shake
     target_pos = get_unit_position(target_id)
     game_state.trigger_fx("flash", target_pos, 0.3, 1.0, (255, 0, 0))
     game_state.trigger_screen_shake(4.0, 0.3)
     game_state.trigger_particle(target_pos, "sparkle", 8, 1.0)
-    
+
     if damage > 10:
         game_state.trigger_screen_shake(6.0, 0.5)  # Critical hit shake
 ```
@@ -344,4 +344,4 @@ The complete FX system integration provides:
 - ✅ **Developer Friendly** - Simple API and clear documentation
 - ✅ **Combat Integration** - FX triggers for damage, death, and special events
 
-Ready for Phase 4 development and beyond! 🎬✨📱 
+Ready for Phase 4 development and beyond! 🎬✨📱

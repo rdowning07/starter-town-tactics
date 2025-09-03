@@ -38,11 +38,9 @@ class EventManager:
             self.game_state.add_unit("reinforcement_2", "player", ap=3, hp=15)
 
             # Log the event
-            self.event_history.append({
-                "turn": self.turn_count,
-                "event": "reinforcements",
-                "description": "Player reinforcements arrived"
-            })
+            self.event_history.append(
+                {"turn": self.turn_count, "event": "reinforcements", "description": "Player reinforcements arrived"}
+            )
 
     def trigger_storm(self) -> None:
         """Trigger a storm after 10 turns."""
@@ -54,11 +52,9 @@ class EventManager:
             self.game_state.trigger_fx("weather_storm", (0, 0), duration=5.0, intensity=0.8)
 
             # Log the event
-            self.event_history.append({
-                "turn": self.turn_count,
-                "event": "storm",
-                "description": "Weather storm reduced visibility"
-            })
+            self.event_history.append(
+                {"turn": self.turn_count, "event": "storm", "description": "Weather storm reduced visibility"}
+            )
 
     def trigger_boss_phase(self) -> None:
         """Trigger boss phase after 15 turns."""
@@ -70,11 +66,9 @@ class EventManager:
             self.game_state.trigger_fx("boss_aura", (400, 300), duration=3.0, intensity=1.0, color=(255, 0, 0))
 
             # Log the event
-            self.event_history.append({
-                "turn": self.turn_count,
-                "event": "boss_phase",
-                "description": "Boss phase activated"
-            })
+            self.event_history.append(
+                {"turn": self.turn_count, "event": "boss_phase", "description": "Boss phase activated"}
+            )
 
     def get_turn_count(self) -> int:
         """Get the current turn count."""

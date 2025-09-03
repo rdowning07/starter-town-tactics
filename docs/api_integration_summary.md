@@ -34,7 +34,7 @@ All the target commands are now working with real APIs:
 make play-demo-integrated-smoke          # ✅ Working
 make play-demo-integrated-enhanced       # ✅ Working
 
-# Performance testing with real APIs  
+# Performance testing with real APIs
 make soak-integrated                     # ✅ Working (27M+ TPS!)
 ```
 

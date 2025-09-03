@@ -22,11 +22,13 @@ ASSET_PATH = "assets/units"
 # Global flag for graceful shutdown
 shutdown_requested = False
 
+
 def signal_handler(signum, frame):
     """Handle Ctrl+C gracefully."""
     global shutdown_requested  # pylint: disable=global-statement
     shutdown_requested = True
     print("\n⏹️  Shutdown requested...")
+
 
 def load_animation_metadata(unit_id: str):
     """Load animation metadata for a unit."""
@@ -34,8 +36,9 @@ def load_animation_metadata(unit_id: str):
     if not os.path.exists(metadata_path):
         raise FileNotFoundError(f"Metadata not found: {metadata_path}")
 
-    with open(metadata_path, encoding='utf-8') as f:
+    with open(metadata_path, encoding="utf-8") as f:
         return json.load(f)
+
 
 def get_available_units():
     """Get list of units that have animation metadata."""
@@ -52,6 +55,7 @@ def get_available_units():
                 units.append(unit_dir.name)
 
     return sorted(units)
+
 
 def setup_animation_tester(unit_id, enable_sound):
     """Setup animation tester components."""
@@ -83,18 +87,19 @@ def setup_animation_tester(unit_id, enable_sound):
     sound_manager.load_sound("select", "assets/sfx/select.wav")
 
     return {
-        'metadata': metadata,
-        'animations': animations,
-        'screen': screen,
-        'clock': clock,
-        'sprite_manager': sprite_manager,
-        'sound_manager': sound_manager,
-        'fx_manager': fx_manager
+        "metadata": metadata,
+        "animations": animations,
+        "screen": screen,
+        "clock": clock,
+        "sprite_manager": sprite_manager,
+        "sound_manager": sound_manager,
+        "fx_manager": fx_manager,
     }
 
 
-def handle_animation_events(event, current_anim_index, animations, metadata,
-                           frame_index, frame_timer, sound_manager, load_func, auto_play):
+def handle_animation_events(
+    event, current_anim_index, animations, metadata, frame_index, frame_timer, sound_manager, load_func, auto_play
+):
     """Handle pygame events for animation control."""
     if event.type == pygame.QUIT:
         return False, current_anim_index, frame_index, frame_timer, auto_play
@@ -162,13 +167,13 @@ def main():
         if not components:
             return 1
 
-        metadata = components['metadata']
-        animations = components['animations']
-        screen = components['screen']
-        clock = components['clock']
-        sprite_manager = components['sprite_manager']
-        sound_manager = components['sound_manager']
-        fx_manager = components['fx_manager']
+        metadata = components["metadata"]
+        animations = components["animations"]
+        screen = components["screen"]
+        clock = components["clock"]
+        sprite_manager = components["sprite_manager"]
+        sound_manager = components["sound_manager"]
+        fx_manager = components["fx_manager"]
 
         # Load first animation
         current_anim_index = 0
@@ -189,11 +194,7 @@ def main():
                 frame_height = 32  # Default frame height
 
                 sprite_manager.load_unit_animation_from_sheet(
-                    unit_id,
-                    current_animation,
-                    sprite_path,
-                    frame_width,
-                    frame_height
+                    unit_id, current_animation, sprite_path, frame_width, frame_height
                 )
                 print(f"✅ Loaded {current_animation} with {anim_data.get('frame_count', 'unknown')} frames")
                 return True
@@ -232,8 +233,15 @@ def main():
             # Handle events
             for event in pygame.event.get():
                 running, current_anim_index, frame_index, frame_timer, auto_play = handle_animation_events(
-                    event, current_anim_index, animations, metadata, frame_index,
-                    frame_timer, sound_manager, load_current_animation, auto_play
+                    event,
+                    current_anim_index,
+                    animations,
+                    metadata,
+                    frame_index,
+                    frame_timer,
+                    sound_manager,
+                    load_current_animation,
+                    auto_play,
                 )
                 if not running:
                     break
@@ -258,16 +266,16 @@ def main():
                         if current_animation == "attack":
                             sound_manager.play("slash")
                             # Trigger flash effect for attack
-                            fx_manager.trigger_flash((WINDOW_SIZE[0]//2, WINDOW_SIZE[1]//2), (255, 0, 0), 0.2)
+                            fx_manager.trigger_flash((WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2), (255, 0, 0), 0.2)
                         elif current_animation == "walk":
                             sound_manager.play("move")
                             # Trigger particle effect for movement
-                            fx_manager.trigger_particle((WINDOW_SIZE[0]//2, WINDOW_SIZE[1]//2), "sparkle", 3, 0.5)
+                            fx_manager.trigger_particle((WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2), "sparkle", 3, 0.5)
 
                     # Trigger visual effects based on animation metadata
                     if frame_index in anim_data.get("fx_at", []):
                         print(f"🎬 Triggering FX for {current_animation} frame {frame_index}")
-                        unit_position = (WINDOW_SIZE[0]//2, WINDOW_SIZE[1]//2)
+                        unit_position = (WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2)
                         if current_animation == "attack":
                             fx_manager.trigger_fx("flash", unit_position)
                             fx_manager.trigger_fx("screen_shake", unit_position)  # Screen shake!
@@ -278,7 +286,7 @@ def main():
             try:
                 sprite = sprite_manager.get_unit_sprite(unit_id, current_animation, frame_index)
                 if sprite:
-                    rect = sprite.get_rect(center=(WINDOW_SIZE[0]//2, WINDOW_SIZE[1]//2))
+                    rect = sprite.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2))
                     screen.blit(sprite, rect)
             except (OSError, pygame.error) as e:
                 print(f"⚠️  Error rendering sprite: {e}")
@@ -298,7 +306,7 @@ def main():
                 f"Auto-play: {'ON' if auto_play else 'OFF'}",
                 f"FX Active: {fx_manager.get_active_effects_count()}",
                 "",
-                "Controls: SPACE=Switch, A=Auto, ←→=Frame, ESC=Quit"
+                "Controls: SPACE=Switch, A=Auto, ←→=Frame, ESC=Quit",
             ]
 
             for i, line in enumerate(info_lines):
@@ -319,9 +327,9 @@ def main():
         return 1
 
     finally:
-        if 'sound_manager' in locals():
+        if "sound_manager" in locals():
             sound_manager.cleanup()
-        if 'fx_manager' in locals():
+        if "fx_manager" in locals():
             fx_manager.clear_effects()
         quit_pygame()
 

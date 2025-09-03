@@ -1,4 +1,3 @@
-
 # @api
 import json
 import os
@@ -9,12 +8,14 @@ from typing import Dict
 import pygame
 import yaml
 
+
 def load_asset_manifest(path: str) -> dict:
     """Load asset manifest from YAML file."""
     if not os.path.exists(path):
         return {}
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
+
 
 def validate_image_asset(file_path: str) -> Dict:
     """Validate image asset and return metadata."""
@@ -26,7 +27,7 @@ def validate_image_asset(file_path: str) -> Dict:
         "height": 0,
         "format": "unknown",
         "size_bytes": 0,
-        "errors": []
+        "errors": [],
     }
 
     if not os.path.exists(file_path):
@@ -62,6 +63,7 @@ def validate_image_asset(file_path: str) -> Dict:
 
     return result
 
+
 def validate_audio_asset(file_path: str) -> Dict:
     """Validate audio asset and return metadata."""
     result: Dict = {
@@ -71,7 +73,7 @@ def validate_audio_asset(file_path: str) -> Dict:
         "duration": 0.0,
         "format": "unknown",
         "size_bytes": 0,
-        "errors": []
+        "errors": [],
     }
 
     if not os.path.exists(file_path):
@@ -89,7 +91,7 @@ def validate_audio_asset(file_path: str) -> Dict:
 
     # Check WAV header
     try:
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             header = f.read(44)  # WAV header size
 
             if len(header) < 44:
@@ -97,16 +99,16 @@ def validate_audio_asset(file_path: str) -> Dict:
                 return result
 
             # Check RIFF header
-            if header[:4] != b'RIFF':
+            if header[:4] != b"RIFF":
                 result["errors"].append("Not a valid WAV file (missing RIFF)")
                 return result
 
-            if header[8:12] != b'WAVE':
+            if header[8:12] != b"WAVE":
                 result["errors"].append("Not a valid WAV file (missing WAVE)")
                 return result
 
             # Check data section
-            data_size = int.from_bytes(header[40:44], 'little')
+            data_size = int.from_bytes(header[40:44], "little")
             if data_size == 0:
                 result["is_stub"] = True
                 result["errors"].append("WAV file has no audio data (silent stub)")
@@ -120,6 +122,7 @@ def validate_audio_asset(file_path: str) -> Dict:
 
     return result
 
+
 def scan_assets_directory(root_dir: str = "assets") -> Dict:
     """Scan assets directory and create comprehensive manifest."""
     asset_manifest: Dict = {
@@ -128,12 +131,7 @@ def scan_assets_directory(root_dir: str = "assets") -> Dict:
         "unit_sprites": {},
         "terrain": {},
         "effects": {},
-        "validation": {
-            "total_files": 0,
-            "stubs": 0,
-            "valid": 0,
-            "errors": 0
-        }
+        "validation": {"total_files": 0, "stubs": 0, "valid": 0, "errors": 0},
     }
 
     root_path = Path(root_dir)
@@ -149,7 +147,7 @@ def scan_assets_directory(root_dir: str = "assets") -> Dict:
             "ui": ("ui", img_path.stem),
             "units": ("unit_sprites", f"{img_path.parent.name}_{img_path.stem}"),
             "tiles": ("terrain", f"{img_path.parent.name}_{img_path.stem}"),
-            "effects": ("effects", f"{img_path.parent.name}_{img_path.stem}")
+            "effects": ("effects", f"{img_path.parent.name}_{img_path.stem}"),
         }
 
         category, name = "ui", img_path.stem  # Default
@@ -163,7 +161,7 @@ def scan_assets_directory(root_dir: str = "assets") -> Dict:
         asset_manifest[category][name] = {
             "path": rel_path,
             "placeholder": validation["is_stub"],
-            "validation": validation
+            "validation": validation,
         }
 
         asset_manifest["validation"]["total_files"] += 1
@@ -180,11 +178,7 @@ def scan_assets_directory(root_dir: str = "assets") -> Dict:
         name = audio_path.stem
 
         validation = validate_audio_asset(str(audio_path))
-        asset_manifest["sfx"][name] = {
-            "path": rel_path,
-            "placeholder": validation["is_stub"],
-            "validation": validation
-        }
+        asset_manifest["sfx"][name] = {"path": rel_path, "placeholder": validation["is_stub"], "validation": validation}
 
         asset_manifest["validation"]["total_files"] += 1
         if validation["is_stub"]:
@@ -195,6 +189,7 @@ def scan_assets_directory(root_dir: str = "assets") -> Dict:
             asset_manifest["validation"]["valid"] += 1
 
     return asset_manifest
+
 
 def generate_asset_report(asset_manifest: Dict) -> str:
     """Generate a human-readable asset report."""
@@ -220,12 +215,14 @@ def generate_asset_report(asset_manifest: Dict) -> str:
 
     return "\n".join(report)
 
+
 def save_manifest(asset_manifest: Dict, output_path: str = "assets/asset_manifest.json"):
     """Save manifest to JSON file."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, 'w', encoding='utf-8') as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(asset_manifest, f, indent=2)
     print(f"Manifest saved to: {output_path}")
+
 
 if __name__ == "__main__":
     print("🔍 Scanning assets directory...")

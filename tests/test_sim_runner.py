@@ -130,10 +130,7 @@ def test_unit_death_functionality():
 
     # Check that the death event was logged
     logs = runner.get_log()
-    assert any(
-        entry.get("event") == "unit_dead" and entry.get("unit") == "unit2"
-        for entry in logs
-    )
+    assert any(entry.get("event") == "unit_dead" and entry.get("unit") == "unit2" for entry in logs)
 
     # Run a turn and check that dead unit is skipped
     runner.run_turn()

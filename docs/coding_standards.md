@@ -102,14 +102,14 @@ if self.logger:
 def complex_method(self, param1: str, param2: int) -> bool:
     """
     Brief description of what the method does.
-    
+
     Args:
         param1: Description of param1
         param2: Description of param2
-        
+
     Returns:
         Description of return value
-        
+
     Raises:
         ValueError: When param1 is invalid
         KeyError: When param2 is not found

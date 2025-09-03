@@ -3,9 +3,12 @@ AP UI - draws action point bars above units with full architecture integration.
 Integrated with GameState and includes validation and logging.
 """
 
+from typing import Dict, Optional, Tuple
+
 import pygame
-from typing import Optional, Tuple, Dict
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -17,8 +20,15 @@ class APUI:
         self.font = pygame.font.Font(None, 14)
         self.ap_cache = {}  # Cache for AP values to detect changes
 
-    def draw_ap_bar(self, screen: pygame.Surface, unit_id: str, unit_data: Dict,
-                   tile_size: int = 32, x_offset: int = 0, y_offset: int = -15):
+    def draw_ap_bar(
+        self,
+        screen: pygame.Surface,
+        unit_id: str,
+        unit_data: Dict,
+        tile_size: int = 32,
+        x_offset: int = 0,
+        y_offset: int = -15,
+    ):
         """Draw AP bar above unit with validation and logging."""
         if not unit_data or not unit_data.get("alive", True):
             return
@@ -65,10 +75,9 @@ class APUI:
         # Log AP changes
         self._log_ap_change(unit_id, current_ap, max_ap, fill_ratio)
 
-    def draw_all_ap_bars(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                        tile_size: int = 32):
+    def draw_all_ap_bars(self, screen: pygame.Surface, game_state, ui_state: UIState, tile_size: int = 32):
         """Draw AP bars for all alive units."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         for unit_id, unit_data in game_state.units.units.items():
@@ -78,17 +87,19 @@ class APUI:
     def _log_ap_change(self, unit_id: str, current_ap: int, max_ap: int, fill_ratio: float):
         """Log AP changes for debugging and metrics."""
         if self.logger:
-            self.logger.info({
-                "event": "ap_bar_drawn",
-                "unit_id": unit_id,
-                "current_ap": current_ap,
-                "max_ap": max_ap,
-                "fill_ratio": fill_ratio
-            })
+            self.logger.info(
+                {
+                    "event": "ap_bar_drawn",
+                    "unit_id": unit_id,
+                    "current_ap": current_ap,
+                    "max_ap": max_ap,
+                    "fill_ratio": fill_ratio,
+                }
+            )
 
     def get_ap_summary(self, game_state) -> Dict[str, int]:
         """Get AP summary for all units."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return {}
 
         summary = {}

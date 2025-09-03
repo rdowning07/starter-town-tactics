@@ -144,9 +144,9 @@ def test_get_map_dimensions_empty():
 def test_load_map_with_whitespace(tmp_path):
     """Test loading a map file with extra whitespace."""
     content = """
-  G   G   G  
-  W   W   G  
-  F   F   G  
+  G   G   G
+  W   W   G
+  F   F   G
 """
     maps_dir = tmp_path / "maps"
     maps_dir.mkdir()

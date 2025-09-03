@@ -16,9 +16,7 @@ class TestFighterIntegration:
 
     def test_animation_catalog_loads_fighter(self):
         """Test that AnimationCatalog can load fighter animations."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Check that fighter unit exists
         assert catalog.has_unit("fighter")
@@ -43,9 +41,7 @@ class TestFighterIntegration:
 
     def test_fighter_metadata_structure(self):
         """Test that fighter metadata has correct structure."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Test idle animation
         idle_meta = catalog.get("fighter", "idle_down")
@@ -65,9 +61,7 @@ class TestFighterIntegration:
 
     def test_unit_renderer_initialization(self):
         """Test that UnitRenderer can be initialized with fighter catalog."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
         renderer = UnitRenderer(catalog, tile_size=(32, 32))
 
         assert renderer.catalog == catalog
@@ -76,9 +70,7 @@ class TestFighterIntegration:
 
     def test_frame_loading(self):
         """Test that individual frames can be loaded."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Test that a specific frame can be loaded
         frame_surface = catalog.get_frame("../fighter/down_stand.png")
@@ -87,9 +79,7 @@ class TestFighterIntegration:
 
     def test_animation_states(self):
         """Test that all fighter animation states are properly defined."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Test all idle states
         for direction in ["down", "up", "left", "right"]:

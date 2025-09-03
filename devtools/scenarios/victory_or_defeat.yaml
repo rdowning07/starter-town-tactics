@@ -1,7 +1,7 @@
 scenario: "Victory or Defeat"
 camera:
   - action: "pan"
-    targets: 
+    targets:
       - [200, 200]
       - [400, 400]
     speed: 10

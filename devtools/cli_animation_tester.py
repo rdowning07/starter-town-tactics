@@ -1,11 +1,12 @@
 # devtools/cli_animation_tester.py
 
+import json
 import os
 import sys
-import json
 from pathlib import Path
-from game.sprite_manager import SpriteManager
+
 from game.pygame_init import init_pygame, quit_pygame
+from game.sprite_manager import SpriteManager
 
 ASSET_DIR = "assets/units"
 METADATA_DIR = "assets/units"
@@ -27,7 +28,7 @@ def test_animation_slicing(unit_id: str, animation_name: str):
             print(f"   Expected: {metadata_path}")
             return False
 
-        with open(metadata_path, encoding='utf-8') as f:
+        with open(metadata_path, encoding="utf-8") as f:
             metadata = json.load(f)
 
         anim_data = metadata.get(animation_name)
@@ -47,25 +48,17 @@ def test_animation_slicing(unit_id: str, animation_name: str):
             return False
 
         sm = SpriteManager()
-        sm.load_unit_animation_from_sheet(
-            unit_id,
-            animation_name,
-            sprite_path,
-            frame_width,
-            frame_height
-        )
+        sm.load_unit_animation_from_sheet(unit_id, animation_name, sprite_path, frame_width, frame_height)
 
         actual_frames = len(sm.unit_sprites[unit_id][animation_name])
 
         print(f"\n✅ Loaded animation: {unit_id}/{animation_name}")
         print(f"→ Frames sliced: {actual_frames}")
         print(f"→ Frame dimensions: {frame_width}x{frame_height}")
-        print(f"→ Frame triggers (metadata): "
-              f"{anim_data.get('fx_at', [])}, {anim_data.get('sound_at', [])}")
+        print(f"→ Frame triggers (metadata): " f"{anim_data.get('fx_at', [])}, {anim_data.get('sound_at', [])}")
 
         if actual_frames != expected_frames:
-            print(f"⚠️ Warning: Expected {expected_frames} frames, "
-                  f"got {actual_frames}")
+            print(f"⚠️ Warning: Expected {expected_frames} frames, " f"got {actual_frames}")
             return False
 
         print("✅ Frame count matches metadata.")
@@ -105,7 +98,7 @@ def test_all_unit_animations():
         print(f"\n📁 Testing unit: {unit_id}")
 
         try:
-            with open(metadata_path, encoding='utf-8') as f:
+            with open(metadata_path, encoding="utf-8") as f:
                 metadata = json.load(f)
 
             for animation_name in metadata.keys():
@@ -145,7 +138,7 @@ def main():
             print(f"❌ No metadata found for unit: {unit_id}")
             return 1
 
-        with open(metadata_path, encoding='utf-8') as f:
+        with open(metadata_path, encoding="utf-8") as f:
             metadata = json.load(f)
 
         total_tests = len(metadata)
@@ -155,8 +148,7 @@ def main():
             if test_animation_slicing(unit_id, animation_name):
                 passed_tests += 1
 
-        print(f"\n📊 Results for {unit_id}: "
-              f"{passed_tests}/{total_tests} passed")
+        print(f"\n📊 Results for {unit_id}: " f"{passed_tests}/{total_tests} passed")
         success = passed_tests == total_tests
     else:
         # Test all units

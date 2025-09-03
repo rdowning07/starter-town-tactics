@@ -107,7 +107,7 @@ class Unit:
 
     def get_current_sprite(self, sprite_manager) -> pygame.Surface:
         """Get the current sprite for this unit based on animation state."""
-        if hasattr(sprite_manager, 'get_unit_sprite'):
+        if hasattr(sprite_manager, "get_unit_sprite"):
             # Calculate frame index based on animation timer
             if self.animation_timer > 0:
                 # For attack animations, use timer to determine frame
@@ -118,9 +118,7 @@ class Unit:
             else:
                 frame_index = 0
 
-            sprite = sprite_manager.get_unit_sprite(
-                self.name, state=self.current_animation, frame_index=frame_index
-            )
+            sprite = sprite_manager.get_unit_sprite(self.name, state=self.current_animation, frame_index=frame_index)
             if sprite:
                 return sprite
 

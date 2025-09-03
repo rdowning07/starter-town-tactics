@@ -68,8 +68,7 @@ class AnimationClock:
         """
         if animation_id in self._animation_states:
             self._animation_states[animation_id]["elapsed_ms"] = (
-                self.get_elapsed_ms()
-                - self._animation_states[animation_id]["start_time"]
+                self.get_elapsed_ms() - self._animation_states[animation_id]["start_time"]
             )
 
     def is_animation_finished(self, animation_id: str) -> bool:

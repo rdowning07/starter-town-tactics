@@ -7,20 +7,22 @@ Uses pygame adapters for view/input.
 """
 
 from __future__ import annotations
+
 import argparse
-import sys
 import os
+import sys
 import time
+
 import pygame
 
 # Add the project root to the path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from loaders.demo_loader import load_state
 from adapters.pygame.overlay_state import OverlayState
 
 # Use the real renderer; fall back to rectangles if render() raises
 from game.renderer import Renderer as RealRenderer  # type: ignore
+from loaders.demo_loader import load_state
 
 
 def _fallback_draw(screen: pygame.Surface, gs, tile_px: int = 32) -> None:
@@ -37,9 +39,7 @@ def _fallback_draw(screen: pygame.Surface, gs, tile_px: int = 32) -> None:
 
     for y in range(h):
         for x in range(w):
-            pygame.draw.rect(
-                screen, (32, 48, 32), (x * tile_px, y * tile_px, tile_px - 1, tile_px - 1)
-            )
+            pygame.draw.rect(screen, (32, 48, 32), (x * tile_px, y * tile_px, tile_px - 1, tile_px - 1))
 
     # Units via UnitManager.units dict
     units_dict = getattr(getattr(gs, "units", None), "units", {}) or {}
@@ -71,8 +71,9 @@ def main():
     # Use your existing SimRunner from GameState, else make one
     runner = getattr(gs, "sim_runner", None)
     if runner is None:
-        from game.sim_runner import SimRunner  # type: ignore
         from game.ai_controller import AIController  # type: ignore
+        from game.sim_runner import SimRunner  # type: ignore
+
         runner = SimRunner(gs.turn_controller, AIController([]))
         if hasattr(runner, "set_game_state"):
             runner.set_game_state(gs)

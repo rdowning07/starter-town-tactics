@@ -3,11 +3,14 @@ Animation Manager - manages sprite animations with QA hooks and validation.
 Integrated with existing architecture and includes comprehensive animation validation.
 """
 
-import pygame
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Any, Dict, List, Optional, Tuple
+
+import pygame
+
 from game.sprite_validator import SpriteValidator
+
 
 # @api
 # @refactor
@@ -74,8 +77,11 @@ class Animation:
             # Fallback: simple transparency check
             if frame.get_alpha() is not None:
                 # Sample a few pixels to check if frame is mostly transparent
-                sample_points = [(0, 0), (frame.get_width()//2, frame.get_height()//2),
-                               (frame.get_width()-1, frame.get_height()-1)]
+                sample_points = [
+                    (0, 0),
+                    (frame.get_width() // 2, frame.get_height() // 2),
+                    (frame.get_width() - 1, frame.get_height() - 1),
+                ]
                 transparent_count = 0
                 for x, y in sample_points:
                     if 0 <= x < frame.get_width() and 0 <= y < frame.get_height():
@@ -140,8 +146,9 @@ class Animation:
             "total_duration": self.total_duration,
             "play_count": self.play_count,
             "frame_errors": self.frame_errors,
-            "frame_size": self.frames[0].get_size() if self.frames else (0, 0)
+            "frame_size": self.frames[0].get_size() if self.frames else (0, 0),
         }
+
 
 class AnimationManager:
     """Manages multiple animations with QA hooks and validation."""
@@ -150,22 +157,16 @@ class AnimationManager:
         self.animations: Dict[str, Animation] = {}
         self.sprite_validator = sprite_validator
         self.logger = logger
-        self.qa_data = {
-            "total_animations": 0,
-            "valid_animations": 0,
-            "total_play_time": 0,
-            "animation_errors": []
-        }
+        self.qa_data = {"total_animations": 0, "valid_animations": 0, "total_play_time": 0, "animation_errors": []}
 
     def load_animation(self, name: str, sprite_sheet_path: Path, frame_time: int = 100) -> bool:
         """Load animation from sprite sheet."""
         try:
             if not sprite_sheet_path.exists():
                 if self.logger:
-                    self.logger.log_event("animation_load_error", {
-                        "name": name,
-                        "error": f"Sprite sheet not found: {sprite_sheet_path}"
-                    })
+                    self.logger.log_event(
+                        "animation_load_error", {"name": name, "error": f"Sprite sheet not found: {sprite_sheet_path}"}
+                    )
                 return False
 
             # Load sprite sheet
@@ -196,20 +197,15 @@ class AnimationManager:
                 self.qa_data["animation_errors"].append(f"{name}: {animation.frame_errors}")
 
             if self.logger:
-                self.logger.log_event("animation_loaded", {
-                    "name": name,
-                    "frame_count": frame_count,
-                    "valid": animation.valid
-                })
+                self.logger.log_event(
+                    "animation_loaded", {"name": name, "frame_count": frame_count, "valid": animation.valid}
+                )
 
             return True
 
         except Exception as e:
             if self.logger:
-                self.logger.log_event("animation_load_error", {
-                    "name": name,
-                    "error": str(e)
-                })
+                self.logger.log_event("animation_load_error", {"name": name, "error": str(e)})
             return False
 
     def load_unit_animations(self, unit_type: str, unit_dir: Path) -> Dict[str, bool]:
@@ -218,20 +214,14 @@ class AnimationManager:
 
         if not unit_dir.exists():
             if self.logger:
-                self.logger.log_event("unit_animations_load_error", {
-                    "unit_type": unit_type,
-                    "error": f"Unit directory not found: {unit_dir}"
-                })
+                self.logger.log_event(
+                    "unit_animations_load_error",
+                    {"unit_type": unit_type, "error": f"Unit directory not found: {unit_dir}"},
+                )
             return results
 
         # Animation frame times
-        frame_times = {
-            "idle": 500,
-            "walk": 200,
-            "attack": 150,
-            "death": 300,
-            "cast": 400
-        }
+        frame_times = {"idle": 500, "walk": 200, "attack": 150, "death": 300, "cast": 400}
 
         # Load each animation
         for anim_file in unit_dir.glob("*.png"):
@@ -288,16 +278,13 @@ class AnimationManager:
                 "current_frame": animation.index,
                 "frame_count": animation.frame_count,
                 "play_count": animation.play_count,
-                "frame_errors": animation.frame_errors
+                "frame_errors": animation.frame_errors,
             }
         return {"error": "Animation not found"}
 
     def get_qa_report(self) -> Dict[str, Any]:
         """Get comprehensive QA report for all animations."""
-        report = {
-            "summary": self.qa_data.copy(),
-            "animations": {}
-        }
+        report = {"summary": self.qa_data.copy(), "animations": {}}
 
         for name, animation in self.animations.items():
             report["animations"][name] = animation.get_qa_data()
@@ -325,7 +312,7 @@ class AnimationManager:
 
         qa_report = self.get_qa_report()
 
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             json.dump(qa_report, f, indent=2)
 
         print(f"📊 Animation QA report saved: {output_file}")
@@ -336,15 +323,17 @@ class AnimationManager:
             "total_animations": len(self.animations),
             "valid_animations": sum(1 for anim in self.animations.values() if anim.valid),
             "total_play_time": 0,
-            "animation_errors": []
+            "animation_errors": [],
         }
 
         for animation in self.animations.values():
             animation.play_count = 0
             animation.frame_errors = []
 
+
 # Global animation manager instance
 _animation_manager = None
+
 
 def get_animation_manager() -> AnimationManager:
     """Get global animation manager instance."""
@@ -353,15 +342,18 @@ def get_animation_manager() -> AnimationManager:
         _animation_manager = AnimationManager()
     return _animation_manager
 
+
 def load_animation(name: str, sprite_sheet_path: Path, frame_time: int = 100) -> bool:
     """Load animation using global manager."""
     manager = get_animation_manager()
     return manager.load_animation(name, sprite_sheet_path, frame_time)
 
+
 def play_animation(name: str):
     """Play animation using global manager."""
     manager = get_animation_manager()
     manager.play_animation(name)
+
 
 def render_animation(screen: pygame.Surface, name: str, position: Tuple[int, int]) -> bool:
     """Render animation using global manager."""

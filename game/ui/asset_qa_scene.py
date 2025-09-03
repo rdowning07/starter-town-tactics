@@ -3,11 +3,14 @@ Asset QA Scene - automatically detects missing or misaligned art assets.
 Integrated with existing asset system and provides comprehensive validation.
 """
 
-import pygame
-import time
 import os
+import time
 from typing import Dict, List, Optional
+
+import pygame
+
 from game.sprite_manager import SpriteManager
+
 
 # @api
 # @refactor
@@ -44,11 +47,7 @@ class AssetQAScene:
         if auto_cycle:
             self._cycle_through_assets(delay)
 
-        return {
-            "missing": self.missing_assets,
-            "placeholders": self.placeholder_assets,
-            "valid": self.valid_assets
-        }
+        return {"missing": self.missing_assets, "placeholders": self.placeholder_assets, "valid": self.valid_assets}
 
     def _test_terrain_assets(self):
         """Test terrain tile assets."""
@@ -61,11 +60,9 @@ class AssetQAScene:
                     img = pygame.image.load(sprite_path)
                     self.valid_assets.append(f"terrain_{terrain_type}")
                     if self.logger:
-                        self.logger.log_event("asset_valid", {
-                            "type": "terrain",
-                            "name": terrain_type,
-                            "path": sprite_path
-                        })
+                        self.logger.log_event(
+                            "asset_valid", {"type": "terrain", "name": terrain_type, "path": sprite_path}
+                        )
                 except Exception as e:
                     self.missing_assets.append(f"terrain_{terrain_type} (load error: {e})")
             else:
@@ -86,11 +83,10 @@ class AssetQAScene:
                             img = pygame.image.load(sprite_path)
                             self.valid_assets.append(f"unit_{unit_type}_{team}_{frame}")
                             if self.logger:
-                                self.logger.log_event("asset_valid", {
-                                    "type": "unit",
-                                    "name": f"{unit_type}_{team}_{frame}",
-                                    "path": sprite_path
-                                })
+                                self.logger.log_event(
+                                    "asset_valid",
+                                    {"type": "unit", "name": f"{unit_type}_{team}_{frame}", "path": sprite_path},
+                                )
                         except Exception as e:
                             self.missing_assets.append(f"unit_{unit_type}_{team}_{frame} (load error: {e})")
                     else:
@@ -111,18 +107,15 @@ class AssetQAScene:
             self.placeholder_assets.append("ui_panel_placeholder")
 
             if self.logger:
-                self.logger.log_event("placeholder_created", {
-                    "type": "ui",
-                    "assets": ["button", "panel"]
-                })
+                self.logger.log_event("placeholder_created", {"type": "ui", "assets": ["button", "panel"]})
         except Exception as e:
             self.missing_assets.append(f"ui_placeholder_generation (error: {e})")
 
     def _generate_qa_report(self):
         """Generate comprehensive QA report."""
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
         print("🎨 ASSET QA REPORT")
-        print("="*50)
+        print("=" * 50)
 
         total_assets = len(self.valid_assets) + len(self.placeholder_assets) + len(self.missing_assets)
         valid_percentage = (len(self.valid_assets) / total_assets * 100) if total_assets > 0 else 0
@@ -143,17 +136,20 @@ class AssetQAScene:
             for asset in self.placeholder_assets:
                 print(f"  - {asset}")
 
-        print("\n" + "="*50)
+        print("\n" + "=" * 50)
 
         # Log report
         if self.logger:
-            self.logger.log_event("asset_qa_report", {
-                "valid_count": len(self.valid_assets),
-                "placeholder_count": len(self.placeholder_assets),
-                "missing_count": len(self.missing_assets),
-                "coverage_percentage": valid_percentage,
-                "missing_assets": self.missing_assets
-            })
+            self.logger.log_event(
+                "asset_qa_report",
+                {
+                    "valid_count": len(self.valid_assets),
+                    "placeholder_count": len(self.placeholder_assets),
+                    "missing_count": len(self.missing_assets),
+                    "coverage_percentage": valid_percentage,
+                    "missing_assets": self.missing_assets,
+                },
+            )
 
     def _cycle_through_assets(self, delay: float):
         """Cycle through all valid assets for visual review."""
@@ -220,6 +216,7 @@ class AssetQAScene:
 
         print("✅ Asset cycling complete!")
         input("Press Enter to exit Asset QA Scene...")
+
 
 def run_asset_qa_standalone(screen: pygame.Surface, auto_cycle: bool = True):
     """Standalone function to run asset QA (for backward compatibility)."""

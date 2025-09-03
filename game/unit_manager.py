@@ -83,15 +83,11 @@ class UnitManager:
 
     def any_alive(self, team: str) -> bool:
         """Check if any units of the specified team are alive."""
-        return any(
-            unit["alive"] and unit["team"] == team for unit in self.units.values()
-        )
+        return any(unit["alive"] and unit["team"] == team for unit in self.units.values())
 
     def any_effectively_alive(self, team: str) -> bool:
         """Check if any units of the specified team are effectively alive."""
-        return any(
-            self.is_effectively_alive(uid) for uid in self.get_unit_ids_by_team(team)
-        )
+        return any(self.is_effectively_alive(uid) for uid in self.get_unit_ids_by_team(team))
 
     def get_unit_ids_by_team(self, team: str) -> list[str]:
         """Get all unit IDs for a specific team."""

@@ -44,7 +44,7 @@ New scenario format supports multiple conditional branches:
 scenario: "Victory or Defeat"
 camera:
   - action: "pan"
-    targets: 
+    targets:
       - [200, 200]
       - [400, 400]
     speed: 10
@@ -86,7 +86,7 @@ def ai_behavior(self, unit, game_state):
     """Defines AI behavior based on unit type and game state."""
     if unit.ai == "aggressive":
         # Move towards player and attack
-        player_units = [name for name, data in game_state.units.get_all_units().items() 
+        player_units = [name for name, data in game_state.units.get_all_units().items()
                       if data.get('team') == 'player']
         if player_units:
             target_name = player_units[0]
@@ -96,7 +96,7 @@ def ai_behavior(self, unit, game_state):
         unit_data = game_state.units.units.get(unit.name, {})
         current_hp = unit_data.get('hp', 10)
         max_hp = unit_data.get('max_hp', 10)
-        
+
         if current_hp < max_hp / 2:
             print(f"🤖 {unit.name} (defensive) retreats due to low health")
         else:

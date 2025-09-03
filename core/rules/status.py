@@ -1,10 +1,13 @@
 # @api: Status effects tick deterministically on turn and/or on tick
 from enum import Enum, auto
+
 from ..state import GameState, UnitRef
+
 
 class Status(Enum):
     POISON = auto()
     SLOW = auto()
+
 
 def on_unit_turn_start(s: GameState, uref: UnitRef) -> None:
     u = s.unit(uref)

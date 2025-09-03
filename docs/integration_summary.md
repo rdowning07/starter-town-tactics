@@ -64,16 +64,16 @@ UNIT_METADATA_PATH = "assets/units/knight/animation_metadata.json"
 
 def test_unit_metadata_format_valid():
     """Test that unit-specific animation metadata exists and is valid."""
-    
+
 def test_unit_metadata_required_fields():
     """Test that unit metadata has required fields."""
-    
+
 def test_animation_types_present():
     """Test that all expected animation types are present."""
-    
+
 def test_damage_transition_logic():
     """Test that damage transitions work correctly."""
-    
+
 def test_global_metadata_backward_compatibility():
     """Test global metadata for backward compatibility (if it exists)."""
 ```
@@ -120,21 +120,21 @@ units:
 ```python
 class ScenarioLoader:
     """Loads and validates scenario files for the game."""
-    
+
     def __init__(self):
         self.supported_sprites = ["knight", "rogue", "mage", "archer", "paladin", "shadow", "berserker"]
         self.supported_ai_types = ["aggressive", "defensive", "passive"]
-    
-    def load_scenario(self, scenario_path: str, sprite_manager: SpriteManager, 
+
+    def load_scenario(self, scenario_path: str, sprite_manager: SpriteManager,
                      fx_manager: FXManager, sound_manager: SoundManager) -> GameState:
         """Load a scenario from a YAML file."""
-    
+
     def _validate_scenario(self, scenario_data: Dict) -> None:
         """Validate scenario data structure."""
-    
+
     def _validate_unit(self, unit_data: Dict, unit_index: int) -> None:
         """Validate unit data structure."""
-    
+
     def _load_unit(self, unit_data: Dict, game_state: GameState, sprite_manager: SpriteManager) -> None:
         """Load a unit from scenario data."""
 ```
@@ -147,7 +147,7 @@ def main():
     parser.add_argument('--scenario', type=str, help='Path to scenario YAML file')
     parser.add_argument('--auto', action='store_true', help='Run in auto mode')
     args = parser.parse_args()
-    
+
     # Load scenario if specified, otherwise create a simple game state
     if args.scenario:
         try:
@@ -174,7 +174,7 @@ def get_animation_metadata(self, unit_name: str) -> Dict:
                 return json.load(f)
         except Exception as e:
             print(f"⚠️  Failed to load metadata for {unit_name}: {e}")
-    
+
     # Return default metadata if unit-specific file doesn't exist
     return {
         "idle": {"frame_count": 4, "frame_duration": 4, "loop": True},
@@ -327,4 +327,4 @@ units:
 - **Extensible Design** - Easy to add new sprites, AI types, and scenarios
 - **User-Friendly** - Clear makefile targets and helpful error messages
 
-The integration is **complete** and **production-ready**! 🎬✨🎮 
+The integration is **complete** and **production-ready**! 🎬✨🎮

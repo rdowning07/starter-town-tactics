@@ -55,9 +55,7 @@ class UnitsFXDemo(DemoBase):
     def _load_animation_metadata(self) -> Dict:
         """Load animation metadata."""
         try:
-            with open(
-                "assets/units/_metadata/animation_metadata.json", "r", encoding="utf-8"
-            ) as f:
+            with open("assets/units/_metadata/animation_metadata.json", "r", encoding="utf-8") as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Failed to load animation metadata: {e}")
@@ -66,9 +64,7 @@ class UnitsFXDemo(DemoBase):
     def _load_effects_metadata(self) -> Dict:
         """Load effects metadata."""
         try:
-            with open(
-                "assets/effects/effects_metadata.json", "r", encoding="utf-8"
-            ) as f:
+            with open("assets/effects/effects_metadata.json", "r", encoding="utf-8") as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"Failed to load effects metadata: {e}")
@@ -88,9 +84,7 @@ class UnitsFXDemo(DemoBase):
                     except pygame.error as e:
                         print(f"Failed to load {sheet_path}: {e}")
                         # Create placeholder
-                        sprites[unit_name][anim_name] = self._create_placeholder(
-                            32, 32, (255, 0, 0)
-                        )
+                        sprites[unit_name][anim_name] = self._create_placeholder(32, 32, (255, 0, 0))
         return sprites
 
     def _load_effect_sprites(self) -> Dict[str, pygame.Surface]:
@@ -107,9 +101,7 @@ class UnitsFXDemo(DemoBase):
                     sprites[effect_name] = self._create_placeholder(32, 32, (0, 255, 0))
         return sprites
 
-    def _create_placeholder(
-        self, width: int, height: int, color: Tuple[int, int, int]
-    ) -> pygame.Surface:
+    def _create_placeholder(self, width: int, height: int, color: Tuple[int, int, int]) -> pygame.Surface:
         """Create a placeholder surface."""
         surface = pygame.Surface((width, height))
         surface.fill(color)
@@ -161,9 +153,7 @@ class UnitsFXDemo(DemoBase):
                 }
             )
             # Start tracking the animation
-            self.animation_clock.start_animation(
-                effect_id, self.effects_metadata["effects"][effect_name]
-            )
+            self.animation_clock.start_animation(effect_id, self.effects_metadata["effects"][effect_name])
 
     def _update_effects(self) -> None:
         """Update active effects."""
@@ -199,15 +189,10 @@ class UnitsFXDemo(DemoBase):
     def _draw_units(self, surface: pygame.Surface) -> None:
         """Draw units with animations."""
         # Fighter at (4, 4)
-        if (
-            "fighter" in self.unit_sprites
-            and self.fighter_animation in self.unit_sprites["fighter"]
-        ):
+        if "fighter" in self.unit_sprites and self.fighter_animation in self.unit_sprites["fighter"]:
             fighter_x = 4 * self.tile_size
             fighter_y = 4 * self.tile_size
-            fighter_meta = self.animation_metadata["units"]["fighter"][
-                self.fighter_animation
-            ]
+            fighter_meta = self.animation_metadata["units"]["fighter"][self.fighter_animation]
             self._blit_animation(
                 surface,
                 self.unit_sprites["fighter"][self.fighter_animation],
@@ -218,15 +203,10 @@ class UnitsFXDemo(DemoBase):
             )
 
         # Bandit at (6, 5)
-        if (
-            "bandit" in self.unit_sprites
-            and self.bandit_animation in self.unit_sprites["bandit"]
-        ):
+        if "bandit" in self.unit_sprites and self.bandit_animation in self.unit_sprites["bandit"]:
             bandit_x = 6 * self.tile_size
             bandit_y = 5 * self.tile_size
-            bandit_meta = self.animation_metadata["units"]["bandit"][
-                self.bandit_animation
-            ]
+            bandit_meta = self.animation_metadata["units"]["bandit"][self.bandit_animation]
             self._blit_animation(
                 surface,
                 self.unit_sprites["bandit"][self.bandit_animation],
@@ -271,9 +251,7 @@ class UnitsFXDemo(DemoBase):
             y_offset += 25
 
         # Current animations
-        anim_text = (
-            f"Fighter: {self.fighter_animation}, Bandit: {self.bandit_animation}"
-        )
+        anim_text = f"Fighter: {self.fighter_animation}, Bandit: {self.bandit_animation}"
         text = self.font.render(anim_text, True, (255, 255, 255))
         surface.blit(text, (10, y_offset + 10))
 
@@ -322,10 +300,7 @@ class UnitsFXDemo(DemoBase):
     def _update_animations(self) -> None:
         """Update animation states."""
         # Check if knight attack is finished
-        if (
-            self.fighter_animation == "attack"
-            and self.animation_clock.is_animation_finished("fighter_attack")
-        ):
+        if self.fighter_animation == "attack" and self.animation_clock.is_animation_finished("fighter_attack"):
             self.fighter_animation = "idle"
             self.animation_clock.clear_animation("fighter_attack")
 

@@ -65,9 +65,7 @@ def main() -> None:
         can_move = ctx.can_move()
         can_attack = ctx.can_attack()
 
-        print(
-            f"  Conditions: in_range={in_range}, can_move={can_move}, can_attack={can_attack}"
-        )
+        print(f"  Conditions: in_range={in_range}, can_move={can_move}, can_attack={can_attack}")
 
         # Run Behavior Tree
         status = bt.tick(ctx)
@@ -77,10 +75,7 @@ def main() -> None:
         if status == "SUCCESS":
             # Check if enemy moved
             new_enemy_unit = gs.units.get("enemy1")
-            if new_enemy_unit and (
-                new_enemy_unit["x"] != enemy_unit["x"]
-                or new_enemy_unit["y"] != enemy_unit["y"]
-            ):
+            if new_enemy_unit and (new_enemy_unit["x"] != enemy_unit["x"] or new_enemy_unit["y"] != enemy_unit["y"]):
                 print("  ➡️  Enemy moved toward hero")
             # Check if hero was attacked
             new_hero_unit = gs.units.get("hero")
@@ -117,9 +112,7 @@ def main() -> None:
     final_enemy = gs.units.get("enemy1")
 
     if final_hero:
-        print(
-            f"Final positions - Hero: ({final_hero['x']}, {final_hero['y']}), HP: {final_hero['hp']}"
-        )
+        print(f"Final positions - Hero: ({final_hero['x']}, {final_hero['y']}), HP: {final_hero['hp']}")
     if final_enemy:
         print(
             f"Final positions - Enemy: ({final_enemy['x']}, {final_enemy['y']}), AP: {gs.ap_manager.get_ap('enemy1')}"

@@ -80,9 +80,7 @@ class InputState:
             self.selected_unit = tile.unit
             self.state = "selected"
         elif self.selected_unit:
-            moved = self.selected_unit.move(
-                self.cursor_x, self.cursor_y, self.game.grid
-            )
+            moved = self.selected_unit.move(self.cursor_x, self.cursor_y, self.game.grid)
             if moved:
                 self.selected_unit = None
                 self.state = "idle"

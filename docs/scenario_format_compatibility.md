@@ -55,7 +55,7 @@ next_scenario:
 scenario: "Battle Start"
 camera:
   - action: "pan"
-    targets: 
+    targets:
       - [100, 100]  # Starting position
       - [400, 400]  # Intermediate position
       - [600, 600]  # Final position

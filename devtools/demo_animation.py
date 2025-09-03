@@ -10,12 +10,14 @@ from game.renderer import Renderer
 from game.sprite_manager import SpriteManager
 from game.tile import Tile
 from game.unit_manager import UnitManager
+
 # Note: Unit import temporarily disabled due to syntax issues
 # from game.unit import Unit
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 160, 160
 TILE_SIZE = 32
 GRID_WIDTH, GRID_HEIGHT = 5, 5
+
 
 def load_dummy_animation(color1, color2, color3):
     frames = []
@@ -24,6 +26,7 @@ def load_dummy_animation(color1, color2, color3):
         surf.fill(color)
         frames.append(surf)
     return frames
+
 
 def main():
     pygame.init()
@@ -45,6 +48,7 @@ def main():
     # Create a dummy unit for testing
     class DummyUnit:
         """Dummy unit class for animation demo."""
+
         def __init__(self, name, x, y, team, health=10):
             self.name = name
             self.x = x
@@ -106,13 +110,14 @@ def main():
 
         class DummyGameState:
             """Dummy game state for demo."""
+
             def __init__(self):
                 self.terrain_grid = [
                     ["grass", "grass", "grass", "grass", "grass"],
                     ["grass", "grass", "grass", "grass", "grass"],
                     ["grass", "grass", "grass", "grass", "grass"],
                     ["grass", "grass", "grass", "grass", "grass"],
-                    ["grass", "grass", "grass", "grass", "grass"]
+                    ["grass", "grass", "grass", "grass", "grass"],
                 ]
                 self.units = unit_manager
 
@@ -123,6 +128,7 @@ def main():
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()

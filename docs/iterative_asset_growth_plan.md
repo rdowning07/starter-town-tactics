@@ -18,7 +18,7 @@ This plan outlines a systematic approach to transform UI stubs into polished, pr
 
 ### 🎨 **Asset Categories Ready for Growth**
 1. **Health/AP Bars** (2 assets)
-2. **Cursors** (5 assets) 
+2. **Cursors** (5 assets)
 3. **Icons** (8 assets)
 4. **Panels** (4 assets)
 
@@ -230,11 +230,11 @@ class AnimatedHealthUI(HealthUI):
             'heal': Animation('assets/ui/animations/health_bar_fill.png', 8),
             'pulse': Animation('assets/ui/animations/ap_bar_glow.png', 6)
         }
-    
+
     def draw_health_bar_with_animation(self, screen, unit_id, unit_data):
         # Draw base health bar
         self.draw_health_bar(screen, unit_id, unit_data)
-        
+
         # Add animation effects
         if self._should_animate_damage(unit_id):
             self.animations['damage'].play(screen, position)
@@ -251,7 +251,7 @@ class VisualQAPipeline:
     def __init__(self):
         self.asset_validator = AssetValidator()
         self.ui_demo = UIAssetDemo()
-    
+
     def test_asset_integration(self):
         """Test each asset in the UI demo."""
         for step in range(7):
@@ -259,7 +259,7 @@ class VisualQAPipeline:
             self.ui_demo.draw()
             self._capture_screenshot(f"step_{step}_assets.png")
             self._validate_visual_quality()
-    
+
     def validate_visual_quality(self):
         """Validate visual quality of assets."""
         # Check color consistency
@@ -279,7 +279,7 @@ class AssetPerformanceMonitor:
             'render_fps': [],
             'asset_quality': []
         }
-    
+
     def track_asset_performance(self):
         """Track performance impact of asset improvements."""
         # Monitor load times

@@ -124,14 +124,10 @@ class FighterIntegratedDemo(DemoBase):
 
         # Unit info
         player_units = [
-            uid
-            for uid, unit in self.unit_manager.units.items()
-            if unit["team"] == "player" and unit["alive"]
+            uid for uid, unit in self.unit_manager.units.items() if unit["team"] == "player" and unit["alive"]
         ]
         enemy_units = [
-            uid
-            for uid, unit in self.unit_manager.units.items()
-            if unit["team"] == "enemy" and unit["alive"]
+            uid for uid, unit in self.unit_manager.units.items() if unit["team"] == "enemy" and unit["alive"]
         ]
 
         units_text = f"Player: {len(player_units)} | Enemy: {len(enemy_units)}"
@@ -154,9 +150,7 @@ class FighterIntegratedDemo(DemoBase):
     def run(self) -> None:
         """Run the integrated fighter demo."""
         print("🎮 Fighter Integrated Demo")
-        print(
-            "This demo shows fighter units integrated into the main game architecture."
-        )
+        print("This demo shows fighter units integrated into the main game architecture.")
         print("The fighters should render with animations in the main game renderer.")
         print()
 

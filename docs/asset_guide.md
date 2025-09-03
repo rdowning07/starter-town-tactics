@@ -117,12 +117,12 @@ class SpriteManager:
         self.unit_mapping = {}
         self.tier_groups = {}
         self._load_sprite_mapping()
-    
+
     def get_unit_sprite(self, unit_type: str, team: str = "blue", frame: int = 0):
         """Get unit sprite with animation frame support."""
         key = f"unit_{unit_type}_{team}_{frame}"
         return self.sprites.get(key)
-    
+
     def get_unit_animation_frames(self, unit_type: str, team: str = "blue"):
         """Get all animation frames for a unit."""
         frames = []
@@ -131,7 +131,7 @@ class SpriteManager:
             if sprite:
                 frames.append(sprite)
         return frames
-    
+
     def get_units_by_tier(self, tier: int):
         """Get all units of a specific tier."""
         return self.tier_groups.get(tier, [])
@@ -322,4 +322,4 @@ Create a `LICENSES.md` file to track asset licenses:
 - Attribution: Not required
 ```
 
-This ensures you stay compliant with all asset licenses! 
+This ensures you stay compliant with all asset licenses!

@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import json
 from typing import TextIO
 
@@ -11,6 +12,7 @@ class SimLogRecorder:
         ... after your session:
         rec.dump(gs.sim_runner.get_log())
     """
+
     def __init__(self, fp: TextIO):
         self.fp = fp
 

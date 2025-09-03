@@ -1,6 +1,6 @@
+import os
 import sys
 import time
-import os
 
 # Add the parent directory to the path so we can import modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -54,9 +54,7 @@ def print_structured_log(logs):
         print(f"  [{kind}] {info}")
 
 
-def handle_player_action(
-    choice: str, tc: TurnController, fsm: TacticalStateMachine
-) -> bool:
+def handle_player_action(choice: str, tc: TurnController, fsm: TacticalStateMachine) -> bool:
     """Handle a single player action choice. Returns True if turn should end."""
     if choice == "1":  # Move
         if tc.can_act(1):
@@ -125,18 +123,18 @@ def player_action_menu(runner: SimRunner):
 def run_basic_demo(auto_run: bool = False):
     """Run the basic demo with hardcoded units."""
     print("=== SimRunner CLI Demo with Player Input and Unit Death ===")
-    
+
     # Create a proper GameState
     game_state = GameState()
     game_state.name = "Basic Demo"
     game_state.description = "A basic demo with hardcoded units"
     game_state.max_turns = 12
-    
+
     # Register units in the game state
     game_state.units.register_unit("ai_alpha", "ai", hp=15)
     game_state.units.register_unit("p_bravo", "player", hp=20)
     game_state.units.register_unit("ai_delta", "ai", hp=15)
-    
+
     apm = ActionPointManager()
     fsm = TacticalStateMachine()
     tc = TurnController(apm, fsm)
@@ -147,7 +145,7 @@ def run_basic_demo(auto_run: bool = False):
 
     ai = DemoAI()
     runner = SimRunner(tc, ai)
-    
+
     # Set the game state on the runner
     runner.set_game_state(game_state)
 
@@ -188,34 +186,34 @@ def run_basic_demo(auto_run: bool = False):
     print(f"💀 Dead units: {runner.dead_units}")
 
 
-def run_scenario_demo(
-    auto_run: bool = False, scenario_path: str = "devtools/scenarios/demo_battle.yaml"
-):
+def run_scenario_demo(auto_run: bool = False, scenario_path: str = "devtools/scenarios/demo_battle.yaml"):
     """Run the scenario-based demo."""
     print("=== Scenario-Based SimRunner CLI Demo ===")
-    
+
     # Create mock objects for ScenarioManager
     class MockCamera:
         def cinematic_pan(self, targets, speed):
             print(f"📹 Camera panning to {targets} at speed {speed}")
-    
+
     class MockAIController:
         def get_unit(self, unit_name):
             return unit_name
+
         def attack(self, unit, target):
             print(f"🤖 {unit} attacks {target}")
+
         def move(self, unit, position):
             print(f"🤖 {unit} moves to {position}")
-    
+
     class MockPlayerUnit:
         def prepare_for_battle(self):
             print("⚔️ Player unit prepares for battle")
-    
+
     camera = MockCamera()
     ai_controller = MockAIController()
     player_unit = MockPlayerUnit()
     game_state = GameState()
-    
+
     # Create scenario manager and load scenario
     scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
     game_state = scenario_manager.load_scenario(scenario_path)
@@ -288,9 +286,7 @@ def main():
 
     # Check for scenario mode
     if "--scenario" in sys.argv or "-s" in sys.argv or scenario_path:
-        run_scenario_demo(
-            auto_run, scenario_path or "devtools/scenarios/demo_battle.yaml"
-        )
+        run_scenario_demo(auto_run, scenario_path or "devtools/scenarios/demo_battle.yaml")
     else:
         run_basic_demo(auto_run)
 

@@ -13,9 +13,7 @@ class NearestTarget:
     def __init__(self, enemy_team_ids: set):
         self.enemy_team_ids = enemy_team_ids
 
-    def select(
-        self, me: Dict[str, Any], candidates: List[Dict[str, Any]]
-    ) -> Optional[Dict[str, Any]]:
+    def select(self, me: Dict[str, Any], candidates: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
         """Select the nearest enemy target."""
         if not candidates:
             return None

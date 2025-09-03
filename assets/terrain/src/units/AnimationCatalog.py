@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Tuple, Union
 # Third-party imports
 import pygame
 
-
 FrameSpec = Dict[str, Union[str, int, bool, List[str]]]
 AnimMap = Dict[str, FrameSpec]
 
@@ -21,8 +20,8 @@ class AnimationCatalog:
         self._load()
 
     def _load(self) -> None:
-        data = json.loads(self._manifest_path.read_text(encoding='utf-8'))
-        for unit_key, anims in data.get('units', {}).items():
+        data = json.loads(self._manifest_path.read_text(encoding="utf-8"))
+        for unit_key, anims in data.get("units", {}).items():
             self._units[unit_key] = anims
 
     def get(self, unit_key: str, state: str) -> Optional[FrameSpec]:
@@ -40,30 +39,30 @@ class AnimationCatalog:
         return surf
 
     def frames_for(self, meta: FrameSpec) -> Optional[List[pygame.Surface]]:
-        if 'frame_files' in meta:
-            key = 'files:' + '|'.join(meta['frame_files'])  # type: ignore[index]
+        if "frame_files" in meta:
+            key = "files:" + "|".join(meta["frame_files"])  # type: ignore[index]
         else:
-            key = 'sheet:' + str(meta.get('sheet'))
+            key = "sheet:" + str(meta.get("sheet"))
 
         if key in self._frames_cache:
             return self._frames_cache[key]
 
         frames: List[pygame.Surface] = []
 
-        if 'frame_files' in meta:
-            for rel in meta['frame_files']:  # type: ignore[index]
+        if "frame_files" in meta:
+            for rel in meta["frame_files"]:  # type: ignore[index]
                 path = (self._root / rel).resolve()
                 try:
                     frames.append(pygame.image.load(str(path)).convert_alpha())
                 except (pygame.error, OSError, ValueError):
                     continue
-        elif 'sheet' in meta:
-            sheet_rel = str(meta['sheet'])
+        elif "sheet" in meta:
+            sheet_rel = str(meta["sheet"])
             sheet = self._load_sheet(sheet_rel)
             if sheet is None:
                 return None
-            fw, fh = meta.get('frame_size', [32, 32])  # type: ignore[assignment]
-            total = int(meta.get('frames', 1))
+            fw, fh = meta.get("frame_size", [32, 32])  # type: ignore[assignment]
+            total = int(meta.get("frames", 1))
             for i in range(total):
                 rect = pygame.Rect(i * fw, 0, fw, fh)
                 frame = pygame.Surface((fw, fh), pygame.SRCALPHA, 32).convert_alpha()
@@ -77,9 +76,9 @@ class AnimationCatalog:
 
     @staticmethod
     def frame_index(meta: FrameSpec, elapsed_ms: int) -> int:
-        dur = int(meta.get('frame_duration_ms', 125))
-        total = int(meta.get('frames', 1))
-        loop = bool(meta.get('loop', True))
+        dur = int(meta.get("frame_duration_ms", 125))
+        total = int(meta.get("frames", 1))
+        loop = bool(meta.get("loop", True))
         if dur <= 0 or total <= 0:
             return 0
         idx = elapsed_ms // dur

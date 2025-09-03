@@ -85,9 +85,7 @@ class TestFighterGameIntegration:
 
     def test_fighter_animation_states(self):
         """Test that all fighter animation states work."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Test all animation states
         states = [
@@ -110,9 +108,7 @@ class TestFighterGameIntegration:
     def test_fighter_integration_workflow(self):
         """Test the complete fighter integration workflow."""
         # 1. Load animation catalog
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
         assert catalog.has_unit("fighter")
 
         # 2. Create unit renderer
@@ -153,9 +149,7 @@ class TestFighterGameIntegration:
 
     def test_fighter_metadata_structure(self):
         """Test that fighter metadata has the correct structure for game integration."""
-        catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
 
         # Test fighter metadata
         fighter_meta = catalog._units.get("fighter", {})

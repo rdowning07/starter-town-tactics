@@ -7,6 +7,7 @@ and identify bottlenecks in the command-event system.
 """
 
 from __future__ import annotations
+
 import json
 import os
 import sys
@@ -24,8 +25,9 @@ def main():
     # Prefer the SimRunner your GameState already owns
     runner = getattr(gs, "sim_runner", None)
     if runner is None:
-        from game.sim_runner import SimRunner  # type: ignore
         from game.ai_controller import AIController  # type: ignore
+        from game.sim_runner import SimRunner  # type: ignore
+
         runner = SimRunner(gs.turn_controller, AIController([]))
         if hasattr(runner, "set_game_state"):
             runner.set_game_state(gs)

@@ -10,6 +10,7 @@ from typing import Dict, List
 
 import pygame
 
+
 class SoundManager:
     """Manages sound effects and music for the game."""
 

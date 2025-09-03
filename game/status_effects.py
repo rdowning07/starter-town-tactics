@@ -4,13 +4,15 @@ Integrated with GameState, UnitManager, and includes validation and logging.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Callable, Optional
+from typing import Callable, Dict, List, Optional
+
 
 # @api
 # @refactor
 @dataclass
 class StatusEffect:
     """Represents a status effect (buff or debuff) on a unit."""
+
     name: str
     duration: int
     effect_type: str  # "buff", "debuff", "neutral"
@@ -31,6 +33,7 @@ class StatusEffect:
         self.apply_effect(unit_data, game_state)
         return self.duration > 0
 
+
 class StatusEffectManager:
     """Manages status effects for all units with full architecture integration."""
 
@@ -48,18 +51,14 @@ class StatusEffectManager:
             "haste": self._create_haste_effect,
             "slow": self._create_slow_effect,
             "strength": self._create_strength_effect,
-            "weakness": self._create_weakness_effect
+            "weakness": self._create_weakness_effect,
         }
 
-    def add_effect(self, unit_id: str, effect_name: str, duration: int = 3,
-                  stacks: int = 1) -> bool:
+    def add_effect(self, unit_id: str, effect_name: str, duration: int = 3, stacks: int = 1) -> bool:
         """Add a status effect to a unit with validation."""
         if effect_name not in self.effect_definitions:
             if self.logger:
-                self.logger.log_event("status_effect_unknown", {
-                    "unit": unit_id,
-                    "effect": effect_name
-                })
+                self.logger.log_event("status_effect_unknown", {"unit": unit_id, "effect": effect_name})
             return False
 
         # Create the effect
@@ -83,12 +82,9 @@ class StatusEffectManager:
             self.unit_effects[unit_id].append(effect)
 
         if self.logger:
-            self.logger.log_event("status_effect_added", {
-                "unit": unit_id,
-                "effect": effect_name,
-                "duration": duration,
-                "stacks": stacks
-            })
+            self.logger.log_event(
+                "status_effect_added", {"unit": unit_id, "effect": effect_name, "duration": duration, "stacks": stacks}
+            )
 
         return True
 
@@ -102,17 +98,14 @@ class StatusEffectManager:
             if effect.name == effect_name:
                 effects.remove(effect)
                 if self.logger:
-                    self.logger.log_event("status_effect_removed", {
-                        "unit": unit_id,
-                        "effect": effect_name
-                    })
+                    self.logger.log_event("status_effect_removed", {"unit": unit_id, "effect": effect_name})
                 return True
 
         return False
 
     def tick_effects(self, game_state) -> Dict[str, List[str]]:
         """Process all status effects for one turn."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return {"expired": [], "applied": []}
 
         expired_effects = []
@@ -136,20 +129,15 @@ class StatusEffectManager:
                         expired_effects.append(f"{unit_id}:{effect.name}")
 
                         if self.logger:
-                            self.logger.log_event("status_effect_expired", {
-                                "unit": unit_id,
-                                "effect": effect.name
-                            })
+                            self.logger.log_event("status_effect_expired", {"unit": unit_id, "effect": effect.name})
 
                 except (ValueError, KeyError, AttributeError) as e:
                     # Remove problematic effects
                     effects.remove(effect)
                     if self.logger:
-                        self.logger.log_event("status_effect_error", {
-                            "unit": unit_id,
-                            "effect": effect.name,
-                            "error": str(e)
-                        })
+                        self.logger.log_event(
+                            "status_effect_error", {"unit": unit_id, "effect": effect.name, "error": str(e)}
+                        )
 
             # Clean up empty effect lists
             if not effects:
@@ -176,6 +164,7 @@ class StatusEffectManager:
     # Effect Definitions
     def _create_poison_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a poison effect."""
+
         def poison_func(unit_data: Dict, game_state, effect: StatusEffect):
             damage = effect.stacks
             old_hp = unit_data.get("hp", 0)
@@ -193,11 +182,12 @@ class StatusEffectManager:
             icon="poison",
             description=f"Takes {stacks} damage per turn",
             stacks=stacks,
-            max_stacks=5
+            max_stacks=5,
         )
 
     def _create_heal_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a heal over time effect."""
+
         def heal_func(unit_data: Dict, game_state, effect: StatusEffect):
             healing = effect.stacks
             old_hp = unit_data.get("hp", 0)
@@ -216,11 +206,12 @@ class StatusEffectManager:
             icon="heal",
             description=f"Heals {stacks} HP per turn",
             stacks=stacks,
-            max_stacks=3
+            max_stacks=3,
         )
 
     def _create_shield_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a shield effect."""
+
         def shield_func(unit_data: Dict, game_state, effect: StatusEffect):
             # Shield provides temporary HP boost
             if "shield_hp" not in unit_data:
@@ -234,11 +225,12 @@ class StatusEffectManager:
             icon="shield",
             description=f"Absorbs {stacks * 5} damage",
             stacks=stacks,
-            max_stacks=2
+            max_stacks=2,
         )
 
     def _create_haste_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a haste effect."""
+
         def haste_func(unit_data: Dict, game_state, effect: StatusEffect):
             # Haste increases movement range
             if "movement_bonus" not in unit_data:
@@ -253,11 +245,12 @@ class StatusEffectManager:
             icon="haste",
             description=f"Movement +{stacks}",
             stacks=stacks,
-            max_stacks=3
+            max_stacks=3,
         )
 
     def _create_slow_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a slow effect."""
+
         def slow_func(unit_data: Dict, game_state, effect: StatusEffect):
             # Slow decreases movement range
             if "movement_penalty" not in unit_data:
@@ -272,11 +265,12 @@ class StatusEffectManager:
             icon="slow",
             description=f"Movement -{stacks}",
             stacks=stacks,
-            max_stacks=2
+            max_stacks=2,
         )
 
     def _create_strength_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a strength effect."""
+
         def strength_func(unit_data: Dict, game_state, effect: StatusEffect):
             if "damage_bonus" not in unit_data:
                 unit_data["damage_bonus"] = 0
@@ -290,11 +284,12 @@ class StatusEffectManager:
             icon="strength",
             description=f"Damage +{stacks}",
             stacks=stacks,
-            max_stacks=3
+            max_stacks=3,
         )
 
     def _create_weakness_effect(self, duration: int, stacks: int) -> StatusEffect:
         """Create a weakness effect."""
+
         def weakness_func(unit_data: Dict, game_state, effect: StatusEffect):
             if "damage_penalty" not in unit_data:
                 unit_data["damage_penalty"] = 0
@@ -308,5 +303,5 @@ class StatusEffectManager:
             icon="weakness",
             description=f"Damage -{stacks}",
             stacks=stacks,
-            max_stacks=2
+            max_stacks=2,
         )

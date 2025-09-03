@@ -28,7 +28,7 @@ def main():
         for unit in game_state.units:
             if hasattr(unit, 'update_animation'):
                 unit.update_animation()
-            
+
             # Enhanced FX trigger block
             if hasattr(unit, 'sprite_name') and hasattr(unit, 'current_animation'):
                 meta = sprite_manager.get_animation_metadata(unit.sprite_name).get(unit.current_animation, {})
@@ -55,7 +55,7 @@ def main():
 def take_damage(self, amount: int) -> None:
     """Reduces HP by amount and sets appropriate animation."""
     self.hp = max(0, self.hp - amount)
-    
+
     # Set animation based on damage
     if self.hp <= 0:
         self.set_animation("die")
@@ -80,16 +80,16 @@ class AIController:
     def take_action(self, unit: Unit):
         """Take action for the given unit."""
         print(f"DEBUG: AIController.take_action called for {unit.name}")
-        
+
         # Set attack animation
         unit.set_animation("attack")
-        
+
         # Simple AI behavior: try to move down if possible
         grid = unit.grid if hasattr(unit, "grid") else None
         if grid:
             new_x, new_y = unit.x, min(grid.height - 1, unit.y + 1)
             unit.move(new_x, new_y, grid)
-        
+
         # For now, just pass - more complex AI logic can be added later
         return
 ```
@@ -121,7 +121,7 @@ class SpriteManager:
 
 **Enhanced Implementation:**
 ```python
-def trigger_flash(self, position: Tuple[int, int], 
+def trigger_flash(self, position: Tuple[int, int],
                  color: Tuple[int, int, int] = (255, 255, 255),
                  duration: float = 0.3, intensity: float = 1.0) -> None:
     """Trigger a flash effect."""
@@ -129,8 +129,8 @@ def trigger_flash(self, position: Tuple[int, int],
 
 def trigger_screen_shake(self, intensity: float = 5.0, duration: float = 0.5) -> None:
     """Trigger screen shake effect."""
-    self.trigger_fx("screen_shake", (0, 0), duration, intensity, 
-                   color=(255, 255, 255), size=10, 
+    self.trigger_fx("screen_shake", (0, 0), duration, intensity,
+                   color=(255, 255, 255), size=10,
                    metadata={"shake_intensity": intensity})
 ```
 
@@ -240,7 +240,7 @@ elif amount >= 3:
 ```python
 def take_damage(self, amount: int) -> None:
     self.hp = max(0, self.hp - amount)
-    
+
     if self.hp <= 0:
         self.set_animation("die")      # Death animation
     elif amount >= 3:
@@ -310,4 +310,4 @@ PYTHONPATH=. python devtools/visual_animation_tester.py knight  # ✅ Working wi
 - **Audio Feedback** - Sound effects for all animations
 - **FX System** - Visual effects for dramatic moments
 
-The animation system is now **clean**, **enhanced**, and **production-ready** with full support for 5 animation types and enhanced FX integration! 🎬✨💀⚡ 
+The animation system is now **clean**, **enhanced**, and **production-ready** with full support for 5 animation types and enhanced FX integration! 🎬✨💀⚡

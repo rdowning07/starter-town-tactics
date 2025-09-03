@@ -5,14 +5,16 @@ Provides centralized pygame initialization with proper error handling
 and configuration for the tactical game engine.
 """
 
-import pygame
 from typing import Optional, Tuple
+
+import pygame
+
 
 def init_pygame(
     window_size: Tuple[int, int] = (800, 600),
     window_title: str = "Starter Town Tactics",
     enable_sound: bool = True,
-    enable_joystick: bool = False
+    enable_joystick: bool = False,
 ) -> bool:
     """
     Initialize pygame with proper configuration.
@@ -58,14 +60,16 @@ def init_pygame(
                 print(f"⚠️  Joystick initialization failed: {e}")
 
         # Set up event handling
-        pygame.event.set_allowed([
-            pygame.QUIT,
-            pygame.KEYDOWN,
-            pygame.KEYUP,
-            pygame.MOUSEBUTTONDOWN,
-            pygame.MOUSEBUTTONUP,
-            pygame.MOUSEMOTION
-        ])
+        pygame.event.set_allowed(
+            [
+                pygame.QUIT,
+                pygame.KEYDOWN,
+                pygame.KEYUP,
+                pygame.MOUSEBUTTONDOWN,
+                pygame.MOUSEBUTTONUP,
+                pygame.MOUSEMOTION,
+            ]
+        )
         print("✅ Event handling configured")
 
         return True
@@ -77,6 +81,7 @@ def init_pygame(
         print(f"❌ Unexpected error during pygame initialization: {e}")
         return False
 
+
 def quit_pygame():
     """Safely quit pygame and clean up resources."""
     try:
@@ -87,12 +92,14 @@ def quit_pygame():
     except Exception as e:
         print(f"⚠️  Error during pygame shutdown: {e}")
 
+
 def get_display_info() -> Optional[object]:
     """Get display information for debugging."""
     try:
         return pygame.display.Info()
     except pygame.error:
         return None
+
 
 def set_window_icon(icon_path: str) -> bool:
     """Set the window icon."""
@@ -105,12 +112,10 @@ def set_window_icon(icon_path: str) -> bool:
         print(f"⚠️  Failed to set window icon: {e}")
         return False
 
+
 # Convenience function for quick initialization
 def quick_init() -> bool:
     """Quick initialization with default settings."""
     return init_pygame(
-        window_size=(1024, 768),
-        window_title="Starter Town Tactics",
-        enable_sound=True,
-        enable_joystick=False
+        window_size=(1024, 768), window_title="Starter Town Tactics", enable_sound=True, enable_joystick=False
     )

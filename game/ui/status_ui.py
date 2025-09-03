@@ -3,10 +3,13 @@ Status UI - draws status effect icons above units with full architecture integra
 Integrated with GameState, StatusEffectManager, and includes validation and logging.
 """
 
-import pygame
 from typing import Dict, List, Optional, Tuple
-from game.ui.ui_state import UIState
+
+import pygame
+
 from game.status_effects import StatusEffect
+from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -19,9 +22,16 @@ class StatusUI:
         self.icon_cache = {}  # Cache for status icons
         self.icon_size = 16
 
-    def draw_status_icons(self, screen: pygame.Surface, unit_id: str, unit_data: Dict,
-                         effects: List[StatusEffect], tile_size: int = 32,
-                         x_offset: int = 0, y_offset: int = -20):
+    def draw_status_icons(
+        self,
+        screen: pygame.Surface,
+        unit_id: str,
+        unit_data: Dict,
+        effects: List[StatusEffect],
+        tile_size: int = 32,
+        x_offset: int = 0,
+        y_offset: int = -20,
+    ):
         """Draw status effect icons above a unit."""
         if not effects:
             return
@@ -45,10 +55,11 @@ class StatusUI:
                 text_surface = self.font.render(stack_text, True, (255, 255, 255))
                 screen.blit(text_surface, (icon_x + self.icon_size - 8, icon_y + self.icon_size - 8))
 
-    def draw_all_status_icons(self, screen: pygame.Surface, game_state,
-                             status_manager, ui_state: UIState, tile_size: int = 32):
+    def draw_all_status_icons(
+        self, screen: pygame.Surface, game_state, status_manager, ui_state: UIState, tile_size: int = 32
+    ):
         """Draw status icons for all units with effects."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         for unit_id, unit_data in game_state.units.units.items():
@@ -57,8 +68,7 @@ class StatusUI:
                 if effects:
                     self.draw_status_icons(screen, unit_id, unit_data, effects, tile_size)
 
-    def draw_status_tooltip(self, screen: pygame.Surface, effects: List[StatusEffect],
-                           pos: Tuple[int, int]):
+    def draw_status_tooltip(self, screen: pygame.Surface, effects: List[StatusEffect], pos: Tuple[int, int]):
         """Draw detailed tooltip for status effects."""
         if not effects:
             return
@@ -95,10 +105,11 @@ class StatusUI:
             text_surface = self.font.render(line, True, (255, 255, 255))
             screen.blit(text_surface, (x + 5, y + 5 + i * line_height))
 
-    def draw_status_summary(self, screen: pygame.Surface, game_state,
-                           status_manager, ui_state: UIState, x: int = 10, y: int = 350):
+    def draw_status_summary(
+        self, screen: pygame.Surface, game_state, status_manager, ui_state: UIState, x: int = 10, y: int = 350
+    ):
         """Draw status effect summary for all units."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         # Count effects by type
@@ -118,11 +129,7 @@ class StatusUI:
 
         # Draw summary
         if total_effects > 0:
-            summary_lines = [
-                f"Active Effects: {total_effects}",
-                f"Buffs: {buff_count}",
-                f"Debuffs: {debuff_count}"
-            ]
+            summary_lines = [f"Active Effects: {total_effects}", f"Buffs: {buff_count}", f"Debuffs: {debuff_count}"]
 
             for i, line in enumerate(summary_lines):
                 color = (0, 255, 0) if "Buffs" in line else (255, 0, 0) if "Debuffs" in line else (255, 255, 255)
@@ -192,10 +199,11 @@ class StatusUI:
 
         return icon
 
-    def get_effect_at_position(self, screen_pos: Tuple[int, int], game_state,
-                              status_manager, tile_size: int = 32) -> Optional[List[StatusEffect]]:
+    def get_effect_at_position(
+        self, screen_pos: Tuple[int, int], game_state, status_manager, tile_size: int = 32
+    ) -> Optional[List[StatusEffect]]:
         """Get status effects at a screen position (for tooltips)."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return None
 
         x, y = screen_pos

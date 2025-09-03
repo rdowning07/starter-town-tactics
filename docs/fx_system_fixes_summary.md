@@ -208,4 +208,4 @@ if frame_index in anim_data.get("fx_at", []):
 - **UI System** - Button presses, menu transitions
 - **Environmental Effects** - Weather, lighting, ambient effects
 
-The FX system is now **completely integrated** and **production-ready**! 🎬✨📱 
+The FX system is now **completely integrated** and **production-ready**! 🎬✨📱

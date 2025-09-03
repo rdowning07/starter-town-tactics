@@ -18,10 +18,10 @@ This document evaluates the user's proposed test and game loop code, identifies 
 ```python
 def test_objective_update_on_battle_win(game_state, objectives_manager):
     from game.objectives_manager import update_objective_flow
-    
+
     game_state.has_won.return_value = True  # Use correct method name
     update_objective_flow(game_state, objectives_manager)
-    
+
     assert objectives_manager.current_objective == "Victory! The enemies have been defeated."
 ```
 
@@ -38,7 +38,7 @@ def test_objective_update_on_battle_win(game_state, objectives_manager):
 def test_ai_retreat_when_low_health(ai_controller, game_state):
     # Setup AI controller with game state
     ai_controller.set_game_state(game_state)
-    
+
     # Create a mock unit with defensive AI and low health
     ai_unit = MagicMock()
     ai_unit.hp = 4
@@ -47,13 +47,13 @@ def test_ai_retreat_when_low_health(ai_controller, game_state):
     ai_unit.name = "defensive_unit"
     ai_unit.x = 5  # Set position attributes
     ai_unit.y = 5
-    
+
     # Mock the move_to method that retreat uses
     ai_unit.move_to = MagicMock()
-    
+
     # Call decide_action
     ai_controller.decide_action(ai_unit)
-    
+
     # Check that move_to was called (retreat behavior)
     ai_unit.move_to.assert_called_once()
 ```
@@ -69,18 +69,18 @@ def test_ai_retreat_when_low_health(ai_controller, game_state):
 def test_reinforcements_triggered_after_5_turns(event_manager, game_state):
     # Mock the add_unit method to track calls
     game_state.add_unit = Mock()
-    
+
     # Simulate 5 turns
     for _ in range(5):
         event_manager.advance_turn()
-    
+
     # Check if reinforcements event was triggered
     assert "reinforcements" in event_manager.triggered_events
-    
+
     # Check that the specific reinforcement units were added
     game_state.add_unit.assert_any_call("reinforcement_1", "player", ap=3, hp=15)
     game_state.add_unit.assert_any_call("reinforcement_2", "player", ap=3, hp=15)
-    
+
     # Verify exactly 2 units were added
     assert game_state.add_unit.call_count == 2
 ```
@@ -93,7 +93,7 @@ def test_reinforcements_triggered_after_5_turns(event_manager, game_state):
 def game_loop():
     event_manager = EventManager(game_state)      # ❌ Redundant creation
     objectives_manager = ObjectivesManager(game_state)  # ❌ Redundant creation
-    
+
     while not game_state.is_game_over():
         update_ai_behavior(game_state)            # ❌ Function doesn't exist
         update_objective_flow(game_state, objectives_manager)  # ❌ Redundant
@@ -107,19 +107,19 @@ def game_loop():
 ```python
 def game_loop(game_state):
     """Enhanced game loop using integrated GameState methods."""
-    
+
     while not game_state.is_game_over():
         # Process player input (if any)
         process_player_input(game_state)
-        
+
         # Advance turn (automatically handles events and objectives)
         game_state.advance_turn()
-        
+
         # Get current state information
         current_objective = game_state.get_current_objective()
         turn_count = game_state.get_turn_count()
         triggered_events = game_state.get_triggered_events()
-        
+
         # Handle any triggered events
         if "reinforcements" in triggered_events:
             handle_reinforcement_effects(game_state)
@@ -127,10 +127,10 @@ def game_loop(game_state):
             handle_storm_effects(game_state)
         if "boss_phase" in triggered_events:
             handle_boss_phase_effects(game_state)
-        
+
         # Render the game state
         render_game_state(game_state)
-        
+
         # Optional: Add delay for turn-based gameplay
         time.sleep(0.1)  # 100ms delay between turns
 ```

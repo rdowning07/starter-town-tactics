@@ -1,13 +1,15 @@
 # devtools/visual_debugger.py
 
 import pygame
+
+from game.grid import Grid
+from game.overlay.overlay_state import OverlayState
 from game.renderer import Renderer
 from game.sprite_manager import SpriteManager
-from game.overlay.overlay_state import OverlayState
-from game.grid import Grid
 from game.tile import Tile
-from game.unit_manager import UnitManager
 from game.unit import Unit
+from game.unit_manager import UnitManager
+
 
 def main():
     pygame.init()
@@ -58,7 +60,7 @@ def main():
                     ["grass", "grass", "grass", "grass", "grass"],
                     ["grass", "grass", "grass", "grass", "grass"],
                     ["grass", "grass", "grass", "grass", "grass"],
-                    ["grass", "grass", "grass", "grass", "grass"]
+                    ["grass", "grass", "grass", "grass", "grass"],
                 ]
                 self.units = unit_manager
 
@@ -66,6 +68,7 @@ def main():
         clock.tick(30)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()

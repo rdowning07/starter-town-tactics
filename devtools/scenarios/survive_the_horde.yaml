@@ -61,7 +61,7 @@ units:
 
 camera:
   - action: "pan"
-    targets: 
+    targets:
       - [96, 96]   # Defenders position
       - [224, 224] # Horde position
       - [160, 160] # Battle line

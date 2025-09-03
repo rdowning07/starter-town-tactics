@@ -3,15 +3,17 @@ Enhanced Input Controller for MVP gameplay.
 Integrates camera controls, unit selection, and action handling.
 """
 
+from typing import Any, Dict, Optional, Set, Tuple
+
 import pygame
-from typing import Optional, Tuple, Set, Dict, Any
+
+from game.camera import Camera, CameraController
+from game.game_state import GameState
+from game.gamepad_controller import GamepadController
 from game.input_state import InputState
 from game.keyboard_controller import KeyboardController
-from game.gamepad_controller import GamepadController
-from game.camera import Camera, CameraController
-from game.ui.ui_state import UIState
 from game.ui.game_actions import GameActions
-from game.game_state import GameState
+from game.ui.ui_state import UIState
 
 
 class InputController:
@@ -69,20 +71,17 @@ class InputController:
             pygame.K_q: "camera_zoom_out",
             pygame.K_e: "camera_zoom_in",
             pygame.K_r: "camera_reset",
-
             # Unit controls
             pygame.K_SPACE: "end_turn",
             pygame.K_TAB: "next_unit",
             pygame.K_LSHIFT: "modifier_fast",
             pygame.K_LCTRL: "modifier_precise",
-
             # UI controls
             pygame.K_ESCAPE: "cancel_action",
             pygame.K_RETURN: "confirm_action",
             pygame.K_h: "toggle_help",
             pygame.K_g: "toggle_grid",
             pygame.K_t: "toggle_turn_info",
-
             # Debug controls (if enabled)
             pygame.K_F1: "debug_info",
             pygame.K_F2: "debug_ai",
@@ -225,11 +224,15 @@ class InputController:
         # Right click typically cancels selection or shows context menu
         if self.ui_state.selected_unit:
             # Create a mock event for the existing game actions system
-            mock_event = type('MockEvent', (), {
-                'type': pygame.MOUSEBUTTONDOWN,
-                'pos': (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
-                'button': 3
-            })()
+            mock_event = type(
+                "MockEvent",
+                (),
+                {
+                    "type": pygame.MOUSEBUTTONDOWN,
+                    "pos": (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
+                    "button": 3,
+                },
+            )()
 
             # Try to move selected unit to this position
             self.game_actions.handle_mouse_click(mock_event, self.game_state, self.ui_state, self.camera.tile_size)
@@ -248,11 +251,15 @@ class InputController:
         """Handle single left click."""
         if self.camera:
             # Create a mock event for the existing game actions system
-            mock_event = type('MockEvent', (), {
-                'type': pygame.MOUSEBUTTONDOWN,
-                'pos': (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
-                'button': 1
-            })()
+            mock_event = type(
+                "MockEvent",
+                (),
+                {
+                    "type": pygame.MOUSEBUTTONDOWN,
+                    "pos": (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
+                    "button": 1,
+                },
+            )()
 
             # Use existing game actions for unit selection and movement
             self.game_actions.handle_mouse_click(mock_event, self.game_state, self.ui_state, self.camera.tile_size)
@@ -268,11 +275,15 @@ class InputController:
         # Double-click for quick actions (e.g., move and attack)
         if self.ui_state.selected_unit and self.camera:
             # Create a mock event for the existing game actions system
-            mock_event = type('MockEvent', (), {
-                'type': pygame.MOUSEBUTTONDOWN,
-                'pos': (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
-                'button': 1
-            })()
+            mock_event = type(
+                "MockEvent",
+                (),
+                {
+                    "type": pygame.MOUSEBUTTONDOWN,
+                    "pos": (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
+                    "button": 1,
+                },
+            )()
 
             # Try to perform a quick action
             self.game_actions.handle_mouse_click(mock_event, self.game_state, self.ui_state, self.camera.tile_size)
@@ -363,11 +374,15 @@ class InputController:
         if self.ui_state.selected_unit and self.ui_state.hovered_tile and self.camera:
             tile_x, tile_y = self.ui_state.hovered_tile
             # Create a mock event for the existing game actions system
-            mock_event = type('MockEvent', (), {
-                'type': pygame.MOUSEBUTTONDOWN,
-                'pos': (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
-                'button': 1
-            })()
+            mock_event = type(
+                "MockEvent",
+                (),
+                {
+                    "type": pygame.MOUSEBUTTONDOWN,
+                    "pos": (tile_x * self.camera.tile_size, tile_y * self.camera.tile_size),
+                    "button": 1,
+                },
+            )()
 
             self.game_actions.handle_mouse_click(mock_event, self.game_state, self.ui_state, self.camera.tile_size)
 

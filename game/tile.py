@@ -1,11 +1,12 @@
 # @api
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from game.unit import Unit
 
 # Constants
 TILE_SIZE = 32
+
 
 class Tile:
     """
@@ -17,9 +18,7 @@ class Tile:
         self.x = x
         self.y = y
         self.terrain = kwargs.get("terrain", "G")  # G, F, W, R, etc.
-        self.terrain_type = kwargs.get(
-            "terrain_type", "plains"
-        )  # plains, forest, mountain, etc.
+        self.terrain_type = kwargs.get("terrain_type", "plains")  # plains, forest, mountain, etc.
         self.movement_cost = kwargs.get("movement_cost", 1)
         self.unit: Optional["Unit"] = None  # Unit object (for compatibility)
         self.unit_id: Optional[str] = None  # Unit ID string

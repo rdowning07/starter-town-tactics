@@ -96,9 +96,7 @@ class VisualDemo:
                     self.bt = None
 
             def decide(self, game_state: GameState):
-                if (
-                    not self.bt_available or self.turn_count % 3 != 0
-                ):  # BT decides every 3 turns
+                if not self.bt_available or self.turn_count % 3 != 0:  # BT decides every 3 turns
                     # Fallback to simple movement
                     self.turn_count += 1
                     return Move(unit_id="player1", to=(4 + (self.turn_count % 3), 3))
@@ -119,12 +117,8 @@ class VisualDemo:
                             new_x = enemy.pos[0] + (1 if dx < 0 else -1)
                             new_y = enemy.pos[1] + (1 if dy < 0 else -1)
                         else:  # Move toward player
-                            new_x = enemy.pos[0] + (
-                                1 if dx > 0 else (-1 if dx < 0 else 0)
-                            )
-                            new_y = enemy.pos[1] + (
-                                1 if dy > 0 else (-1 if dy < 0 else 0)
-                            )
+                            new_x = enemy.pos[0] + (1 if dx > 0 else (-1 if dx < 0 else 0))
+                            new_y = enemy.pos[1] + (1 if dy > 0 else (-1 if dy < 0 else 0))
 
                         # Keep within bounds
                         new_x = max(0, min(GRID_WIDTH - 1, new_x))
@@ -204,15 +198,11 @@ class VisualDemo:
     def draw_ui(self):
         """Draw UI elements."""
         # Draw title
-        title = self.font.render(
-            "Starter Town Tactics - Behavior Tree AI Demo", True, WHITE
-        )
+        title = self.font.render("Starter Town Tactics - Behavior Tree AI Demo", True, WHITE)
         self.screen.blit(title, (10, 10))
 
         # Draw tick counter
-        tick_text = self.font.render(
-            f"Tick: {self.tick_count}/{self.max_ticks}", True, WHITE
-        )
+        tick_text = self.font.render(f"Tick: {self.tick_count}/{self.max_ticks}", True, WHITE)
         self.screen.blit(tick_text, (10, 40))
 
         # Draw recent events
@@ -231,20 +221,14 @@ class VisualDemo:
         enemy = self.state.unit("enemy1")
         player = self.state.unit("player1")
         if enemy and player:
-            distance = abs(player.pos[0] - enemy.pos[0]) + abs(
-                player.pos[1] - enemy.pos[1]
-            )
+            distance = abs(player.pos[0] - enemy.pos[0]) + abs(player.pos[1] - enemy.pos[1])
             distance_text = self.small_font.render(f"Distance: {distance}", True, WHITE)
             self.screen.blit(distance_text, (10, 230))
 
             if distance <= 2:
-                decision_text = self.small_font.render(
-                    "BT Decision: Move Away", True, RED
-                )
+                decision_text = self.small_font.render("BT Decision: Move Away", True, RED)
             else:
-                decision_text = self.small_font.render(
-                    "BT Decision: Move Toward", True, GREEN
-                )
+                decision_text = self.small_font.render("BT Decision: Move Toward", True, GREEN)
             self.screen.blit(decision_text, (10, 250))
 
         # Draw instructions

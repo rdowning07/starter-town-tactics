@@ -28,9 +28,7 @@ class SimRunner:
         ai_controller: Optional[AIController] = None,
     ):
         # Handle backward compatibility with Game objects
-        if hasattr(turn_controller_or_game, "turn_controller") and hasattr(
-            turn_controller_or_game, "ai_controller"
-        ):
+        if hasattr(turn_controller_or_game, "turn_controller") and hasattr(turn_controller_or_game, "ai_controller"):
             # It's a Game object
             game = turn_controller_or_game
             self.turn_controller = game.turn_controller
@@ -121,9 +119,7 @@ class SimRunner:
             except TypeError:
                 # If that fails, try to find the Unit object
                 if hasattr(self.ai_controller, "units"):
-                    unit = next(
-                        (u for u in self.ai_controller.units if u.name == unit_id), None
-                    )
+                    unit = next((u for u in self.ai_controller.units if u.name == unit_id), None)
                     if unit:
                         self.ai_controller.take_action(unit)
 
@@ -135,7 +131,7 @@ class SimRunner:
         )
 
         # Trigger FX for AI actions if game state has FX manager
-        if self.game_state is not None and hasattr(self.game_state, 'trigger_fx'):
+        if self.game_state is not None and hasattr(self.game_state, "trigger_fx"):
             # Simulate AI action effects
             self.game_state.trigger_fx("particle", (400, 300), 0.3, 0.8, (255, 0, 0))
 
@@ -172,13 +168,13 @@ class SimRunner:
         )
 
         # Trigger death FX if game state has FX manager
-        if self.game_state is not None and hasattr(self.game_state, 'trigger_fx'):
+        if self.game_state is not None and hasattr(self.game_state, "trigger_fx"):
             # Simulate death effects
-            if hasattr(self.game_state, 'trigger_fx'):
+            if hasattr(self.game_state, "trigger_fx"):
                 self.game_state.trigger_fx("flash", (400, 300), 0.5, 1.5, (255, 0, 0))
-            if hasattr(self.game_state, 'trigger_screen_shake'):
+            if hasattr(self.game_state, "trigger_screen_shake"):
                 self.game_state.trigger_screen_shake(5.0, 0.5)
-            if hasattr(self.game_state, 'trigger_particle'):
+            if hasattr(self.game_state, "trigger_particle"):
                 self.game_state.trigger_particle((400, 300), "sparkle", 15, 1.0)
 
     def log_fake_death(self, unit_id: str) -> None:
@@ -193,9 +189,7 @@ class SimRunner:
         )
 
     def _check_game_over(self) -> bool:
-        living_units = [
-            u for u in self.turn_controller.units if u not in self.dead_units
-        ]
+        living_units = [u for u in self.turn_controller.units if u not in self.dead_units]
         return len(living_units) == 0
 
     # Backward compatibility methods
@@ -215,7 +209,9 @@ class SimRunner:
             print("WARNING: Simulation reached max_turns limit!")
             self.log.append({"event": "max_turns_reached"})
 
+
 # game/sim_runner.py
+
 
 def update(self):
     unit = self.game.get_current_unit()

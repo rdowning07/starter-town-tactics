@@ -165,9 +165,7 @@ def main():
     create_asset_structure()
     print_asset_guide()
 
-    print(
-        f"\n🚀 Ready to add assets! Check {os.path.abspath('docs/asset_guide.md')} for detailed instructions."
-    )
+    print(f"\n🚀 Ready to add assets! Check {os.path.abspath('docs/asset_guide.md')} for detailed instructions.")
 
 
 if __name__ == "__main__":

@@ -3,13 +3,16 @@ Scenario Manager - manages scenario progression with full architecture integrati
 Integrated with GameState, EnemyAI, EventManager, and includes validation and logging.
 """
 
-from typing import Dict, List, Optional, Any, Union
-import yaml
-import os
 import json
+import os
 from pathlib import Path
-from game.ai.enemy_ai import EnemyAI, AIBehaviorType
+from typing import Any, Dict, List, Optional, Union
+
+import yaml
+
+from game.ai.enemy_ai import AIBehaviorType, EnemyAI
 from game.event_triggers import EventManager, EventTrigger
+
 
 # @api
 # @refactor
@@ -27,6 +30,7 @@ class ScenarioStep:
         self.rewards = step_data.get("rewards", {})
         self.timeout = step_data.get("timeout", 0)
         self.completed = False
+
 
 class ScenarioManager:
     """Manages scenario progression with full architecture integration."""
@@ -51,13 +55,11 @@ class ScenarioManager:
         try:
             if not self.scenario_file.exists():
                 if self.logger:
-                    self.logger.log_event("scenario_file_missing", {
-                        "file": str(self.scenario_file)
-                    })
+                    self.logger.log_event("scenario_file_missing", {"file": str(self.scenario_file)})
                 self._create_default_scenario()
                 return
 
-            with open(self.scenario_file, 'r') as f:
+            with open(self.scenario_file, "r") as f:
                 self.scenario_data = yaml.safe_load(f)
 
             # Parse steps
@@ -70,22 +72,22 @@ class ScenarioManager:
                 "difficulty": self.scenario_data.get("difficulty", "normal"),
                 "max_turns": self.scenario_data.get("max_turns", 50),
                 "victory_conditions": self.scenario_data.get("victory_conditions", []),
-                "defeat_conditions": self.scenario_data.get("defeat_conditions", [])
+                "defeat_conditions": self.scenario_data.get("defeat_conditions", []),
             }
 
             if self.logger:
-                self.logger.log_event("scenario_loaded", {
-                    "scenario": self.scenario_state["name"],
-                    "steps": len(self.steps),
-                    "difficulty": self.scenario_state["difficulty"]
-                })
+                self.logger.log_event(
+                    "scenario_loaded",
+                    {
+                        "scenario": self.scenario_state["name"],
+                        "steps": len(self.steps),
+                        "difficulty": self.scenario_state["difficulty"],
+                    },
+                )
 
         except Exception as e:
             if self.logger:
-                self.logger.log_event("scenario_load_error", {
-                    "file": str(self.scenario_file),
-                    "error": str(e)
-                })
+                self.logger.log_event("scenario_load_error", {"file": str(self.scenario_file), "error": str(e)})
             self._create_default_scenario()
 
     def _create_default_scenario(self):
@@ -103,22 +105,22 @@ class ScenarioManager:
                     "description": "First wave of enemies",
                     "enemies": [
                         {"type": "goblin", "position": [7, 7], "behavior": "aggressive"},
-                        {"type": "goblin", "position": [8, 7], "behavior": "patrol"}
+                        {"type": "goblin", "position": [8, 7], "behavior": "patrol"},
                     ],
                     "objectives": ["Defeat all enemies"],
-                    "escalation": {"enemy_hp_multiplier": 1.0, "enemy_damage_multiplier": 1.0}
+                    "escalation": {"enemy_hp_multiplier": 1.0, "enemy_damage_multiplier": 1.0},
                 },
                 {
                     "name": "Reinforcements",
                     "description": "Additional enemies arrive",
                     "enemies": [
                         {"type": "goblin", "position": [9, 8], "behavior": "aggressive"},
-                        {"type": "orc", "position": [8, 9], "behavior": "defensive"}
+                        {"type": "orc", "position": [8, 9], "behavior": "defensive"},
                     ],
                     "objectives": ["Survive the reinforcements"],
-                    "escalation": {"enemy_hp_multiplier": 1.2, "enemy_damage_multiplier": 1.1}
-                }
-            ]
+                    "escalation": {"enemy_hp_multiplier": 1.2, "enemy_damage_multiplier": 1.1},
+                },
+            ],
         }
 
         self.steps = [ScenarioStep(step_data) for step_data in self.scenario_data["steps"]]
@@ -128,16 +130,14 @@ class ScenarioManager:
             "difficulty": self.scenario_data["difficulty"],
             "max_turns": self.scenario_data["max_turns"],
             "victory_conditions": self.scenario_data["victory_conditions"],
-            "defeat_conditions": self.scenario_data["defeat_conditions"]
+            "defeat_conditions": self.scenario_data["defeat_conditions"],
         }
 
     def start_scenario(self, game_state) -> bool:
         """Start the scenario."""
         if not self.steps:
             if self.logger:
-                self.logger.log_event("scenario_start_failed", {
-                    "reason": "no_steps"
-                })
+                self.logger.log_event("scenario_start_failed", {"reason": "no_steps"})
             return False
 
         self.current_step_index = 0
@@ -149,10 +149,9 @@ class ScenarioManager:
             step.completed = False
 
         if self.logger:
-            self.logger.log_event("scenario_started", {
-                "scenario": self.scenario_state["name"],
-                "total_steps": len(self.steps)
-            })
+            self.logger.log_event(
+                "scenario_started", {"scenario": self.scenario_state["name"], "total_steps": len(self.steps)}
+            )
 
         return True
 
@@ -170,11 +169,10 @@ class ScenarioManager:
         step_result = self._execute_step(current_step, game_state)
 
         if self.logger:
-            self.logger.log_event("scenario_step_executed", {
-                "step_index": self.current_step_index,
-                "step_name": current_step.name,
-                "result": step_result
-            })
+            self.logger.log_event(
+                "scenario_step_executed",
+                {"step_index": self.current_step_index, "step_name": current_step.name, "result": step_result},
+            )
 
         return step_result
 
@@ -202,16 +200,11 @@ class ScenarioManager:
 
         step.completed = True
 
-        return {
-            "success": True,
-            "step_name": step.name,
-            "actions": executed_actions,
-            "objectives": step.objectives
-        }
+        return {"success": True, "step_name": step.name, "actions": executed_actions, "objectives": step.objectives}
 
     def _spawn_enemy(self, enemy_data: Dict[str, Any], game_state) -> bool:
         """Spawn an enemy unit."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return False
 
         # Generate unique enemy ID
@@ -232,7 +225,7 @@ class ScenarioManager:
             "attack_range": enemy_data.get("attack_range", 1),
             "detection_range": enemy_data.get("detection_range", 3),
             "support_range": enemy_data.get("support_range", 2),
-            "level": enemy_data.get("level", 1)
+            "level": enemy_data.get("level", 1),
         }
 
         # Apply escalation to enemy stats
@@ -253,13 +246,16 @@ class ScenarioManager:
         self.active_ais[enemy_id] = enemy_ai
 
         if self.logger:
-            self.logger.log_event("enemy_spawned", {
-                "enemy_id": enemy_id,
-                "type": enemy_type,
-                "position": position,
-                "behavior": behavior_name,
-                "hp": enemy_unit["hp"]
-            })
+            self.logger.log_event(
+                "enemy_spawned",
+                {
+                    "enemy_id": enemy_id,
+                    "type": enemy_type,
+                    "position": position,
+                    "behavior": behavior_name,
+                    "hp": enemy_unit["hp"],
+                },
+            )
 
         return True
 
@@ -278,10 +274,7 @@ class ScenarioManager:
                 return True
         except Exception as e:
             if self.logger:
-                self.logger.log_event("scenario_event_error", {
-                    "event_type": event_type,
-                    "error": str(e)
-                })
+                self.logger.log_event("scenario_event_error", {"event_type": event_type, "error": str(e)})
 
         return False
 
@@ -294,7 +287,7 @@ class ScenarioManager:
         self.escalation_level *= max(hp_multiplier, damage_multiplier)
 
         # Apply to existing enemies
-        if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+        if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
             for unit_id, unit_data in game_state.units.units.items():
                 if unit_data.get("team") == "enemy" and unit_data.get("alive", True):
                     if hp_multiplier != 1.0:
@@ -307,11 +300,14 @@ class ScenarioManager:
             ai.aggression_level *= aggression_modifier
 
         if self.logger:
-            self.logger.log_event("escalation_applied", {
-                "hp_multiplier": hp_multiplier,
-                "damage_multiplier": damage_multiplier,
-                "new_escalation_level": self.escalation_level
-            })
+            self.logger.log_event(
+                "escalation_applied",
+                {
+                    "hp_multiplier": hp_multiplier,
+                    "damage_multiplier": damage_multiplier,
+                    "new_escalation_level": self.escalation_level,
+                },
+            )
 
     def advance_step(self) -> bool:
         """Advance to the next step."""
@@ -321,10 +317,15 @@ class ScenarioManager:
         self.current_step_index += 1
 
         if self.logger:
-            self.logger.log_event("scenario_step_advanced", {
-                "new_step_index": self.current_step_index,
-                "step_name": self.steps[self.current_step_index].name if self.current_step_index < len(self.steps) else "complete"
-            })
+            self.logger.log_event(
+                "scenario_step_advanced",
+                {
+                    "new_step_index": self.current_step_index,
+                    "step_name": self.steps[self.current_step_index].name
+                    if self.current_step_index < len(self.steps)
+                    else "complete",
+                },
+            )
 
         return True
 
@@ -340,9 +341,10 @@ class ScenarioManager:
             return self._evaluate_conditions(current_step.conditions, game_state)
 
         # Default: step is complete if all enemies are dead
-        if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
-            enemy_count = sum(1 for unit in game_state.units.units.values()
-                            if unit.get("team") == "enemy" and unit.get("alive", True))
+        if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
+            enemy_count = sum(
+                1 for unit in game_state.units.units.values() if unit.get("team") == "enemy" and unit.get("alive", True)
+            )
             return enemy_count == 0
 
         return False
@@ -353,19 +355,22 @@ class ScenarioManager:
 
         if condition_type == "enemies_defeated":
             target_count = conditions.get("count", 0)
-            if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
-                defeated_enemies = sum(1 for unit in game_state.units.units.values()
-                                     if unit.get("team") == "enemy" and not unit.get("alive", True))
+            if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
+                defeated_enemies = sum(
+                    1
+                    for unit in game_state.units.units.values()
+                    if unit.get("team") == "enemy" and not unit.get("alive", True)
+                )
                 return defeated_enemies >= target_count
 
         elif condition_type == "turns_survived":
             target_turns = conditions.get("turns", 10)
-            current_turns = getattr(game_state, 'turn_count', 0)
+            current_turns = getattr(game_state, "turn_count", 0)
             return current_turns >= target_turns
 
         elif condition_type == "area_reached":
             target_pos = conditions.get("position", [0, 0])
-            if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+            if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
                 for unit in game_state.units.units.values():
                     if unit.get("team") == "player" and unit.get("alive", True):
                         if (unit["x"], unit["y"]) == tuple(target_pos):
@@ -379,7 +384,7 @@ class ScenarioManager:
 
         for unit_id, ai in list(self.active_ais.items()):
             # Check if unit is still alive
-            if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+            if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
                 unit_data = game_state.units.units.get(unit_id)
                 if not unit_data or not unit_data.get("alive", True):
                     # Remove dead AI
@@ -389,10 +394,7 @@ class ScenarioManager:
             # Get AI decision
             action_result = ai.decide_action(game_state)
             if action_result.get("action") != "none":
-                ai_actions.append({
-                    "unit_id": unit_id,
-                    "action": action_result
-                })
+                ai_actions.append({"unit_id": unit_id, "action": action_result})
 
                 # Execute the action
                 self._execute_ai_action(unit_id, action_result, game_state)
@@ -405,7 +407,7 @@ class ScenarioManager:
 
         if action == "move":
             target_pos = action_result.get("target_pos")
-            if target_pos and hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+            if target_pos and hasattr(game_state, "units") and hasattr(game_state.units, "units"):
                 unit_data = game_state.units.units.get(unit_id)
                 if unit_data:
                     unit_data["x"] = target_pos[0]
@@ -413,7 +415,7 @@ class ScenarioManager:
 
         elif action == "attack":
             target = action_result.get("target")
-            if target and hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+            if target and hasattr(game_state, "units") and hasattr(game_state.units, "units"):
                 # Simple attack: reduce target HP
                 damage = 5  # Base damage
                 target["hp"] = max(0, target["hp"] - damage)
@@ -438,7 +440,7 @@ class ScenarioManager:
             "escalation_level": self.escalation_level,
             "active_ais": len(self.active_ais),
             "scenario_complete": self.current_step_index >= len(self.steps),
-            "difficulty": self.scenario_state["difficulty"]
+            "difficulty": self.scenario_state["difficulty"],
         }
 
     def is_scenario_complete(self) -> bool:
@@ -455,9 +457,7 @@ class ScenarioManager:
             step.completed = False
 
         if self.logger:
-            self.logger.log_event("scenario_reset", {
-                "scenario": self.scenario_state["name"]
-            })
+            self.logger.log_event("scenario_reset", {"scenario": self.scenario_state["name"]})
 
     def save_scenario_state(self, filename: str) -> bool:
         """Save current scenario state to file."""
@@ -467,22 +467,17 @@ class ScenarioManager:
                 "current_step_index": self.current_step_index,
                 "escalation_level": self.escalation_level,
                 "step_completion": [step.completed for step in self.steps],
-                "active_ai_count": len(self.active_ais)
+                "active_ai_count": len(self.active_ais),
             }
 
-            with open(filename, 'w') as f:
+            with open(filename, "w") as f:
                 json.dump(state_data, f, indent=2)
 
             if self.logger:
-                self.logger.log_event("scenario_state_saved", {
-                    "filename": filename
-                })
+                self.logger.log_event("scenario_state_saved", {"filename": filename})
 
             return True
         except Exception as e:
             if self.logger:
-                self.logger.log_event("scenario_state_save_error", {
-                    "filename": filename,
-                    "error": str(e)
-                })
+                self.logger.log_event("scenario_state_save_error", {"filename": filename, "error": str(e)})
             return False

@@ -26,9 +26,7 @@ class FighterDemo(DemoBase):
         self.font = pygame.font.Font(None, 24)
 
         # Initialize unit system
-        self.anim_catalog = AnimationCatalog(
-            Path("assets/units/_metadata/animation_metadata.json")
-        )
+        self.anim_catalog = AnimationCatalog(Path("assets/units/_metadata/animation_metadata.json"))
         self.unit_renderer = UnitRenderer(self.anim_catalog, tile_size=(32, 32))
 
         # Fighter state

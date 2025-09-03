@@ -61,9 +61,7 @@ def main():
             game_state = GameState()
 
             # Create scenario manager
-            scenario_manager = create_scenario_manager(
-                camera, ai_controller, player_unit, game_state
-            )
+            scenario_manager = create_scenario_manager(camera, ai_controller, player_unit, game_state)
             scenario_manager.set_managers(sprite_manager, fx_manager, sound_manager)
 
             # Load scenario
@@ -71,9 +69,7 @@ def main():
             print(f"✅ Scenario loaded: {game_state.name}")
 
             # Store scenario data for potential branching
-            scenario_data = scenario_manager._load_yaml(
-                args.scenario
-            )  # pylint: disable=protected-access
+            scenario_data = scenario_manager._load_yaml(args.scenario)  # pylint: disable=protected-access
 
             # Demo: Simulate battle progression and check for branching
             print("🎮 Demo: Simulating battle progression...")
@@ -86,9 +82,7 @@ def main():
                 print("⚔️ Simulating victory condition...")
                 # Remove enemy units to simulate victory
                 enemy_units = [
-                    name
-                    for name, data in game_state.units.get_all_units().items()
-                    if data.get("team") == "enemy"
+                    name for name, data in game_state.units.get_all_units().items() if data.get("team") == "enemy"
                 ]
                 for enemy in enemy_units:
                     game_state.units.remove_unit(enemy)
@@ -160,18 +154,14 @@ def main():
                     sprite = unit.get_current_sprite(sprite_manager)
                     if sprite:
                         # Convert position to screen coordinates (scale up for visibility)
-                        screen_x = (
-                            unit.x * 64 + 100
-                        )  # 64 pixels per tile, offset by 100
+                        screen_x = unit.x * 64 + 100  # 64 pixels per tile, offset by 100
                         screen_y = unit.y * 64 + 100
 
                         # If sprite is a string path, load it
                         if isinstance(sprite, str):
                             try:
                                 sprite_surface = pygame.image.load(sprite)
-                                sprite_surface = pygame.transform.scale(
-                                    sprite_surface, (64, 64)
-                                )
+                                sprite_surface = pygame.transform.scale(sprite_surface, (64, 64))
                             except (OSError, pygame.error):
                                 # Create a colored rectangle as fallback
                                 sprite_surface = pygame.Surface((64, 64))
@@ -180,9 +170,7 @@ def main():
                                 elif unit.team == "enemy":
                                     sprite_surface.fill((255, 0, 0))  # Red for enemy
                                 else:
-                                    sprite_surface.fill(
-                                        (128, 128, 128)
-                                    )  # Gray for neutral
+                                    sprite_surface.fill((128, 128, 128))  # Gray for neutral
                         else:
                             # Sprite is already a surface
                             sprite_surface = pygame.transform.scale(sprite, (64, 64))
@@ -196,9 +184,7 @@ def main():
                         screen.blit(name_text, (screen_x, screen_y - 20))
 
                         # Draw HP
-                        hp_text = font.render(
-                            f"HP: {unit_data.get('hp', 10)}", True, (255, 255, 0)
-                        )
+                        hp_text = font.render(f"HP: {unit_data.get('hp', 10)}", True, (255, 255, 0))
                         screen.blit(hp_text, (screen_x, screen_y + 70))
 
                 except (OSError, pygame.error) as e:
@@ -206,9 +192,7 @@ def main():
 
                 # Inside the unit animation loop
                 if hasattr(unit, "sprite_name") and hasattr(unit, "current_animation"):
-                    meta = sprite_manager.get_animation_metadata(unit.sprite_name).get(
-                        unit.current_animation, {}
-                    )
+                    meta = sprite_manager.get_animation_metadata(unit.sprite_name).get(unit.current_animation, {})
                     frame = getattr(unit, "animation_frame", 0)
 
                     if "fx_at" in meta and frame in meta["fx_at"]:

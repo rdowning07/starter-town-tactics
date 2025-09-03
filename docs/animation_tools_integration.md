@@ -269,4 +269,4 @@ PYTHONPATH=. python devtools/cli_animation_tester.py knight attack
 
 The animation tools provide a robust foundation for testing and validating sprite sheet animations in the tactical game engine. The integration with the sprite manager and pygame initialization ensures reliable operation across different environments and asset configurations.
 
-The tools are ready for Phase 4 development and provide excellent debugging capabilities for animation-related issues. 
+The tools are ready for Phase 4 development and provide excellent debugging capabilities for animation-related issues.

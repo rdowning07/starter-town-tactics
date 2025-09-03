@@ -7,12 +7,13 @@ Integrates with SpriteManager and current asset structure.
 import os
 import sys
 from pathlib import Path
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 # Add game directory to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pygame
+
 from game.sprite_manager import SpriteManager
 
 
@@ -166,11 +167,7 @@ class AssetViewer:
         x_offset = 10
 
         for i, category in enumerate(self.categories):
-            color = (
-                self.colors["highlight"]
-                if i == self.current_category
-                else self.colors["text"]
-            )
+            color = self.colors["highlight"] if i == self.current_category else self.colors["text"]
             text = self.font.render(category.upper(), True, color)
             self.screen.blit(text, (x_offset, y_offset))
             x_offset += text.get_width() + 20
@@ -178,9 +175,7 @@ class AssetViewer:
         # Draw asset count
         category = self.categories[self.current_category]
         assets = self.assets[category]
-        count_text = self.small_font.render(
-            f"Assets: {len(assets)}", True, self.colors["text"]
-        )
+        count_text = self.small_font.render(f"Assets: {len(assets)}", True, self.colors["text"])
         self.screen.blit(count_text, (x_offset, y_offset + 5))
 
     def _draw_asset_info(self):
@@ -235,9 +230,7 @@ class AssetViewer:
 
         if asset_surface is None:
             text = self.font.render("Failed to load asset", True, self.colors["error"])
-            text_rect = text.get_rect(
-                center=(self.screen_width // 2, self.screen_height // 2)
-            )
+            text_rect = text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
             self.screen.blit(text, text_rect)
             return
 
@@ -253,9 +246,7 @@ class AssetViewer:
         self.screen.blit(asset_surface, (x, y))
 
         # Draw image dimensions
-        dim_text = self.small_font.render(
-            f"{img_width}x{img_height}", True, self.colors["text"]
-        )
+        dim_text = self.small_font.render(f"{img_width}x{img_height}", True, self.colors["text"])
         self.screen.blit(dim_text, (x, y - 20))
 
     def handle_events(self) -> bool:

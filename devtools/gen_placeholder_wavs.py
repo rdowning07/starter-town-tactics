@@ -8,16 +8,18 @@ This script creates simple WAV files for testing the sound system.
 import os
 import wave
 
+
 def generate_simple_wav(filename, duration=0.3, freq=440, volume=0.5, sample_rate=44100):
     """Generate a simple sine wave without numpy dependency."""
 
     try:
         import numpy as np
+
         amplitude = int(volume * 32767)
         t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
         data = (amplitude * np.sin(2 * np.pi * freq * t)).astype(np.int16)
 
-        with wave.open(filename, 'w') as f:
+        with wave.open(filename, "w") as f:
             f.setnchannels(1)  # mono
             f.setsampwidth(2)  # bytes per sample
             f.setframerate(sample_rate)
@@ -28,25 +30,27 @@ def generate_simple_wav(filename, duration=0.3, freq=440, volume=0.5, sample_rat
     except ImportError:
         print(f"⚠️  numpy not available, creating silent WAV: {filename}")
         # Create a silent WAV file as fallback
-        with wave.open(filename, 'w') as f:
+        with wave.open(filename, "w") as f:
             f.setnchannels(1)
             f.setsampwidth(2)
             f.setframerate(sample_rate)
             # Create silent data
-            silent_data = b'\x00\x00' * int(sample_rate * duration)
+            silent_data = b"\x00\x00" * int(sample_rate * duration)
             f.writeframes(silent_data)
         return False
+
 
 def generate_fallback_wav(filename, duration=0.3, sample_rate=44100):
     """Generate a fallback WAV file without numpy."""
 
-    with wave.open(filename, 'w') as f:
+    with wave.open(filename, "w") as f:
         f.setnchannels(1)
         f.setsampwidth(2)
         f.setframerate(sample_rate)
         # Create silent data
-        silent_data = b'\x00\x00' * int(sample_rate * duration)
+        silent_data = b"\x00\x00" * int(sample_rate * duration)
         f.writeframes(silent_data)
+
 
 def main():
     """Main function to generate placeholder sounds."""
@@ -66,7 +70,7 @@ def main():
         "block.wav": {"freq": 110, "duration": 0.2, "desc": "Shield block"},
         "move.wav": {"freq": 440, "duration": 0.1, "desc": "Unit movement"},
         "select.wav": {"freq": 550, "duration": 0.1, "desc": "Unit selection"},
-        "menu.wav": {"freq": 770, "duration": 0.15, "desc": "Menu navigation"}
+        "menu.wav": {"freq": 770, "duration": 0.15, "desc": "Menu navigation"},
     }
 
     numpy_available = True
@@ -75,11 +79,7 @@ def main():
         path = os.path.join(output_dir, name)
 
         try:
-            success = generate_simple_wav(
-                path,
-                freq=config["freq"],
-                duration=config["duration"]
-            )
+            success = generate_simple_wav(path, freq=config["freq"], duration=config["duration"])
 
             if success:
                 print(f"✅ Generated {name} ({config['desc']})")
@@ -99,6 +99,7 @@ def main():
 
     print(f"\n🎉 Sound effects ready in: {output_dir}")
     print(f"📁 Total files: {len(sounds)}")
+
 
 if __name__ == "__main__":
     main()

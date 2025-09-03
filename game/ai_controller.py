@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 from game.grid import Grid
 from game.unit import Unit
-from typing import Optional
 
 
 class AIController:
@@ -31,7 +32,7 @@ class AIController:
         unit.set_animation("attack")
 
         # Enhanced AI behavior based on unit type
-        if hasattr(unit, 'ai') and unit.ai:
+        if hasattr(unit, "ai") and unit.ai:
             self.decide_action(unit)
         else:
             # Fallback to simple behavior
@@ -73,12 +74,12 @@ class AIController:
 
     def decide_action(self, ai_unit):
         """Decides what action to take based on AI behavior and health."""
-        if not hasattr(ai_unit, 'ai'):
+        if not hasattr(ai_unit, "ai"):
             return
 
         # Check if health is low
-        current_hp = getattr(ai_unit, 'hp', 10)
-        max_hp = getattr(ai_unit, 'max_hp', 10)
+        current_hp = getattr(ai_unit, "hp", 10)
+        max_hp = getattr(ai_unit, "max_hp", 10)
 
         if current_hp < max_hp / 2:  # If health is low
             if ai_unit.ai == "defensive":
@@ -101,7 +102,7 @@ class AIController:
         """Behavior Tree-based AI decision making."""
         if not self.game_state:
             return
-            
+
         # Find closest enemy target
         target = self.find_closest_enemy(gs, unit_id)
         if not target:
@@ -111,12 +112,12 @@ class AIController:
         try:
             from core.ai.bt import make_basic_combat_tree
             from game.ai_bt_adapter import BTAdapter
-            
+
             # Behavior Tree path (new)
             bt = make_basic_combat_tree()
             ctx = BTAdapter(gs, unit_id, target)
             status = bt.tick(ctx)
-            
+
             # If BT failed (no move/attack possible), fall back to old heuristic:
             if status not in ("SUCCESS", "RUNNING"):
                 print(f"BT failed for {unit_id}, falling back to heuristic")
@@ -136,18 +137,18 @@ class AIController:
         unit = gs.units.get(unit_id)
         if not unit:
             return None
-            
+
         unit_team = unit.get("team")
         if not unit_team:
             return None
-            
+
         # Find enemies (opposite team)
         enemy_team = "player" if unit_team == "ai" else "ai"
         enemies = gs.units.get_unit_ids_by_team(enemy_team)
-        
+
         if not enemies:
             return None
-            
+
         # For now, just return the first enemy
         # TODO: Implement actual distance calculation
         return enemies[0]

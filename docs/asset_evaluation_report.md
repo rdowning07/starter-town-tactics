@@ -14,7 +14,7 @@
 ```
 assets/units/
 ├── knight/          ✅ Has structure, ❌ Mostly stubs
-├── mage/           ✅ Has structure, ❌ Mostly stubs  
+├── mage/           ✅ Has structure, ❌ Mostly stubs
 ├── archer/         ❌ Missing animation files
 ├── goblin/         ❌ Missing animation files
 ├── Berserker/      ❌ Missing animation files
@@ -62,7 +62,7 @@ assets/units/
    - Issues: Sheet dimensions don't match frame expectations (96x32 vs 64x64)
    - Status: **NEEDS REPLACEMENT** - Structure good, art is stub
 
-2. **Mage** - Has animation_metadata.json, sprite sheets, frame directories  
+2. **Mage** - Has animation_metadata.json, sprite sheets, frame directories
    - Files: idle.png (1.9KB), walk.png (2.1KB), attack.png (2.3KB)
    - Issues: Same dimension mismatch as knight
    - Status: **NEEDS REPLACEMENT** - Structure good, art is stub
@@ -76,7 +76,7 @@ assets/units/
 - **Total Unit Types**: 40+ different unit types
 - **Valid Animation Sheets**: 0 out of 23
 - **Success Rate**: 0.0%
-- **Common Issues**: 
+- **Common Issues**:
   - Invalid resolution (666 occurrences)
   - Cannot open image file (49 occurrences)
   - Invalid file extension (8 occurrences)
@@ -91,7 +91,7 @@ assets/tiles/
 ├── terrain/        ✅ Has basic tiles, ❌ Mostly stubs
 ├── water/          ✅ Has water.png (97KB - likely real)
 ├── village/        ❌ Empty
-├── interior/       ❌ Empty  
+├── interior/       ❌ Empty
 ├── house/          ❌ Empty
 ├── dungeon/        ❌ Empty
 ├── desert/         ❌ Empty
@@ -107,7 +107,7 @@ assets/tiles/
 
 #### **❌ Stub Terrain Files**
 - **grass.png** - 81B (stub)
-- **forest.png** - 82B (stub)  
+- **forest.png** - 82B (stub)
 - **mountain.png** - 84B (stub)
 - **road.png** - 80B (stub)
 - **wall.png** - 80B (stub)
@@ -154,7 +154,7 @@ assets/effects/
 
 ### **🎨 Particle Effects**
 - **attack.png** - 82B (stub)
-- **death.png** - 81B (stub)  
+- **death.png** - 81B (stub)
 - **heal.png** - 80B (stub)
 
 **Effects Status**: ❌ **NEEDS REPLACEMENT** - All particle effects are stubs
@@ -193,7 +193,7 @@ assets/ui/
 
 ### **❌ What Needs Replacement**
 1. **Unit Sprites**: 0/23 valid animation sheets (0% success)
-2. **Terrain Tiles**: 0/1 valid terrain files (0% success)  
+2. **Terrain Tiles**: 0/1 valid terrain files (0% success)
 3. **UI Elements**: 0/4 valid UI files (0% success)
 4. **Particle Effects**: 0/3 valid effect files (0% success)
 
@@ -215,7 +215,7 @@ assets/ui/
 - Replace basic terrain tiles (grass, water, forest, mountain) with 32x32 tiles
 - Replace UI elements (health bar, icons, cursor) with functional graphics
 
-**Phase 2: Visual Polish (Week 2)**  
+**Phase 2: Visual Polish (Week 2)**
 - Add particle effects for attacks, deaths, healing
 - Enhance terrain with additional tile types (road, wall, castle)
 - Add animation frames for unit actions (idle, walk, attack, death)
@@ -229,7 +229,7 @@ assets/ui/
 
 **Asset Requirements**:
 - **Unit Sprites**: 32x32 pixels, PNG with transparency
-- **Terrain Tiles**: 32x32 pixels, PNG with transparency  
+- **Terrain Tiles**: 32x32 pixels, PNG with transparency
 - **UI Elements**: Various sizes, PNG with transparency
 - **Sound Effects**: WAV format (already working)
 

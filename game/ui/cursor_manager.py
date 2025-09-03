@@ -3,9 +3,12 @@ Cursor Manager - manages custom cursors with full architecture integration.
 Integrated with UIState and includes validation and fallback mechanisms.
 """
 
+from typing import Dict, Optional, Tuple
+
 import pygame
-from typing import Optional, Tuple, Dict
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -78,20 +81,13 @@ class CursorManager:
             self.current_cursor = cursor_type
             self.custom_cursor_surface = self.cursors[cursor_type]
             if self.logger:
-                self.logger.info({
-                    "event": "cursor_changed",
-                    "cursor_type": cursor_type
-                })
+                self.logger.info({"event": "cursor_changed", "cursor_type": cursor_type})
         else:
             # Fallback to default
             self.current_cursor = "default"
             self.custom_cursor_surface = self.cursors["default"]
             if self.logger:
-                self.logger.warning({
-                    "event": "cursor_fallback",
-                    "requested": cursor_type,
-                    "fallback": "default"
-                })
+                self.logger.warning({"event": "cursor_fallback", "requested": cursor_type, "fallback": "default"})
 
     def update_cursor(self, ui_state: UIState, mouse_pos: Tuple[int, int]):
         """Update cursor based on UI state and mouse position."""
@@ -126,7 +122,4 @@ class CursorManager:
 
     def get_cursor_info(self) -> Dict[str, str]:
         """Get current cursor information."""
-        return {
-            "current_cursor": self.current_cursor,
-            "available_cursors": list(self.cursors.keys())
-        }
+        return {"current_cursor": self.current_cursor, "available_cursors": list(self.cursors.keys())}

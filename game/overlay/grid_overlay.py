@@ -32,9 +32,7 @@ class GridOverlay:
                         in_range.add((tx, ty))
         return in_range
 
-    def threat_zone(
-        self, grid: Grid, unit: Unit, move_range: int = 3, attack_range: int = 1
-    ):
+    def threat_zone(self, grid: Grid, unit: Unit, move_range: int = 3, attack_range: int = 1):
         reachable = self.movement_range(grid, unit, move_range)
         threat = set()
         for x, y in reachable:

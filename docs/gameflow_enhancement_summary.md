@@ -121,11 +121,11 @@ The new managers are automatically integrated into GameState:
 class GameState:
     def __init__(self):
         # ... existing components ...
-        
+
         # New managers for enhanced game flow
         self.objectives_manager = ObjectivesManager(self)
         self.event_manager = EventManager(self)
-        
+
         # Wire up AI controller with game state
         self.ai_controller.set_game_state(self)
 ```
@@ -140,13 +140,13 @@ def game_loop():
     while not game_state.is_game_over():
         # Process player input
         process_player_input()
-        
+
         # Advance turn (triggers events and updates objectives)
         game_state.advance_turn()
-        
+
         # Display current objective
         print(f"Objective: {game_state.get_current_objective()}")
-        
+
         # Check for triggered events
         if game_state.has_event_triggered("reinforcements"):
             show_reinforcement_animation()
@@ -159,14 +159,14 @@ def game_loop():
 def execute_scenario():
     # Load scenario
     scenario_manager.load_scenario("battle_scenario.yaml")
-    
+
     # Game automatically manages objectives and events
     while not game_state.is_game_over():
         game_state.advance_turn()
-        
+
         # Objectives update automatically
         current_objective = game_state.get_current_objective()
-        
+
         # Events trigger automatically
         if game_state.has_event_triggered("boss_phase"):
             trigger_boss_phase_effects()

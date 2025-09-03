@@ -156,7 +156,4 @@ class KeyboardController:
     # -------- Dunder helpers --------
 
     def __repr__(self) -> str:  # pragma: no cover - trivial
-        return (
-            f"KeyboardController(debug={self.debug}, "
-            f"overlays={bool(self.overlay_manager)})"
-        )
+        return f"KeyboardController(debug={self.debug}, " f"overlays={bool(self.overlay_manager)})"

@@ -6,12 +6,12 @@ animations:
     frame_duration: 500  # milliseconds
     loop: true
     frames: ["frame_0.png", "frame_1.png"]
-  
+
   attack:
     frame_duration: 200  # milliseconds
     loop: false
     frames: ["frame_0.png", "frame_1.png", "frame_2.png"]
-  
+
   walk:
     frame_duration: 300  # milliseconds
     loop: true

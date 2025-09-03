@@ -3,10 +3,13 @@ UI Renderer - renders UI elements with asset integration and architecture suppor
 Integrated with GameState, SimRunner, and existing asset systems.
 """
 
-import pygame
 import os
-from typing import Optional, Dict, Tuple
+from typing import Dict, Optional, Tuple
+
+import pygame
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -48,8 +51,9 @@ class UIRenderer:
         pygame.draw.rect(surface, (150, 150, 150), surface.get_rect(), 1)  # Border
         return surface
 
-    def draw_button(self, rect: pygame.Rect, text: str, state: str = "normal",
-                   color: Optional[Tuple[int, int, int]] = None) -> None:
+    def draw_button(
+        self, rect: pygame.Rect, text: str, state: str = "normal", color: Optional[Tuple[int, int, int]] = None
+    ) -> None:
         """Draw a button with text."""
         # Get button asset or create placeholder
         button_key = f"button_{state}"
@@ -139,8 +143,13 @@ class UIRenderer:
         """Get a UI asset with fallback."""
         return self._ui_assets.get(asset_type, self._create_ui_placeholder(asset_type))
 
-    def draw_text(self, text: str, pos: Tuple[int, int], color: Tuple[int, int, int] = (255, 255, 255),
-                  font: Optional[pygame.font.Font] = None) -> None:
+    def draw_text(
+        self,
+        text: str,
+        pos: Tuple[int, int],
+        color: Tuple[int, int, int] = (255, 255, 255),
+        font: Optional[pygame.font.Font] = None,
+    ) -> None:
         """Draw text at position."""
         if font is None:
             font = self.font
@@ -154,8 +163,7 @@ class UIRenderer:
         panel_img = self._get_placeholder("panel", self.create_placeholder_panel, rect.width, rect.height)
         self.screen.blit(panel_img, rect.topleft)
 
-    def draw_highlight(self, rect: pygame.Rect, color: Tuple[int, int, int] = (255, 255, 0),
-                      alpha: int = 128) -> None:
+    def draw_highlight(self, rect: pygame.Rect, color: Tuple[int, int, int] = (255, 255, 0), alpha: int = 128) -> None:
         """Draw a highlight overlay."""
         highlight = pygame.Surface(rect.size, pygame.SRCALPHA)
         highlight.fill((color[0], color[1], color[2], alpha))
@@ -194,13 +202,13 @@ class UIRenderer:
         if ui_state.selected_unit:
             self.draw_text(f"Unit: {ui_state.selected_unit}", (100, 50))
             # Get unit data from game state if available
-            if hasattr(game_state, 'units') and hasattr(game_state.units, 'units'):
+            if hasattr(game_state, "units") and hasattr(game_state.units, "units"):
                 unit_data = game_state.units.units.get(ui_state.selected_unit, {})
                 self.draw_text(f"HP: {unit_data.get('hp', 0)}", (100, 80))
                 self.draw_text(f"Team: {unit_data.get('team', 'unknown')}", (100, 110))
 
         # Game state info
-        if hasattr(game_state, 'sim_runner') and game_state.sim_runner.is_ai_turn():
+        if hasattr(game_state, "sim_runner") and game_state.sim_runner.is_ai_turn():
             self.draw_text("AI Turn", (100, 150), (255, 0, 0))
         else:
             self.draw_text("Player Turn", (100, 150), (0, 255, 0))

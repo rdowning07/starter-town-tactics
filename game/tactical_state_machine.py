@@ -22,9 +22,7 @@ class TacticalStateMachine:
         """Transition from current to new state with logging."""
         self.previous_state = self.state
         self.state = new_state
-        print(
-            f"[TacticalStateMachine] {self.previous_state.name} → " f"{self.state.name}"
-        )
+        print(f"[TacticalStateMachine] {self.previous_state.name} → " f"{self.state.name}")
 
     def cancel(self) -> None:
         """Revert to the previous state if canceling an action."""

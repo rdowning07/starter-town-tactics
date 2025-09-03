@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 
-
-
 class ObjectivesManager:
     """Manages game objectives and their dynamic updates based on game state."""
 

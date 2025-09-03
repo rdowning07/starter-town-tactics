@@ -103,7 +103,7 @@ class OverlayState:
     selected: Optional[str] = None
     hover_tile: Optional[Tile] = None
     highlighted_tiles: List[Tile] = field(default_factory=list)
-    
+
     # Compatibility with existing overlay state
     show_movement: bool = True
     movement_tiles: set = field(default_factory=set)

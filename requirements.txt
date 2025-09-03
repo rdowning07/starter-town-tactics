@@ -10,4 +10,3 @@ isort==5.13.2
 mypy==1.10.0
 pylint==3.2.2
 types-PyYAML==6.0.12.20250516
-

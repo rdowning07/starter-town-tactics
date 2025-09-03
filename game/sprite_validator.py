@@ -3,12 +3,15 @@ Sprite Validator - validates sprite sheets with full architecture integration.
 Integrated with existing AssetValidator and includes frame slicing and animation validation.
 """
 
-import pygame
 import csv
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any
-from game.asset_validator import AssetValidator, AssetValidationResult
+from typing import Any, Dict, List, Optional, Tuple
+
+import pygame
+
+from game.asset_validator import AssetValidationResult, AssetValidator
+
 
 # @api
 # @refactor
@@ -29,7 +32,7 @@ class SpriteValidator:
             "walk": {"expected_frames": 3, "frame_time": 200},
             "attack": {"expected_frames": 3, "frame_time": 150},
             "death": {"expected_frames": 2, "frame_time": 300},
-            "cast": {"expected_frames": 2, "frame_time": 400}
+            "cast": {"expected_frames": 2, "frame_time": 400},
         }
 
         # Unit type definitions
@@ -38,7 +41,7 @@ class SpriteValidator:
             "mage": {"animations": ["idle", "walk", "attack", "cast"]},
             "archer": {"animations": ["idle", "walk", "attack"]},
             "goblin": {"animations": ["idle", "walk", "attack", "death"]},
-            "orc": {"animations": ["idle", "walk", "attack"]}
+            "orc": {"animations": ["idle", "walk", "attack"]},
         }
 
     def validate_all_sprites(self) -> Dict[str, List[AssetValidationResult]]:
@@ -47,9 +50,9 @@ class SpriteValidator:
 
         if not self.asset_dir.exists():
             if self.logger:
-                self.logger.log_event("sprite_validation_error", {
-                    "error": f"Sprite directory not found: {self.asset_dir}"
-                })
+                self.logger.log_event(
+                    "sprite_validation_error", {"error": f"Sprite directory not found: {self.asset_dir}"}
+                )
             return results
 
         # Validate each unit type
@@ -169,12 +172,7 @@ class SpriteValidator:
 
     def _validate_frames(self, frames: List[pygame.Surface], unit_type: str, anim_type: str) -> Dict[str, Any]:
         """Validate individual frames in a sprite sheet."""
-        validation = {
-            "total_frames": len(frames),
-            "valid_frames": 0,
-            "frame_issues": [],
-            "color_analysis": []
-        }
+        validation = {"total_frames": len(frames), "valid_frames": 0, "frame_issues": [], "color_analysis": []}
 
         for i, frame in enumerate(frames):
             frame_valid = True
@@ -237,12 +235,15 @@ class SpriteValidator:
             return {
                 "average_color": tuple(int(c) for c in avg_color),
                 "color_variance": float(color_variance),
-                "has_content": color_variance > 100
+                "has_content": color_variance > 100,
             }
         except (NotImplementedError, ImportError):
             # Fallback: simple color analysis by sampling
-            sample_points = [(0, 0), (frame.get_width()//2, frame.get_height()//2),
-                           (frame.get_width()-1, frame.get_height()-1)]
+            sample_points = [
+                (0, 0),
+                (frame.get_width() // 2, frame.get_height() // 2),
+                (frame.get_width() - 1, frame.get_height() - 1),
+            ]
 
             color_sum = [0, 0, 0]
             sample_count = 0
@@ -259,18 +260,11 @@ class SpriteValidator:
             else:
                 avg_color = (128, 128, 128)
 
-            return {
-                "average_color": avg_color,
-                "color_variance": 0.0,
-                "has_content": True
-            }
+            return {"average_color": avg_color, "color_variance": 0.0, "has_content": True}
 
     def _check_animation_consistency(self, frames: List[pygame.Surface]) -> Dict[str, Any]:
         """Check consistency between animation frames."""
-        consistency = {
-            "consistent": True,
-            "issues": []
-        }
+        consistency = {"consistent": True, "issues": []}
 
         if len(frames) < 2:
             return consistency
@@ -288,7 +282,7 @@ class SpriteValidator:
             avg_colors = [analysis["average_color"] for analysis in color_analyses]
 
             for i in range(1, len(avg_colors)):
-                color_diff = sum(abs(c1 - c2) for c1, c2 in zip(avg_colors[i-1], avg_colors[i]))
+                color_diff = sum(abs(c1 - c2) for c1, c2 in zip(avg_colors[i - 1], avg_colors[i]))
                 if color_diff > 100:  # Large color change
                     consistency["issues"].append(f"Large color change between frames {i-1} and {i}")
                     consistency["consistent"] = False
@@ -296,16 +290,19 @@ class SpriteValidator:
             # Fallback: simple color sampling
             for i in range(1, len(frames)):
                 # Sample multiple pixels from each frame for better detection
-                sample_points = [(0, 0), (frames[i-1].get_width()//2, frames[i-1].get_height()//2),
-                               (frames[i-1].get_width()-1, frames[i-1].get_height()-1)]
+                sample_points = [
+                    (0, 0),
+                    (frames[i - 1].get_width() // 2, frames[i - 1].get_height() // 2),
+                    (frames[i - 1].get_width() - 1, frames[i - 1].get_height() - 1),
+                ]
 
                 color1_avg = [0, 0, 0]
                 color2_avg = [0, 0, 0]
                 sample_count = 0
 
                 for x, y in sample_points:
-                    if 0 <= x < frames[i-1].get_width() and 0 <= y < frames[i-1].get_height():
-                        color1 = frames[i-1].get_at((x, y))
+                    if 0 <= x < frames[i - 1].get_width() and 0 <= y < frames[i - 1].get_height():
+                        color1 = frames[i - 1].get_at((x, y))
                         color2 = frames[i].get_at((x, y))
                         for j in range(3):  # RGB channels
                             color1_avg[j] += color1[j]
@@ -326,9 +323,9 @@ class SpriteValidator:
 
     def _generate_sprite_report(self, results: Dict[str, List[AssetValidationResult]]):
         """Generate comprehensive sprite validation report."""
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("🎭 SPRITE VALIDATION REPORT")
-        print("="*60)
+        print("=" * 60)
 
         total_sheets = sum(len(unit_results) for unit_results in results.values())
         valid_sheets = sum(sum(1 for r in unit_results if r.is_valid) for unit_results in results.values())
@@ -373,58 +370,71 @@ class SpriteValidator:
                 if result.warnings:
                     print(f"      ⚠️  Warnings: {', '.join(result.warnings)}")
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
         # Log report
         if self.logger:
-            self.logger.log_event("sprite_validation_complete", {
-                "unit_types": len(results),
-                "total_sheets": total_sheets,
-                "valid_sheets": valid_sheets,
-                "total_errors": total_errors,
-                "total_warnings": total_warnings,
-                "success_rate": (valid_sheets / total_sheets * 100) if total_sheets > 0 else 0
-            })
+            self.logger.log_event(
+                "sprite_validation_complete",
+                {
+                    "unit_types": len(results),
+                    "total_sheets": total_sheets,
+                    "valid_sheets": valid_sheets,
+                    "total_errors": total_errors,
+                    "total_warnings": total_warnings,
+                    "success_rate": (valid_sheets / total_sheets * 100) if total_sheets > 0 else 0,
+                },
+            )
 
     def _generate_sprite_csv(self, results: Dict[str, List[AssetValidationResult]]):
         """Generate CSV report for sprite validation."""
         csv_file = self.qa_report_dir / "sprite_report.csv"
 
-        with open(csv_file, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=[
-                "unit_type", "animation_type", "file_name", "file_path", "width", "height",
-                "frame_count", "valid", "has_transparency", "file_size_mb", "errors", "warnings"
-            ])
+        with open(csv_file, "w", newline="") as f:
+            writer = csv.DictWriter(
+                f,
+                fieldnames=[
+                    "unit_type",
+                    "animation_type",
+                    "file_name",
+                    "file_path",
+                    "width",
+                    "height",
+                    "frame_count",
+                    "valid",
+                    "has_transparency",
+                    "file_size_mb",
+                    "errors",
+                    "warnings",
+                ],
+            )
             writer.writeheader()
 
             for unit_type, unit_results in results.items():
                 for result in unit_results:
                     file_path = Path(result.asset_path)
-                    writer.writerow({
-                        "unit_type": unit_type,
-                        "animation_type": result.metadata.get("animation_type", "unknown"),
-                        "file_name": file_path.name,
-                        "file_path": str(file_path),
-                        "width": result.metadata.get("resolution", (0, 0))[0],
-                        "height": result.metadata.get("resolution", (0, 0))[1],
-                        "frame_count": result.metadata.get("frame_count", 0),
-                        "valid": result.is_valid,
-                        "has_transparency": result.metadata.get("has_transparency", False),
-                        "file_size_mb": result.metadata.get("file_size_mb", 0),
-                        "errors": "; ".join(result.errors),
-                        "warnings": "; ".join(result.warnings)
-                    })
+                    writer.writerow(
+                        {
+                            "unit_type": unit_type,
+                            "animation_type": result.metadata.get("animation_type", "unknown"),
+                            "file_name": file_path.name,
+                            "file_path": str(file_path),
+                            "width": result.metadata.get("resolution", (0, 0))[0],
+                            "height": result.metadata.get("resolution", (0, 0))[1],
+                            "frame_count": result.metadata.get("frame_count", 0),
+                            "valid": result.is_valid,
+                            "has_transparency": result.metadata.get("has_transparency", False),
+                            "file_size_mb": result.metadata.get("file_size_mb", 0),
+                            "errors": "; ".join(result.errors),
+                            "warnings": "; ".join(result.warnings),
+                        }
+                    )
 
         print(f"📊 CSV Report saved: {csv_file}")
 
     def get_sprite_manifest(self) -> Dict[str, Any]:
         """Generate sprite manifest for the game."""
-        manifest = {
-            "version": "1.0",
-            "unit_types": {},
-            "total_sheets": 0,
-            "validation_summary": {}
-        }
+        manifest = {"version": "1.0", "unit_types": {}, "total_sheets": 0, "validation_summary": {}}
 
         # Validate all sprites first
         validation_results = self.validate_all_sprites()
@@ -433,7 +443,7 @@ class SpriteValidator:
             unit_manifest = {
                 "count": len(unit_results),
                 "valid_count": sum(1 for r in unit_results if r.is_valid),
-                "animations": {}
+                "animations": {},
             }
 
             for result in unit_results:
@@ -443,7 +453,7 @@ class SpriteValidator:
                         "file": Path(result.asset_path).name,
                         "path": result.asset_path,
                         "frame_count": result.metadata.get("frame_count", 0),
-                        "metadata": result.metadata
+                        "metadata": result.metadata,
                     }
 
             manifest["unit_types"][unit_type] = unit_manifest
@@ -451,7 +461,7 @@ class SpriteValidator:
 
         # Save manifest
         manifest_file = self.qa_report_dir / "sprite_manifest.json"
-        with open(manifest_file, 'w') as f:
+        with open(manifest_file, "w") as f:
             json.dump(manifest, f, indent=2)
 
         print(f"📋 Sprite manifest saved: {manifest_file}")
@@ -469,14 +479,16 @@ class SpriteValidator:
             "unit_types": len(self.validation_results),
             "total_sheets": total_sheets,
             "valid_sheets": valid_sheets,
-            "success_rate": (valid_sheets / total_sheets * 100) if total_sheets > 0 else 0
+            "success_rate": (valid_sheets / total_sheets * 100) if total_sheets > 0 else 0,
         }
+
 
 # Standalone validation function for backward compatibility
 def validate_sprites(asset_dir: Path = None, logger=None) -> Dict[str, List[AssetValidationResult]]:
     """Standalone sprite validation function."""
     validator = SpriteValidator(asset_dir, logger)
     return validator.validate_all_sprites()
+
 
 def generate_sprite_report(asset_dir: Path = None) -> bool:
     """Generate comprehensive sprite report."""

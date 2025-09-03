@@ -1,6 +1,7 @@
 # Standard library imports
 from __future__ import annotations
-from typing import Protocol, Optional, List, Dict
+
+from typing import Dict, List, Optional, Protocol
 
 # Third-party imports
 # (none)
@@ -8,22 +9,37 @@ from typing import Protocol, Optional, List, Dict
 # Local imports
 # (none)
 
+
 class BTStatus:
     SUCCESS = "SUCCESS"
     FAILURE = "FAILURE"
     RUNNING = "RUNNING"
 
+
 class BTContext(Protocol):
     """Narrow interface the BT needs from the game."""
+
     # required getters (you can adapt in the adapter below)
-    def enemy_in_attack_range(self) -> bool: ...
-    def can_move(self) -> bool: ...
-    def can_attack(self) -> bool: ...
-    def step_move_toward(self) -> bool: ...
-    def step_attack(self) -> bool: ...
+    def enemy_in_attack_range(self) -> bool:
+        ...
+
+    def can_move(self) -> bool:
+        ...
+
+    def can_attack(self) -> bool:
+        ...
+
+    def step_move_toward(self) -> bool:
+        ...
+
+    def step_attack(self) -> bool:
+        ...
+
 
 class BTNode(Protocol):
-    def tick(self, ctx: BTContext) -> str: ...
+    def tick(self, ctx: BTContext) -> str:
+        ...
+
 
 class Condition:
     def __init__(self, pred_name: str):
@@ -34,6 +50,7 @@ class Condition:
         if pred is None or not callable(pred):
             return BTStatus.FAILURE
         return BTStatus.SUCCESS if bool(pred()) else BTStatus.FAILURE
+
 
 class Action:
     def __init__(self, act_name: str):
@@ -46,6 +63,7 @@ class Action:
         ok = bool(act())
         return BTStatus.SUCCESS if ok else BTStatus.RUNNING
 
+
 class Sequence:
     def __init__(self, children: List[BTNode]):
         self.children = children
@@ -56,6 +74,7 @@ class Sequence:
             if s != BTStatus.SUCCESS:
                 return s
         return BTStatus.SUCCESS
+
 
 class Selector:
     def __init__(self, children: List[BTNode]):
@@ -68,6 +87,7 @@ class Selector:
                 return BTStatus.SUCCESS
         return BTStatus.FAILURE
 
+
 def make_basic_combat_tree() -> BTNode:
     """
     Selector(
@@ -75,7 +95,9 @@ def make_basic_combat_tree() -> BTNode:
       Sequence(Condition(can_move), Action(step_move_toward))
     )
     """
-    return Selector([
-        Sequence([Condition("enemy_in_attack_range"), Condition("can_attack"), Action("step_attack")]),
-        Sequence([Condition("can_move"), Action("step_move_toward")]),
-    ])
+    return Selector(
+        [
+            Sequence([Condition("enemy_in_attack_range"), Condition("can_attack"), Action("step_attack")]),
+            Sequence([Condition("can_move"), Action("step_move_toward")]),
+        ]
+    )

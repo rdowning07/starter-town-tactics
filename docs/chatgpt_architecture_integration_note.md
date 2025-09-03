@@ -22,7 +22,7 @@ class UIAssetDemo:
         # Step-by-step progression
         self.demo_steps = [
             "Basic UI Components",
-            "Health & AP Bars", 
+            "Health & AP Bars",
             "Turn Indicators",
             "Status Effects",
             "Ability Icons",

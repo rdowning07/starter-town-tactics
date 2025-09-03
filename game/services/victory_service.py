@@ -47,9 +47,7 @@ class VictoryService:
             return
 
         # Check if all enemies are defeated
-        all_enemies_defeated = all(
-            self.alive_counts.get(team_id, 0) <= 0 for team_id in self.enemy_team_ids
-        )
+        all_enemies_defeated = all(self.alive_counts.get(team_id, 0) <= 0 for team_id in self.enemy_team_ids)
 
         if all_enemies_defeated:
             self.outcome = BattleOutcome.PLAYER_WIN

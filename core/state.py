@@ -48,7 +48,8 @@ class GameSnapshot:
 
 
 class Controller(Protocol):
-    def decide(self, state: "GameState") -> "Command": ...
+    def decide(self, state: "GameState") -> "Command":
+        ...
 
 
 class TurnController:
@@ -72,28 +73,18 @@ class TurnController:
     def start_if_needed(self, s) -> Iterable[Event]:
         # Called at the beginning of a turn (or game start)
         if s.turn_started_this_tick:
-            yield ev_turn_started(
-                self.current_unit_id, self.current_side, self.schedule_index(), s.tick
-            )
+            yield ev_turn_started(self.current_unit_id, self.current_side, self.schedule_index(), s.tick)
 
     def maybe_advance(self, s) -> Iterable[Event]:
         if not self._pending_end:
             return ()
         # close current
-        evts: List[Event] = [
-            ev_turn_ended(
-                self.current_unit_id, self.current_side, self.schedule_index(), s.tick
-            )
-        ]
+        evts: List[Event] = [ev_turn_ended(self.current_unit_id, self.current_side, self.schedule_index(), s.tick)]
         # advance scheduling to next unit/side
         self._advance_schedule(s)
         self._pending_end = False
         # open next
-        evts.append(
-            ev_turn_started(
-                self.current_unit_id, self.current_side, self.schedule_index(), s.tick
-            )
-        )
+        evts.append(ev_turn_started(self.current_unit_id, self.current_side, self.schedule_index(), s.tick))
         return evts
 
     def schedule_index(self) -> int:

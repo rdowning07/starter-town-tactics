@@ -1,11 +1,14 @@
 """
 Tests for the core objectives system.
 """
-import pytest
 from unittest.mock import Mock
-from core.objectives import Objective, EliminateBoss, SurviveNTurns, HoldZones, Escort
+
+import pytest
+
 from core.events import Event, EventType
-from core.state import GameState, Unit, UnitStats, TurnController
+from core.objectives import EliminateBoss, Escort, HoldZones, Objective, SurviveNTurns
+from core.state import GameState, TurnController, Unit, UnitStats
+
 
 class TestObjectiveBase:
     def test_objective_interface(self):
@@ -13,6 +16,7 @@ class TestObjectiveBase:
         # Should not be able to instantiate directly
         with pytest.raises(TypeError):
             Objective()
+
 
 class TestEliminateBoss:
     def test_eliminate_boss_initialization(self):
@@ -31,13 +35,13 @@ class TestEliminateBoss:
         """Test that EliminateBoss completes when boss is killed."""
         objective = EliminateBoss("boss1")
         state = GameState()
-        
+
         # Create kill event
         kill_event = Event(EventType.UNIT_KILLED, {"unit_id": "boss1"}, 5)
-        
+
         # Update objective
         objective.update_from_events([kill_event], state)
-        
+
         assert objective.is_complete(state) == True
         assert objective._dead == True
 
@@ -45,17 +49,17 @@ class TestEliminateBoss:
         """Test that EliminateBoss ignores non-kill events."""
         objective = EliminateBoss("boss1")
         state = GameState()
-        
+
         # Create non-kill events
         events = [
             Event(EventType.UNIT_MOVED, {"unit_id": "boss1"}, 1),
             Event(EventType.UNIT_KILLED, {"unit_id": "other_unit"}, 2),
-            Event(EventType.TURN_ENDED, {"side": "player"}, 3)
+            Event(EventType.TURN_ENDED, {"side": "player"}, 3),
         ]
-        
+
         # Update objective
         objective.update_from_events(events, state)
-        
+
         assert objective.is_complete(state) == False
         assert objective._dead == False
 
@@ -63,19 +67,20 @@ class TestEliminateBoss:
         """Test EliminateBoss summary method."""
         objective = EliminateBoss("boss1")
         state = GameState()
-        
+
         # Initial summary
         summary = objective.summary(state)
         assert "Defeat boss boss1" in summary
         assert "in progress" in summary
-        
+
         # Complete summary
         kill_event = Event(EventType.UNIT_KILLED, {"unit_id": "boss1"}, 5)
         objective.update_from_events([kill_event], state)
-        
+
         summary = objective.summary(state)
         assert "Defeat boss boss1" in summary
         assert "done" in summary
+
 
 class TestSurviveNTurns:
     def test_survive_nturns_initialization(self):
@@ -93,20 +98,20 @@ class TestSurviveNTurns:
         """Test that SurviveNTurns completes after n turns."""
         objective = SurviveNTurns(3)
         state = GameState()
-        
+
         # Set turn index to 3
         state.turn_controller.turn_index = 3
-        
+
         assert objective.is_complete(state) == True
 
     def test_survive_nturns_failed_when_player_wiped(self):
         """Test that SurviveNTurns fails when player is wiped."""
         objective = SurviveNTurns(5)
         state = GameState()
-        
+
         # Mock player_wiped to return True
         state.player_wiped = Mock(return_value=True)
-        
+
         assert objective.is_failed(state) == True
 
     def test_survive_nturns_summary(self):
@@ -114,10 +119,11 @@ class TestSurviveNTurns:
         objective = SurviveNTurns(5)
         state = GameState()
         state.turn_controller.turn_index = 2
-        
+
         summary = objective.summary(state)
         assert "Survive 5 turns" in summary
         assert "(now 2)" in summary
+
 
 class TestHoldZones:
     def test_hold_zones_initialization(self):
@@ -141,16 +147,16 @@ class TestHoldZones:
         zones = [(1, 1), (2, 2)]
         objective = HoldZones(zones, 1, 2)
         state = GameState()
-        
+
         # Mock controlled_by_player to return True for one zone
         state.controlled_by_player = Mock(side_effect=lambda pos: pos == (1, 1))
-        
+
         # Create player turn end event
         turn_event = Event(EventType.TURN_ENDED, {"side": "player"}, 5)
-        
+
         # Update objective
         objective.update_from_events([turn_event], state)
-        
+
         # Should increment counter since 1 zone is held (>= k=1)
         assert objective.counter == 1
 
@@ -159,19 +165,19 @@ class TestHoldZones:
         zones = [(1, 1), (2, 2)]
         objective = HoldZones(zones, 2, 3)  # Need to hold 2 zones
         state = GameState()
-        
+
         # Set initial counter
         objective.counter = 2
-        
+
         # Mock controlled_by_player to return False for all zones
         state.controlled_by_player = Mock(return_value=False)
-        
+
         # Create player turn end event
         turn_event = Event(EventType.TURN_ENDED, {"side": "player"}, 5)
-        
+
         # Update objective
         objective.update_from_events([turn_event], state)
-        
+
         # Should reset counter since 0 zones held (< k=2)
         assert objective.counter == 0
 
@@ -180,13 +186,13 @@ class TestHoldZones:
         zones = [(1, 1)]
         objective = HoldZones(zones, 1, 2)
         state = GameState()
-        
+
         # Create non-player turn end event
         turn_event = Event(EventType.TURN_ENDED, {"side": "enemy"}, 5)
-        
+
         # Update objective
         objective.update_from_events([turn_event], state)
-        
+
         # Should not change counter
         assert objective.counter == 0
 
@@ -195,13 +201,14 @@ class TestHoldZones:
         zones = [(1, 1), (2, 2), (3, 3)]
         objective = HoldZones(zones, 2, 3)
         objective.counter = 1
-        
+
         state = GameState()
         summary = objective.summary(state)
-        
+
         assert "Hold 2/3 zones" in summary
         assert "for 3 turns" in summary
         assert "streak 1" in summary
+
 
 class TestEscort:
     def test_escort_initialization(self):
@@ -223,13 +230,13 @@ class TestEscort:
         """Test that Escort completes when unit reaches goal."""
         objective = Escort("unit1", (5, 5))
         state = GameState()
-        
+
         # Create move event to goal
         move_event = Event(EventType.UNIT_MOVED, {"unit_id": "unit1", "to": (5, 5)}, 5)
-        
+
         # Update objective
         objective.update_from_events([move_event], state)
-        
+
         assert objective.is_complete(state) == True
         assert objective._done == True
 
@@ -237,13 +244,13 @@ class TestEscort:
         """Test that Escort fails when unit is killed."""
         objective = Escort("unit1", (5, 5))
         state = GameState()
-        
+
         # Create kill event
         kill_event = Event(EventType.UNIT_KILLED, {"unit_id": "unit1"}, 5)
-        
+
         # Update objective
         objective.update_from_events([kill_event], state)
-        
+
         assert objective.is_failed(state) == True
         assert objective._dead == True
 
@@ -251,17 +258,17 @@ class TestEscort:
         """Test that Escort ignores irrelevant events."""
         objective = Escort("unit1", (5, 5))
         state = GameState()
-        
+
         # Create irrelevant events
         events = [
             Event(EventType.UNIT_MOVED, {"unit_id": "other_unit", "to": (5, 5)}, 1),
             Event(EventType.UNIT_KILLED, {"unit_id": "other_unit"}, 2),
-            Event(EventType.TURN_ENDED, {"side": "player"}, 3)
+            Event(EventType.TURN_ENDED, {"side": "player"}, 3),
         ]
-        
+
         # Update objective
         objective.update_from_events(events, state)
-        
+
         assert objective.is_complete(state) == False
         assert objective.is_failed(state) == False
 
@@ -269,19 +276,20 @@ class TestEscort:
         """Test Escort summary method."""
         objective = Escort("unit1", (5, 5))
         state = GameState()
-        
+
         # Initial summary
         summary = objective.summary(state)
         assert "Escort unit1 to (5, 5)" in summary
         assert "in progress" in summary
-        
+
         # Complete summary
         move_event = Event(EventType.UNIT_MOVED, {"unit_id": "unit1", "to": (5, 5)}, 5)
         objective.update_from_events([move_event], state)
-        
+
         summary = objective.summary(state)
         assert "Escort unit1 to (5, 5)" in summary
         assert "done" in summary
+
 
 class TestObjectivesIntegration:
     def test_multiple_objectives_together(self):
@@ -290,24 +298,24 @@ class TestObjectivesIntegration:
         eliminate = EliminateBoss("boss1")
         survive = SurviveNTurns(3)
         escort = Escort("unit1", (5, 5))
-        
+
         state = GameState()
         state.turn_controller.turn_index = 2
-        
+
         # Test initial state
         assert eliminate.is_complete(state) == False
         assert survive.is_complete(state) == False
         assert escort.is_complete(state) == False
-        
+
         # Update with events
         events = [
             Event(EventType.UNIT_KILLED, {"unit_id": "boss1"}, 1),
-            Event(EventType.UNIT_MOVED, {"unit_id": "unit1", "to": (5, 5)}, 2)
+            Event(EventType.UNIT_MOVED, {"unit_id": "unit1", "to": (5, 5)}, 2),
         ]
-        
+
         eliminate.update_from_events(events, state)
         escort.update_from_events(events, state)
-        
+
         # Check results
         assert eliminate.is_complete(state) == True
         assert survive.is_complete(state) == False  # Still need 1 more turn

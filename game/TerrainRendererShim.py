@@ -1,5 +1,5 @@
 # Standard library imports
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 # Third-party imports
 import pygame
@@ -29,12 +29,12 @@ class TerrainRendererShim:
     """
 
     SYMBOL_ALIAS = {
-        'G': 'grass',
-        'F': 'forest',
-        'M': 'stone',
-        'W': 'water',
-        'R': 'road',
-        '#': 'wall',
+        "G": "grass",
+        "F": "forest",
+        "M": "stone",
+        "W": "water",
+        "R": "road",
+        "#": "wall",
     }
 
     def __init__(self, catalog: TileCatalog) -> None:

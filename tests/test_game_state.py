@@ -253,7 +253,7 @@ def test_gamestate_with_scenario_loader():
         sprite_manager = Mock()
         fx_manager = Mock()
         sound_manager = Mock()
-        
+
         gs = load_scenario(path, sprite_manager, fx_manager, sound_manager)
 
         # Test that GameState was properly configured

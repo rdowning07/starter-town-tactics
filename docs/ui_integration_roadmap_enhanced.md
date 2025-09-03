@@ -208,18 +208,18 @@ class TestUIIntegration:
         self.ui_renderer = UIRenderer(self.screen)
         self.ui_state = UIState()
         self.mock_game_state = Mock()
-    
+
     def test_ui_initialization(self):
         """Test UI components initialize correctly."""
         assert self.ui_renderer is not None
         assert self.ui_state is not None
         assert self.ui_state.current_screen == "game"
-    
+
     def test_placeholder_asset_creation(self):
         """Test placeholder assets are created when real assets fail."""
         with patch('pygame.image.load', side_effect=Exception("Asset not found")):
             # Should not crash, should use placeholder
-            button_img = self.ui_renderer._get_placeholder("test_button", 
+            button_img = self.ui_renderer._get_placeholder("test_button",
                 create_placeholder_button, 100, 30)
             assert button_img is not None
             assert button_img.get_size() == (100, 30)
@@ -236,12 +236,12 @@ class UILogger:
     def __init__(self, log_file="logs/ui_events.jsonl"):
         self.logger = logging.getLogger("ui_system")
         self.logger.setLevel(logging.INFO)
-        
+
         # File handler for JSONL logging
         handler = logging.FileHandler(log_file)
         handler.setFormatter(logging.Formatter('%(message)s'))
         self.logger.addHandler(handler)
-    
+
     def log_event(self, event_type, data):
         """Log UI events in JSONL format for debugging."""
         log_entry = {
@@ -250,7 +250,7 @@ class UILogger:
             "data": data
         }
         self.logger.info(json.dumps(log_entry))
-    
+
     def log_asset_fallback(self, asset_name, error):
         """Log when assets fall back to placeholders."""
         self.log_event("asset_fallback", {
@@ -275,7 +275,7 @@ class UIRenderer:
         self.font = pygame.font.Font(None, 24)
         self._placeholder_cache = {}
         self._render_stats = {"elements_rendered": 0, "placeholders_used": 0}
-    
+
     def draw_button(self, rect, text, state="normal"):
         """Draw button with fallback validation and logging."""
         try:
@@ -296,10 +296,10 @@ class UIRenderer:
             button_img = self._get_placeholder("button", create_placeholder_button, rect.width, rect.height)
             self.screen.blit(button_img, rect.topleft)
             self.logger.log_asset_fallback("button", str(e))
-        
+
         # Draw text
         self.draw_text(text, rect.center)
-    
+
     def get_render_stats(self):
         """Get rendering statistics for validation."""
         return self._render_stats.copy()
@@ -313,7 +313,7 @@ def validate_game_state(game_state):
     assert game_state is not None, "Game state cannot be None"
     assert hasattr(game_state, 'units'), "Game state must have units"
     assert hasattr(game_state, 'sim_runner'), "Game state must have sim_runner"
-    
+
     # Validate unit positions
     for unit_id, unit_data in game_state.units.units.items():
         assert "x" in unit_data, f"Unit {unit_id} missing x coordinate"
@@ -337,20 +337,20 @@ def test_phase1_checkpoint(game_state, ui_state, ui_renderer):
     # Pre-conditions
     validate_game_state(game_state)
     validate_ui_state(ui_state)
-    
+
     # Test UI rendering
     render_stats = ui_renderer.get_render_stats()
     assert render_stats["elements_rendered"] > 0 or render_stats["placeholders_used"] > 0
-    
+
     # Test unit selection
     if ui_state.selected_unit:
         assert ui_state.show_action_menu
         assert ui_state.action_menu_pos is not None
-    
+
     # Test game state integration
     assert game_state.get_turn_count() >= 0
     assert isinstance(game_state.is_ai_turn(), bool)
-    
+
     return True
 ```
 
@@ -364,12 +364,12 @@ def test_phase1_checkpoint(game_state, ui_state, ui_renderer):
 class RangeCalculator:
     def __init__(self, logger=None):
         self.logger = logger or UILogger()
-    
+
     def calculate_movement_range(self, game_state, unit_id, range=3):
         """Calculate valid movement tiles with edge case handling."""
         unit_data = game_state.units.units[unit_id]
         unit_x, unit_y = unit_data["x"], unit_data["y"]
-        
+
         valid_tiles = []
         for dx in range(-range, range + 1):
             for dy in range(-range, range + 1):
@@ -377,25 +377,25 @@ class RangeCalculator:
                     new_x, new_y = unit_x + dx, unit_y + dy
                     if self._is_valid_tile(new_x, new_y, game_state):
                         valid_tiles.append((new_x, new_y))
-        
+
         self.logger.log_event("movement_range_calculated", {
             "unit_id": unit_id,
             "range": range,
             "valid_tiles": len(valid_tiles)
         })
         return valid_tiles
-    
+
     def _is_valid_tile(self, x, y, game_state):
         """Check if tile is valid (within bounds, not occupied, etc.)."""
         # Map bounds (assume 20x20 grid)
         if x < 0 or y < 0 or x >= 20 or y >= 20:
             return False
-        
+
         # Check if tile is occupied by another unit
         for other_unit_id, other_unit_data in game_state.units.units.items():
             if (other_unit_data["x"], other_unit_data["y"]) == (x, y):
                 return False
-        
+
         return True
 
 # tests/test_range_calculator.py
@@ -406,7 +406,7 @@ def test_edge_case_movement():
     game_state.units.units = {
         "test_unit": {"x": 0, "y": 0}  # Corner case
     }
-    
+
     # Test corner movement
     range_tiles = calculator.calculate_movement_range(game_state, "test_unit", 3)
     assert (0, 0) in range_tiles  # Current position
@@ -421,67 +421,67 @@ def test_edge_case_movement():
 class GameActions:
     def __init__(self, logger=None):
         self.logger = logger or UILogger()
-    
+
     def move_unit(self, game_state, ui_state, target_tile):
         """Move unit with comprehensive validation."""
         # Pre-conditions
         assert ui_state.selected_unit, "No unit selected"
         assert target_tile in ui_state.movement_tiles, "Invalid move target"
-        
+
         unit_id = ui_state.selected_unit
         unit_data = game_state.units.units[unit_id]
         old_pos = (unit_data["x"], unit_data["y"])
-        
+
         # Perform move
         unit_data["x"], unit_data["y"] = target_tile
-        
+
         # Post-conditions
         assert unit_data["x"] == target_tile[0], "X coordinate not updated"
         assert unit_data["y"] == target_tile[1], "Y coordinate not updated"
-        
+
         # Log the action
         self.logger.log_event("unit_moved", {
             "unit_id": unit_id,
             "from": old_pos,
             "to": target_tile
         })
-        
+
         # End turn
         game_state.sim_runner.run_turn()
         ui_state.reset_selection()
-        
+
         return True
-    
+
     def attack_unit(self, game_state, ui_state, target_tile):
         """Attack unit with damage validation."""
         # Pre-conditions
         assert ui_state.selected_unit, "No unit selected"
         assert target_tile in ui_state.attack_targets, "Invalid attack target"
-        
+
         attacker_id = ui_state.selected_unit
         target_unit = self._get_unit_at_tile(game_state, target_tile)
         assert target_unit, "No target unit at tile"
-        
+
         # Get unit data
         attacker_data = game_state.units.units[attacker_id]
         target_data = game_state.units.units[target_unit]
-        
+
         # Calculate damage
         damage = self._calculate_damage(attacker_data, target_data)
         old_hp = target_data["hp"]
-        
+
         # Apply damage
         target_data["hp"] = max(0, target_data["hp"] - damage)
-        
+
         # Post-conditions
         assert target_data["hp"] >= 0, "HP cannot be negative"
         assert target_data["hp"] <= old_hp, "HP should not increase from attack"
-        
+
         # Check for death
         if target_data["hp"] <= 0:
             target_data["alive"] = False
             game_state.sim_runner.mark_unit_dead(target_unit)
-        
+
         # Log the action
         self.logger.log_event("unit_attacked", {
             "attacker": attacker_id,
@@ -490,19 +490,19 @@ class GameActions:
             "target_hp_after": target_data["hp"],
             "target_died": target_data["hp"] <= 0
         })
-        
+
         # End turn
         game_state.sim_runner.run_turn()
         ui_state.reset_selection()
-        
+
         return True
-    
+
     def _calculate_damage(self, attacker_data, target_data):
         """Calculate attack damage with validation."""
         base_damage = 5
         # Add modifiers based on unit stats, equipment, etc.
         damage = base_damage
-        
+
         # Ensure damage is reasonable
         assert 0 <= damage <= 20, f"Damage {damage} out of reasonable range"
         return damage
@@ -514,27 +514,27 @@ class GameActions:
 def run_headless_test(scenario_path, num_turns=1000):
     """Run game logic without UI for validation."""
     game_state = load_state(scenario_path)
-    
+
     # Disable rendering
     game_state.headless_mode = True
-    
+
     # Run simulation
     for turn in range(num_turns):
         if game_state.is_game_over():
             break
-        
+
         # Validate game state before turn
         validate_game_state(game_state)
-        
+
         # Run turn
         game_state.sim_runner.run_turn()
-        
+
         # Validate game state after turn
         validate_game_state(game_state)
-        
+
         if turn % 100 == 0:
             print(f"Turn {turn}: {len(game_state.units.units)} units alive")
-    
+
     return game_state
 
 # Test command
@@ -550,21 +550,21 @@ def test_phase2_checkpoint(game_state, ui_state, game_actions):
     # Test movement system
     test_unit = list(game_state.units.units.keys())[0]
     ui_state.select_unit(test_unit)
-    
+
     # Calculate movement range
     calculator = RangeCalculator()
     movement_range = calculator.calculate_movement_range(game_state, test_unit)
     assert len(movement_range) > 0, "Should have valid movement tiles"
-    
+
     # Test move action
     if movement_range:
         target_tile = movement_range[0]
         success = game_actions.move_unit(game_state, ui_state, target_tile)
         assert success, "Move action should succeed"
-    
+
     # Test attack system
     # ... similar validation for attack actions
-    
+
     return True
 ```
 
@@ -583,37 +583,37 @@ class PerformanceMonitor:
         self.frame_times = deque(maxlen=60)  # Last 60 frames
         self.render_times = deque(maxlen=60)
         self.input_latency = deque(maxlen=60)
-    
+
     def start_frame(self):
         """Start timing a frame."""
         self.frame_start = time.perf_counter()
-    
+
     def end_frame(self):
         """End timing a frame and record FPS."""
         frame_time = time.perf_counter() - self.frame_start
         self.frame_times.append(frame_time)
-        
+
         fps = 1.0 / frame_time if frame_time > 0 else 0
         return fps
-    
+
     def start_render(self):
         """Start timing render operations."""
         self.render_start = time.perf_counter()
-    
+
     def end_render(self):
         """End timing render operations."""
         render_time = time.perf_counter() - self.render_start
         self.render_times.append(render_time)
-    
+
     def get_performance_stats(self):
         """Get current performance statistics."""
         if not self.frame_times:
             return {"fps": 0, "avg_fps": 0, "render_time": 0}
-        
+
         current_fps = 1.0 / self.frame_times[-1] if self.frame_times[-1] > 0 else 0
         avg_fps = 1.0 / (sum(self.frame_times) / len(self.frame_times))
         avg_render_time = sum(self.render_times) / len(self.render_times) if self.render_times else 0
-        
+
         return {
             "fps": current_fps,
             "avg_fps": avg_fps,
@@ -630,11 +630,11 @@ class SoundManager:
         self.logger = logger or UILogger()
         self.sounds = {}
         self._load_sounds()
-    
+
     def _load_sounds(self):
         """Load sounds with fallback logging."""
         sound_assets = self.asset_manifest.get("sfx", {})
-        
+
         for sound_name, sound_data in sound_assets.items():
             try:
                 if not sound_data.get("placeholder", True):
@@ -649,7 +649,7 @@ class SoundManager:
                 # Emergency fallback
                 self.sounds[sound_name] = pygame.mixer.Sound(buffer=b"\x00"*100)
                 self.logger.log_asset_fallback("sound", f"Failed to load {sound_name}: {e}")
-    
+
     def play(self, sound_name):
         """Play sound with error handling."""
         try:
@@ -677,12 +677,12 @@ class MetricsCollector:
             "frame_count": 0,
             "input_events": 0
         }
-    
+
     def record_ui_render(self, elements_rendered, placeholders_used):
         """Record UI rendering metrics."""
         self.metrics["ui_elements_rendered"] += elements_rendered
         self.metrics["placeholders_used"] += placeholders_used
-    
+
     def record_action(self, action_type, success):
         """Record game action metrics."""
         if success:
@@ -692,20 +692,20 @@ class MetricsCollector:
                 self.metrics["successful_attacks"] += 1
         else:
             self.metrics["failed_actions"] += 1
-    
+
     def record_frame(self):
         """Record frame metrics."""
         self.metrics["frame_count"] += 1
-    
+
     def record_input(self):
         """Record input event metrics."""
         self.metrics["input_events"] += 1
-    
+
     def get_metrics_report(self):
         """Generate metrics report."""
         if self.metrics["frame_count"] == 0:
             return {}
-        
+
         return {
             "visual_performance": {
                 "ui_elements_per_frame": self.metrics["ui_elements_rendered"] / self.metrics["frame_count"],
@@ -730,12 +730,12 @@ def test_phase3_checkpoint(game_state, ui_state, performance_monitor, metrics_co
     perf_stats = performance_monitor.get_performance_stats()
     assert perf_stats["fps"] >= 30, f"FPS too low: {perf_stats['fps']}"
     assert perf_stats["render_time"] < 0.016, f"Render time too high: {perf_stats['render_time']}"
-    
+
     # Metrics validation
     metrics = metrics_collector.get_metrics_report()
     assert metrics["visual_performance"]["ui_elements_per_frame"] > 0, "No UI elements rendered"
     assert metrics["functional_performance"]["action_success_rate"] >= 0.8, "Action success rate too low"
-    
+
     return True
 ```
 
@@ -751,7 +751,7 @@ class IntegrationSafety:
         self.logger = logger or UILogger()
         self.error_count = 0
         self.max_errors = 10
-    
+
     def safe_execute(self, func, *args, **kwargs):
         """Execute function with error handling and recovery."""
         try:
@@ -764,13 +764,13 @@ class IntegrationSafety:
                 "error": str(e),
                 "error_count": self.error_count
             })
-            
+
             if self.error_count >= self.max_errors:
                 raise RuntimeError(f"Too many integration errors: {self.error_count}")
-            
+
             # Return safe fallback
             return self._get_fallback_result(func.__name__)
-    
+
     def _get_fallback_result(self, func_name):
         """Get safe fallback result for failed function."""
         fallbacks = {
@@ -793,45 +793,45 @@ def test_full_game_integration():
     ui_renderer = UIRenderer(screen, asset_manifest)
     game_actions = GameActions()
     safety = IntegrationSafety()
-    
+
     # Test complete game loop
     for turn in range(10):  # Test 10 turns
         # Pre-turn validation
         validate_game_state(game_state)
         validate_ui_state(ui_state)
-        
+
         # Simulate player turn
         if not game_state.is_ai_turn():
             # Select unit
             test_unit = list(game_state.units.units.keys())[0]
             ui_state.select_unit(test_unit)
-            
+
             # Calculate and validate movement
             calculator = RangeCalculator()
             movement_range = calculator.calculate_movement_range(game_state, test_unit)
             assert len(movement_range) >= 0, "Movement range should be non-negative"
-            
+
             # Perform action if possible
             if movement_range:
                 success = safety.safe_execute(
-                    game_actions.move_unit, 
+                    game_actions.move_unit,
                     game_state, ui_state, movement_range[0]
                 )
                 assert isinstance(success, bool), "Move should return boolean"
-        
+
         # Run AI turn
         game_state.sim_runner.run_turn()
-        
+
         # Post-turn validation
         validate_game_state(game_state)
-        
+
         # Check for game over
         if game_state.is_game_over():
             break
-    
+
     # Final validation
     assert game_state.sim_runner.phase in ["PLAYING", "GAME_OVER"], f"Invalid game phase: {game_state.sim_runner.phase}"
-    
+
     return True
 ```
 
@@ -847,7 +847,7 @@ def run_production_checklist():
         "performance": False,
         "error_handling": False
     }
-    
+
     # Asset validation
     try:
         manifest = load_asset_manifest("assets/asset_manifest.json")
@@ -855,21 +855,21 @@ def run_production_checklist():
         checks["asset_validation"] = True
     except Exception as e:
         print(f"Asset validation failed: {e}")
-    
+
     # UI functionality
     try:
         result = test_ui_integration()
         checks["ui_functionality"] = result
     except Exception as e:
         print(f"UI functionality test failed: {e}")
-    
+
     # Game logic
     try:
         result = run_headless_test("assets/scenarios/demo.yaml", 100)
         checks["game_logic"] = True
     except Exception as e:
         print(f"Game logic test failed: {e}")
-    
+
     # Performance
     try:
         perf_stats = performance_monitor.get_performance_stats()
@@ -877,7 +877,7 @@ def run_production_checklist():
         checks["performance"] = True
     except Exception as e:
         print(f"Performance check failed: {e}")
-    
+
     # Error handling
     try:
         safety = IntegrationSafety()
@@ -886,13 +886,13 @@ def run_production_checklist():
         checks["error_handling"] = True
     except Exception as e:
         print(f"Error handling check failed: {e}")
-    
+
     # Report results
     all_passed = all(checks.values())
     print(f"Production checklist: {'PASSED' if all_passed else 'FAILED'}")
     for check, passed in checks.items():
         print(f"  {check}: {'✅' if passed else '❌'}")
-    
+
     return all_passed
 ```
 

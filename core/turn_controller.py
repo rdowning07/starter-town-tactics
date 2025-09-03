@@ -1,22 +1,24 @@
 from dataclasses import dataclass
 from typing import Iterable, List
-from .events import Event, ev_turn_started, ev_turn_ended
+
+from .events import Event, ev_turn_ended, ev_turn_started
+
 
 @dataclass
 class TurnController:
     turn_index: int = 0
     _pending_end: bool = False
     _current_unit_id: str = "player1"  # Default unit
-    _current_side: str = "player"      # Default side
+    _current_side: str = "player"  # Default side
 
     @property
     def current_unit_id(self) -> str:
         return self._current_unit_id
-    
+
     @property
     def current_side(self) -> str:
         return self._current_side
-    
+
     def flag_end_of_turn(self) -> None:
         self._pending_end = True
 
@@ -39,7 +41,7 @@ class TurnController:
 
     def schedule_index(self) -> int:
         return self.turn_index
-    
+
     def _advance_schedule(self, s) -> None:
         # rotate to next unit; increment turn_index as your design requires
         self.turn_index += 1

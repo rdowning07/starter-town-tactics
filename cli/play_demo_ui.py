@@ -148,9 +148,7 @@ def main():
                 elif event.key == pygame.K_p:
                     # Add poison to selected unit or first player unit
                     target_unit = ui_state.selected_unit or "player_1"
-                    status_manager.add_effect(
-                        target_unit, "poison", duration=5, stacks=2
-                    )
+                    status_manager.add_effect(target_unit, "poison", duration=5, stacks=2)
                     unit_data = game_state.units.units.get(target_unit, {})
                     fx_manager.trigger_status_apply_fx(
                         (
@@ -163,9 +161,7 @@ def main():
                 elif event.key == pygame.K_r:
                     # Add heal over time to selected unit or first player unit
                     target_unit = ui_state.selected_unit or "player_1"
-                    status_manager.add_effect(
-                        target_unit, "heal_over_time", duration=3, stacks=3
-                    )
+                    status_manager.add_effect(target_unit, "heal_over_time", duration=3, stacks=3)
                     unit_data = game_state.units.units.get(target_unit, {})
                     fx_manager.trigger_status_apply_fx(
                         (
@@ -178,9 +174,7 @@ def main():
                 elif event.key == pygame.K_b:
                     # Add shield to selected unit or first player unit
                     target_unit = ui_state.selected_unit or "player_1"
-                    status_manager.add_effect(
-                        target_unit, "shield", duration=4, stacks=1
-                    )
+                    status_manager.add_effect(target_unit, "shield", duration=4, stacks=1)
                     unit_data = game_state.units.units.get(target_unit, {})
                     fx_manager.trigger_status_apply_fx(
                         (
@@ -209,16 +203,12 @@ def main():
                     target_unit = ui_state.selected_unit or "player_1"
                     result = combo_manager.execute_combo(target_unit, game_state)
                     if result["success"]:
-                        print(
-                            f"⚔️ Executed combo for {target_unit}: {result['executed_steps']}"
-                        )
+                        print(f"⚔️ Executed combo for {target_unit}: {result['executed_steps']}")
                     else:
                         print(f"❌ Combo execution failed: {result['reason']}")
                 elif event.key == pygame.K_t:
                     # Add trap event
-                    trap_event = event_manager.create_event(
-                        "trap_activation", position=(5, 5), damage=15
-                    )
+                    trap_event = event_manager.create_event("trap_activation", position=(5, 5), damage=15)
                     if trap_event:
                         event_manager.add_event(trap_event)
                         print("💣 Added trap at position (5, 5)")
@@ -238,13 +228,7 @@ def main():
                     print(f"  Success Rate: {summary.get('success_rate', 0):.1f}%")
                 elif event.key == pygame.K_i:
                     # Add AI enemy
-                    enemy_count = len(
-                        [
-                            u
-                            for u in game_state.units.units.keys()
-                            if u.startswith("ai_enemy")
-                        ]
-                    )
+                    enemy_count = len([u for u in game_state.units.units.keys() if u.startswith("ai_enemy")])
                     enemy_id = f"ai_enemy_{enemy_count + 1}"
 
                     # Add enemy unit
@@ -269,9 +253,7 @@ def main():
                         if scenario_manager.check_step_completion(game_state):
                             if scenario_manager.advance_step():
                                 result = scenario_manager.run_step(game_state)
-                                print(
-                                    f"📜 Advanced to scenario step: {result.get('step_name', 'Unknown')}"
-                                )
+                                print(f"📜 Advanced to scenario step: {result.get('step_name', 'Unknown')}")
                             else:
                                 print("📜 Scenario complete!")
                         else:
@@ -282,9 +264,7 @@ def main():
                     # End turn manually
                     if hasattr(game_state, "sim_runner"):
                         game_state.sim_runner.run_turn()
-                        print(
-                            f"🔄 Turn ended. Current unit: {game_state.turn_controller.get_current_unit()}"
-                        )
+                        print(f"🔄 Turn ended. Current unit: {game_state.turn_controller.get_current_unit()}")
 
             # Handle input with game state integration
             handle_mouse_input(event, ui_state, tile_size, game_state)
@@ -335,9 +315,7 @@ def main():
                     target["hp"] = max(0, target["hp"] - damage)
                     if target["hp"] <= 0:
                         target["alive"] = False
-                        print(
-                            f"💀 {target.get('unit_id', 'Unknown')} was defeated by AI!"
-                        )
+                        print(f"💀 {target.get('unit_id', 'Unknown')} was defeated by AI!")
 
         # Process scenario management
         if not scenario_manager.is_scenario_complete():
@@ -368,9 +346,7 @@ def main():
         health_ui.update_damage_indicators(screen)
 
         # Draw status effects
-        status_ui.draw_all_status_icons(
-            screen, game_state, status_manager, ui_state, tile_size
-        )
+        status_ui.draw_all_status_icons(screen, game_state, status_manager, ui_state, tile_size)
         status_ui.draw_status_summary(screen, game_state, status_manager, ui_state)
 
         # Update and draw visual effects
@@ -380,17 +356,13 @@ def main():
         # Draw some basic terrain for context
         for x in range(0, 800, tile_size):
             for y in range(0, 600, tile_size):
-                pygame.draw.rect(
-                    screen, (100, 150, 100), (x, y, tile_size, tile_size), 1
-                )
+                pygame.draw.rect(screen, (100, 150, 100), (x, y, tile_size, tile_size), 1)
 
         # Draw units on the grid
         for unit_id, unit_data in game_state.units.units.items():
             if unit_data.get("alive", True):
                 x, y = unit_data.get("x", 0), unit_data.get("y", 0)
-                color = (
-                    (0, 0, 255) if unit_data.get("team") == "player" else (255, 0, 0)
-                )
+                color = (0, 0, 255) if unit_data.get("team") == "player" else (255, 0, 0)
                 rect = pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size)
                 pygame.draw.rect(screen, color, rect)
 

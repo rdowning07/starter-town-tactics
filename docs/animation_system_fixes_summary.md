@@ -26,16 +26,16 @@ class AIController:  # ❌ Duplicate
 def take_action(self, unit: Unit):
     """Take action for the given unit."""
     print(f"DEBUG: AIController.take_action called for {unit.name}")
-    
+
     # Set attack animation
     unit.set_animation("attack")
-    
+
     # Simple AI behavior: try to move down if possible
     grid = unit.grid if hasattr(unit, "grid") else None
     if grid:
         new_x, new_y = unit.x, min(grid.height - 1, unit.y + 1)
         unit.move(new_x, new_y, grid)
-    
+
     # For now, just pass - more complex AI logic can be added later
     return
 ```
@@ -66,7 +66,7 @@ class Unit:  # ❌ Duplicate class
 def take_damage(self, amount: int) -> None:
     """Reduces HP by amount and sets appropriate animation."""
     self.hp = max(0, self.hp - amount)
-    
+
     # Set animation based on damage
     if self.hp <= 0:
         self.set_animation("die")
@@ -164,11 +164,11 @@ class DummyUnit:
         self.hp = health
         self.current_animation = "idle"
         self.animation_timer = 0
-        
+
     def set_animation(self, name, duration=10):
         self.current_animation = name
         self.animation_timer = duration
-        
+
     def update_animation(self):
         if self.animation_timer > 0:
             self.animation_timer -= 1
@@ -203,7 +203,7 @@ def test_idle_animation_loops():
     # Test basic animation functionality
     for _ in range(10):
         unit.update_animation()
-    
+
     assert unit.current_animation == "idle"
 
 def test_take_damage_transitions_to_hurt_or_die():
@@ -275,7 +275,7 @@ PYTHONPATH=. python devtools/visual_animation_tester.py knight  # ✅ Working wi
 def take_damage(self, amount: int) -> None:
     """Reduces HP by amount and sets appropriate animation."""
     self.hp = max(0, self.hp - amount)
-    
+
     # Set animation based on damage
     if self.hp <= 0:
         self.set_animation("die")    # Death animation
@@ -356,4 +356,4 @@ def take_action(self, unit: Unit):
 - **Audio Feedback** - Sound effects for all animations
 - **FX System** - Visual effects for dramatic moments
 
-The animation system is now **complete** and **production-ready** with full hurt/die animation support! 🎬✨💀 
+The animation system is now **complete** and **production-ready** with full hurt/die animation support! 🎬✨💀

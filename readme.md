@@ -90,6 +90,36 @@ make replay
 
 ---
 
+## ⚔️ 4v4 Tactical Combat System
+
+The game now features a complete 4v4 tactical combat system with professional gameplay mechanics:
+
+### Player Team (4 Units)
+- **‍♂️ Fighter (Player)**: WASD movement, melee attacks (3 damage)
+- **🧙‍♂️ Mage (AI)**: Fireball projectiles, range 3 (2 damage)
+- **‍♀️ Healer (AI)**: Smart healing of lowest HP ally (3 HP per heal)
+- **🏹 Ranger (AI)**: Arrow projectiles, range 2, AP regeneration (2 damage)
+
+### Enemy Team (4 Bandits)
+- **4 Bandits (AI)**: All using the same bandit sprites with different poses
+- **Smart targeting**: Each bandit independently pursues the fighter
+- **Collision detection**: No bandits can occupy the same tile
+- **Individual stats**: Each bandit has separate HP and AP tracking
+
+### Combat Features
+- ✅ **Multi-unit tactical combat** with 8 units total
+- ✅ **Smart AI targeting** (mage/ranger target closest bandit)
+- ✅ **Collision detection** (no tile sharing)
+- ✅ **Individual unit tracking** (separate HP/AP for each bandit)
+- ✅ **Visual variety** (different sprites and animations)
+- ✅ **Professional combat flow** (damage, healing, positioning, projectiles)
+
+### CLI Demo
+```bash
+# Run 4v4 tactical combat demo
+python cli/ai_bt_fighter_demo.py
+```
+
 ## 🤖 Behavior Tree AI System
 
 The game now features a sophisticated Behavior Tree (BT) AI system that demonstrates advanced design patterns and clean architecture:
@@ -418,8 +448,11 @@ starter-town-tactics/
 - ✅ **Visual Demo Phase 1 Complete** - Pygame integration showing fighter vs AI bandit with real-time BT decision display
 - ✅ **Design Pattern Showcase** - Live demonstration of architectural patterns in action
 - ✅ **Playable Demo** - WASD movement, SPACE attacks, working AI that executes actions
-- 🔄 **Phase 2 Next** - Scale to 4v4 tactical combat (4 fighters vs 4 bandits)
-- ⏳ **Phase 3 Pending** - Polish and record 2-minute demo for Friday presentation
+- ✅ **4v4 Tactical Combat System** - Complete 4v4 tactical combat with 4 player units vs 4 AI bandits
+- ✅ **Multi-Unit AI** - Smart targeting, collision detection, individual unit tracking
+- ✅ **Professional Combat Flow** - Damage, healing, projectiles, visual effects
+- 🔄 **Phase 2 Complete** - 4v4 tactical combat system fully functional
+- ⏳ **Phase 3 Next** - Architecture improvements (Factory, Scheduler, VictoryService)
 
 **Week 13**: Visual Effects & Particles
 - Create 59+ effect assets with smooth animations
@@ -484,7 +517,7 @@ make play-sim-demo               # Basic simulation
 - **Scenarios**: 7 YAML scenarios including fighter demo
 - **Game Systems**: Complete rules engine with combat, pathfinding, objectives
 - **Architecture**: Command-event system with deterministic RNG + BT AI system
-- **Demo**: Multiple visual demos including fighter vs AI bandit with BT decision display
+- **Demo**: Multiple visual demos including 4v4 tactical combat with smart AI and projectiles
 
 ---
 

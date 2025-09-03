@@ -10,7 +10,7 @@ This guide explains how to take the art assets (terrain tiles, sprite sheets, an
 
 The Week 8 MVP provides the foundation for art integration:
 - **Asset Validation Pipeline**: Week 7 systems validate art assets before loading
-- **Camera System**: Smooth viewport management for visual presentation  
+- **Camera System**: Smooth viewport management for visual presentation
 - **Input Integration**: Mouse/keyboard controls that work with visual coordinates
 - **Demo Scenarios**: YAML-based scenarios that reference art assets
 - **Rendering Pipeline**: Integration points for terrain, units, and animations
@@ -21,11 +21,11 @@ The Week 8 MVP provides the foundation for art integration:
 
 ### ✅ **Validated Systems (Week 7)**
 - `game/terrain_validator.py` - Validates terrain tile assets
-- `game/sprite_validator.py` - Validates unit sprite sheets  
+- `game/sprite_validator.py` - Validates unit sprite sheets
 - `game/animation_manager.py` - Manages sprite animations with QA hooks
 - `cli/mvp_demo_scene.py` - Visual QA for asset testing
 
-### ✅ **Integration Systems (Week 8)**  
+### ✅ **Integration Systems (Week 8)**
 - `cli/mvp_game_loop.py` - Main playable loop with asset validation
 - `game/camera.py` - Camera system for visual presentation
 - `game/input_controller.py` - Input handling with visual coordinates
@@ -60,7 +60,7 @@ The Week 8 MVP provides the foundation for art integration:
 2. **Validate Assets:**
    ```bash
    python -m game.terrain_validator
-   python -m game.sprite_validator  
+   python -m game.sprite_validator
    python -m game.asset_validator
    ```
 
@@ -161,7 +161,7 @@ The Week 8 MVP provides the foundation for art integration:
 
 ### **Camera Controls:**
 - **WASD**: Pan camera
-- **Q/E**: Zoom out/in  
+- **Q/E**: Zoom out/in
 - **R**: Reset zoom
 - **Middle Click**: Center on position
 
@@ -175,7 +175,7 @@ The Week 8 MVP provides the foundation for art integration:
 
 ### **Debug Controls:**
 - **F1**: Debug info
-- **F2**: AI debug  
+- **F2**: AI debug
 - **F3**: Camera debug
 
 ---
@@ -189,7 +189,7 @@ The Week 8 MVP provides the foundation for art integration:
 - [ ] Asset manifest updated
 - [ ] QA reports reviewed
 
-### **✅ Integration**  
+### **✅ Integration**
 - [ ] Assets load without errors
 - [ ] Terrain renders correctly
 - [ ] Unit sprites display properly
@@ -247,7 +247,7 @@ The Week 8 MVP provides the foundation for art integration:
 - Animations play at consistent frame rate
 - Camera movement is smooth and responsive
 
-### **Performance**  
+### **Performance**
 - Game loop maintains >30 FPS
 - Asset loading completes in <5 seconds
 - Memory usage remains stable
@@ -288,7 +288,7 @@ The Week 8 MVP provides the foundation for art integration:
 ## 📚 Related Documentation
 
 - [Week 7 Asset Validation](../game/terrain_validator.py)
-- [Week 8 MVP Implementation](../cli/mvp_game_loop.py)  
+- [Week 8 MVP Implementation](../cli/mvp_game_loop.py)
 - [Camera System Guide](../game/camera.py)
 - [Input Controller Documentation](../game/input_controller.py)
 - [Enhanced Roadmap](./ui_integration_roadmap_enhanced.md)

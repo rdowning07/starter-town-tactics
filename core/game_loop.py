@@ -1,7 +1,8 @@
-from .rng import Rng
 from .command import Command
 from .events import EventBus
+from .rng import Rng
 from .state import GameState
+
 
 class GameLoop:
     def __init__(self, rng, bus: EventBus) -> None:
@@ -9,7 +10,7 @@ class GameLoop:
         self.bus = bus
 
     def tick(self, s) -> None:
-        if s.is_over(): 
+        if s.is_over():
             return
         s.tick += 1  # monotonic tick counter for ordering
 

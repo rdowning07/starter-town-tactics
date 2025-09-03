@@ -1,5 +1,6 @@
 import pygame
 
+
 class CameraController:
     def __init__(self, screen_width, screen_height):
         # Screen dimensions
@@ -73,7 +74,7 @@ class CameraController:
         # Handle target following (only if not doing smooth movement)
         elif self.target:
             # Convert target to Vector2 if it's not already
-            if hasattr(self.target, 'x') and hasattr(self.target, 'y'):
+            if hasattr(self.target, "x") and hasattr(self.target, "y"):
                 target_pos = pygame.Vector2(self.target.x, self.target.y)
             else:
                 target_pos = pygame.Vector2(self.target[0], self.target[1])

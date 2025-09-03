@@ -3,9 +3,12 @@ Ability Icons - manages ability icons with full architecture integration.
 Integrated with UIState and includes validation and fallback mechanisms.
 """
 
+from typing import Dict, List, Optional, Tuple
+
 import pygame
-from typing import Optional, Tuple, Dict, List
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -81,8 +84,9 @@ class AbilityIcons:
         pygame.draw.polygon(surface, (0, 0, 200), [(16, 4), (24, 8), (24, 20), (16, 28), (8, 20), (8, 8)], 2)
         return surface
 
-    def draw_ability_panel(self, screen: pygame.Surface, abilities: List[str],
-                          position: Tuple[int, int], available_ap: int = 0):
+    def draw_ability_panel(
+        self, screen: pygame.Surface, abilities: List[str], position: Tuple[int, int], available_ap: int = 0
+    ):
         """Draw ability panel with icons."""
         x, y = position
         panel_width = len(abilities) * (self.icon_size + 4) + 8
@@ -104,8 +108,9 @@ class AbilityIcons:
                 if available_ap > 0:
                     self._draw_ap_cost(screen, icon_x, icon_y, 1)  # Default AP cost of 1
 
-    def draw_ability_icon(self, screen: pygame.Surface, ability: str,
-                         position: Tuple[int, int], available: bool = True):
+    def draw_ability_icon(
+        self, screen: pygame.Surface, ability: str, position: Tuple[int, int], available: bool = True
+    ):
         """Draw a single ability icon."""
         if ability not in self.icons:
             return
@@ -164,7 +169,4 @@ class AbilityIcons:
 
     def get_icon_info(self) -> Dict[str, str]:
         """Get information about available icons."""
-        return {
-            "available_icons": list(self.icons.keys()),
-            "icon_size": self.icon_size
-        }
+        return {"available_icons": list(self.icons.keys()), "icon_size": self.icon_size}

@@ -3,10 +3,13 @@ Game Actions - handles player input for movement and attacks with full architect
 Integrated with GameState, SimRunner, TurnController, and includes validation and logging.
 """
 
-import pygame
 from typing import Optional, Tuple
+
+import pygame
+
+from game.ui.input_handler import calculate_attack_targets, calculate_movement_range, get_unit_at_tile, screen_to_tile
 from game.ui.ui_state import UIState
-from game.ui.input_handler import screen_to_tile, get_unit_at_tile, calculate_movement_range, calculate_attack_targets
+
 
 # @api
 # @refactor
@@ -18,7 +21,7 @@ class GameActions:
 
     def handle_mouse_click(self, event: pygame.event.Event, game_state, ui_state: UIState, tile_size: int = 32):
         """Handle mouse click events with full game state integration."""
-        if not hasattr(game_state, 'sim_runner') or game_state.sim_runner.is_ai_turn():
+        if not hasattr(game_state, "sim_runner") or game_state.sim_runner.is_ai_turn():
             return  # Ignore during AI turn
 
         if event.type != pygame.MOUSEBUTTONDOWN:
@@ -58,19 +61,17 @@ class GameActions:
             movement_range = calculate_movement_range(game_state, ui_state.selected_unit)
             ui_state.set_movement_range(movement_range)
             if self.logger:
-                self.logger.log_event("movement_range_shown", {
-                    "unit": ui_state.selected_unit,
-                    "tiles": len(movement_range)
-                })
+                self.logger.log_event(
+                    "movement_range_shown", {"unit": ui_state.selected_unit, "tiles": len(movement_range)}
+                )
         elif attack_rect.collidepoint(pos):
             # Show attack targets
             attack_targets = calculate_attack_targets(game_state, ui_state.selected_unit)
             ui_state.set_attack_targets(attack_targets)
             if self.logger:
-                self.logger.log_event("attack_targets_shown", {
-                    "unit": ui_state.selected_unit,
-                    "targets": len(attack_targets)
-                })
+                self.logger.log_event(
+                    "attack_targets_shown", {"unit": ui_state.selected_unit, "targets": len(attack_targets)}
+                )
 
     def _select_unit(self, ui_state: UIState, unit_id: str, pos: Tuple[int, int]):
         """Select a unit and show action menu."""
@@ -82,7 +83,7 @@ class GameActions:
     def _move_unit(self, game_state, unit_id: str, target_tile: Tuple[int, int]):
         """Move unit with validation and logging."""
         # Pre-conditions
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return False
 
         unit_data = game_state.units.units.get(unit_id)
@@ -100,14 +101,10 @@ class GameActions:
 
         # Log the action
         if self.logger:
-            self.logger.log_event("unit_moved", {
-                "unit": unit_id,
-                "from": old_pos,
-                "to": target_tile
-            })
+            self.logger.log_event("unit_moved", {"unit": unit_id, "from": old_pos, "to": target_tile})
 
         # End turn
-        if hasattr(game_state, 'sim_runner'):
+        if hasattr(game_state, "sim_runner"):
             game_state.sim_runner.run_turn()
 
         return True
@@ -115,7 +112,7 @@ class GameActions:
     def _attack_unit(self, game_state, unit_id: str, target_tile: Tuple[int, int]):
         """Attack unit with damage validation and logging."""
         # Pre-conditions
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return False
 
         target_unit_id = get_unit_at_tile(game_state, target_tile)
@@ -142,21 +139,24 @@ class GameActions:
         # Check for death
         if target_data["hp"] <= 0:
             target_data["alive"] = False
-            if hasattr(game_state, 'sim_runner'):
+            if hasattr(game_state, "sim_runner"):
                 game_state.sim_runner.mark_unit_dead(target_unit_id)
 
         # Log the action
         if self.logger:
-            self.logger.log_event("unit_attacked", {
-                "attacker": unit_id,
-                "target": target_unit_id,
-                "damage": damage,
-                "target_hp_after": target_data["hp"],
-                "target_died": target_data["hp"] <= 0
-            })
+            self.logger.log_event(
+                "unit_attacked",
+                {
+                    "attacker": unit_id,
+                    "target": target_unit_id,
+                    "damage": damage,
+                    "target_hp_after": target_data["hp"],
+                    "target_died": target_data["hp"] <= 0,
+                },
+            )
 
         # End turn
-        if hasattr(game_state, 'sim_runner'):
+        if hasattr(game_state, "sim_runner"):
             game_state.sim_runner.run_turn()
 
         return True
@@ -173,7 +173,7 @@ class GameActions:
 
     def _is_player_unit(self, game_state, unit_id: str) -> bool:
         """Check if unit belongs to player team."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return False
 
         unit_data = game_state.units.units.get(unit_id, {})

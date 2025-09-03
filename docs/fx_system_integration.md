@@ -112,7 +112,7 @@ def on_unit_damaged(unit_id, damage):
     unit_pos = get_unit_position(unit_id)
     game_state.trigger_flash(unit_pos, (255, 0, 0), 0.2)  # Red flash
     game_state.trigger_particle(unit_pos, "sparkle", 5, 0.8)  # Particles
-    
+
     if damage > 5:
         game_state.trigger_screen_shake(2.0, 0.3)  # Heavy damage shake
 ```
@@ -193,16 +193,16 @@ PYTHONPATH=. python devtools/visual_animation_tester.py mage
 # In main game loop
 def game_loop():
     # ... game logic ...
-    
+
     # Update effects
     game_state.update_fx()
-    
+
     # Render game
     render_game(screen)
-    
+
     # Draw effects on top
     game_state.draw_fx(screen)
-    
+
     # ... continue loop ...
 ```
 
@@ -213,12 +213,12 @@ def on_attack(attacker_id, target_id):
     # Game logic
     damage = calculate_damage(attacker_id, target_id)
     apply_damage(target_id, damage)
-    
+
     # Visual feedback
     target_pos = get_unit_position(target_id)
     game_state.trigger_flash(target_pos, (255, 0, 0), 0.3)
     game_state.trigger_particle(target_pos, "sparkle", 8, 1.0)
-    
+
     if damage > 10:
         game_state.trigger_screen_shake(4.0, 0.4)
 ```
@@ -268,4 +268,4 @@ The FX system integration provides:
 - ✅ **Comprehensive Testing** - Automated and manual testing coverage
 - ✅ **Developer Friendly** - Simple API and clear documentation
 
-Ready for Phase 4 development and beyond! 🎬✨ 
+Ready for Phase 4 development and beyond! 🎬✨

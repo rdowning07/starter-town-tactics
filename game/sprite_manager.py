@@ -21,9 +21,7 @@ class SpriteManager:
         self.tier_groups = {}
         self.tilesets = {}
         self.unit_sprites = {}  # Add missing attribute for animation support
-        self.animation_catalog = (
-            None  # Will be initialized if fighter assets are available
-        )
+        self.animation_catalog = None  # Will be initialized if fighter assets are available
         self._load_sprite_mapping()
         self._load_tileset_mapping()
         self._load_fighter_animations()
@@ -50,23 +48,17 @@ class SpriteManager:
         if os.path.exists(mapping_path):
             with open(mapping_path, "r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
-                self.tilesets = {
-                    tileset["name"]: tileset for tileset in data.get("tilesets", [])
-                }
+                self.tilesets = {tileset["name"]: tileset for tileset in data.get("tilesets", [])}
 
     def _load_fighter_animations(self):
         """Load fighter animations using AnimationCatalog."""
         try:
             from game.AnimationCatalog import AnimationCatalog
 
-            animation_metadata_path = Path(
-                "assets/units/_metadata/animation_metadata.json"
-            )
+            animation_metadata_path = Path("assets/units/_metadata/animation_metadata.json")
             if animation_metadata_path.exists():
                 self.animation_catalog = AnimationCatalog(animation_metadata_path)
-                print(
-                    f"[SpriteManager] Loaded fighter animations with {len(self.animation_catalog._frames)} frames"
-                )
+                print(f"[SpriteManager] Loaded fighter animations with {len(self.animation_catalog._frames)} frames")
         except Exception as e:
             print(f"[SpriteManager] Could not load fighter animations: {e}")
             self.animation_catalog = None
@@ -171,6 +163,7 @@ class SpriteManager:
         # First try fighter animations
         if unit_type == "fighter" and self.animation_catalog:
             import pygame
+
             elapsed_ms = pygame.time.get_ticks() if pygame.get_init() else 0
             meta = self.animation_catalog.get("fighter", state)
             if meta:
@@ -198,6 +191,7 @@ class SpriteManager:
             if not frame_files:
                 return None
             from game.AnimationCatalog import frame_index
+
             idx = frame_index(meta, elapsed_ms)
             if idx < len(frame_files):
                 frame_file = frame_files[idx]
@@ -209,6 +203,7 @@ class SpriteManager:
                 return None
             w, h = meta.get("frame_size", [32, 32])
             from game.AnimationCatalog import frame_index
+
             idx = frame_index(meta, elapsed_ms)
             src = pygame.Rect(idx * w, 0, w, h)
             frame_surface = pygame.Surface((w, h), pygame.SRCALPHA)
@@ -221,10 +216,7 @@ class SpriteManager:
     ) -> List[str | pygame.Surface]:
         """Get all animation frames for a unit from the new animation structure."""
         # Try new animation structure first
-        if (
-            unit_type in self.unit_sprites
-            and animation_name in self.unit_sprites[unit_type]
-        ):
+        if unit_type in self.unit_sprites and animation_name in self.unit_sprites[unit_type]:
             return self.unit_sprites[unit_type][animation_name]
 
         # Fallback to old method
@@ -308,15 +300,11 @@ class SpriteManager:
 
     def get_tilesets_by_layer(self, layer: str) -> List[str]:
         """Get all tilesets for a specific layer."""
-        return [
-            name for name, info in self.tilesets.items() if info.get("layer") == layer
-        ]
+        return [name for name, info in self.tilesets.items() if info.get("layer") == layer]
 
     def get_tilesets_by_tag(self, tag: str) -> List[str]:
         """Get all tilesets with a specific tag."""
-        return [
-            name for name, info in self.tilesets.items() if tag in info.get("tags", [])
-        ]
+        return [name for name, info in self.tilesets.items() if tag in info.get("tags", [])]
 
     def get_animation_metadata(self, unit_name: str) -> Dict:
         """Get animation metadata for a unit."""
@@ -371,16 +359,12 @@ class SpriteManager:
         """Load a terrain sprite surface directly."""
         self.sprites[f"terrain_{terrain_type}"] = surface
 
-    def load_unit_sprite(
-        self, unit_id: str, animation_state: str, surface: pygame.Surface
-    ) -> None:
+    def load_unit_sprite(self, unit_id: str, animation_state: str, surface: pygame.Surface) -> None:
         """Load a unit sprite surface directly."""
         key = f"unit_{unit_id}_{animation_state}"
         self.sprites[key] = surface
 
-    def load_unit_animation(
-        self, unit_id: str, animation_name: str, frame_list: list[pygame.Surface]
-    ) -> None:
+    def load_unit_animation(self, unit_id: str, animation_name: str, frame_list: list[pygame.Surface]) -> None:
         """Load a unit animation with multiple frames."""
         if unit_id not in self.unit_sprites:
             self.unit_sprites[unit_id] = {}
@@ -401,18 +385,14 @@ class SpriteManager:
             frames = []
 
             for x in range(0, sheet_width, frame_width):
-                frame = sheet.subsurface(
-                    pygame.Rect(x, 0, frame_width, frame_height)
-                ).copy()
+                frame = sheet.subsurface(pygame.Rect(x, 0, frame_width, frame_height)).copy()
                 frames.append(frame)
 
             if unit_id not in self.unit_sprites:
                 self.unit_sprites[unit_id] = {}
 
             self.unit_sprites[unit_id][animation_name] = frames
-            print(
-                f"✅ Loaded {len(frames)} frames from sheet for {unit_id} {animation_name}"
-            )
+            print(f"✅ Loaded {len(frames)} frames from sheet for {unit_id} {animation_name}")
 
         except pygame.error as e:
             print(f"⚠️  Failed to load sprite sheet {sheet_path}: {e}")

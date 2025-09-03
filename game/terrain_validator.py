@@ -3,12 +3,15 @@ Terrain Validator - validates terrain tiles with full architecture integration.
 Integrated with existing AssetValidator and includes comprehensive validation and reporting.
 """
 
-import pygame
 import csv
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any
-from game.asset_validator import AssetValidator, AssetValidationResult
+from typing import Any, Dict, List, Optional, Tuple
+
+import pygame
+
+from game.asset_validator import AssetValidationResult, AssetValidator
+
 
 # @api
 # @refactor
@@ -32,7 +35,7 @@ class TerrainValidator:
             "mountain": {"color": (139, 69, 19), "walkable": False, "defense": 3},
             "desert": {"color": (238, 203, 173), "walkable": True, "defense": 0},
             "dungeon": {"color": (64, 64, 64), "walkable": True, "defense": 1},
-            "castle": {"color": (192, 192, 192), "walkable": True, "defense": 2}
+            "castle": {"color": (192, 192, 192), "walkable": True, "defense": 2},
         }
 
     def validate_all_terrain(self) -> Dict[str, List[AssetValidationResult]]:
@@ -41,9 +44,9 @@ class TerrainValidator:
 
         if not self.asset_dir.exists():
             if self.logger:
-                self.logger.log_event("terrain_validation_error", {
-                    "error": f"Terrain directory not found: {self.asset_dir}"
-                })
+                self.logger.log_event(
+                    "terrain_validation_error", {"error": f"Terrain directory not found: {self.asset_dir}"}
+                )
             return results
 
         # Validate each terrain type
@@ -69,11 +72,7 @@ class TerrainValidator:
         results = []
 
         # Check for expected files
-        expected_files = [
-            f"{terrain_type}.png",
-            f"{terrain_type}_edge.png",
-            f"{terrain_type}_corner.png"
-        ]
+        expected_files = [f"{terrain_type}.png", f"{terrain_type}_edge.png", f"{terrain_type}_corner.png"]
 
         for expected_file in expected_files:
             file_path = type_dir / expected_file
@@ -109,7 +108,9 @@ class TerrainValidator:
 
             # Check size
             if (width, height) != self.expected_tile_size:
-                result.add_error(f"Invalid tile size: {width}x{height}. Expected: {self.expected_tile_size[0]}x{self.expected_tile_size[1]}")
+                result.add_error(
+                    f"Invalid tile size: {width}x{height}. Expected: {self.expected_tile_size[0]}x{self.expected_tile_size[1]}"
+                )
 
             # Check if image has transparency
             if img.get_alpha() is not None:
@@ -155,7 +156,7 @@ class TerrainValidator:
                 "average_color": tuple(int(c) for c in avg_color),
                 "dominant_color": dominant_color,
                 "color_variance": float(color_variance),
-                "expected_color": self.terrain_types[terrain_type]["color"]
+                "expected_color": self.terrain_types[terrain_type]["color"],
             }
         except (NotImplementedError, ImportError):
             # Fallback: simple color analysis
@@ -163,19 +164,21 @@ class TerrainValidator:
                 "average_color": (128, 128, 128),
                 "dominant_color": (128, 128, 128),
                 "color_variance": 0.0,
-                "expected_color": self.terrain_types[terrain_type]["color"]
+                "expected_color": self.terrain_types[terrain_type]["color"],
             }
 
-    def _check_color_similarity(self, color1: Tuple[int, int, int], color2: Tuple[int, int, int], threshold: int = 50) -> bool:
+    def _check_color_similarity(
+        self, color1: Tuple[int, int, int], color2: Tuple[int, int, int], threshold: int = 50
+    ) -> bool:
         """Check if two colors are similar within threshold."""
         diff = sum(abs(c1 - c2) for c1, c2 in zip(color1, color2))
         return diff <= threshold * 3  # 3 channels
 
     def _generate_terrain_report(self, results: Dict[str, List[AssetValidationResult]]):
         """Generate comprehensive terrain validation report."""
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("🌍 TERRAIN VALIDATION REPORT")
-        print("="*60)
+        print("=" * 60)
 
         total_files = sum(len(type_results) for type_results in results.values())
         valid_files = sum(sum(1 for r in type_results if r.is_valid) for type_results in results.values())
@@ -216,56 +219,67 @@ class TerrainValidator:
                 elif result.warnings:
                     print(f"    ⚠️  {Path(result.asset_path).name}: {', '.join(result.warnings)}")
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
         # Log report
         if self.logger:
-            self.logger.log_event("terrain_validation_complete", {
-                "terrain_types": len(results),
-                "total_files": total_files,
-                "valid_files": valid_files,
-                "total_errors": total_errors,
-                "total_warnings": total_warnings,
-                "success_rate": (valid_files / total_files * 100) if total_files > 0 else 0
-            })
+            self.logger.log_event(
+                "terrain_validation_complete",
+                {
+                    "terrain_types": len(results),
+                    "total_files": total_files,
+                    "valid_files": valid_files,
+                    "total_errors": total_errors,
+                    "total_warnings": total_warnings,
+                    "success_rate": (valid_files / total_files * 100) if total_files > 0 else 0,
+                },
+            )
 
     def _generate_terrain_csv(self, results: Dict[str, List[AssetValidationResult]]):
         """Generate CSV report for terrain validation."""
         csv_file = self.qa_report_dir / "terrain_report.csv"
 
-        with open(csv_file, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=[
-                "terrain_type", "file_name", "file_path", "width", "height",
-                "valid", "has_transparency", "file_size_mb", "errors", "warnings"
-            ])
+        with open(csv_file, "w", newline="") as f:
+            writer = csv.DictWriter(
+                f,
+                fieldnames=[
+                    "terrain_type",
+                    "file_name",
+                    "file_path",
+                    "width",
+                    "height",
+                    "valid",
+                    "has_transparency",
+                    "file_size_mb",
+                    "errors",
+                    "warnings",
+                ],
+            )
             writer.writeheader()
 
             for terrain_type, type_results in results.items():
                 for result in type_results:
                     file_path = Path(result.asset_path)
-                    writer.writerow({
-                        "terrain_type": terrain_type,
-                        "file_name": file_path.name,
-                        "file_path": str(file_path),
-                        "width": result.metadata.get("resolution", (0, 0))[0],
-                        "height": result.metadata.get("resolution", (0, 0))[1],
-                        "valid": result.is_valid,
-                        "has_transparency": result.metadata.get("has_transparency", False),
-                        "file_size_mb": result.metadata.get("file_size_mb", 0),
-                        "errors": "; ".join(result.errors),
-                        "warnings": "; ".join(result.warnings)
-                    })
+                    writer.writerow(
+                        {
+                            "terrain_type": terrain_type,
+                            "file_name": file_path.name,
+                            "file_path": str(file_path),
+                            "width": result.metadata.get("resolution", (0, 0))[0],
+                            "height": result.metadata.get("resolution", (0, 0))[1],
+                            "valid": result.is_valid,
+                            "has_transparency": result.metadata.get("has_transparency", False),
+                            "file_size_mb": result.metadata.get("file_size_mb", 0),
+                            "errors": "; ".join(result.errors),
+                            "warnings": "; ".join(result.warnings),
+                        }
+                    )
 
         print(f"📊 CSV Report saved: {csv_file}")
 
     def get_terrain_manifest(self) -> Dict[str, Any]:
         """Generate terrain manifest for the game."""
-        manifest = {
-            "version": "1.0",
-            "terrain_types": {},
-            "total_tiles": 0,
-            "validation_summary": {}
-        }
+        manifest = {"version": "1.0", "terrain_types": {}, "total_tiles": 0, "validation_summary": {}}
 
         # Validate all terrain first
         validation_results = self.validate_all_terrain()
@@ -274,7 +288,7 @@ class TerrainValidator:
             type_manifest = {
                 "count": len(type_results),
                 "valid_count": sum(1 for r in type_results if r.is_valid),
-                "tiles": []
+                "tiles": [],
             }
 
             for result in type_results:
@@ -282,7 +296,7 @@ class TerrainValidator:
                     tile_info = {
                         "file": Path(result.asset_path).name,
                         "path": result.asset_path,
-                        "metadata": result.metadata
+                        "metadata": result.metadata,
                     }
                     type_manifest["tiles"].append(tile_info)
 
@@ -291,7 +305,7 @@ class TerrainValidator:
 
         # Save manifest
         manifest_file = self.qa_report_dir / "terrain_manifest.json"
-        with open(manifest_file, 'w') as f:
+        with open(manifest_file, "w") as f:
             json.dump(manifest, f, indent=2)
 
         print(f"📋 Terrain manifest saved: {manifest_file}")
@@ -309,14 +323,16 @@ class TerrainValidator:
             "terrain_types": len(self.validation_results),
             "total_files": total_files,
             "valid_files": valid_files,
-            "success_rate": (valid_files / total_files * 100) if total_files > 0 else 0
+            "success_rate": (valid_files / total_files * 100) if total_files > 0 else 0,
         }
+
 
 # Standalone validation function for backward compatibility
 def validate_terrain(asset_dir: Path = None, logger=None) -> Dict[str, List[AssetValidationResult]]:
     """Standalone terrain validation function."""
     validator = TerrainValidator(asset_dir, logger)
     return validator.validate_all_terrain()
+
 
 def generate_terrain_report(asset_dir: Path = None) -> bool:
     """Generate comprehensive terrain report."""

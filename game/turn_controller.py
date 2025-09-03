@@ -25,9 +25,7 @@ class TurnController:
         # Handle different constructor arguments
         if isinstance(game_or_apm, ActionPointManager):
             self.action_point_manager = game_or_apm
-        elif game_or_apm is not None and hasattr(
-            game_or_apm, "units"
-        ):  # Assume it's a Game object or similar
+        elif game_or_apm is not None and hasattr(game_or_apm, "units"):  # Assume it's a Game object or similar
             self.game = game_or_apm
             # Initialize units from game if available
             for unit in game_or_apm.units:

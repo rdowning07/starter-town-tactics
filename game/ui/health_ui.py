@@ -3,9 +3,12 @@ Health UI - draws health bars above units with full architecture integration.
 Integrated with GameState and includes validation and logging.
 """
 
+from typing import Dict, Optional, Tuple
+
 import pygame
-from typing import Optional, Tuple, Dict
+
 from game.ui.ui_state import UIState
+
 
 # @api
 # @refactor
@@ -17,8 +20,15 @@ class HealthUI:
         self.font = pygame.font.Font(None, 16)
         self.health_cache = {}  # Cache for health values to detect changes
 
-    def draw_health_bar(self, screen: pygame.Surface, unit_id: str, unit_data: Dict,
-                       tile_size: int = 32, x_offset: int = 0, y_offset: int = -5):
+    def draw_health_bar(
+        self,
+        screen: pygame.Surface,
+        unit_id: str,
+        unit_data: Dict,
+        tile_size: int = 32,
+        x_offset: int = 0,
+        y_offset: int = -5,
+    ):
         """Draw health bar above unit with validation and logging."""
         if not unit_data or not unit_data.get("alive", True):
             return
@@ -70,52 +80,52 @@ class HealthUI:
         # Log health changes
         self._log_health_change(unit_id, current_hp, max_hp, fill_ratio)
 
-    def draw_all_health_bars(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                            tile_size: int = 32):
+    def draw_all_health_bars(self, screen: pygame.Surface, game_state, ui_state: UIState, tile_size: int = 32):
         """Draw health bars for all alive units."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         for unit_id, unit_data in game_state.units.units.items():
             if unit_data.get("alive", True):
                 self.draw_health_bar(screen, unit_id, unit_data, tile_size)
 
-    def draw_damage_indicator(self, screen: pygame.Surface, unit_id: str, damage: int,
-                             position: Tuple[int, int], duration: int = 60):
+    def draw_damage_indicator(
+        self, screen: pygame.Surface, unit_id: str, damage: int, position: Tuple[int, int], duration: int = 60
+    ):
         """Draw floating damage indicator."""
-        if not hasattr(self, '_damage_indicators'):
+        if not hasattr(self, "_damage_indicators"):
             self._damage_indicators = {}
 
         # Create damage indicator
         self._damage_indicators[unit_id] = {
-            'damage': damage,
-            'position': position,
-            'duration': duration,
-            'current_frame': 0
+            "damage": damage,
+            "position": position,
+            "duration": duration,
+            "current_frame": 0,
         }
 
     def update_damage_indicators(self, screen: pygame.Surface):
         """Update and draw damage indicators."""
-        if not hasattr(self, '_damage_indicators'):
+        if not hasattr(self, "_damage_indicators"):
             return
 
         # Update and draw damage indicators
         to_remove = []
         for unit_id, indicator in self._damage_indicators.items():
-            indicator['current_frame'] += 1
+            indicator["current_frame"] += 1
 
-            if indicator['current_frame'] >= indicator['duration']:
+            if indicator["current_frame"] >= indicator["duration"]:
                 to_remove.append(unit_id)
                 continue
 
             # Calculate position with upward movement
-            x, y = indicator['position']
-            progress = indicator['current_frame'] / indicator['duration']
+            x, y = indicator["position"]
+            progress = indicator["current_frame"] / indicator["duration"]
             y_offset = int(progress * -30)  # Move up 30 pixels over duration
 
             # Draw damage text
             damage_text = f"-{indicator['damage']}"
-            color = (255, 0, 0) if indicator['damage'] > 0 else (0, 255, 0)
+            color = (255, 0, 0) if indicator["damage"] > 0 else (0, 255, 0)
 
             # Fade out effect
             alpha = int(255 * (1 - progress))
@@ -128,10 +138,9 @@ class HealthUI:
         for unit_id in to_remove:
             del self._damage_indicators[unit_id]
 
-    def draw_health_summary(self, screen: pygame.Surface, game_state, ui_state: UIState,
-                           x: int = 10, y: int = 200):
+    def draw_health_summary(self, screen: pygame.Surface, game_state, ui_state: UIState, x: int = 10, y: int = 200):
         """Draw health summary for all units."""
-        if not hasattr(game_state, 'units') or not hasattr(game_state.units, 'units'):
+        if not hasattr(game_state, "units") or not hasattr(game_state.units, "units"):
             return
 
         # Count units by team
@@ -190,13 +199,16 @@ class HealthUI:
 
         if self.health_cache[cache_key] != current_hp:
             # Log health change
-            self.logger.log_event("health_changed", {
-                "unit": unit_id,
-                "old_hp": self.health_cache[cache_key],
-                "new_hp": current_hp,
-                "max_hp": max_hp,
-                "health_percentage": fill_ratio * 100
-            })
+            self.logger.log_event(
+                "health_changed",
+                {
+                    "unit": unit_id,
+                    "old_hp": self.health_cache[cache_key],
+                    "new_hp": current_hp,
+                    "max_hp": max_hp,
+                    "health_percentage": fill_ratio * 100,
+                },
+            )
 
             # Update cache
             self.health_cache[cache_key] = current_hp
