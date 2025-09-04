@@ -20,8 +20,13 @@ from game.ai.scheduler import AIScheduler
 from game.ai_bt_adapter import BTAdapter
 from game.animation_clock import AnimationClock
 from game.demo_base import DemoBase
+from game.effects.screen_effects import ScreenEffects
 from game.factories.entity_factory import EntityFactory
 from game.services.victory_service import BattleOutcome, VictoryService
+from game.ui.banners import CutInText, TurnBanner, VictoryBanner
+from game.ui.control_card import ControlCard
+from game.ui.health_and_ko import HealthAndKOOverlay
+from game.ui.roster_panel import RosterPanel
 
 
 class BTFighterDemo(DemoBase):
@@ -107,6 +112,19 @@ class BTFighterDemo(DemoBase):
         self.bt_tick_count = 0
         self.ai_decision_text = "AI: Thinking..."
         self.last_ai_decision = 0
+
+        # UI Components
+        self.health_overlay = HealthAndKOOverlay()
+        self.victory_banner = VictoryBanner()
+        self.turn_banner = TurnBanner()
+        self.cutin_text = CutInText()
+        self.control_card = ControlCard()
+        self.roster_panel = RosterPanel()
+        self.screen_effects = ScreenEffects()
+
+        # Camera shake offset
+        self.camera_shake_x = 0.0
+        self.camera_shake_y = 0.0
         self.ai_update_interval = 2  # seconds
 
         # Unit positions - fighter (player) vs bandit (AI)
@@ -150,8 +168,12 @@ class BTFighterDemo(DemoBase):
         self.battle_outcome = outcome
         if outcome == BattleOutcome.PLAYER_WIN:
             self.ai_decision_text = "🎉 VICTORY! All enemies defeated!"
+            self.victory_banner.show_victory()
+            self.screen_effects.unit_defeated(8.0)  # Strong effect for victory
         elif outcome == BattleOutcome.PLAYER_LOSE:
             self.ai_decision_text = "💀 DEFEAT! Player team eliminated!"
+            self.victory_banner.show_defeat()
+            self.screen_effects.unit_defeated(8.0)  # Strong effect for defeat
 
     def _ai_tick(self):
         """AI tick function for the scheduler."""
@@ -500,6 +522,9 @@ class BTFighterDemo(DemoBase):
                 bandit_pos = self.bandit_positions[closest_bandit]
                 self._spawn_effect("slash", bandit_pos[0], bandit_pos[1])
 
+                # Screen effects for attack
+                self.screen_effects.hit_impact(4.0)
+
                 # Update AI decision text
                 self.ai_decision_text = (
                     f"🗡️ Fighter attacks Bandit {closest_bandit+1}! Bandit HP: {self.bandit_hp[closest_bandit]}"
@@ -507,6 +532,7 @@ class BTFighterDemo(DemoBase):
 
                 # Check if bandit is defeated
                 if self.bandit_hp[closest_bandit] <= 0:
+                    self.screen_effects.unit_defeated(6.0)
                     self.victory_service.on_unit_defeated(2)
         else:
             self.ai_decision_text = "❌ Cannot attack - out of range or no AP!"
@@ -691,8 +717,8 @@ class BTFighterDemo(DemoBase):
             sprite = self.unit_sprites["fighter"][self.fighter_animation]
             sprite_rect = sprite.get_rect()
             sprite_rect.center = (
-                self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x,
-                self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y,
+                self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x - self.camera_shake_x,
+                self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y - self.camera_shake_y,
             )
             surface.blit(sprite, sprite_rect)
         else:
@@ -701,8 +727,8 @@ class BTFighterDemo(DemoBase):
                 surface,
                 (0, 0, 255),  # Blue for fighter
                 (
-                    self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x,
-                    self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y,
+                    self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x - self.camera_shake_x,
+                    self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y - self.camera_shake_y,
                 ),
                 self.tile_size // 3,
             )
@@ -1206,10 +1232,14 @@ class BTFighterDemo(DemoBase):
                         bandit_pos[1],
                     )
 
+                    # Screen effects for mage attack
+                    self.screen_effects.hit_impact(3.0)
+
                     print(f"🔥 Mage casts fireball! Bandit {closest_bandit+1} HP: {self.bandit_hp[closest_bandit]}")
 
                     # Check if bandit is defeated
                     if self.bandit_hp[closest_bandit] <= 0:
+                        self.screen_effects.unit_defeated(5.0)
                         self.victory_service.on_unit_defeated(2)
 
                 # If mage can't attack, move toward closest bandit
@@ -1398,6 +1428,9 @@ class BTFighterDemo(DemoBase):
 
                 # Spawn healing effect at healer's position
                 self._spawn_effect("healing", self.healer_pos[0], self.healer_pos[1])
+
+                # Screen effects for healing
+                self.screen_effects.heal_effect()
 
                 current_hp = (
                     self.fighter_hp
@@ -1638,22 +1671,40 @@ class BTFighterDemo(DemoBase):
             # Update projectiles
             self._update_projectiles()
 
+            # Update screen effects and get camera shake
+            shake_offset = self.screen_effects.update(0.016)
+            self.camera_shake_x = shake_offset[0]
+            self.camera_shake_y = shake_offset[1]
+
+            # Update UI components
+            self.victory_banner.update(0.016)
+            self.turn_banner.update(0.016)
+            self.cutin_text.update(0.016)
+
             # Clear screen
             self.screen.fill((0, 0, 0))
 
-            # Draw everything
+            # Draw everything with camera shake
             self._draw_terrain(self.screen)
             self._draw_units(self.screen)
             self._draw_effects(self.screen)
             self._draw_projectiles(self.screen)
-            self._draw_ui(self.screen)
 
-            # Show victory/defeat message if battle is over
-            if self.battle_outcome:
-                if self.battle_outcome == BattleOutcome.PLAYER_WIN:
-                    self._show_victory_message(self.screen, True)
-                elif self.battle_outcome == BattleOutcome.PLAYER_LOSE:
-                    self._show_victory_message(self.screen, False)
+            # Draw health bars and KO markers
+            self._draw_health_overlay(self.screen)
+
+            # Draw UI components
+            self._draw_ui(self.screen)
+            self.control_card.draw(self.screen)
+            self._draw_roster_panel(self.screen)
+
+            # Draw banners and cut-in text
+            self.turn_banner.draw(self.screen)
+            self.cutin_text.draw(self.screen)
+            self.victory_banner.draw(self.screen)
+
+            # Draw screen effects (flash, etc.)
+            self.screen_effects.draw(self.screen)
 
             # Update display
             pygame.display.flip()
@@ -1663,6 +1714,80 @@ class BTFighterDemo(DemoBase):
 
         print("Demo finished.")
         pygame.quit()
+
+    def _draw_health_overlay(self, surface: pygame.Surface) -> None:
+        """Draw health bars and KO markers for all units."""
+        # Create unit data for health overlay
+        units_data = {}
+
+        # Fighter
+        units_data["fighter"] = {
+            "x": self.fighter_pos[0],
+            "y": self.fighter_pos[1],
+            "hp": self.fighter_hp,
+            "max_hp": 10,
+            "alive": self.fighter_hp > 0,
+        }
+
+        # Bandits
+        for i, (pos, hp) in enumerate(zip(self.bandit_positions, self.bandit_hp)):
+            units_data[f"bandit_{i}"] = {"x": pos[0], "y": pos[1], "hp": hp, "max_hp": 8, "alive": hp > 0}
+
+        # Mage
+        units_data["mage"] = {
+            "x": self.mage_pos[0],
+            "y": self.mage_pos[1],
+            "hp": self.mage_hp,
+            "max_hp": 15,
+            "alive": self.mage_hp > 0,
+        }
+
+        # Healer
+        units_data["healer"] = {
+            "x": self.healer_pos[0],
+            "y": self.healer_pos[1],
+            "hp": self.healer_hp,
+            "max_hp": 12,
+            "alive": self.healer_hp > 0,
+        }
+
+        # Ranger
+        units_data["ranger"] = {
+            "x": self.ranger_pos[0],
+            "y": self.ranger_pos[1],
+            "hp": self.ranger_hp,
+            "max_hp": 14,
+            "alive": self.ranger_hp > 0,
+        }
+
+        # Draw health overlay with camera shake
+        camera_x = self.camera_x + self.camera_shake_x
+        camera_y = self.camera_y + self.camera_shake_y
+        self.health_overlay.draw_all_units(surface, units_data, camera_x, camera_y, self.tile_size)
+
+    def _draw_roster_panel(self, surface: pygame.Surface) -> None:
+        """Draw the roster panel showing team status."""
+        # Create team data
+        teams = {
+            1: {  # Player team
+                "name": "Allies",
+                "units": [
+                    {"name": "Fighter", "hp": self.fighter_hp, "max_hp": 10, "alive": self.fighter_hp > 0},
+                    {"name": "Mage", "hp": self.mage_hp, "max_hp": 15, "alive": self.mage_hp > 0},
+                    {"name": "Healer", "hp": self.healer_hp, "max_hp": 12, "alive": self.healer_hp > 0},
+                    {"name": "Ranger", "hp": self.ranger_hp, "max_hp": 14, "alive": self.ranger_hp > 0},
+                ],
+            },
+            2: {  # Enemy team
+                "name": "Bandits",
+                "units": [
+                    {"name": f"Bandit {i+1}", "hp": hp, "max_hp": 8, "alive": hp > 0}
+                    for i, hp in enumerate(self.bandit_hp)
+                ],
+            },
+        }
+
+        self.roster_panel.draw(surface, teams)
 
 
 def main():
