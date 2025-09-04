@@ -44,6 +44,8 @@ A tactical, turn-based simulation game engine inspired by Final Fantasy Tactics 
 - ✅ **Fighter Unit Integration**: Complete fighter unit with 8 animation states and frame-based animations
 - ✅ **Terrain System**: TileCatalog and TerrainRenderer with tiles_manifest.json support
 - ✅ **Animation System**: AnimationCatalog and UnitRenderer supporting both frame-based and sprite sheet animations
+- ✅ **Visual Effects System**: Spark, slash, and other FX with proper transparency and timing
+- ✅ **Animation & FX Integration**: Complete walk/attack animations for Knight & Goblin with FX support
 - ✅ **Behavior Tree AI**: Sophisticated AI system with Composite/Strategy patterns and Protocol-based DI
 - ✅ **Code Quality**: Pylint score improved from 8.09/10 to 9.72/10 with comprehensive error fixes
 
@@ -118,6 +120,49 @@ The game now features a complete 4v4 tactical combat system with professional ga
 ```bash
 # Run 4v4 tactical combat demo
 python cli/ai_bt_fighter_demo.py
+
+# Run architecture patterns demo
+python demo_setup.py
+```
+
+### Architecture Patterns Demo
+The new architecture includes:
+- **Factory Pattern**: `EntityFactory` for clean team spawning
+- **AI Scheduler**: `AIScheduler` with 250ms staggering to prevent frame hitching
+- **Victory Service**: `VictoryService` with win/lose conditions and event notifications
+- **Pattern Demonstrations**: Live showcase of architectural patterns in action
+
+## 🎨 Animation & Visual Effects System
+
+The game features a comprehensive animation and visual effects system:
+
+### Animation System
+- **Frame-Based Animations**: Individual PNG files for maximum flexibility
+- **Sprite Sheet Support**: Backward compatibility with sprite sheet animations
+- **8 Animation States**: `idle_down`, `idle_up`, `idle_left`, `idle_right`, `walk_down`, `walk_up`, `walk_left`, `walk_right`
+- **Automatic Frame Timing**: Based on `frame_duration_ms` configuration
+- **Direction-Aware**: Proper animations for all movement directions
+
+### Visual Effects System
+- **Spark Effects**: Particle effects for magical abilities
+- **Slash Effects**: Combat visual feedback
+- **Transparency Support**: Proper alpha channel handling
+- **Effect Timing**: Synchronized with animation frames
+- **Performance Optimized**: Efficient rendering with caching
+
+### Keybind Controls
+- **SPACE**: Spawn 'spark' effect at knight
+- **A**: Play knight 'attack' animation once, then revert to 'idle'
+- **W**: Toggle goblin 'walk' animation
+
+### Files Structure
+```
+assets/units/knight/{idle,walk,attack}.png
+assets/units/goblin/{idle,walk,attack}.png
+assets/units/_metadata/animation_metadata.json
+assets/effects/spark/sheet.png
+assets/effects/slash/sheet.png
+assets/effects/_metadata/effects_metadata.json
 ```
 
 ## 🤖 Behavior Tree AI System
@@ -257,6 +302,8 @@ make fighter-demo                # Standalone fighter demo with movement
 make fighter-integrated-demo     # Fighter integrated into main game architecture
 make units-fx-demo               # Units and FX demo
 make new-terrain-demo            # New terrain system demo
+python cli/ai_bt_fighter_demo.py # 4v4 tactical combat demo
+python demo_setup.py             # Architecture patterns demo
 ```
 
 ### 🔧 Code Quality Infrastructure
@@ -312,7 +359,9 @@ starter-town-tactics/
 ├── cli/                        # Command-line tools
 │   ├── play_demo.py            # Command-event architecture demo with pygame
 │   ├── soak.py                 # Performance testing tool
-│   └── replay.py               # Future game replay functionality
+│   ├── replay.py               # Future game replay functionality
+│   └── ai_bt_fighter_demo.py   # 4v4 tactical combat demo
+├── demo_setup.py               # Architecture patterns demonstration
 ├── game/
 │   ├── grid.py
 │   ├── tile.py
@@ -331,7 +380,15 @@ starter-town-tactics/
 │   ├── UnitRenderer.py          # Unit rendering with animations
 │   ├── TileCatalog.py           # Terrain tile management
 │   ├── terrain_renderer.py      # Terrain rendering system
-│   └── demo_base.py             # Base class for demos with timeout
+│   ├── demo_base.py             # Base class for demos with timeout
+│   ├── factories/               # Entity factory for team spawning
+│   │   ├── __init__.py
+│   │   └── entity_factory.py    # Factory pattern for team creation
+│   ├── ai/                      # AI system components
+│   │   └── scheduler.py         # AI scheduler with staggering
+│   └── services/                # Game services
+│       ├── __init__.py
+│       └── victory_service.py   # Victory/defeat condition management
 ├── devtools/
 │   ├── scenario_loader.py       # Enhanced with camera integration
 │   ├── map_loader.py
