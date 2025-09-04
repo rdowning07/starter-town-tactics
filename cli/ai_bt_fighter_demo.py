@@ -1021,8 +1021,8 @@ class BTFighterDemo(DemoBase):
         surface.blit(text, (10, y_offset))
 
         systems = [
-            f"├─ EntityFactory: ✅ Spawned {self.entity_factory.get_spawned_count()} units",
-            f"├─ AIScheduler: ✅ {self.ai_scheduler.get_active_count()} AI units scheduled",
+            f"├─ EntityFactory: ✅ Spawned teams",
+            f"├─ AIScheduler: ✅ {self.ai_scheduler.get_task_count()} AI units scheduled",
             f"├─ VictoryService: ✅ Battle state tracked",
             "└─ Behavior Tree: ✅ AI decision making",
         ]
