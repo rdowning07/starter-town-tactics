@@ -22,7 +22,7 @@ from game.animation_clock import AnimationClock
 from game.demo_base import DemoBase
 from game.effects.screen_effects import ScreenEffects
 from game.factories.entity_factory import EntityFactory
-from game.services.victory_service import BattleOutcome, VictoryService
+from game.services.victory_service import GameOutcome, VictoryService
 from game.ui.banners import CutInText, TurnBanner, VictoryBanner
 from game.ui.control_card import ControlCard
 from game.ui.health_and_ko import HealthAndKOOverlay
@@ -101,11 +101,11 @@ class BTFighterDemo(DemoBase):
         # NEW: Use the actual systems
         self.entity_factory = EntityFactory()
         self.ai_scheduler = AIScheduler()
-        self.victory_service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 1, 2: 1})
+        self.victory_service = VictoryService(player_team_id=1, enemy_team_ids={2}, alive_by_team={1: 4, 2: 4})
 
         # Subscribe to victory events
         self.victory_service.subscribe(self._on_battle_outcome)
-        self.battle_outcome: Optional[BattleOutcome] = None
+        self.battle_outcome: Optional[GameOutcome] = None
 
         # BT AI state
         self.bt = make_basic_combat_tree()
@@ -163,14 +163,14 @@ class BTFighterDemo(DemoBase):
         # Register AI unit with scheduler
         self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
 
-    def _on_battle_outcome(self, outcome: BattleOutcome):
+    def _on_battle_outcome(self, outcome: GameOutcome):
         """Handle battle outcome changes."""
         self.battle_outcome = outcome
-        if outcome == BattleOutcome.PLAYER_WIN:
+        if outcome == GameOutcome.VICTORY:
             self.ai_decision_text = "🎉 VICTORY! All enemies defeated!"
             self.victory_banner.show_victory()
             self.screen_effects.unit_defeated(8.0)  # Strong effect for victory
-        elif outcome == BattleOutcome.PLAYER_LOSE:
+        elif outcome == GameOutcome.DEFEAT:
             self.ai_decision_text = "💀 DEFEAT! Player team eliminated!"
             self.victory_banner.show_defeat()
             self.screen_effects.unit_defeated(8.0)  # Strong effect for defeat
