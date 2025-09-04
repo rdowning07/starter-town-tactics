@@ -14,7 +14,7 @@ class ControlCard:
     def __init__(self):
         """Initialize the control card."""
         self.is_visible = True
-        self.position = (10, 10)  # Top-left corner
+        self.position = (700, 10)  # Far right, top
         self.background_color = (0, 0, 0, 180)  # Semi-transparent black
         self.text_color = (255, 255, 255)  # White text
         self.key_color = (255, 255, 0)  # Yellow for keys
@@ -52,7 +52,7 @@ class ControlCard:
         # Calculate card dimensions
         padding = 10
         line_height = 25
-        card_width = 200
+        card_width = 350
         card_height = len(self.controls) * line_height + padding * 2
 
         # Draw background

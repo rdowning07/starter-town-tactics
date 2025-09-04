@@ -220,6 +220,21 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 **Tasks COMPLETED**:
 - ✅ **Core BT Runtime** (`core/ai/bt.py`): Composite pattern, Strategy pattern, Protocol-based DI
 - ✅ **Game Integration** (`game/ai_bt_adapter.py`): Safe unit state management, AP integration
+
+### 🎮 Week 13: 4v4 Tactical Combat System ✅ COMPLETED
+**Goal**: Create complete tactical combat experience with multiple units and advanced AI
+
+**Tasks COMPLETED**:
+- ✅ **Multi-Unit Combat**: 4v4 tactical combat with 8 units (4 player team vs 4 bandits)
+- ✅ **Smart AI System**: Fighter AI, Mage AI, Healer AI, Ranger AI, and 4 Bandit AI with intelligent targeting
+- ✅ **Collision Detection**: Prevents units from occupying the same tile with proper collision system
+- ✅ **Individual Unit Tracking**: Each unit has separate HP/AP/position with independent behavior
+- ✅ **Visual Effects System**: Screen shake, flash effects, projectiles, and healing animations
+- ✅ **UI Components**: Health bars, KO markers, victory banners, control cards, and roster panels
+- ✅ **Architecture Visibility**: Real-time display of design patterns and active methods
+- ✅ **Enhanced Gameplay**: 3x fighter HP, slowed AI timing, and comprehensive battle feedback
+- ✅ **Professional Combat Flow**: Damage, healing, projectiles, visual effects, AP management
+- ✅ **Victory Conditions**: Complete victory/defeat system with proper game state management
 - ✅ **AI Controller Enhancement** (`game/ai_controller.py`): BT codepath with fallback logic
 - ✅ **Comprehensive Testing** (`tests/test_bt_runtime.py`): 6 passing tests covering all BT logic
 - ✅ **Working Demo** (`cli/ai_bt_demo.py`): AI units move toward targets with AP consumption

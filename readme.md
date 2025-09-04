@@ -48,6 +48,12 @@ A tactical, turn-based simulation game engine inspired by Final Fantasy Tactics 
 - ✅ **Animation & FX Integration**: Complete walk/attack animations for Knight & Goblin with FX support
 - ✅ **Behavior Tree AI**: Sophisticated AI system with Composite/Strategy patterns and Protocol-based DI
 - ✅ **Code Quality**: Pylint score improved from 8.09/10 to 9.72/10 with comprehensive error fixes
+- ✅ **4v4 Tactical Combat Demo**: Complete tactical combat system with 8 units (4 player team vs 4 bandits)
+- ✅ **Multi-Unit AI System**: Fighter AI, Mage AI, Healer AI, Ranger AI, and 4 Bandit AI with smart targeting
+- ✅ **Visual Effects System**: Screen shake, flash effects, projectiles, and healing animations
+- ✅ **UI Components**: Health bars, KO markers, victory banners, control cards, and roster panels
+- ✅ **Architecture Visibility**: Real-time display of design patterns and active methods
+- ✅ **Enhanced Gameplay**: 3x fighter HP, slowed AI timing, and comprehensive battle feedback
 
 ---
 
@@ -550,6 +556,7 @@ make setup
 make test
 
 # Play demos
+python cli/ai_bt_fighter_demo.py  # 4v4 Tactical Combat Demo (NEW!)
 make play-demo                    # Command-event architecture demo
 make soak                         # Performance testing
 make play-scenario-animated       # Cinematic demo

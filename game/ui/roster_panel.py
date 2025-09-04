@@ -13,7 +13,7 @@ class RosterPanel:
 
     def __init__(self):
         """Initialize the roster panel."""
-        self.position = (10, 200)  # Below control card
+        self.position = (700, 150)  # Far right, below control card with more spacing
         self.background_color = (0, 0, 0, 180)  # Semi-transparent black
         self.text_color = (255, 255, 255)  # White text
         self.alive_color = (0, 255, 0)  # Green for alive

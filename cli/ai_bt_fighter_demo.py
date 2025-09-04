@@ -32,12 +32,12 @@ from game.ui.roster_panel import RosterPanel
 class BTFighterDemo(DemoBase):
     """Demo for BT AI controlling fighter units with actual assets."""
 
-    def __init__(self, timeout_seconds: int = 30):
+    def __init__(self, timeout_seconds: int = 0):
         """Initialize the demo."""
-        super().__init__(timeout_seconds=timeout_seconds, auto_exit=True)
+        super().__init__(timeout_seconds=timeout_seconds, auto_exit=False)
 
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600))
+        self.screen = pygame.display.set_mode((900, 600))
         pygame.display.set_caption("BT Fighter vs Bandit Demo - AI Behavior Trees")
         print(f"Display initialized: {self.screen.get_size()}")
         print("Window should be visible now!")
@@ -129,7 +129,7 @@ class BTFighterDemo(DemoBase):
 
         # Unit positions - fighter (player) vs bandit (AI)
         self.fighter_pos = [4, 4]  # Player fighter
-        self.fighter_hp = 10
+        self.fighter_hp = 30  # 3x HP
         self.fighter_ap = 6
 
         # 4 Bandits (AI opponents) - spread them out
@@ -149,7 +149,7 @@ class BTFighterDemo(DemoBase):
         # Movement timing - prevent multiple moves per key press
         self.last_move_time = 0
         self.move_delay = 200  # milliseconds between moves
-        self.last_key_pressed: Optional[int] = None
+        self.last_key_pressed: int = 0
 
         # AI decision timing
         self.last_ai_decision = 0
@@ -157,11 +157,12 @@ class BTFighterDemo(DemoBase):
         self.last_healer_decision = 0
         self.last_bandit_decision = 0
         self.last_ranger_decision = 0
-        self.last_ranger_ap_regen = 0  # Separate timer for AP regeneration
+        self.last_ranger_ap_regen = 0
+        self.last_fighter_ai_decision = 0  # Separate timer for AP regeneration
         self.bt_tick_count = 0
 
-        # Register AI unit with scheduler
-        self.ai_scheduler.register("bandit", self._ai_tick, period_s=2.0, offset_s=0.5)
+        # Register AI unit with scheduler (slowed down 3x)
+        self.ai_scheduler.register("bandit", self._ai_tick, period_s=6.0, offset_s=1.5)
 
     def _on_battle_outcome(self, outcome: GameOutcome):
         """Handle battle outcome changes."""
@@ -942,134 +943,26 @@ class BTFighterDemo(DemoBase):
         y_offset = 10
 
         # Title
-        title_text = "BT Fighter vs Bandit Demo - 1v1 Tactical Combat"
+        title_text = "Starter Town Tactics Demo"
         text = self.font.render(title_text, True, (255, 255, 255))
         surface.blit(text, (10, y_offset))
 
-        # Instructions
+        # Add spacing line
         y_offset += 30
-        instructions = [
-            "Controls: WASD to move fighter, SPACE to attack",
-            "AI bandit uses Behavior Tree for decisions",
-            "Goal: Defeat the bandit before they defeat you!",
-        ]
-        for instruction in instructions:
-            text = self.font.render(instruction, True, (200, 200, 200))
-            surface.blit(text, (10, y_offset))
-            y_offset += 20
 
-        # Current animations
-        y_offset += 10
-        anim_text = f"Fighter: {self.fighter_animation}, Bandits: {len([h for h in self.bandit_hp if h > 0])} alive"
-        text = self.font.render(anim_text, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset))
-
-        # Unit stats
-        y_offset += 30
-        stats_text = f"Fighter HP: {self.fighter_hp} AP: {self.fighter_ap}"
-        text = self.font.render(stats_text, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset))
-
-        y_offset += 25
-        # Show all bandit stats
-        for i, (hp, ap) in enumerate(zip(self.bandit_hp, self.bandit_ap)):
-            if hp > 0:  # Only show living bandits
-                stats_text = f"Bandit {i+1} HP: {hp} AP: {ap}"
-                text = self.font.render(stats_text, True, (255, 0, 0))  # Red for bandit
-                surface.blit(text, (10, y_offset))
-                y_offset += 20
-
-        y_offset += 25
-        stats_text3 = f"Mage HP: {self.mage_hp} AP: {self.mage_ap} Range: {self.mage_attack_range}"
-        text = self.font.render(stats_text3, True, (0, 255, 255))  # Cyan for mage
-        surface.blit(text, (10, y_offset))
-
-        y_offset += 25
-        stats_text4 = f"Healer HP: {self.healer_hp} AP: {self.healer_ap} Range: {self.healer_heal_range}"
-        text = self.font.render(stats_text4, True, (255, 255, 255))  # White for healer
-        surface.blit(text, (10, y_offset))
-
-        y_offset += 25
-        stats_text5 = f"Ranger HP: {self.ranger_hp} AP: {self.ranger_ap} Range: {self.ranger_attack_range}"
-        text = self.font.render(stats_text5, True, (0, 255, 0))  # Green for ranger
-        surface.blit(text, (10, y_offset))
-
-        # AI decision
-        y_offset += 25
-        ai_text = f"AI Decision: {self.bt_tick_count}"
-        text = self.font.render(ai_text, True, (255, 255, 0))  # Yellow
-        surface.blit(text, (10, y_offset))
-
-        # Controls reminder
-        y_offset += 25
-        controls_text = "Controls: WASD=Move, SPACE=Attack, H=Damage Mage (test healing)"
-        text = self.font.render(controls_text, True, (200, 200, 200))  # Light gray
-        surface.blit(text, (10, y_offset))
+        # Instructions removed - now shown in control card on the right
 
         # Battle outcome
         if self.battle_outcome:
             y_offset += 30
             outcome_text = f"Battle: {self.battle_outcome.value.upper()}"
-            color = (0, 255, 0) if self.battle_outcome == BattleOutcome.PLAYER_WIN else (255, 0, 0)
+            color = (0, 255, 0) if self.battle_outcome == GameOutcome.VICTORY else (255, 0, 0)
             text = self.font.render(outcome_text, True, color)
             surface.blit(text, (10, y_offset))
 
-        # NEW: Show the actual systems in action
-        y_offset += 120
-        systems_text = "🔧 Systems Active:"
-        text = self.font.render(systems_text, True, (255, 255, 0))
-        surface.blit(text, (10, y_offset))
+        # All text moved to right side info panel
 
-        systems = [
-            f"├─ EntityFactory: ✅ Spawned teams",
-            f"├─ AIScheduler: ✅ {self.ai_scheduler.get_task_count()} AI units scheduled",
-            f"├─ VictoryService: ✅ Battle state tracked",
-            "└─ Behavior Tree: ✅ AI decision making",
-        ]
-
-        for i, system in enumerate(systems):
-            text = self.font.render(system, True, (200, 200, 200))
-            surface.blit(text, (10, y_offset + 25 + i * 20))
-
-        # Design Pattern Showcase
-        y_offset += 120
-        pattern_text = "🏗️ Design Patterns Active:"
-        text = self.font.render(pattern_text, True, (255, 255, 0))
-        surface.blit(text, (10, y_offset))
-
-        patterns = [
-            "├─ Composite: Selector → Sequence → Condition/Action",
-            "├─ Strategy: BTContext Protocol → BTAdapter Implementation",
-            "├─ Observer: VictoryService → Battle Outcome Events",
-            "└─ Factory: EntityFactory → Team Spawning",
-        ]
-
-        for i, pattern in enumerate(patterns):
-            text = self.font.render(pattern, True, (200, 200, 200))
-            surface.blit(text, (10, y_offset + 25 + i * 20))
-
-        # AI Architecture Status
-        y_offset += 120
-        ai_text = "🧠 AI System Status:"
-        text = self.font.render(ai_text, True, (0, 255, 255))
-        surface.blit(text, (10, y_offset))
-
-        ai_status = [
-            f"├─ Behavior Tree: ✅ Active (every {self.ai_update_interval}s)",
-            "├─ Decision Context: ✅ GameState + UnitManager",
-            "├─ Action Execution: ✅ Move/Attack Commands",
-            "└─ Fallback: ✅ Heuristic if BT fails",
-        ]
-
-        for i, status in enumerate(ai_status):
-            text = self.font.render(status, True, (200, 200, 200))
-            surface.blit(text, (10, y_offset + 25 + i * 20))
-
-        # Active effects count
-        y_offset += 120
-        effects_text = f"Active effects: {len(self.active_effects)}"
-        text = self.font.render(effects_text, True, (255, 255, 255))
-        surface.blit(text, (10, y_offset))
+        # All system/pattern/architecture info moved to right side info panel
 
     def _handle_input(self) -> bool:
         """Handle input events. Returns False to quit."""
@@ -1163,11 +1056,11 @@ class BTFighterDemo(DemoBase):
             else:
                 # No movement keys pressed, return to idle
                 self.fighter_animation = "pose1"
-                self.last_key_pressed = None
+                self.last_key_pressed = 0
 
         # Reset key tracking when no keys are pressed
         if not any([keys[pygame.K_w], keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d]]):
-            self.last_key_pressed = None
+            self.last_key_pressed = 0
 
         # Camera follows fighter
         if moved:
@@ -1196,8 +1089,8 @@ class BTFighterDemo(DemoBase):
         """Update mage AI behavior - ranged attacks."""
         current_time = pygame.time.get_ticks()
 
-        # Run mage AI every 1.5 seconds (different from bandit)
-        if current_time - self.last_mage_decision > 1500:
+        # Run mage AI every 4.5 seconds (slowed down 3x)
+        if current_time - self.last_mage_decision > 4500:
             self.last_mage_decision = current_time
 
             # Find the closest living bandit
@@ -1392,8 +1285,8 @@ class BTFighterDemo(DemoBase):
         """Update healer AI behavior - healing allies."""
         current_time = pygame.time.get_ticks()
 
-        # Run healer AI every 2 seconds (different from bandit)
-        if current_time - self.last_healer_decision > 2000:  # Reusing last_mage_decision for healer
+        # Run healer AI every 6 seconds (slowed down 3x)
+        if current_time - self.last_healer_decision > 6000:  # Reusing last_mage_decision for healer
             self.last_healer_decision = current_time  # Update last_mage_decision
 
             # Find the ally with lowest HP
@@ -1429,14 +1322,15 @@ class BTFighterDemo(DemoBase):
                 # Spawn healing effect at healer's position
                 self._spawn_effect("healing", self.healer_pos[0], self.healer_pos[1])
 
-                # Screen effects for healing
-                self.screen_effects.heal_effect()
-
                 current_hp = (
                     self.fighter_hp
                     if target_name == "fighter"
                     else (self.mage_hp if target_name == "mage" else self.ranger_hp)
                 )
+
+                # Screen effects for healing
+                self.screen_effects.heal_effect()
+                print(f"💚 Healer heals {target_name}! {target_name} HP: {current_hp}")
                 print(f"💚 Healer heals {target_name.title()}! {target_name.title()} HP: {current_hp}")
 
                 # Don't trigger victory on full heal - that's not a win condition!
@@ -1511,6 +1405,7 @@ class BTFighterDemo(DemoBase):
                     # Check if fighter is defeated
                     if self.fighter_hp <= 0:
                         self.victory_service.on_unit_defeated(1)
+                        print("💀 FIGHTER DEFEATED! Bandits win!")
 
                 # If bandit can't attack, move toward fighter
                 elif self.bandit_ap[i] > 0 and not self._bandit_can_attack_fighter(i):
@@ -1557,14 +1452,14 @@ class BTFighterDemo(DemoBase):
         """Update ranger AI behavior - ranged attacks with AP regeneration."""
         current_time = pygame.time.get_ticks()
 
-        # Regenerate AP every tick (ranger special ability)
-        if current_time - self.last_ranger_ap_regen > 1000:  # Every 1 second
+        # Regenerate AP every tick (ranger special ability) - slowed down 3x
+        if current_time - self.last_ranger_ap_regen > 3000:  # Every 3 seconds
             self.last_ranger_ap_regen = current_time
             self.ranger_ap = min(5, self.ranger_ap + self.ranger_ap_regen)  # Cap at 5 AP
             print(f"🏹 Ranger AP regenerated! Ranger AP: {self.ranger_ap}")
 
-        # Run ranger AI every 2.5 seconds (different from others)
-        if current_time - self.last_ranger_decision > 2500:
+        # Run ranger AI every 7.5 seconds (slowed down 3x)
+        if current_time - self.last_ranger_decision > 7500:
             self.last_ranger_decision = current_time
 
             # Find the closest living bandit
@@ -1642,6 +1537,94 @@ class BTFighterDemo(DemoBase):
         dy = abs(self.ranger_pos[1] - bandit_pos[1])
         return (dx + dy) <= self.ranger_attack_range  # Range 2!
 
+    def _update_fighter_ai(self) -> None:
+        """Update fighter AI - gets overridden by player input."""
+        current_time = pygame.time.get_ticks()
+
+        # Only run AI if no recent player input (within last 2 seconds)
+        if current_time - self.last_key_pressed < 2000:
+            return  # Player recently gave input, skip AI
+        else:
+            # Show that fighter AI is active
+            if current_time - self.last_fighter_ai_decision > 2500:  # Show message 0.5s before action
+                print("🤖 Fighter AI is active (no player input)")
+
+        # Run fighter AI every 3 seconds (slowed down 3x)
+        if current_time - self.last_fighter_ai_decision > 3000:
+            self.last_fighter_ai_decision = current_time
+
+            # Find closest bandit
+            closest_bandit = None
+            closest_distance = float("inf")
+            for i, bandit_pos in enumerate(self.bandit_positions):
+                if self.bandit_hp[i] > 0:  # Only consider living bandits
+                    distance = abs(self.fighter_pos[0] - bandit_pos[0]) + abs(self.fighter_pos[1] - bandit_pos[1])
+                    if distance < closest_distance:
+                        closest_distance = distance
+                        closest_bandit = i
+
+            if closest_bandit is not None:
+                bandit_pos = self.bandit_positions[closest_bandit]
+
+                # Check if fighter can attack bandit
+                if self._fighter_can_attack_bandit(closest_bandit) and self.fighter_ap > 0:
+                    # Fighter attacks bandit!
+                    damage = 3
+                    self.bandit_hp[closest_bandit] = max(0, self.bandit_hp[closest_bandit] - damage)
+                    self.fighter_ap = max(0, self.fighter_ap - 2)
+
+                    # Spawn slash effect at bandit's position
+                    self._spawn_effect("slash", bandit_pos[0], bandit_pos[1])
+
+                    # Update AI decision text
+                    self.ai_decision_text = (
+                        f"🤖 Fighter AI attacks Bandit {closest_bandit+1}! Bandit HP: {self.bandit_hp[closest_bandit]}"
+                    )
+                    print(
+                        f"🤖 Fighter AI attacks Bandit {closest_bandit+1}! Bandit HP: {self.bandit_hp[closest_bandit]}"
+                    )
+
+                    # Check if bandit is defeated
+                    if self.bandit_hp[closest_bandit] <= 0:
+                        self.victory_service.on_unit_defeated(2)
+                        self.ai_decision_text = f"🤖 Fighter AI defeats Bandit {closest_bandit+1}!"
+
+                elif self.fighter_ap > 0:
+                    # Move fighter toward bandit
+                    dx = bandit_pos[0] - self.fighter_pos[0]
+                    dy = bandit_pos[1] - self.fighter_pos[1]
+
+                    if abs(dx) > abs(dy):
+                        # Move horizontally
+                        new_x = self.fighter_pos[0] + (1 if dx > 0 else -1)
+                        if 0 <= new_x < 20:  # Stay in bounds
+                            self.fighter_pos[0] = new_x
+                            self.fighter_ap = max(0, self.fighter_ap - 1)
+                            self.ai_decision_text = (
+                                f"🤖 Fighter AI moves toward bandit: ({self.fighter_pos[0]}, {self.fighter_pos[1]})"
+                            )
+                            print(f"🤖 Fighter AI moves toward bandit: ({self.fighter_pos[0]}, {self.fighter_pos[1]})")
+                    else:
+                        # Move vertically
+                        new_y = self.fighter_pos[1] + (1 if dy > 0 else -1)
+                        if 0 <= new_y < 15:  # Stay in bounds
+                            self.fighter_pos[1] = new_y
+                            self.fighter_ap = max(0, self.fighter_ap - 1)
+                            self.ai_decision_text = (
+                                f"🤖 Fighter AI moves toward bandit: ({self.fighter_pos[0]}, {self.fighter_pos[1]})"
+                            )
+                            print(f"🤖 Fighter AI moves toward bandit: ({self.fighter_pos[0]}, {self.fighter_pos[1]})")
+
+    def _fighter_can_attack_bandit(self, bandit_index: int) -> bool:
+        """Check if fighter can attack the specified bandit."""
+        if bandit_index >= len(self.bandit_positions):
+            return False
+
+        bandit_pos = self.bandit_positions[bandit_index]
+        dx = abs(self.fighter_pos[0] - bandit_pos[0])
+        dy = abs(self.fighter_pos[1] - bandit_pos[1])
+        return (dx + dy) <= 1  # Melee range
+
     def run(self) -> None:
         """Run the demo."""
         print("Starting BT Fighter Demo...")
@@ -1649,12 +1632,15 @@ class BTFighterDemo(DemoBase):
         print("AI bandit uses Behavior Tree for decisions")
 
         running = True
-        while running and not self.should_exit():
+        while running:
             # Handle input
             running = self._handle_input()
 
             # Update AI scheduler
             self.ai_scheduler.update(0.016)  # ~60 FPS
+
+            # Update fighter AI (gets overridden by player input)
+            self._update_fighter_ai()
 
             # Simple mage AI - attack bandit if in range
             self._update_mage_ai()
@@ -1697,6 +1683,7 @@ class BTFighterDemo(DemoBase):
             self._draw_ui(self.screen)
             self.control_card.draw(self.screen)
             self._draw_roster_panel(self.screen)
+            self._draw_info_panel(self.screen)
 
             # Draw banners and cut-in text
             self.turn_banner.draw(self.screen)
@@ -1731,7 +1718,13 @@ class BTFighterDemo(DemoBase):
 
         # Bandits
         for i, (pos, hp) in enumerate(zip(self.bandit_positions, self.bandit_hp)):
-            units_data[f"bandit_{i}"] = {"x": pos[0], "y": pos[1], "hp": hp, "max_hp": 8, "alive": hp > 0}
+            units_data[f"bandit_{i}"] = {
+                "x": pos[0],
+                "y": pos[1],
+                "hp": hp,
+                "max_hp": 8,
+                "alive": hp > 0,
+            }
 
         # Mage
         units_data["mage"] = {
@@ -1772,10 +1765,30 @@ class BTFighterDemo(DemoBase):
             1: {  # Player team
                 "name": "Allies",
                 "units": [
-                    {"name": "Fighter", "hp": self.fighter_hp, "max_hp": 10, "alive": self.fighter_hp > 0},
-                    {"name": "Mage", "hp": self.mage_hp, "max_hp": 15, "alive": self.mage_hp > 0},
-                    {"name": "Healer", "hp": self.healer_hp, "max_hp": 12, "alive": self.healer_hp > 0},
-                    {"name": "Ranger", "hp": self.ranger_hp, "max_hp": 14, "alive": self.ranger_hp > 0},
+                    {
+                        "name": "Fighter",
+                        "hp": self.fighter_hp,
+                        "max_hp": 10,
+                        "alive": self.fighter_hp > 0,
+                    },
+                    {
+                        "name": "Mage",
+                        "hp": self.mage_hp,
+                        "max_hp": 15,
+                        "alive": self.mage_hp > 0,
+                    },
+                    {
+                        "name": "Healer",
+                        "hp": self.healer_hp,
+                        "max_hp": 12,
+                        "alive": self.healer_hp > 0,
+                    },
+                    {
+                        "name": "Ranger",
+                        "hp": self.ranger_hp,
+                        "max_hp": 14,
+                        "alive": self.ranger_hp > 0,
+                    },
                 ],
             },
             2: {  # Enemy team
@@ -1789,10 +1802,70 @@ class BTFighterDemo(DemoBase):
 
         self.roster_panel.draw(surface, teams)
 
+    def _draw_info_panel(self, surface: pygame.Surface) -> None:
+        """Draw info panel with animation and AI decision info."""
+        # Position info panel below roster panel
+        panel_x = 700
+        panel_y = 400  # Below roster panel
+
+        # Create info data
+        alive_bandits = [h for h in self.bandit_hp if h > 0]
+        bandit_hp_text = f"Bandits: {len(alive_bandits)} alive"
+        if alive_bandits:
+            bandit_hp_text += f" (HP: {', '.join(map(str, alive_bandits))})"
+
+        info_items = [
+            f"Fighter: {self.fighter_animation} (HP: {self.fighter_hp})",
+            bandit_hp_text,
+            f"AI Decision: {self.bt_tick_count}",
+            f"Active Effects: {len(self.active_effects)}",
+            f"AI Tasks: {self.ai_scheduler.get_task_count()}",
+            "",
+            "Architecture & Patterns:",
+            "├─ Composite: BT Structure",
+            "├─ Strategy: BTContext",
+            "├─ Observer: VictoryService",
+            "├─ Factory: EntityFactory",
+            "├─ Scheduler: AIScheduler",
+            "└─ State: GameState",
+            "",
+            "Methods Active:",
+            "├─ _update_fighter_ai()",
+            "├─ _update_bandit_ai()",
+            "├─ _update_mage_ai()",
+            "├─ _update_healer_ai()",
+            "├─ _update_ranger_ai()",
+            "└─ _update_projectiles()",
+        ]
+
+        # Draw background
+        panel_width = 350  # Expanded for longer text
+        panel_height = len(info_items) * 30 + 30
+        panel_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
+        panel_surface.fill((0, 0, 0, 180))  # Semi-transparent black
+
+        # Draw border
+        pygame.draw.rect(panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2)
+
+        # Draw title
+        font = pygame.font.Font(None, 20)
+        title_surface = font.render("GAME INFO", True, (255, 255, 255))
+        panel_surface.blit(title_surface, (10, 10))
+
+        # Draw info items
+        y_offset = 35
+        for item in info_items:
+            text_surface = font.render(item, True, (255, 255, 255))
+            panel_surface.blit(text_surface, (10, y_offset))
+            y_offset += 30
+
+        # Blit to main surface
+        surface.blit(panel_surface, (panel_x, panel_y))
+
 
 def main():
     """Main entry point."""
-    demo = BTFighterDemo(timeout_seconds=60)
+    demo = BTFighterDemo(timeout_seconds=0)
     demo.run()
 
 
