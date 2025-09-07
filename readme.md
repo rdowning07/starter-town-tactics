@@ -127,6 +127,12 @@ The game now features a complete 4v4 tactical combat system with professional ga
 # Run 4v4 tactical combat demo
 python cli/ai_bt_fighter_demo.py
 
+# Run title screen demo (20 seconds)
+python cli/title_screen_demo.py
+
+# Run BT demo with title screen
+python cli/ai_bt_fighter_demo_with_title_fixed.py
+
 # Run architecture patterns demo
 python demo_setup.py
 ```
@@ -137,6 +143,24 @@ The new architecture includes:
 - **AI Scheduler**: `AIScheduler` with 250ms staggering to prevent frame hitching
 - **Victory Service**: `VictoryService` with win/lose conditions and event notifications
 - **Pattern Demonstrations**: Live showcase of architectural patterns in action
+
+## 🎬 Title Screen System
+
+The game now features a professional title screen system:
+
+### Features
+- **7-Second Display**: Title screen displays for 7 seconds before transitioning to main game
+- **Skip Functionality**: Press SPACE to skip the title screen early
+- **Professional Design**: Matches the game's fantasy aesthetic with parchment background
+- **Character Illustrations**: Features four character silhouettes behind the main title
+- **Multi-language Support**: Includes Japanese subtitle "スタータータウン タクティクス"
+- **Responsive Scaling**: Automatically scales to fit different screen sizes
+
+### Integration
+- **Standalone Demo**: `make title-screen-demo` - Shows title screen only
+- **Integrated Demo**: `make ai-bt-demo-with-title` - Title screen followed by main game
+- **Modular Design**: Easy to integrate into any demo or game mode
+- **Fallback Support**: Creates fallback title screen if image loading fails
 
 ## 🎨 Animation & Visual Effects System
 
@@ -308,6 +332,8 @@ make fighter-demo                # Standalone fighter demo with movement
 make fighter-integrated-demo     # Fighter integrated into main game architecture
 make units-fx-demo               # Units and FX demo
 make new-terrain-demo            # New terrain system demo
+make title-screen-demo           # Title screen demo (20 seconds)
+make ai-bt-demo-with-title       # BT demo with title screen
 python cli/ai_bt_fighter_demo.py # 4v4 tactical combat demo
 python demo_setup.py             # Architecture patterns demo
 ```

@@ -14,7 +14,7 @@ class ControlCard:
     def __init__(self):
         """Initialize the control card."""
         self.is_visible = True
-        self.position = (700, 10)  # Far right, top
+        self.position = (750, 10)  # Far right, top (moved to avoid game area)
         self.background_color = (0, 0, 0, 180)  # Semi-transparent black
         self.text_color = (255, 255, 255)  # White text
         self.key_color = (255, 255, 0)  # Yellow for keys
@@ -27,7 +27,6 @@ class ControlCard:
         self.controls = [
             ("WASD", "Move Fighter"),
             ("SPACE", "Attack"),
-            ("H", "Damage Test"),
             ("ESC", "Exit"),
         ]
 
@@ -51,7 +50,7 @@ class ControlCard:
 
         # Calculate card dimensions
         padding = 10
-        line_height = 25
+        line_height = 30  # Increased from 25 to 30 for better spacing
         card_width = 350
         card_height = len(self.controls) * line_height + padding * 2
 
@@ -60,7 +59,9 @@ class ControlCard:
         card_surface.fill(self.background_color)
 
         # Draw border
-        pygame.draw.rect(card_surface, (100, 100, 100), (0, 0, card_width, card_height), 2)
+        pygame.draw.rect(
+            card_surface, (100, 100, 100), (0, 0, card_width, card_height), 2
+        )
 
         # Draw title
         title_surface = self.font.render("CONTROLS", True, self.text_color)

@@ -61,6 +61,8 @@ help:
 	@echo "  make ai-bt-demo - Run Behavior Tree AI demo"
 	@echo "  make ai-bt-demo-enhanced - Run enhanced BT demo with performance metrics"
 	@echo "  make ai-bt-demo-visual - Run visual BT demo (Friday demo ready)"
+	@echo "  make title-screen-demo - Run title screen demo (20 seconds)"
+	@echo "  make ai-bt-demo-with-title - Run BT demo with title screen"
 	@echo "  make test-bt - Run Behavior Tree tests"
 	@echo "  make replay - Run game replay (future)"
 
@@ -287,6 +289,14 @@ ai-bt-demo-visual:
 
 ai-bt-fighter-vs-bandit:
 	PYTHONPATH=. python cli/ai_bt_fighter_demo.py
+
+.PHONY: title-screen-demo
+title-screen-demo:
+	PYTHONPATH=. python cli/title_screen_demo.py
+
+.PHONY: ai-bt-demo-with-title
+ai-bt-demo-with-title:
+	PYTHONPATH=. python cli/ai_bt_fighter_demo_with_title.py
 
 .PHONY: replay
 replay:

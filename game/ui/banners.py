@@ -88,7 +88,7 @@ class VictoryBanner:
             title_text = "DEFEAT!"
 
         # Get surface dimensions
-        screen_width, _ = surface.get_size()
+        screen_width, screen_height = surface.get_size()
 
         # Draw semi-transparent background
         overlay = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
@@ -97,14 +97,12 @@ class VictoryBanner:
 
         # Draw title
         title_surface = self.title_font.render(title_text, True, text_color)
-        title_rect = title_surface.get_rect(center=(screen_width // 2, screen_height // 2 - 20))
+        title_rect = title_surface.get_rect(
+            center=(screen_width // 2, screen_height // 2 - 20)
+        )
         surface.blit(title_surface, title_rect)
 
-        # Draw subtitle
-        subtitle_text = "Press ESC to continue"
-        subtitle_surface = self.font.render(subtitle_text, True, (255, 255, 255))
-        subtitle_rect = subtitle_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 20))
-        surface.blit(subtitle_surface, subtitle_rect)
+        # No subtitle - victory banner auto-exits after 3 seconds
 
 
 class TurnBanner:
@@ -163,7 +161,7 @@ class TurnBanner:
             text_color = self.ai_color
 
         # Get surface dimensions
-        screen_width, _ = surface.get_size()
+        screen_width, screen_height = surface.get_size()
 
         # Draw semi-transparent background
         overlay = pygame.Surface((screen_width, 60), pygame.SRCALPHA)
@@ -203,7 +201,9 @@ class CutInText:
         """Show heal cut-in."""
         self.show_text("HEALED!", self.heal_color)
 
-    def show_text(self, text: str, color: Tuple[int, int, int] = (255, 255, 255)) -> None:
+    def show_text(
+        self, text: str, color: Tuple[int, int, int] = (255, 255, 255)
+    ) -> None:
         """Show custom cut-in text."""
         self.is_visible = True
         self.text = text
@@ -236,7 +236,7 @@ class CutInText:
             self.font = pygame.font.Font(None, 48)
 
         # Get surface dimensions
-        screen_width, _ = surface.get_size()
+        screen_width, screen_height = surface.get_size()
 
         # Draw semi-transparent background
         overlay = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
@@ -245,5 +245,7 @@ class CutInText:
 
         # Draw cut-in text
         text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2))
+        text_rect = text_surface.get_rect(
+            center=(screen_width // 2, screen_height // 2)
+        )
         surface.blit(text_surface, text_rect)
