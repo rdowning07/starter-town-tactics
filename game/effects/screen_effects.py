@@ -140,21 +140,21 @@ class ScreenEffects:
     def hit_impact(self, intensity: float = 3.0) -> None:
         """Trigger hit impact effects."""
         self.shake.shake(intensity, 0.2)
-        self.flash.flash((255, 255, 0), 0.1)  # Yellow flash
+        self.flash.flash((255, 255, 0), 0.05)  # Yellow flash - halved duration
 
     def critical_hit(self, intensity: float = 8.0) -> None:
         """Trigger critical hit effects."""
         self.shake.shake(intensity, 0.4)
-        self.flash.flash((255, 0, 0), 0.2)  # Red flash
+        self.flash.flash((255, 0, 0), 0.1)  # Red flash - halved duration
 
     def unit_defeated(self, intensity: float = 5.0) -> None:
         """Trigger unit defeated effects."""
         self.shake.shake(intensity, 0.3)
-        self.flash.flash((255, 0, 0), 0.15)  # Red flash
+        self.flash.flash((255, 0, 0), 0.075)  # Red flash - halved duration
 
     def heal_effect(self) -> None:
         """Trigger heal effect."""
-        self.flash.flash((0, 255, 255), 0.2)  # Cyan flash
+        self.flash.flash((0, 255, 255), 0.1)  # Cyan flash - halved duration
 
     def update(self, dt: float) -> Tuple[float, float]:
         """Update all effects.

@@ -77,16 +77,12 @@ class TitleScreenDemo:
 
             # Show instructions
             font = pygame.font.Font(None, 24)
-            instruction_text = font.render(
-                "Press SPACE to skip title screen", True, (255, 255, 255)
-            )
+            instruction_text = font.render("Press SPACE to skip title screen", True, (255, 255, 255))
             self.screen.blit(instruction_text, (10, 10))
 
             # Show remaining time
             remaining_time = self.title_screen.get_remaining_time()
-            time_text = font.render(
-                f"Time remaining: {remaining_time:.1f}s", True, (255, 255, 255)
-            )
+            time_text = font.render(f"Time remaining: {remaining_time:.1f}s", True, (255, 255, 255))
             self.screen.blit(time_text, (10, 40))
         else:
             # Draw main demo content
@@ -97,17 +93,13 @@ class TitleScreenDemo:
 
             # Show some demo content
             demo_font = pygame.font.Font(None, 32)
-            demo_text = demo_font.render(
-                "Title screen demo completed successfully!", True, (200, 200, 200)
-            )
+            demo_text = demo_font.render("Title screen demo completed successfully!", True, (200, 200, 200))
             demo_rect = demo_text.get_rect(center=(450, 300))
             self.screen.blit(demo_text, demo_rect)
 
             # Show instructions
             instruction_font = pygame.font.Font(None, 24)
-            instruction_text = instruction_font.render(
-                "Press ESC to exit", True, (150, 150, 150)
-            )
+            instruction_text = instruction_font.render("Press ESC to exit", True, (150, 150, 150))
             instruction_rect = instruction_text.get_rect(center=(450, 400))
             self.screen.blit(instruction_text, instruction_rect)
 

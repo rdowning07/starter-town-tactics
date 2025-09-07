@@ -73,9 +73,7 @@ class EnhancedVictoryService(VictoryService):
         # Check survival victory
         if self.victory_conditions[VictoryType.SURVIVAL]:
             if self.turn_count >= self.survival_turns:
-                self._trigger_victory(
-                    GameOutcome.VICTORY, f"Survived {self.turn_count} turns!"
-                )
+                self._trigger_victory(GameOutcome.VICTORY, f"Survived {self.turn_count} turns!")
                 return
 
         # Update territory control
@@ -93,18 +91,11 @@ class EnhancedVictoryService(VictoryService):
             self.total_damage_dealt += damage
 
             # Check damage victory
-            if (
-                self.victory_conditions[VictoryType.DAMAGE]
-                and self.total_damage_dealt >= self.damage_threshold
-            ):
-                self._trigger_victory(
-                    GameOutcome.VICTORY, f"Dealt {self.total_damage_dealt} damage!"
-                )
+            if self.victory_conditions[VictoryType.DAMAGE] and self.total_damage_dealt >= self.damage_threshold:
+                self._trigger_victory(GameOutcome.VICTORY, f"Dealt {self.total_damage_dealt} damage!")
                 return
 
-    def on_unit_moved(
-        self, unit_id: str, new_position: Tuple[int, int], team_id: int
-    ) -> None:
+    def on_unit_moved(self, unit_id: str, new_position: Tuple[int, int], team_id: int) -> None:
         """Track unit movement for objective and territory victories.
 
         Args:
@@ -115,14 +106,9 @@ class EnhancedVictoryService(VictoryService):
         self.unit_positions[unit_id] = new_position
 
         # Check objective victory (player units reaching objective tiles)
-        if (
-            self.victory_conditions[VictoryType.OBJECTIVE]
-            and team_id == self.player_team_id
-        ):
+        if self.victory_conditions[VictoryType.OBJECTIVE] and team_id == self.player_team_id:
             if new_position in self.objective_tiles:
-                self._trigger_victory(
-                    GameOutcome.VICTORY, f"Reached objective at {new_position}!"
-                )
+                self._trigger_victory(GameOutcome.VICTORY, f"Reached objective at {new_position}!")
                 return
 
     def check_enhanced_victory_conditions(self) -> Optional[GameOutcome]:
@@ -138,8 +124,7 @@ class EnhancedVictoryService(VictoryService):
 
         # Check territory victory
         if (
-            self.victory_conditions[VictoryType.TERRITORY]
-            and len(self.controlled_tiles) >= 3
+            self.victory_conditions[VictoryType.TERRITORY] and len(self.controlled_tiles) >= 3
         ):  # Control 3+ center tiles
             self._trigger_victory(
                 GameOutcome.VICTORY,
@@ -189,9 +174,7 @@ class EnhancedVictoryService(VictoryService):
             "territory_tiles": self.territory_tiles,
         }
 
-    def enable_victory_condition(
-        self, condition: VictoryType, enabled: bool = True
-    ) -> None:
+    def enable_victory_condition(self, condition: VictoryType, enabled: bool = True) -> None:
         """Enable or disable a specific victory condition.
 
         Args:

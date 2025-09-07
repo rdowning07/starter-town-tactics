@@ -28,9 +28,7 @@ class MusicManager:
             print(f"Failed to initialize music manager: {e}")
             self.enabled = False
 
-    def play(
-        self, path: str, volume: float = None, loop: bool = True, fade_ms: int = 1000
-    ) -> bool:
+    def play(self, path: str, volume: float = None, loop: bool = True, fade_ms: int = 1000) -> bool:
         """Play a track; stops any currently playing music.
 
         Args:
@@ -63,9 +61,7 @@ class MusicManager:
             pygame.mixer.music.play(loops=loops, fade_ms=fade_ms)
 
             self.current_track = str(full_path)
-            print(
-                f"Playing music: {full_path.name} (volume: {volume:.2f}, loop: {loop})"
-            )
+            print(f"Playing music: {full_path.name} (volume: {volume:.2f}, loop: {loop})")
             return True
 
         except Exception as e:

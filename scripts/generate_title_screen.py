@@ -59,9 +59,7 @@ def create_title_screen():
     title_surface.blit(title_text, title_rect)
 
     # Japanese subtitle
-    subtitle_text = subtitle_font.render(
-        "スタータータウン タクティクス", True, (0, 0, 0)
-    )
+    subtitle_text = subtitle_font.render("スタータータウン タクティクス", True, (0, 0, 0))
     subtitle_rect = subtitle_text.get_rect(center=(width // 2, height // 2 - 30))
     title_surface.blit(subtitle_text, subtitle_rect)
 
@@ -69,9 +67,7 @@ def create_title_screen():
     line_start_x = subtitle_rect.left - 20
     line_end_x = subtitle_rect.right + 20
     line_y = subtitle_rect.centery
-    pygame.draw.line(
-        title_surface, (0, 0, 0), (line_start_x, line_y), (line_end_x, line_y), 2
-    )
+    pygame.draw.line(title_surface, (0, 0, 0), (line_start_x, line_y), (line_end_x, line_y), 2)
 
     # Press Start text
     press_start_text = press_start_font.render("Press Start", True, (0, 100, 200))
@@ -150,9 +146,7 @@ def create_title_screen():
     pygame.draw.polygon(title_surface, (255, 255, 255), star_points)
 
     # Save the image
-    output_path = (
-        Path(__file__).parent.parent / "assets" / "ui" / "title" / "title_screen.png"
-    )
+    output_path = Path(__file__).parent.parent / "assets" / "ui" / "title" / "title_screen.png"
     pygame.image.save(title_surface, str(output_path))
     print(f"Title screen saved to: {output_path}")
 

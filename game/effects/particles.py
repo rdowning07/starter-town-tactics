@@ -81,13 +81,9 @@ class Particle:
             alpha = int(255 * (self.lifetime / self.max_lifetime))
 
         # Create surface with alpha
-        particle_surface = pygame.Surface(
-            (self.size * 2, self.size * 2), pygame.SRCALPHA
-        )
+        particle_surface = pygame.Surface((self.size * 2, self.size * 2), pygame.SRCALPHA)
         color_with_alpha = (*self.color, alpha)
-        pygame.draw.circle(
-            particle_surface, color_with_alpha, (self.size, self.size), self.size
-        )
+        pygame.draw.circle(particle_surface, color_with_alpha, (self.size, self.size), self.size)
 
         # Draw particle
         screen.blit(particle_surface, (self.x - self.size, self.y - self.size))

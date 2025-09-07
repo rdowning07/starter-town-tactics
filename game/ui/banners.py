@@ -97,9 +97,7 @@ class VictoryBanner:
 
         # Draw title
         title_surface = self.title_font.render(title_text, True, text_color)
-        title_rect = title_surface.get_rect(
-            center=(screen_width // 2, screen_height // 2 - 20)
-        )
+        title_rect = title_surface.get_rect(center=(screen_width // 2, screen_height // 2 - 20))
         surface.blit(title_surface, title_rect)
 
         # No subtitle - victory banner auto-exits after 3 seconds
@@ -201,9 +199,7 @@ class CutInText:
         """Show heal cut-in."""
         self.show_text("HEALED!", self.heal_color)
 
-    def show_text(
-        self, text: str, color: Tuple[int, int, int] = (255, 255, 255)
-    ) -> None:
+    def show_text(self, text: str, color: Tuple[int, int, int] = (255, 255, 255)) -> None:
         """Show custom cut-in text."""
         self.is_visible = True
         self.text = text
@@ -245,7 +241,5 @@ class CutInText:
 
         # Draw cut-in text
         text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(
-            center=(screen_width // 2, screen_height // 2)
-        )
+        text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2))
         surface.blit(text_surface, text_rect)

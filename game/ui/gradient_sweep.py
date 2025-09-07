@@ -71,9 +71,7 @@ class GradientSweep:
         progress = min(elapsed / self.duration, 1.0)
 
         # Create gradient overlay
-        overlay = pygame.Surface(
-            (self.screen_width, self.screen_height), pygame.SRCALPHA
-        )
+        overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
 
         if self.sweep_type == "victory":
             # Gold gradient from top to bottom
@@ -128,9 +126,7 @@ class GradientSweep:
 
             # Top edge
             if distance < self.screen_height:
-                pygame.draw.line(
-                    overlay, color, (0, distance), (self.screen_width, distance)
-                )
+                pygame.draw.line(overlay, color, (0, distance), (self.screen_width, distance))
             # Bottom edge
             if distance < self.screen_height:
                 pygame.draw.line(
@@ -141,9 +137,7 @@ class GradientSweep:
                 )
             # Left edge
             if distance < self.screen_width:
-                pygame.draw.line(
-                    overlay, color, (distance, 0), (distance, self.screen_height)
-                )
+                pygame.draw.line(overlay, color, (distance, 0), (distance, self.screen_height))
             # Right edge
             if distance < self.screen_width:
                 pygame.draw.line(

@@ -59,9 +59,7 @@ class ControlCard:
         card_surface.fill(self.background_color)
 
         # Draw border
-        pygame.draw.rect(
-            card_surface, (100, 100, 100), (0, 0, card_width, card_height), 2
-        )
+        pygame.draw.rect(card_surface, (100, 100, 100), (0, 0, card_width, card_height), 2)
 
         # Draw title
         title_surface = self.font.render("CONTROLS", True, self.text_color)

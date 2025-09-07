@@ -49,9 +49,7 @@ class EnhancedAIBehavior:
         self.movement_history[unit_id] = []
         print(f"🤖 Unit {unit_id} assigned {behavior.value} behavior")
 
-    def get_enhanced_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict, game_state: any
-    ) -> Optional[Dict]:
+    def get_enhanced_action(self, unit_id: str, unit_data: Dict, all_units: Dict, game_state: any) -> Optional[Dict]:
         """Get enhanced AI action based on behavior type.
 
         Args:
@@ -78,16 +76,12 @@ class EnhancedAIBehavior:
 
         return None
 
-    def _aggressive_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict
-    ) -> Optional[Dict]:
+    def _aggressive_action(self, unit_id: str, unit_data: Dict, all_units: Dict) -> Optional[Dict]:
         """Aggressive behavior: direct attack, high risk."""
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find nearest enemy
-        nearest_enemy = self._find_nearest_enemy(
-            current_pos, all_units, unit_data.get("team")
-        )
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
         if not nearest_enemy:
             return None
 
@@ -113,16 +107,12 @@ class EnhancedAIBehavior:
             "reason": "aggressive_advance",
         }
 
-    def _tactical_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict
-    ) -> Optional[Dict]:
+    def _tactical_action(self, unit_id: str, unit_data: Dict, all_units: Dict) -> Optional[Dict]:
         """Tactical behavior: strategic positioning."""
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find best tactical position
-        tactical_pos = self._find_tactical_position(
-            current_pos, all_units, unit_data.get("team")
-        )
+        tactical_pos = self._find_tactical_position(current_pos, all_units, unit_data.get("team"))
         if tactical_pos and tactical_pos != current_pos:
             return {
                 "action": "move",
@@ -132,9 +122,7 @@ class EnhancedAIBehavior:
             }
 
         # If in good position, attack if possible
-        nearest_enemy = self._find_nearest_enemy(
-            current_pos, all_units, unit_data.get("team")
-        )
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)
@@ -148,16 +136,12 @@ class EnhancedAIBehavior:
 
         return None
 
-    def _defensive_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict
-    ) -> Optional[Dict]:
+    def _defensive_action(self, unit_id: str, unit_data: Dict, all_units: Dict) -> Optional[Dict]:
         """Defensive behavior: protect allies, low risk."""
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find nearest ally in danger
-        ally_in_danger = self._find_ally_in_danger(
-            current_pos, all_units, unit_data.get("team")
-        )
+        ally_in_danger = self._find_ally_in_danger(current_pos, all_units, unit_data.get("team"))
         if ally_in_danger:
             # Move to protect ally
             ally_pos = (ally_in_danger.get("x", 0), ally_in_danger.get("y", 0))
@@ -174,9 +158,7 @@ class EnhancedAIBehavior:
         # If no allies in danger, maintain defensive position
         return None
 
-    def _mobile_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict
-    ) -> Optional[Dict]:
+    def _mobile_action(self, unit_id: str, unit_data: Dict, all_units: Dict) -> Optional[Dict]:
         """Mobile behavior: constant movement, hit-and-run."""
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
@@ -194,9 +176,7 @@ class EnhancedAIBehavior:
 
         # Find new position that's not recent
         for _ in range(10):  # Try up to 10 random positions
-            direction = random.choice(
-                [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)]
-            )
+            direction = random.choice([(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)])
             new_pos = self._apply_movement(current_pos, direction)
 
             if new_pos not in recent_positions:
@@ -208,9 +188,7 @@ class EnhancedAIBehavior:
                 }
 
         # If can't find new position, attack if possible
-        nearest_enemy = self._find_nearest_enemy(
-            current_pos, all_units, unit_data.get("team")
-        )
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)
@@ -224,18 +202,12 @@ class EnhancedAIBehavior:
 
         return None
 
-    def _pack_hunter_action(
-        self, unit_id: str, unit_data: Dict, all_units: Dict
-    ) -> Optional[Dict]:
+    def _pack_hunter_action(self, unit_id: str, unit_data: Dict, all_units: Dict) -> Optional[Dict]:
         """Pack hunter behavior: coordinate with other units."""
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find other units of same team
-        allies = [
-            u
-            for u in all_units.values()
-            if u.get("team") == unit_data.get("team") and u.get("id") != unit_id
-        ]
+        allies = [u for u in all_units.values() if u.get("team") == unit_data.get("team") and u.get("id") != unit_id]
 
         if allies:
             # Find formation position
@@ -249,9 +221,7 @@ class EnhancedAIBehavior:
                 }
 
         # If in formation, attack together
-        nearest_enemy = self._find_nearest_enemy(
-            current_pos, all_units, unit_data.get("team")
-        )
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)
@@ -265,15 +235,9 @@ class EnhancedAIBehavior:
 
         return None
 
-    def _find_nearest_enemy(
-        self, current_pos: Tuple[int, int], all_units: Dict, team: str
-    ) -> Optional[Dict]:
+    def _find_nearest_enemy(self, current_pos: Tuple[int, int], all_units: Dict, team: str) -> Optional[Dict]:
         """Find the nearest enemy unit."""
-        enemies = [
-            u
-            for u in all_units.values()
-            if u.get("team") != team and u.get("alive", True)
-        ]
+        enemies = [u for u in all_units.values() if u.get("team") != team and u.get("alive", True)]
         if not enemies:
             return None
 
@@ -289,15 +253,9 @@ class EnhancedAIBehavior:
 
         return nearest
 
-    def _find_ally_in_danger(
-        self, current_pos: Tuple[int, int], all_units: Dict, team: str
-    ) -> Optional[Dict]:
+    def _find_ally_in_danger(self, current_pos: Tuple[int, int], all_units: Dict, team: str) -> Optional[Dict]:
         """Find an ally that's in danger (low health or surrounded)."""
-        allies = [
-            u
-            for u in all_units.values()
-            if u.get("team") == team and u.get("alive", True)
-        ]
+        allies = [u for u in all_units.values() if u.get("team") == team and u.get("alive", True)]
 
         for ally in allies:
             # Check if ally has low health
@@ -339,18 +297,12 @@ class EnhancedAIBehavior:
 
         return None
 
-    def _evaluate_position(
-        self, pos: Tuple[int, int], all_units: Dict, team: str
-    ) -> float:
+    def _evaluate_position(self, pos: Tuple[int, int], all_units: Dict, team: str) -> float:
         """Evaluate how good a position is tactically."""
         score = 0.0
 
         # Prefer positions near allies
-        allies = [
-            u
-            for u in all_units.values()
-            if u.get("team") == team and u.get("alive", True)
-        ]
+        allies = [u for u in all_units.values() if u.get("team") == team and u.get("alive", True)]
         for ally in allies:
             ally_pos = (ally.get("x", 0), ally.get("y", 0))
             distance = self._calculate_distance(pos, ally_pos)
@@ -358,11 +310,7 @@ class EnhancedAIBehavior:
                 score += 1.0 / (distance + 1)
 
         # Prefer positions that can attack enemies
-        enemies = [
-            u
-            for u in all_units.values()
-            if u.get("team") != team and u.get("alive", True)
-        ]
+        enemies = [u for u in all_units.values() if u.get("team") != team and u.get("alive", True)]
         for enemy in enemies:
             enemy_pos = (enemy.get("x", 0), enemy.get("y", 0))
             distance = self._calculate_distance(pos, enemy_pos)
@@ -396,9 +344,7 @@ class EnhancedAIBehavior:
 
         return formation_pos
 
-    def _get_direction_toward(
-        self, from_pos: Tuple[int, int], to_pos: Tuple[int, int]
-    ) -> Tuple[int, int]:
+    def _get_direction_toward(self, from_pos: Tuple[int, int], to_pos: Tuple[int, int]) -> Tuple[int, int]:
         """Get direction vector toward target position."""
         dx = to_pos[0] - from_pos[0]
         dy = to_pos[1] - from_pos[1]
@@ -411,16 +357,12 @@ class EnhancedAIBehavior:
 
         return (dx, dy)
 
-    def _apply_movement(
-        self, current_pos: Tuple[int, int], direction: Tuple[int, int]
-    ) -> Tuple[int, int]:
+    def _apply_movement(self, current_pos: Tuple[int, int], direction: Tuple[int, int]) -> Tuple[int, int]:
         """Apply movement in a direction."""
         new_x = max(0, min(14, current_pos[0] + direction[0]))
         new_y = max(0, min(14, current_pos[1] + direction[1]))
         return (new_x, new_y)
 
-    def _calculate_distance(
-        self, pos1: Tuple[int, int], pos2: Tuple[int, int]
-    ) -> float:
+    def _calculate_distance(self, pos1: Tuple[int, int], pos2: Tuple[int, int]) -> float:
         """Calculate distance between two positions."""
         return math.sqrt((pos1[0] - pos2[0]) ** 2 + (pos1[1] - pos2[1]) ** 2)

@@ -58,9 +58,7 @@ class RosterPanel:
         panel_surface.fill(self.background_color)
 
         # Draw border
-        pygame.draw.rect(
-            panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2
-        )
+        pygame.draw.rect(panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2)
 
         # Draw teams
         y_offset = padding

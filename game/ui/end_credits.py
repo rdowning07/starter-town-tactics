@@ -32,11 +32,7 @@ class EndCredits:
         try:
             # Try to load from the assets directory
             image_path = (
-                Path(__file__).parent.parent.parent
-                / "assets"
-                / "ui"
-                / "title"
-                / "Start Town Tactics End Credits.png"
+                Path(__file__).parent.parent.parent / "assets" / "ui" / "title" / "Start Town Tactics End Credits.png"
             )
             if image_path.exists():
                 self.credits_image = pygame.image.load(str(image_path))
@@ -112,9 +108,7 @@ class EndCredits:
         # Scale the image
         new_width = int(image_width * scale)
         new_height = int(image_height * scale)
-        scaled_image = pygame.transform.scale(
-            self.credits_image, (new_width, new_height)
-        )
+        scaled_image = pygame.transform.scale(self.credits_image, (new_width, new_height))
 
         # Center the image on the screen
         x = (screen_width - new_width) // 2

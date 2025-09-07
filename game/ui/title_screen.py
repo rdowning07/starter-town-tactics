@@ -31,13 +31,7 @@ class TitleScreen:
         """Load the title screen image."""
         try:
             # Try to load from the assets directory
-            image_path = (
-                Path(__file__).parent.parent.parent
-                / "assets"
-                / "ui"
-                / "title"
-                / "title_screen.png"
-            )
+            image_path = Path(__file__).parent.parent.parent / "assets" / "ui" / "title" / "title_screen.png"
             if image_path.exists():
                 self.title_image = pygame.image.load(str(image_path))
                 print(f"Loaded title screen image: {image_path}")
@@ -68,9 +62,7 @@ class TitleScreen:
 
         # Add copyright
         copyright_font = pygame.font.Font(None, 24)
-        copyright_text = copyright_font.render(
-            "2025 Rob Downing", True, (150, 150, 150)
-        )
+        copyright_text = copyright_font.render("2025 Rob Downing", True, (150, 150, 150))
         copyright_rect = copyright_text.get_rect(center=(400, 550))
         self.title_image.blit(copyright_text, copyright_rect)
 
@@ -80,9 +72,7 @@ class TitleScreen:
         """Start displaying the title screen."""
         self.start_time = time.time()
         self.is_active = True
-        print(
-            f"Title screen started - will display for {self.duration_seconds} seconds"
-        )
+        print(f"Title screen started - will display for {self.duration_seconds} seconds")
 
     def update(self, dt: float) -> bool:
         """Update the title screen.
@@ -107,7 +97,7 @@ class TitleScreen:
         return True
 
     def draw(self, surface: pygame.Surface) -> None:
-        """Draw the title screen.
+        """Draw the title screen with fade effects.
 
         Args:
             surface: The surface to draw on
@@ -137,6 +127,26 @@ class TitleScreen:
         # Center the image on the surface
         x = (surface_width - new_width) // 2
         y = (surface_height - new_height) // 2
+
+        # Calculate fade effect
+        if self.start_time is not None:
+            elapsed = time.time() - self.start_time
+            fade_duration = 1.0  # 1 second fade in/out
+
+            if elapsed < fade_duration:
+                # Fade in
+                alpha = int(255 * (elapsed / fade_duration))
+            elif elapsed > self.duration_seconds - fade_duration:
+                # Fade out
+                fade_out_time = elapsed - (self.duration_seconds - fade_duration)
+                alpha = int(255 * (1.0 - (fade_out_time / fade_duration)))
+            else:
+                # Full opacity
+                alpha = 255
+
+            # Apply alpha to the image
+            if alpha < 255:
+                scaled_image.set_alpha(alpha)
 
         surface.blit(scaled_image, (x, y))
 

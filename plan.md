@@ -388,3 +388,52 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - **Final Polish**: 0% - Ready for final phase
 
 **Major progress achieved: Fighter unit fully integrated as MVP demonstrating the complete pipeline from assets to gameplay.**
+
+---
+
+## 🔧 PHASE 9: CODE REFACTORING & OPTIMIZATION (CURRENT)
+
+### 🎯 Current Issue: File Size Management
+The `ai_bt_fighter_demo_with_title.py` file has grown to **2,421 lines and 101KB**, exceeding AI interaction token limits and making the codebase difficult to maintain.
+
+### 📊 Systematic Analysis Completed
+**File Breakdown:**
+- **Total:** 2,421 lines, 101KB
+- **Comments:** 295 lines (12% of file)
+- **Methods:** 57 methods total
+- **AI Methods:** 5 large AI update methods (~500+ lines)
+
+### 🎯 Refactoring Strategy
+
+**Phase 1: Quick Wins (Reduce ~200 lines)**
+1. ✅ Remove unused imports (ParticleSystem, GradientSweep, ControlCard)
+2. ✅ Clean up debug comments and test code (295 comment lines)
+3. ✅ Remove commented-out complex system code
+
+**Phase 2: Extract Modules (Reduce ~900+ lines)**
+1. **AI Module:** Extract all 5 AI update methods (_update_mage_ai, _update_healer_ai, _update_ranger_ai, _update_bandit_ai, _update_fighter_ai)
+2. **UI Module:** Extract all 4 UI panel methods (_draw_architecture_panel, _draw_methods_panel, _draw_info_panel, _draw_roster_panel)
+3. **Effects Module:** Extract all 4 effect creation methods (_create_fireball_effect, _create_healing_effect, _create_arrow_projectile, _create_placeholder)
+4. **Asset Loading Module:** Extract all 4 metadata loading methods (_load_animation_metadata, _load_effects_metadata, _load_unit_sprites, _load_effect_sprites)
+
+**Phase 3: Final Cleanup**
+1. Consolidate remaining core game logic
+2. Optimize remaining methods
+3. Add proper error handling
+
+### 📋 Current Punch List
+1. **Fix file size issue** - Main problem: 2,421 lines, 101KB file needs refactoring
+2. **Fix SlowMo import error** - Search for SlowMo references in victory system
+3. **Make ranger move and fire arrows** - Ranger AI exists but needs refinement
+4. **Halve screen flashes** - Screen effects may be too frequent
+5. **Show heal effect on white mage and target** - Healing effects need visual improvements
+6. **Add fade transitions** - Title screen fade-out and combat fade-in integration
+
+### 🎯 Expected Results
+- **Before:** 2,421 lines, 101KB
+- **After:** ~1,200 lines, ~50KB (50% reduction)
+- **Benefits:**
+  - File becomes manageable for AI interaction
+  - Better code organization and maintainability
+  - Easier to debug and modify individual systems
+  - Follows single responsibility principle

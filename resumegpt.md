@@ -86,3 +86,27 @@ The fighter unit integration demonstrates the complete pipeline for visual asset
 - **UI Integration**: Comprehensive UI system with health bars, victory banners, and info panels
 
 **Status: 4v4 tactical combat system fully completed and functional. Complete tactical gameplay experience with professional combat mechanics, smart AI, visual effects, and comprehensive UI. Ready for demonstration and further development.**
+
+### **Phase 9: Code Refactoring & Optimization (CURRENT)**
+**Current Challenge:** The main demo file `ai_bt_fighter_demo_with_title.py` has grown to 2,421 lines and 101KB, exceeding AI interaction token limits and making the codebase difficult to maintain.
+
+**Systematic Analysis Completed:**
+- **File Size:** 2,421 lines, 101KB (exceeds 25,000 token limit)
+- **Structure:** 57 methods, 295 comment lines, 5 large AI methods (~500 lines)
+- **Unused Code:** ParticleSystem, GradientSweep, ControlCard imports unused
+- **Refactoring Opportunities:** AI methods, UI panels, effect creation, asset loading
+
+**Refactoring Strategy:**
+- **Phase 1:** Remove unused imports and debug code (~200 lines reduction)
+- **Phase 2:** Extract modules (AI, UI, Effects, Asset Loading) (~900 lines reduction)
+- **Phase 3:** Final cleanup and optimization
+
+**Expected Results:** 50% file size reduction (2,421 → ~1,200 lines) for better maintainability and AI interaction capability.
+
+**Current Punch List:**
+1. Fix file size issue - Main problem requiring immediate attention
+2. Fix SlowMo import error in victory system
+3. Make ranger move and fire arrows in combat
+4. Halve the number of screen flashes
+5. Show heal effect on white mage and target
+6. Add fade to black on title screen and fade in to combat

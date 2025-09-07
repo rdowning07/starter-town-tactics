@@ -517,6 +517,16 @@ starter-town-tactics/
 - ✅ **Sound Effects**: 8/8 valid WAV files (100% - working)
 - ⚠️ **Other Units**: 22 units still need integration (next phase)
 
+### 🔧 Phase 9: Code Refactoring & Optimization (CURRENT)
+**Current Issue:** The `ai_bt_fighter_demo_with_title.py` file has grown to 2,421 lines and 101KB, exceeding AI interaction limits.
+
+**Refactoring Strategy:**
+- **Phase 1:** Remove unused imports and debug code (~200 lines)
+- **Phase 2:** Extract modules (AI, UI, Effects, Asset Loading) (~900 lines)
+- **Phase 3:** Final cleanup and optimization
+
+**Expected Results:** 50% file size reduction (2,421 → ~1,200 lines) for better maintainability.
+
 ### 🎯 Phase 8 Goals: Final Fantasy Tactics Visual Pipeline
 **Week 10**: Terrain Foundation ✅ COMPLETED
 - ✅ Created comprehensive terrain system with 300+ tiles organized by sheets
