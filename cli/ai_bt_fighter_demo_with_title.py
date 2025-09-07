@@ -5,23 +5,22 @@ FIXED VERSION: Characters actually move and attack using new systems.
 """
 
 import json
-import os
 import sys
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
 import pygame
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from cli.ai_bt_demo_ai import BTFighterDemoAI
 from core.ai.bt import make_basic_combat_tree
 from game.ai.enhanced_ai_behavior import AIBehaviorType, EnhancedAIBehavior
 from game.ai.scheduler import AIScheduler
 from game.ai_bt_adapter import BTAdapter
 from game.animation_clock import AnimationClock
 from game.demo_base import DemoBase
-from game.effects.particles import ParticleSystem
 from game.effects.screen_effects import ScreenEffects
 from game.factories.entity_factory import EntityFactory
 
@@ -32,7 +31,6 @@ from game.services.music_manager import MusicManager
 from game.ui.banners import CutInText, TurnBanner, VictoryBanner
 from game.ui.control_card import ControlCard
 from game.ui.end_credits import EndCredits
-from game.ui.gradient_sweep import GradientSweep
 from game.ui.health_and_ko import HealthAndKOOverlay
 from game.ui.roster_panel import RosterPanel
 from game.ui.title_screen import TitleScreen
@@ -162,6 +160,9 @@ class BTFighterDemo(DemoBase):
         self.control_card = ControlCard()
         self.roster_panel = RosterPanel()
         self.screen_effects = ScreenEffects()
+
+        # AI module
+        self.ai_module = BTFighterDemoAI(self)
 
         # Camera shake offset
         self.camera_shake_x = 0.0
@@ -509,12 +510,16 @@ class BTFighterDemo(DemoBase):
                 # Update AI decision text based on what the BT did
                 if status == "SUCCESS":
                     # Check if we can attack (in range and have AP)
-                    if self._enemy_in_attack_range() and self.bandit_ap > 0:
+                    if self._enemy_in_attack_range() and self.bandit_ap[0] > 0:
                         self.ai_decision_text = f"AI: Attack! (tick {self.bt_tick_count})"
                         # Spawn slash effect at BANDIT's position (attacker), not fighter's
-                        self._spawn_effect("slash", self.bandit_pos[0], self.bandit_pos[1])
+                        self._spawn_effect(
+                            "slash",
+                            self.bandit_positions[0][0],
+                            self.bandit_positions[0][1],
+                        )
                         self.fighter_hp = max(0, self.fighter_hp - 2)
-                        self.bandit_ap = max(0, self.bandit_ap - 1)
+                        self.bandit_ap[0] = max(0, self.bandit_ap[0] - 1)
                         self.ai_attacked = True
 
                         # Simple damage tracking
@@ -522,22 +527,22 @@ class BTFighterDemo(DemoBase):
                         # Check if fighter is defeated
                         if self.fighter_hp <= 0:
                             print("💀 Fighter defeated!")
-                    elif self.bandit_ap > 0:
+                    elif self.bandit_ap[0] > 0:
                         self.ai_decision_text = f"AI: Move toward target (tick {self.bt_tick_count})"
                         # Move bandit toward fighter
-                        dx = self.fighter_pos[0] - self.bandit_pos[0]
-                        dy = self.fighter_pos[1] - self.bandit_pos[1]
+                        dx = self.fighter_pos[0] - self.bandit_positions[0][0]
+                        dy = self.fighter_pos[1] - self.bandit_positions[0][1]
                         if abs(dx) > abs(dy):
-                            self.bandit_pos[0] += 1 if dx > 0 else -1
+                            self.bandit_positions[0][0] += 1 if dx > 0 else -1
                         else:
-                            self.bandit_pos[1] += 1 if dy > 0 else -1
-                        self.bandit_ap = max(0, self.bandit_ap - 1)
+                            self.bandit_positions[0][1] += 1 if dy > 0 else -1
+                        self.bandit_ap[0] = max(0, self.bandit_ap[0] - 1)
                         self.ai_moved = True
                 else:
                     self.ai_decision_text = f"AI: {status} (tick {self.bt_tick_count})"
 
-            except Exception as e:
-                self.ai_decision_text = f"AI: Error - {e}"
+            except (ValueError, IndexError, AttributeError) as error:
+                self.ai_decision_text = f"AI: Error - {error}"
 
     def _enemy_in_attack_range(self) -> bool:
         """Check if any enemy is in attack range."""
@@ -778,8 +783,8 @@ class BTFighterDemo(DemoBase):
             sprite = self.unit_sprites["fighter"][self.fighter_animation]
             sprite_rect = sprite.get_rect()
             sprite_rect.center = (
-                self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x - self.camera_shake_x,
-                self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y - self.camera_shake_y,
+                int(self.fighter_pos[0] * self.tile_size + self.tile_size // 2 - self.camera_x - self.camera_shake_x),
+                int(self.fighter_pos[1] * self.tile_size + self.tile_size // 2 - self.camera_y - self.camera_shake_y),
             )
             surface.blit(sprite, sprite_rect)
         else:
@@ -918,7 +923,7 @@ class BTFighterDemo(DemoBase):
             # Draw frame
             surface.blit(frame_surface, (x, y))
 
-        except Exception as e:
+        except (pygame.error, ValueError, IndexError):
             # Fallback: draw colored rectangle
             pygame.draw.rect(surface, (255, 0, 0), pygame.Rect(x, y, 32, 32))
 
@@ -1094,17 +1099,6 @@ class BTFighterDemo(DemoBase):
                     # Toggle bandit walk
                     # Cycle through bandit animations (not used in current system)
                     pass
-                elif event.key == pygame.K_h:  # H key to damage mage for testing healing
-                    # Damage mage to test healer
-                    self.mage_hp = max(0, self.mage_hp - 5)
-                    print(f"💥 Mage damaged! Mage HP: {self.mage_hp}")
-
-                    # Restore healer AP so you can test healing multiple times
-                    self.healer_ap = min(4, self.healer_ap + 2)
-                    print(f"✨ Healer AP restored! Healer AP: {self.healer_ap}")
-
-                    # Spawn damage effect at mage's position
-                    self._spawn_effect("spark", self.mage_pos[0], self.mage_pos[1])
 
         # Handle movement only if not showing title - ONE TILE AT A TIME with proper timing
         keys = pygame.key.get_pressed()
@@ -1194,96 +1188,6 @@ class BTFighterDemo(DemoBase):
                 return True
         return False
 
-    def _update_mage_ai(self) -> None:
-        """Update mage AI behavior - ranged attacks."""
-        current_time = pygame.time.get_ticks()
-
-        # Regenerate AP every 2 seconds
-        if current_time - self.last_mage_ap_regen > 2000:
-            self.last_mage_ap_regen = current_time
-            self.mage_ap = min(5, self.mage_ap + 1)  # Cap at 5 AP
-            print(f"🧙‍♂️ Mage AP regenerated! Mage AP: {self.mage_ap}")
-
-        # Run mage AI every 2 seconds (more dynamic)
-        if current_time - self.last_mage_decision > 2000:
-            self.last_mage_decision = current_time
-
-            # Find the closest living bandit
-            closest_bandit = None
-            closest_distance = float("inf")
-            for i, bandit_pos in enumerate(self.bandit_positions):
-                if self.bandit_hp[i] > 0:  # Only consider living bandits
-                    distance = abs(self.mage_pos[0] - bandit_pos[0]) + abs(self.mage_pos[1] - bandit_pos[1])
-                    if distance < closest_distance:
-                        closest_distance = distance
-                        closest_bandit = i
-
-            if closest_bandit is not None:
-                bandit_pos = self.bandit_positions[closest_bandit]
-                # Debug: show current positions and distance
-                print(
-                    f"🧙‍♂️ Mage at ({self.mage_pos[0]}, {self.mage_pos[1]}), Bandit {closest_bandit+1} at ({bandit_pos[0]}, {bandit_pos[1]}), Distance: {closest_distance}, Range: {self.mage_attack_range}"
-                )
-
-                # Check if mage can attack bandit (ranged attack)
-                if self._mage_can_attack_bandit(closest_bandit) and self.mage_ap > 0:
-                    # Mage attacks bandit from range!
-                    damage = 2  # Less damage than melee but from range
-                    self.bandit_hp[closest_bandit] = max(0, self.bandit_hp[closest_bandit] - damage)
-                    self.mage_ap = max(0, self.mage_ap - 1)
-
-                    # Spawn flying fireball projectile from mage to bandit
-                    self._spawn_fireball_projectile(
-                        self.mage_pos[0],
-                        self.mage_pos[1],
-                        bandit_pos[0],
-                        bandit_pos[1],
-                    )
-
-                    # Screen effects for mage attack
-                    self.screen_effects.hit_impact(3.0)
-
-                    print(f"🔥 Mage casts fireball! Bandit {closest_bandit+1} HP: {self.bandit_hp[closest_bandit]}")
-
-                    # Check if bandit is defeated
-                    if self.bandit_hp[closest_bandit] <= 0:
-                        self.screen_effects.unit_defeated(5.0)
-                        print(f"💀 Bandit {closest_bandit+1} defeated!")
-
-                # If mage can't attack, move toward closest bandit
-                elif self.mage_ap > 0 and not self._mage_can_attack_bandit(closest_bandit):
-                    # Move mage toward bandit to get in range
-                    dx = bandit_pos[0] - self.mage_pos[0]
-                    dy = bandit_pos[1] - self.mage_pos[1]
-
-                    # Move in the direction with larger distance
-                    if abs(dx) > abs(dy):
-                        # Move horizontally
-                        new_x = self.mage_pos[0] + (1 if dx > 0 else -1)
-                        new_pos = [new_x, self.mage_pos[1]]
-                        if (
-                            not self._position_overlaps_any_bandit(new_pos)
-                            and not self._positions_overlap(new_pos, self.fighter_pos)
-                            and not self._positions_overlap(new_pos, self.healer_pos)
-                            and not self._positions_overlap(new_pos, self.ranger_pos)
-                        ):
-                            self.mage_pos[0] = new_x
-                            self.mage_ap = max(0, self.mage_ap - 1)
-                            print(f"🧙‍♂️ Mage moves toward bandit: ({self.mage_pos[0]}, {self.mage_pos[1]})")
-                    else:
-                        # Move vertically
-                        new_y = self.mage_pos[1] + (1 if dy > 0 else -1)
-                        new_pos = [self.mage_pos[0], new_y]
-                        if (
-                            not self._position_overlaps_any_bandit(new_pos)
-                            and not self._positions_overlap(new_pos, self.fighter_pos)
-                            and not self._positions_overlap(new_pos, self.healer_pos)
-                            and not self._positions_overlap(new_pos, self.ranger_pos)
-                        ):
-                            self.mage_pos[1] = new_y
-                            self.mage_ap = max(0, self.mage_ap - 1)
-                            print(f"🧙‍♂️ Mage moves toward bandit: ({self.mage_pos[0]}, {self.mage_pos[1]})")
-
     def _mage_can_attack_bandit(self, bandit_index: int) -> bool:
         """Check if mage can attack bandit from range."""
         bandit_pos = self.bandit_positions[bandit_index]
@@ -1365,7 +1269,6 @@ class BTFighterDemo(DemoBase):
                 continue
 
             # Move projectile
-            old_x, old_y = projectile["x"], projectile["y"]
             projectile["x"] += projectile["dx"]
             projectile["y"] += projectile["dy"]
 
@@ -1419,13 +1322,7 @@ class BTFighterDemo(DemoBase):
 
             # Sort by HP (lowest first)
             allies.sort(key=lambda x: x[1])
-            target_name, target_hp, target_pos = allies[0]
-
-            # Debug: show current positions and distance
-            distance = abs(self.healer_pos[0] - target_pos[0]) + abs(self.healer_pos[1] - target_pos[1])
-            print(
-                f"🧙‍♂️ Healer at ({self.healer_pos[0]}, {self.healer_pos[1]}), {target_name.title()} at ({target_pos[0]}, {target_pos[1]}), Distance: {distance}, Range: {self.healer_heal_range}"
-            )
+            target_name, _, target_pos = allies[0]
 
             # Check if healer can heal the lowest HP ally
             if self._healer_can_heal_target(target_pos) and self.healer_ap > 0:
@@ -1508,11 +1405,7 @@ class BTFighterDemo(DemoBase):
                 if self.bandit_hp[i] <= 0:  # Skip dead bandits
                     continue
 
-                # Debug: show current positions and distance
-                distance = abs(bandit_pos[0] - self.fighter_pos[0]) + abs(bandit_pos[1] - self.fighter_pos[1])
-                print(
-                    f"👹 Bandit {i+1} at ({bandit_pos[0]}, {bandit_pos[1]}), Fighter at ({self.fighter_pos[0]}, {self.fighter_pos[1]}), Distance: {distance}"
-                )
+                # Check if bandit can attack fighter (melee attack)
 
                 # Check if bandit can attack fighter (melee attack)
                 if self._bandit_can_attack_fighter(i) and self.bandit_ap[i] > 0:
@@ -1597,10 +1490,6 @@ class BTFighterDemo(DemoBase):
 
             if closest_bandit is not None:
                 bandit_pos = self.bandit_positions[closest_bandit]
-                # Debug: show current positions and distance
-                print(
-                    f"🏹 Ranger at ({self.ranger_pos[0]}, {self.ranger_pos[1]}), Bandit {closest_bandit+1} at ({bandit_pos[0]}, {bandit_pos[1]}), Distance: {closest_distance}, Range: {self.ranger_attack_range}"
-                )
 
                 # Check if ranger can attack bandit (ranged attack)
                 if self._ranger_can_attack_bandit(closest_bandit) and self.ranger_ap > 0:
@@ -1723,7 +1612,6 @@ class BTFighterDemo(DemoBase):
 
                     if abs(dx) > abs(dy):
                         # Move horizontally
-                        old_pos = (self.fighter_pos[0], self.fighter_pos[1])
                         new_x = self.fighter_pos[0] + (1 if dx > 0 else -1)
                         if 0 <= new_x < 20:  # Stay in bounds
                             self.fighter_pos[0] = new_x
@@ -1810,28 +1698,20 @@ class BTFighterDemo(DemoBase):
                 # Check for victory
                 self._check_victory()
 
-                # Update fighter AI (gets overridden by player input)
-                self._update_fighter_ai()
-
-                # Simple mage AI - attack bandit if in range
-                self._update_mage_ai()
-
-                # Simple healer AI - heal allies if in range
-                self._update_healer_ai()
-
-                # Simple bandit AI - move and attack
-                self._update_bandit_ai()
-
-                # Simple ranger AI - ranged attacks with AP regeneration
-                self._update_ranger_ai()
+                # Update AI behaviors using AI module
+                self.ai_module.update_fighter_ai()
+                self.ai_module.update_mage_ai()
+                self.ai_module.update_healer_ai()
+                self.ai_module.update_bandit_ai()
+                self.ai_module.update_ranger_ai()
 
                 # Update projectiles
                 self._update_projectiles()
 
             # Update screen effects and get camera shake
             shake_offset = self.screen_effects.update(0.016)
-            self.camera_shake_x = shake_offset[0]
-            self.camera_shake_y = shake_offset[1]
+            self.camera_shake_x = int(shake_offset[0])
+            self.camera_shake_y = int(shake_offset[1])
 
             # Update UI components
             self.victory_banner.update(0.016)
@@ -1975,7 +1855,7 @@ class BTFighterDemo(DemoBase):
         # Draw health overlay with camera shake
         camera_x = self.camera_x + self.camera_shake_x
         camera_y = self.camera_y + self.camera_shake_y
-        self.health_overlay.draw_all_units(surface, units_data, camera_x, camera_y, self.tile_size)
+        self.health_overlay.draw_all_units(surface, units_data, int(camera_x), int(camera_y), self.tile_size)
 
     def _draw_roster_panel(self, surface: pygame.Surface) -> None:
         """Draw the roster panel showing team status."""
