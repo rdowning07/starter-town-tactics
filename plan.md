@@ -229,7 +229,7 @@ A tactical turn-based strategy game built with Python and Pygame, featuring modu
 - ✅ **Smart AI System**: Fighter AI, Mage AI, Healer AI, Ranger AI, and 4 Bandit AI with intelligent targeting
 - ✅ **Collision Detection**: Prevents units from occupying the same tile with proper collision system
 - ✅ **Individual Unit Tracking**: Each unit has separate HP/AP/position with independent behavior
-- ✅ **Visual Effects System**: Screen shake, flash effects, projectiles, and healing animations
+- ✅ **Visual Effects System**: Screen shake, projectiles, and healing animations (flash effects removed)
 - ✅ **UI Components**: Health bars, KO markers, victory banners, control cards, and roster panels
 - ✅ **Architecture Visibility**: Real-time display of design patterns and active methods
 - ✅ **Enhanced Gameplay**: 3x fighter HP, slowed AI timing, and comprehensive battle feedback
@@ -425,7 +425,7 @@ The `ai_bt_fighter_demo_with_title.py` file has grown to **2,421 lines and 101KB
 1. **Fix file size issue** - Main problem: 2,421 lines, 101KB file needs refactoring
 2. **Fix SlowMo import error** - Search for SlowMo references in victory system
 3. **Make ranger move and fire arrows** - Ranger AI exists but needs refinement
-4. **Halve screen flashes** - Screen effects may be too frequent
+4. ✅ **Eliminate all screen flashes** - All flash effects removed from ScreenEffects class
 5. **Show heal effect on white mage and target** - Healing effects need visual improvements
 6. **Add fade transitions** - Title screen fade-out and combat fade-in integration
 

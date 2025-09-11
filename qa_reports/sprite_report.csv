@@ -1,24 +1,6 @@
 unit_type,animation_type,file_name,file_path,width,height,frame_count,valid,has_transparency,file_size_mb,errors,warnings
-knight,idle,idle.png,assets/units/knight/idle.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 2
-knight,walk,walk.png,assets/units/knight/walk.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 3
-knight,attack,attack.png,assets/units/knight/attack.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 3
-knight,unknown,neutral.png,assets/units/knight/neutral.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: neutral.png
-knight,unknown,blue.png,assets/units/knight/blue.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: blue.png
-knight,unknown,red.png,assets/units/knight/red.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: red.png
-mage,idle,idle.png,assets/units/mage/idle.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 2
-mage,walk,walk.png,assets/units/mage/walk.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 3
-mage,attack,attack.png,assets/units/mage/attack.png,96,32,1,False,False,0,Sheet width 96 not divisible by frame width 64; Sheet height 32 doesn't match frame height 64; Cannot load sprite sheet: subsurface rectangle outside surface area,Frame count 1 doesn't match expected 3
-mage,unknown,cast.png,assets/units/mage/cast.png,0,0,0,False,False,0,Missing animation sheet: cast.png,
-mage,unknown,blue.png,assets/units/mage/blue.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: blue.png
-mage,unknown,red.png,assets/units/mage/red.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: red.png
-archer,unknown,idle.png,assets/units/archer/idle.png,0,0,0,False,False,0,Missing animation sheet: idle.png,
-archer,unknown,walk.png,assets/units/archer/walk.png,0,0,0,False,False,0,Missing animation sheet: walk.png,
-archer,unknown,attack.png,assets/units/archer/attack.png,0,0,0,False,False,0,Missing animation sheet: attack.png,
-archer,unknown,blue.png,assets/units/archer/blue.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: blue.png
-archer,unknown,red.png,assets/units/archer/red.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: red.png
-goblin,unknown,idle.png,assets/units/goblin/idle.png,0,0,0,False,False,0,Missing animation sheet: idle.png,
-goblin,unknown,walk.png,assets/units/goblin/walk.png,0,0,0,False,False,0,Missing animation sheet: walk.png,
-goblin,unknown,attack.png,assets/units/goblin/attack.png,0,0,0,False,False,0,Missing animation sheet: attack.png,
-goblin,unknown,death.png,assets/units/goblin/death.png,0,0,0,False,False,0,Missing animation sheet: death.png,
-goblin,unknown,ai.png,assets/units/goblin/ai.png,0,0,0,False,False,0,Cannot load sprite sheet: Unsupported image format,Unexpected sprite sheet: ai.png
+knight,unknown,knight,assets/units/knight,0,0,0,False,False,0,Missing unit type directory: knight,
+mage,unknown,mage,assets/units/mage,0,0,0,False,False,0,Missing unit type directory: mage,
+archer,unknown,archer,assets/units/archer,0,0,0,False,False,0,Missing unit type directory: archer,
+goblin,unknown,goblin,assets/units/goblin,0,0,0,False,False,0,Missing unit type directory: goblin,
 orc,unknown,orc,assets/units/orc,0,0,0,False,False,0,Missing unit type directory: orc,

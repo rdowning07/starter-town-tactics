@@ -4,10 +4,9 @@ BT Fighter Demo - Shows Behavior Tree AI controlling fighter units with actual a
 FIXED VERSION: Characters actually move and attack using new systems.
 """
 
-import json
 import sys
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict
 
 import pygame
 
@@ -15,6 +14,9 @@ import pygame
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from cli.ai_bt_demo_ai import BTFighterDemoAI
+from cli.effect_creation import EffectCreation
+from cli.metadata_loading import MetadataLoading
+from cli.ui_panels import UIPanels
 from core.ai.bt import make_basic_combat_tree
 from game.ai.enhanced_ai_behavior import AIBehaviorType, EnhancedAIBehavior
 from game.ai.scheduler import AIScheduler
@@ -74,13 +76,17 @@ class BTFighterDemo(DemoBase):
         # Animation clock
         self.animation_clock = AnimationClock()
 
+        # Initialize effect creation and metadata loading first
+        self.effect_creation = EffectCreation()
+        self.metadata_loading = MetadataLoading(self.effect_creation)
+
         # Load metadata
-        self.animation_metadata = self._load_animation_metadata()
-        self.effects_metadata = self._load_effects_metadata()
+        self.animation_metadata = self.metadata_loading.load_animation_metadata()
+        self.effects_metadata = self.metadata_loading.load_effects_metadata()
 
         # Load assets
-        self.unit_sprites = self._load_unit_sprites()
-        self.effect_sprites = self._load_effect_sprites()
+        self.unit_sprites = self.metadata_loading.load_unit_sprites()
+        self.effect_sprites = self.metadata_loading.load_effect_sprites(self.effects_metadata)
 
         # Demo state - fighter for player, multiple bandits for AI, black mage for ranged testing
         self.fighter_animation = "pose1"  # Use available sprite
@@ -144,11 +150,21 @@ class BTFighterDemo(DemoBase):
         self.combat_fade_timer = 0.0
         self.combat_fade_duration = 1.0  # 1 second fade in
 
+        # Music fade effects
+        self.title_music_volume = 0.5
+        self.battle_music_volume = 0.6
+        self.music_fade_timer = 0.0
+        self.music_fade_duration = 1.0  # 1 second music fade
+
         # BT AI state
         self.bt = make_basic_combat_tree()
         self.bt_tick_count = 0
         self.ai_decision_text = "AI: Thinking..."
         self.last_ai_decision = 0
+
+        # Action Log System
+        self.action_log: list[str] = []
+        self.max_log_entries = 8  # Show last 8 actions
 
         # UI Components
         self.health_overlay = HealthAndKOOverlay()
@@ -161,8 +177,11 @@ class BTFighterDemo(DemoBase):
         self.roster_panel = RosterPanel()
         self.screen_effects = ScreenEffects()
 
-        # AI module
+        # AI module (must be after screen_effects is initialized)
         self.ai_module = BTFighterDemoAI(self)
+
+        # Initialize UI panels
+        self.ui_panels = UIPanels(self)
 
         # Camera shake offset
         self.camera_shake_x = 0.0
@@ -238,239 +257,6 @@ class BTFighterDemo(DemoBase):
     def _ai_tick(self):
         """AI tick function for the scheduler."""
         self._update_ai()
-
-    def _load_animation_metadata(self) -> Dict:
-        """Load animation metadata."""
-        try:
-            with open("assets/units/_metadata/animation_metadata.json", "r", encoding="utf-8") as f:
-                data = json.load(f)
-                print(f"Loaded metadata: {list(data.get('units', {}).keys())}")
-                return data
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Failed to load animation metadata: {e}")
-            return {"units": {}}
-
-    def _load_effects_metadata(self) -> Dict:
-        """Load effects metadata."""
-        try:
-            with open("assets/effects/effects_metadata.json", "r", encoding="utf-8") as f:
-                return json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Failed to load effects metadata: {e}")
-            return {"effects": {}}
-
-    def _load_unit_sprites(self) -> Dict[str, Dict[str, pygame.Surface]]:
-        """Load unit sprites from individual PNG files."""
-        sprites = {}
-
-        # Load fighter sprites
-        fighter_sprites = {}
-        fighter_path = Path("assets/units/fighter")
-        if fighter_path.exists():
-            for png_file in fighter_path.glob("*.png"):
-                try:
-                    sprite = pygame.image.load(str(png_file))
-                    # Check if sprite is too small (stub file)
-                    if sprite.get_width() < 20 or sprite.get_height() < 20:
-                        print(f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})")
-                        continue
-
-                    # Map filename to animation state
-                    anim_state = png_file.stem  # filename without extension
-                    fighter_sprites[anim_state] = sprite
-                    print(f"Loaded fighter sprite: {anim_state}")
-                except pygame.error as e:
-                    print(f"Failed to load {png_file}: {e}")
-
-        # Load bandit sprites
-        bandit_sprites = {}
-        bandit_path = Path("assets/units/bandit")
-        if bandit_path.exists():
-            for png_file in bandit_path.glob("*.png"):
-                try:
-                    sprite = pygame.image.load(str(png_file))
-                    # Check if sprite is too small (stub file)
-                    if sprite.get_width() < 20 or sprite.get_height() < 20:
-                        print(f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})")
-                        continue
-
-                    # Map filename to animation state
-                    anim_state = png_file.stem
-                    bandit_sprites[anim_state] = sprite
-                    print(f"Loaded bandit sprite: {anim_state}")
-                except pygame.error as e:
-                    print(f"Failed to load {png_file}: {e}")
-
-        # Load black mage sprites
-        mage_sprites = {}
-        mage_path = Path("assets/units/black_mage")
-        if mage_path.exists():
-            for png_file in mage_path.glob("*.png"):
-                try:
-                    sprite = pygame.image.load(str(png_file))
-                    # Check if sprite is too small (stub file) - lower threshold for mage
-                    if sprite.get_width() < 15 or sprite.get_height() < 15:
-                        print(f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})")
-                        continue
-
-                    # Map filename to animation state
-                    anim_state = png_file.stem
-                    mage_sprites[anim_state] = sprite
-                    print(f"Loaded mage sprite: {anim_state}")
-                except pygame.error as e:
-                    print(f"Failed to load {png_file}: {e}")
-
-        # Load white mage sprites
-        healer_sprites = {}
-        healer_path = Path("assets/units/white_mage")
-        if healer_path.exists():
-            for png_file in healer_path.glob("*.png"):
-                try:
-                    sprite = pygame.image.load(str(png_file))
-                    # Check if sprite is too small (stub file)
-                    if sprite.get_width() < 20 or sprite.get_height() < 20:
-                        print(f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})")
-                        continue
-
-                    # Map filename to animation state
-                    anim_state = png_file.stem
-                    healer_sprites[anim_state] = sprite
-                    print(f"Loaded healer sprite: {anim_state}")
-                except pygame.error as e:
-                    print(f"Failed to load {png_file}: {e}")
-
-        # Load ranger sprites
-        ranger_sprites = {}
-        ranger_path = Path("assets/units/ranger")
-        if ranger_path.exists():
-            for png_file in ranger_path.glob("*.png"):
-                try:
-                    sprite = pygame.image.load(str(png_file))
-                    # Check if sprite is too small (stub file)
-                    if sprite.get_width() < 20 or sprite.get_height() < 20:
-                        print(f"Skipping stub sprite: {png_file.name} ({sprite.get_width()}x{sprite.get_height()})")
-                        continue
-
-                    # Map filename to animation state
-                    anim_state = png_file.stem
-                    ranger_sprites[anim_state] = sprite
-                    print(f"Loaded ranger sprite: {anim_state}")
-                except pygame.error as e:
-                    print(f"Failed to load {png_file}: {e}")
-
-        sprites["fighter"] = fighter_sprites
-        sprites["bandit"] = bandit_sprites
-        sprites["mage"] = mage_sprites
-        sprites["healer"] = healer_sprites
-        sprites["ranger"] = ranger_sprites
-
-        # Set default animations - use fallback if no real sprites
-        if not fighter_sprites:
-            print("No real fighter sprites found, using fallback")
-        if not bandit_sprites:
-            print("No real bandit sprites found, using fallback")
-
-        return sprites
-
-    def _load_effect_sprites(self) -> Dict[str, pygame.Surface]:
-        """Load effect sprite sheets and slice them into frames."""
-        sprites = {}
-        for effect_name in ["spark", "slash"]:
-            if effect_name in self.effects_metadata.get("effects", {}):
-                effect_meta = self.effects_metadata["effects"][effect_name]
-                sheet_path = effect_meta["sheet"]
-                try:
-                    # Load the sprite sheet with alpha channel preserved
-                    sheet = pygame.image.load(sheet_path).convert_alpha()
-                    frame_width = effect_meta["frame_size"][0]
-                    frame_height = effect_meta["frame_size"][1]
-                    frames = effect_meta["frames"]
-
-                    # Extract the first frame with transparency
-                    first_frame = pygame.Surface((frame_width, frame_height), pygame.SRCALPHA)
-                    first_frame.blit(sheet, (0, 0), (0, 0, frame_width, frame_height))
-                    sprites[effect_name] = first_frame
-
-                    print(f"Loaded {effect_name} effect: {frame_width}x{frame_height}, {frames} frames")
-                except pygame.error as e:
-                    print(f"Failed to load {sheet_path}: {e}")
-                    # Create placeholder
-                    sprites[effect_name] = self._create_placeholder(
-                        32, 32, (255, 255, 0, 128)  # Semi-transparent yellow
-                    )
-        return sprites
-
-    def _create_placeholder(self, width: int, height: int, color: Tuple[int, int, int, int]) -> pygame.Surface:
-        """Create a placeholder surface with transparency."""
-        surface = pygame.Surface((width, height), pygame.SRCALPHA)
-        surface.fill(color)
-        return surface
-
-    def _create_fireball_effect(self, size: int = 32) -> pygame.Surface:
-        """Create a simple fireball effect for mage attacks."""
-        surface = pygame.Surface((size, size), pygame.SRCALPHA)
-
-        # Create a glowing fireball effect
-        center = size // 2
-        radius = size // 3
-
-        # Outer glow (orange)
-        for r in range(radius + 4, radius - 1, -1):
-            alpha = max(0, 255 - (r - radius) * 50)
-            color = (255, 165, 0, alpha)  # Orange with fade
-            pygame.draw.circle(surface, color, (center, center), r)
-
-        # Core fireball (red-yellow)
-        pygame.draw.circle(surface, (255, 255, 0, 200), (center, center), radius - 2)  # Yellow core
-        pygame.draw.circle(surface, (255, 100, 0, 255), (center, center), radius - 4)  # Red center
-
-        return surface
-
-    def _create_healing_effect(self, size: int = 32) -> pygame.Surface:
-        """Create a simple healing effect for healer spells."""
-        surface = pygame.Surface((size, size), pygame.SRCALPHA)
-
-        # Create a glowing ethereal healing effect
-        center = size // 2
-        radius = size // 3
-
-        # Outer glow (soft white-blue)
-        for r in range(radius + 6, radius - 1, -1):
-            alpha = max(0, 180 - (r - radius) * 30)
-            color = (200, 220, 255, alpha)  # Soft white-blue with fade
-            pygame.draw.circle(surface, color, (center, center), r)
-
-        # Middle glow (pure white)
-        pygame.draw.circle(surface, (255, 255, 255, 150), (center, center), radius)  # White glow
-
-        # Core healing (bright white)
-        pygame.draw.circle(surface, (255, 255, 255, 255), (center, center), radius - 3)  # Bright white core
-
-        # Inner sparkle (cyan accent)
-        pygame.draw.circle(surface, (100, 255, 255, 200), (center, center), radius - 6)  # Cyan sparkle
-
-        return surface
-
-    def _create_arrow_projectile(self, size: int = 16) -> pygame.Surface:
-        """Create a simple arrow projectile for ranger attacks."""
-        surface = pygame.Surface((size, size), pygame.SRCALPHA)
-        center = size // 2
-
-        # Draw arrow shaft (brown)
-        pygame.draw.rect(surface, (139, 69, 19, 255), (center - 1, center - 4, 2, 8))
-
-        # Draw arrowhead (gray)
-        points = [
-            (center, center - 6),  # Tip
-            (center - 2, center - 4),  # Left
-            (center + 2, center - 4),  # Right
-        ]
-        pygame.draw.polygon(surface, (128, 128, 128, 255), points)
-
-        # Draw fletching (red)
-        pygame.draw.rect(surface, (255, 0, 0, 255), (center - 2, center + 2, 4, 2))
-
-        return surface
 
     def _spawn_effect(self, effect_name: str, x: int, y: int) -> None:
         """Spawn an effect at the given position."""
@@ -895,7 +681,7 @@ class BTFighterDemo(DemoBase):
         metadata: Dict,
         x: int,
         y: int,
-        animation_id: str,
+        animation_id: str,  # pylint: disable=unused-argument
     ) -> None:
         """Blit a single frame of animation."""
         try:
@@ -946,7 +732,7 @@ class BTFighterDemo(DemoBase):
                     surface.blit(sprite, sprite_rect)
                 elif effect_name == "fireball":
                     # Draw fireball effect
-                    sprite = self._create_fireball_effect()
+                    sprite = self.effect_creation.create_fireball_effect()
                     sprite_rect = sprite.get_rect()
                     sprite_rect.center = (
                         effect["x"] * self.tile_size + self.tile_size // 2 - self.camera_x,
@@ -955,7 +741,7 @@ class BTFighterDemo(DemoBase):
                     surface.blit(sprite, sprite_rect)
                 elif effect_name == "healing":
                     # Draw healing effect
-                    sprite = self._create_healing_effect()
+                    sprite = self.effect_creation.create_healing_effect()
                     sprite_rect = sprite.get_rect()
                     sprite_rect.center = (
                         effect["x"] * self.tile_size + self.tile_size // 2 - self.camera_x,
@@ -986,11 +772,11 @@ class BTFighterDemo(DemoBase):
 
             # Draw projectile based on type
             if projectile["id"].startswith("fireball"):
-                sprite = self._create_fireball_effect(16)  # Smaller fireball for projectile
+                sprite = self.effect_creation.create_fireball_effect(16)  # Smaller fireball for projectile
             elif projectile["id"].startswith("arrow"):
-                sprite = self._create_arrow_projectile(16)  # Arrow projectile
+                sprite = self.effect_creation.create_arrow_projectile(16)  # Arrow projectile
             else:
-                sprite = self._create_fireball_effect(16)  # Default fallback
+                sprite = self.effect_creation.create_fireball_effect(16)  # Default fallback
 
             sprite_rect = sprite.get_rect()
             sprite_rect.center = (
@@ -1002,6 +788,12 @@ class BTFighterDemo(DemoBase):
         # Remove expired/hit projectiles
         for projectile in projectiles_to_remove:
             self.active_projectiles.remove(projectile)
+
+    def log_action(self, action_text: str) -> None:
+        """Add an action to the log and maintain max entries."""
+        self.action_log.append(action_text)
+        if len(self.action_log) > self.max_log_entries:
+            self.action_log.pop(0)  # Remove oldest entry
 
     def _draw_ui(self, surface: pygame.Surface) -> None:
         """Draw UI elements."""
@@ -1077,6 +869,13 @@ class BTFighterDemo(DemoBase):
                         self.title_screen.skip()
                         self.showing_title = False
                         print("Title screen skipped - starting main demo")
+                        # Start combat fade in
+                        self.combat_fade_timer = 0.0
+                        # Start music fade
+                        self.music_fade_timer = 0.0
+                        # Switch to battle music
+                        self.music_manager.play("assets/music/jrpg_battle_loop.mp3", volume=0.0, loop=True)
+                        print("🎵 Battle music started (fading in)")
                     return True
                 elif self.showing_credits:
                     # During end credits, allow skipping with space
@@ -1517,8 +1316,8 @@ class BTFighterDemo(DemoBase):
                 self.ranger_ap > 0 and closest_bandit is not None and not self._ranger_can_attack_bandit(closest_bandit)
             ):
                 # Move ranger toward bandit to get in range
-                dx = self.bandit_pos[0] - self.ranger_pos[0]
-                dy = self.bandit_pos[1] - self.ranger_pos[1]
+                dx = self.bandit_positions[0][0] - self.ranger_pos[0]
+                dy = self.bandit_positions[0][1] - self.ranger_pos[1]
 
                 # Move in the direction with larger distance
                 if abs(dx) > abs(dy):
@@ -1663,9 +1462,11 @@ class BTFighterDemo(DemoBase):
                     print("Title screen completed - starting main demo")
                     # Start combat fade in
                     self.combat_fade_timer = 0.0
+                    # Start music fade
+                    self.music_fade_timer = 0.0
                     # Switch to battle music
-                    self.music_manager.play("assets/music/jrpg_battle_loop.mp3", volume=0.6, loop=True)
-                    print("🎵 Battle music started")
+                    self.music_manager.play("assets/music/jrpg_battle_loop.mp3", volume=0.0, loop=True)
+                    print("🎵 Battle music started (fading in)")
 
             # Update end credits
             if self.showing_credits:
@@ -1739,6 +1540,16 @@ class BTFighterDemo(DemoBase):
                 fade_progress = self.combat_fade_timer / self.combat_fade_duration
                 self.combat_fade_alpha = int(255 * (1.0 - fade_progress))
 
+            # Update music fade effect
+            if not self.showing_title and self.music_fade_timer < self.music_fade_duration:
+                self.music_fade_timer += 0.016
+                # Fade battle music up
+                fade_progress = self.music_fade_timer / self.music_fade_duration
+                battle_volume = self.battle_music_volume * fade_progress
+
+                # Set the current music volume (battle music is playing)
+                self.music_manager.set_volume(battle_volume)
+
             # Clear screen
             self.screen.fill((0, 0, 0))
 
@@ -1770,10 +1581,11 @@ class BTFighterDemo(DemoBase):
                 # Draw UI components
                 self._draw_ui(self.screen)
                 self._draw_controls_text(self.screen)
-                self._draw_roster_panel(self.screen)
-                self._draw_info_panel(self.screen)
-                self._draw_architecture_panel(self.screen)
-                self._draw_methods_panel(self.screen)
+                self.ui_panels.draw_roster_panel(self.screen)
+                self.ui_panels.draw_info_panel(self.screen)
+                self.ui_panels.draw_action_log_panel(self.screen)
+                self.ui_panels.draw_architecture_panel(self.screen)
+                self.ui_panels.draw_methods_panel(self.screen)
 
                 # Draw banners and cut-in text
                 self.turn_banner.draw(self.screen)
@@ -1857,97 +1669,6 @@ class BTFighterDemo(DemoBase):
         camera_y = self.camera_y + self.camera_shake_y
         self.health_overlay.draw_all_units(surface, units_data, int(camera_x), int(camera_y), self.tile_size)
 
-    def _draw_roster_panel(self, surface: pygame.Surface) -> None:
-        """Draw the roster panel showing team status."""
-        # Create team data
-        teams = {
-            1: {  # Player team
-                "name": "Allies",
-                "units": [
-                    {
-                        "name": "Fighter",
-                        "hp": self.fighter_hp,
-                        "max_hp": 10,
-                        "alive": self.fighter_hp > 0,
-                    },
-                    {
-                        "name": "Mage",
-                        "hp": self.mage_hp,
-                        "max_hp": 15,
-                        "alive": self.mage_hp > 0,
-                    },
-                    {
-                        "name": "Healer",
-                        "hp": self.healer_hp,
-                        "max_hp": 12,
-                        "alive": self.healer_hp > 0,
-                    },
-                    {
-                        "name": "Ranger",
-                        "hp": self.ranger_hp,
-                        "max_hp": 14,
-                        "alive": self.ranger_hp > 0,
-                    },
-                ],
-            },
-            2: {  # Enemy team
-                "name": "Bandits",
-                "units": [
-                    {"name": f"Bandit {i+1}", "hp": hp, "max_hp": 8, "alive": hp > 0}
-                    for i, hp in enumerate(self.bandit_hp)
-                ],
-            },
-        }
-
-        self.roster_panel.draw(surface, teams)
-
-    def _draw_info_panel(self, surface: pygame.Surface) -> None:
-        """Draw info panel with animation and AI decision info."""
-        # Position info panel to avoid overlapping with game area (720px wide)
-        panel_x = 750  # Right side of screen
-        panel_y = 10  # Same vertical level as Allies panel
-
-        # Create info data
-        alive_bandits = [h for h in self.bandit_hp if h > 0]
-        bandit_hp_text = f"Bandits: {len(alive_bandits)} alive"
-        if alive_bandits:
-            bandit_hp_text += f" (HP: {', '.join(map(str, alive_bandits))})"
-
-        info_items = [
-            f"Animation: {self.fighter_animation} (HP: {self.fighter_hp})",
-            bandit_hp_text,
-            f"AI Decision: {self.bt_tick_count}",
-            f"Active Effects: {len(self.active_effects)}",
-            f"AI Tasks: {self.ai_scheduler.get_task_count()}",
-            "",
-            "🏆 Victory: Eliminate all enemies",
-            f"Status: {'VICTORY!' if self.victory_achieved else 'In Progress'}",
-        ]
-
-        # Draw background
-        panel_width = 350  # Expanded for longer text
-        panel_height = len(info_items) * 25 + 30  # Reduced line height from 30 to 25
-        panel_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
-        panel_surface.fill((0, 0, 0, 180))  # Semi-transparent black
-
-        # Draw border
-        pygame.draw.rect(panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2)
-
-        # Draw title
-        font = pygame.font.Font(None, 20)
-        title_surface = font.render("GAME INFO", True, (255, 255, 255))
-        panel_surface.blit(title_surface, (10, 10))
-
-        # Draw info items
-        y_offset = 35
-        for item in info_items:
-            text_surface = font.render(item, True, (255, 255, 255))
-            panel_surface.blit(text_surface, (10, y_offset))
-            y_offset += 30
-
-        # Blit to main surface
-        surface.blit(panel_surface, (panel_x, panel_y))
-
     def _draw_controls_text(self, surface: pygame.Surface) -> None:
         """Draw controls as text under the game tiles."""
         font = pygame.font.Font(None, 24)
@@ -1966,85 +1687,6 @@ class BTFighterDemo(DemoBase):
             text_surface = font.render(control, True, (255, 255, 255))
             surface.blit(text_surface, (start_x + x_offset, y_pos))
             x_offset += 200  # Space controls horizontally
-
-    def _draw_architecture_panel(self, surface: pygame.Surface) -> None:
-        """Draw architecture & patterns panel."""
-        panel_x = 750  # Right side of screen
-        panel_y = 300  # Moved down 1.5 tiles (72px) from 228
-
-        arch_items = [
-            "Architecture & Patterns:",
-            "├─ Composite: BT Structure",
-            "├─ Strategy: BTContext",
-            "├─ Observer: VictoryService",
-            "├─ Factory: EntityFactory",
-            "├─ Scheduler: AIScheduler",
-            "└─ State: GameState",
-        ]
-
-        # Draw background
-        panel_width = 350
-        panel_height = len(arch_items) * 25 + 30
-        panel_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
-        panel_surface.fill((0, 0, 0, 180))
-
-        # Draw border
-        pygame.draw.rect(panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2)
-
-        # Draw title
-        font = pygame.font.Font(None, 20)
-        title_surface = font.render("ARCHITECTURE", True, (255, 255, 255))
-        panel_surface.blit(title_surface, (10, 10))
-
-        # Draw items
-        y_offset = 35
-        for item in arch_items:
-            text_surface = font.render(item, True, (255, 255, 255))
-            panel_surface.blit(text_surface, (10, y_offset))
-            y_offset += 25
-
-        surface.blit(panel_surface, (panel_x, panel_y))
-
-    def _draw_methods_panel(self, surface: pygame.Surface) -> None:
-        """Draw methods active panel."""
-        panel_x = 750  # Right side of screen
-
-        methods_items = [
-            "Methods Active:",
-            "├─ _handle_input() - Player controls",
-            "├─ _update_effects() - Visual effects",
-            "├─ _draw_terrain() - Map rendering",
-            "├─ _draw_units() - Character sprites",
-            "├─ _draw_ui() - Interface panels",
-            "└─ _update_ai() - AI decision making",
-        ]
-
-        # Calculate panel height and position so bottom aligns with bottom of tiles
-        panel_width = 350
-        panel_height = len(methods_items) * 25 + 30
-        # Bottom of tiles is at y=15*48=720, so panel bottom should be at 720
-        # Position panel so its bottom aligns with bottom of tiles
-        panel_y = 720 - panel_height
-
-        panel_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
-        panel_surface.fill((0, 0, 0, 180))
-
-        # Draw border
-        pygame.draw.rect(panel_surface, (100, 100, 100), (0, 0, panel_width, panel_height), 2)
-
-        # Draw title
-        font = pygame.font.Font(None, 20)
-        title_surface = font.render("METHODS", True, (255, 255, 255))
-        panel_surface.blit(title_surface, (10, 10))
-
-        # Draw items
-        y_offset = 35
-        for item in methods_items:
-            text_surface = font.render(item, True, (255, 255, 255))
-            panel_surface.blit(text_surface, (10, y_offset))
-            y_offset += 25
-
-        surface.blit(panel_surface, (panel_x, panel_y))
 
 
 def main():

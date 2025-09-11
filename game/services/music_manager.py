@@ -28,7 +28,13 @@ class MusicManager:
             print(f"Failed to initialize music manager: {e}")
             self.enabled = False
 
-    def play(self, path: str, volume: float = None, loop: bool = True, fade_ms: int = 1000) -> bool:
+    def play(
+        self,
+        path: str,
+        volume: Optional[float] = None,
+        loop: bool = True,
+        fade_ms: int = 1000,
+    ) -> bool:
         """Play a track; stops any currently playing music.
 
         Args:

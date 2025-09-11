@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 import pygame
 
 from game.terrain_renderer import TerrainRenderer
-from game.tile_catalog import TileCatalog
+from game.TileCatalog import TileCatalog
 
 
 class TestTileCatalog(unittest.TestCase):

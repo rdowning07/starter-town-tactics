@@ -4,7 +4,7 @@ Tests for VictoryService.
 
 import pytest
 
-from game.services.victory_service import BattleOutcome, VictoryService
+from game.services.victory_service import GameOutcome, VictoryService
 
 
 class TestVictoryService:
@@ -14,7 +14,7 @@ class TestVictoryService:
         """Test initial service state."""
         service = VictoryService(player_team_id=1, enemy_team_ids={2}, initial_counts={1: 4, 2: 4})
 
-        assert service.get_outcome() == BattleOutcome.ONGOING
+        assert service.get_outcome() == GameOutcome.ONGOING
         assert service.get_alive_counts() == {1: 4, 2: 4}
         assert not service.is_battle_over()
 
@@ -26,7 +26,7 @@ class TestVictoryService:
         for _ in range(4):
             service.on_unit_defeated(2)
 
-        assert service.get_outcome() == BattleOutcome.PLAYER_WIN
+        assert service.get_outcome() == GameOutcome.VICTORY
         assert service.is_battle_over()
 
     def test_player_defeat_sequence(self):
@@ -37,7 +37,7 @@ class TestVictoryService:
         for _ in range(4):
             service.on_unit_defeated(1)
 
-        assert service.get_outcome() == BattleOutcome.PLAYER_LOSE
+        assert service.get_outcome() == GameOutcome.DEFEAT
         assert service.is_battle_over()
 
     def test_observer_notification(self):
@@ -55,4 +55,4 @@ class TestVictoryService:
             service.on_unit_defeated(2)
 
         assert len(outcomes) == 1
-        assert outcomes[0] == BattleOutcome.PLAYER_WIN
+        assert outcomes[0] == GameOutcome.VICTORY

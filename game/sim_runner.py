@@ -30,7 +30,10 @@ class SimRunner:
         # Handle backward compatibility with Game objects
         if hasattr(turn_controller_or_game, "turn_controller") and hasattr(turn_controller_or_game, "ai_controller"):
             # It's a Game object
+            from game.game import Game
+
             game = turn_controller_or_game
+            assert isinstance(game, Game)
             self.turn_controller = game.turn_controller
             self.ai_controller = ai_controller or game.ai_controller
             self.game_state = game  # Store reference for FX integration

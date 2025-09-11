@@ -7,7 +7,7 @@ and notifying subscribers when the game ends.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Dict, Optional, Set
+from typing import Any, Callable, Dict, List, Optional, Set
 
 
 class GameOutcome(Enum):

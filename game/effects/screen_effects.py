@@ -33,7 +33,7 @@ class ScreenShake:
         self.duration = duration
         self.start_time = time.time()
 
-    def update(self, dt: float) -> Tuple[float, float]:
+    def update(self, dt: float) -> Tuple[float, float]:  # pylint: disable=unused-argument
         """Update shake and return offset.
 
         Args:
@@ -87,7 +87,7 @@ class ScreenFlash:
         self.duration = duration
         self.start_time = time.time()
 
-    def update(self, dt: float) -> Optional[pygame.Surface]:
+    def update(self, dt: float) -> Optional[pygame.Surface]:  # pylint: disable=unused-argument
         """Update flash and return overlay surface.
 
         Args:
@@ -140,21 +140,21 @@ class ScreenEffects:
     def hit_impact(self, intensity: float = 3.0) -> None:
         """Trigger hit impact effects."""
         self.shake.shake(intensity, 0.2)
-        self.flash.flash((255, 255, 0), 0.05)  # Yellow flash - halved duration
+        # Flash effects removed
 
     def critical_hit(self, intensity: float = 8.0) -> None:
         """Trigger critical hit effects."""
         self.shake.shake(intensity, 0.4)
-        self.flash.flash((255, 0, 0), 0.1)  # Red flash - halved duration
+        # Flash effects removed
 
     def unit_defeated(self, intensity: float = 5.0) -> None:
         """Trigger unit defeated effects."""
         self.shake.shake(intensity, 0.3)
-        self.flash.flash((255, 0, 0), 0.075)  # Red flash - halved duration
+        # Flash effects removed
 
     def heal_effect(self) -> None:
         """Trigger heal effect."""
-        self.flash.flash((0, 255, 255), 0.1)  # Cyan flash - halved duration
+        # Flash effects removed
 
     def update(self, dt: float) -> Tuple[float, float]:
         """Update all effects.
@@ -168,8 +168,7 @@ class ScreenEffects:
         # Update shake
         shake_offset = self.shake.update(dt)
 
-        # Update flash
-        self.flash.update(dt)
+        # Flash effects removed
 
         return shake_offset
 
@@ -179,4 +178,4 @@ class ScreenEffects:
         Args:
             surface: Surface to draw effects on
         """
-        self.flash.draw(surface)
+        # Flash effects removed

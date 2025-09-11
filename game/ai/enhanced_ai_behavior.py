@@ -7,7 +7,7 @@ Provides more dynamic and engaging AI behavior patterns.
 import math
 import random
 from enum import Enum
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 class AIBehaviorType(Enum):
@@ -49,7 +49,7 @@ class EnhancedAIBehavior:
         self.movement_history[unit_id] = []
         print(f"🤖 Unit {unit_id} assigned {behavior.value} behavior")
 
-    def get_enhanced_action(self, unit_id: str, unit_data: Dict, all_units: Dict, game_state: any) -> Optional[Dict]:
+    def get_enhanced_action(self, unit_id: str, unit_data: Dict, all_units: Dict, game_state: Any) -> Optional[Dict]:
         """Get enhanced AI action based on behavior type.
 
         Args:
@@ -81,7 +81,10 @@ class EnhancedAIBehavior:
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find nearest enemy
-        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, team)
         if not nearest_enemy:
             return None
 
@@ -112,7 +115,10 @@ class EnhancedAIBehavior:
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find best tactical position
-        tactical_pos = self._find_tactical_position(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        tactical_pos = self._find_tactical_position(current_pos, all_units, team)
         if tactical_pos and tactical_pos != current_pos:
             return {
                 "action": "move",
@@ -122,7 +128,10 @@ class EnhancedAIBehavior:
             }
 
         # If in good position, attack if possible
-        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, team)
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)
@@ -141,7 +150,10 @@ class EnhancedAIBehavior:
         current_pos = (unit_data.get("x", 0), unit_data.get("y", 0))
 
         # Find nearest ally in danger
-        ally_in_danger = self._find_ally_in_danger(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        ally_in_danger = self._find_ally_in_danger(current_pos, all_units, team)
         if ally_in_danger:
             # Move to protect ally
             ally_pos = (ally_in_danger.get("x", 0), ally_in_danger.get("y", 0))
@@ -188,7 +200,10 @@ class EnhancedAIBehavior:
                 }
 
         # If can't find new position, attack if possible
-        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, team)
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)
@@ -221,7 +236,10 @@ class EnhancedAIBehavior:
                 }
 
         # If in formation, attack together
-        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, unit_data.get("team"))
+        team = unit_data.get("team")
+        if not isinstance(team, str):
+            return None
+        nearest_enemy = self._find_nearest_enemy(current_pos, all_units, team)
         if nearest_enemy:
             enemy_pos = (nearest_enemy.get("x", 0), nearest_enemy.get("y", 0))
             distance = self._calculate_distance(current_pos, enemy_pos)

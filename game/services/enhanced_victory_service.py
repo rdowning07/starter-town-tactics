@@ -6,7 +6,7 @@ Provides multiple victory conditions for dynamic and engaging gameplay.
 
 import time
 from enum import Enum
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from game.services.victory_service import GameOutcome, VictoryService
 
@@ -158,7 +158,7 @@ class EnhancedVictoryService(VictoryService):
             for subscriber in self.subscribers:
                 subscriber(outcome)
 
-    def get_victory_stats(self) -> Dict[str, any]:
+    def get_victory_stats(self) -> Dict[str, Any]:
         """Get current victory condition statistics.
 
         Returns:

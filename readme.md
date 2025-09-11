@@ -50,7 +50,7 @@ A tactical, turn-based simulation game engine inspired by Final Fantasy Tactics 
 - ✅ **Code Quality**: Pylint score improved from 8.09/10 to 9.72/10 with comprehensive error fixes
 - ✅ **4v4 Tactical Combat Demo**: Complete tactical combat system with 8 units (4 player team vs 4 bandits)
 - ✅ **Multi-Unit AI System**: Fighter AI, Mage AI, Healer AI, Ranger AI, and 4 Bandit AI with smart targeting
-- ✅ **Visual Effects System**: Screen shake, flash effects, projectiles, and healing animations
+- ✅ **Visual Effects System**: Screen shake, projectiles, and healing animations (flash effects removed)
 - ✅ **UI Components**: Health bars, KO markers, victory banners, control cards, and roster panels
 - ✅ **Architecture Visibility**: Real-time display of design patterns and active methods
 - ✅ **Enhanced Gameplay**: 3x fighter HP, slowed AI timing, and comprehensive battle feedback

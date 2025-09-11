@@ -68,7 +68,7 @@ The fighter unit integration demonstrates the complete pipeline for visual asset
 - **Smart AI System**: Fighter AI, Mage AI, Healer AI, Ranger AI, and 4 Bandit AI with intelligent targeting
 - **Collision Detection**: Prevents units from occupying the same tile with proper collision system
 - **Individual Unit Tracking**: Each unit has separate HP/AP/position with independent behavior
-- **Visual Effects System**: Screen shake, flash effects, projectiles, and healing animations
+- **Visual Effects System**: Screen shake, projectiles, and healing animations (flash effects removed)
 - **UI Components**: Health bars, KO markers, victory banners, control cards, and roster panels
 - **Architecture Visibility**: Real-time display of design patterns and active methods
 - **Enhanced Gameplay**: 3x fighter HP, slowed AI timing, and comprehensive battle feedback
@@ -82,7 +82,7 @@ The fighter unit integration demonstrates the complete pipeline for visual asset
 - **Individual Stats**: Arrays track HP/AP for each unit with proper indexing
 - **Visual Rendering**: All units render with different poses for visual variety
 - **Combat Balance**: Proper damage values, ranges, and AP costs for tactical gameplay
-- **Screen Effects**: Professional visual feedback with screen shake and flash effects
+- **Screen Effects**: Professional visual feedback with screen shake (flash effects removed)
 - **UI Integration**: Comprehensive UI system with health bars, victory banners, and info panels
 
 **Status: 4v4 tactical combat system fully completed and functional. Complete tactical gameplay experience with professional combat mechanics, smart AI, visual effects, and comprehensive UI. Ready for demonstration and further development.**
@@ -107,6 +107,6 @@ The fighter unit integration demonstrates the complete pipeline for visual asset
 1. Fix file size issue - Main problem requiring immediate attention
 2. Fix SlowMo import error in victory system
 3. Make ranger move and fire arrows in combat
-4. Halve the number of screen flashes
+4. ✅ Eliminate all screen flashes (COMPLETED)
 5. Show heal effect on white mage and target
 6. Add fade to black on title screen and fade in to combat

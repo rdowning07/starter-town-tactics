@@ -3,7 +3,7 @@
 AI methods for BT Fighter Demo - Extracted from main demo file for better organization.
 """
 
-from typing import List, Tuple
+# from typing import List, Tuple  # Unused imports removed
 
 import pygame
 
@@ -59,7 +59,11 @@ class BTFighterDemoAI:
 
                     # Screen effects for mage attack
                     self.demo.screen_effects.hit_impact(3.0)
-                    print(f"🔥 Mage casts fireball! Bandit {closest_bandit+1} HP: {self.demo.bandit_hp[closest_bandit]}")
+                    action_text = (
+                        f"🔥 Mage casts fireball! Bandit {closest_bandit+1} HP: {self.demo.bandit_hp[closest_bandit]}"
+                    )
+                    print(action_text)
+                    self.demo.log_action(action_text)
 
                     # Check if bandit is defeated
                     if self.demo.bandit_hp[closest_bandit] <= 0:
@@ -85,7 +89,11 @@ class BTFighterDemoAI:
                         ):
                             self.demo.mage_pos[0] = new_x
                             self.demo.mage_ap = max(0, self.demo.mage_ap - 1)
-                            print(f"🔥 Mage moves toward bandit: ({self.demo.mage_pos[0]}, {self.demo.mage_pos[1]})")
+                            action_text = (
+                                f"🔥 Mage moves toward bandit: ({self.demo.mage_pos[0]}, {self.demo.mage_pos[1]})"
+                            )
+                            print(action_text)
+                            self.demo.log_action(action_text)
                     else:
                         # Move vertically
                         new_y = self.demo.mage_pos[1] + (1 if dy > 0 else -1)
@@ -98,7 +106,11 @@ class BTFighterDemoAI:
                         ):
                             self.demo.mage_pos[1] = new_y
                             self.demo.mage_ap = max(0, self.demo.mage_ap - 1)
-                            print(f"🔥 Mage moves toward bandit: ({self.demo.mage_pos[0]}, {self.demo.mage_pos[1]})")
+                            action_text = (
+                                f"🔥 Mage moves toward bandit: ({self.demo.mage_pos[0]}, {self.demo.mage_pos[1]})"
+                            )
+                            print(action_text)
+                            self.demo.log_action(action_text)
 
     def update_healer_ai(self) -> None:
         """Update healer AI behavior - healing allies."""
@@ -124,9 +136,11 @@ class BTFighterDemoAI:
 
             # Sort by HP (lowest first)
             allies.sort(key=lambda x: x[1])
-            target_name, target_hp, target_pos = allies[0]
+            target_name, _, target_pos = allies[0]  # target_hp unused
 
-            distance = abs(self.demo.healer_pos[0] - target_pos[0]) + abs(self.demo.healer_pos[1] - target_pos[1])
+            # distance = abs(self.demo.healer_pos[0] - target_pos[0]) + abs(
+            #     self.demo.healer_pos[1] - target_pos[1]
+            # )  # distance unused
 
             # Check if healer can heal the lowest HP ally
             if self.demo._healer_can_heal_target(target_pos) and self.demo.healer_ap > 0:
@@ -156,7 +170,9 @@ class BTFighterDemoAI:
 
                 # Screen effects for healing
                 self.demo.screen_effects.heal_effect()
-                print(f"💚 Healer heals {target_name}! {target_name} HP: {current_hp}")
+                action_text = f"💚 Healer heals {target_name}! {target_name} HP: {current_hp}"
+                print(action_text)
+                self.demo.log_action(action_text)
                 self.demo.ai_decision_text = (
                     f"💚 Healer heals {target_name.title()}! {target_name.title()} HP: {current_hp}"
                 )
@@ -213,7 +229,9 @@ class BTFighterDemoAI:
                 if self.demo.bandit_hp[i] <= 0:  # Skip dead bandits
                     continue
 
-                distance = abs(bandit_pos[0] - self.demo.fighter_pos[0]) + abs(bandit_pos[1] - self.demo.fighter_pos[1])
+                # distance = abs(bandit_pos[0] - self.demo.fighter_pos[0]) + abs(
+                #     bandit_pos[1] - self.demo.fighter_pos[1]
+                # )  # distance unused
 
                 # Check if bandit can attack fighter (melee attack)
                 if self.demo._bandit_can_attack_fighter(i) and self.demo.bandit_ap[i] > 0:
@@ -227,7 +245,9 @@ class BTFighterDemoAI:
 
                     # Screen effects for bandit attack
                     self.demo.screen_effects.hit_impact(2.0)
-                    print(f"👹 Bandit {i+1} attacks fighter! Fighter HP: {self.demo.fighter_hp}")
+                    action_text = f"👹 Bandit {i+1} attacks fighter! Fighter HP: {self.demo.fighter_hp}"
+                    print(action_text)
+                    self.demo.log_action(action_text)
                     self.demo.ai_decision_text = f"👹 Bandit {i+1} attacks fighter! Fighter HP: {self.demo.fighter_hp}"
 
                     # Check if fighter is defeated
@@ -249,7 +269,9 @@ class BTFighterDemoAI:
                         if not self.demo._position_overlaps_any_bandit(new_pos):
                             self.demo.bandit_positions[i][0] = new_x
                             self.demo.bandit_ap[i] = max(0, self.demo.bandit_ap[i] - 1)
-                            print(f"👹 Bandit {i+1} moves toward fighter: ({new_x}, {bandit_pos[1]})")
+                            action_text = f"👹 Bandit {i+1} moves toward fighter: ({new_x}, {bandit_pos[1]})"
+                            print(action_text)
+                            self.demo.log_action(action_text)
                     else:
                         # Move vertically
                         new_y = bandit_pos[1] + (1 if dy > 0 else -1)
@@ -257,7 +279,9 @@ class BTFighterDemoAI:
                         if not self.demo._position_overlaps_any_bandit(new_pos):
                             self.demo.bandit_positions[i][1] = new_y
                             self.demo.bandit_ap[i] = max(0, self.demo.bandit_ap[i] - 1)
-                            print(f"👹 Bandit {i+1} moves toward fighter: ({bandit_pos[0]}, {new_y})")
+                            action_text = f"👹 Bandit {i+1} moves toward fighter: ({bandit_pos[0]}, {new_y})"
+                            print(action_text)
+                            self.demo.log_action(action_text)
 
     def update_ranger_ai(self) -> None:
         """Update ranger AI behavior - ranged attacks with AP regeneration."""
@@ -303,9 +327,11 @@ class BTFighterDemoAI:
                         bandit_pos[1],
                     )
 
-                    print(
+                    action_text = (
                         f"🏹 Ranger shoots bandit {closest_bandit+1}! Bandit HP: {self.demo.bandit_hp[closest_bandit]}"
                     )
+                    print(action_text)
+                    self.demo.log_action(action_text)
 
                     # Check if bandit is defeated
                     if self.demo.bandit_hp[closest_bandit] <= 0:
@@ -335,7 +361,11 @@ class BTFighterDemoAI:
                     ):
                         self.demo.ranger_pos[0] = new_x
                         self.demo.ranger_ap = max(0, self.demo.ranger_ap - 1)
-                        print(f"🏹 Ranger moves toward bandit: ({self.demo.ranger_pos[0]}, {self.demo.ranger_pos[1]})")
+                        action_text = (
+                            f"🏹 Ranger moves toward bandit: ({self.demo.ranger_pos[0]}, {self.demo.ranger_pos[1]})"
+                        )
+                        print(action_text)
+                        self.demo.log_action(action_text)
                 else:
                     # Move vertically
                     new_y = self.demo.ranger_pos[1] + (1 if dy > 0 else -1)
@@ -348,7 +378,11 @@ class BTFighterDemoAI:
                     ):
                         self.demo.ranger_pos[1] = new_y
                         self.demo.ranger_ap = max(0, self.demo.ranger_ap - 1)
-                        print(f"🏹 Ranger moves toward bandit: ({self.demo.ranger_pos[0]}, {self.demo.ranger_pos[1]})")
+                        action_text = (
+                            f"🏹 Ranger moves toward bandit: ({self.demo.ranger_pos[0]}, {self.demo.ranger_pos[1]})"
+                        )
+                        print(action_text)
+                        self.demo.log_action(action_text)
 
     def update_fighter_ai(self) -> None:
         """Update fighter AI behavior - pursue and attack bandits."""
@@ -385,9 +419,9 @@ class BTFighterDemoAI:
 
                     # Update AI decision text
                     self.demo.ai_decision_text = f"🤖 Fighter AI attacks Bandit {closest_bandit+1}! Bandit HP: {self.demo.bandit_hp[closest_bandit]}"
-                    print(
-                        f"🤖 Fighter AI attacks Bandit {closest_bandit+1}! Bandit HP: {self.demo.bandit_hp[closest_bandit]}"
-                    )
+                    action_text = f"🤖 Fighter AI attacks Bandit {closest_bandit+1}! Bandit HP: {self.demo.bandit_hp[closest_bandit]}"
+                    print(action_text)
+                    self.demo.log_action(action_text)
 
                     # Check if bandit is defeated
                     if self.demo.bandit_hp[closest_bandit] <= 0:
@@ -413,9 +447,9 @@ class BTFighterDemoAI:
                         ):
                             self.demo.fighter_pos[0] = new_x
                             self.demo.fighter_ap = max(0, self.demo.fighter_ap - 1)
-                            print(
-                                f"🤖 Fighter AI moves toward bandit: ({self.demo.fighter_pos[0]}, {self.demo.fighter_pos[1]})"
-                            )
+                            action_text = f"🤖 Fighter AI moves toward bandit: ({self.demo.fighter_pos[0]}, {self.demo.fighter_pos[1]})"
+                            print(action_text)
+                            self.demo.log_action(action_text)
                     else:
                         # Move vertically
                         new_y = self.demo.fighter_pos[1] + (1 if dy > 0 else -1)
@@ -429,6 +463,6 @@ class BTFighterDemoAI:
                         ):
                             self.demo.fighter_pos[1] = new_y
                             self.demo.fighter_ap = max(0, self.demo.fighter_ap - 1)
-                            print(
-                                f"🤖 Fighter AI moves toward bandit: ({self.demo.fighter_pos[0]}, {self.demo.fighter_pos[1]})"
-                            )
+                            action_text = f"🤖 Fighter AI moves toward bandit: ({self.demo.fighter_pos[0]}, {self.demo.fighter_pos[1]})"
+                            print(action_text)
+                            self.demo.log_action(action_text)

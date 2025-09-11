@@ -1,15 +1,9 @@
 terrain_type,file_name,file_path,width,height,valid,has_transparency,file_size_mb,errors,warnings
-grass,grass.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/grass/grass.png,0,0,True,False,0,,Expected terrain file missing: grass.png
-grass,grass_edge.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/grass/grass_edge.png,0,0,True,False,0,,Expected terrain file missing: grass_edge.png
-grass,grass_corner.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/grass/grass_corner.png,0,0,True,False,0,,Expected terrain file missing: grass_corner.png
-stone,stone.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/stone/stone.png,0,0,True,False,0,,Expected terrain file missing: stone.png
-stone,stone_edge.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/stone/stone_edge.png,0,0,True,False,0,,Expected terrain file missing: stone_edge.png
-stone,stone_corner.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/stone/stone_corner.png,0,0,True,False,0,,Expected terrain file missing: stone_corner.png
-water,water.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/water/water.png,0,0,True,False,0,,Expected terrain file missing: water.png
-water,water_edge.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/water/water_edge.png,0,0,True,False,0,,Expected terrain file missing: water_edge.png
-water,water_corner.png,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/water/water_corner.png,0,0,True,False,0,,Expected terrain file missing: water_corner.png
-forest,forest,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/forest,0,0,False,False,0,Missing terrain type directory: forest,
-mountain,mountain,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/mountain,0,0,False,False,0,Missing terrain type directory: mountain,
-desert,desert,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/desert,0,0,False,False,0,Missing terrain type directory: desert,
-dungeon,dungeon,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/dungeon,0,0,False,False,0,Missing terrain type directory: dungeon,
-castle,castle,/var/folders/7b/sqf4njrn5s583pm7w932dwvr0000gn/T/tmpnd38sk28/assets/terrain/castle,0,0,False,False,0,Missing terrain type directory: castle,
+grass,grass,assets/terrain/grass,0,0,False,False,0,Missing terrain type directory: grass,
+stone,stone,assets/terrain/stone,0,0,False,False,0,Missing terrain type directory: stone,
+water,water,assets/terrain/water,0,0,False,False,0,Missing terrain type directory: water,
+forest,forest,assets/terrain/forest,0,0,False,False,0,Missing terrain type directory: forest,
+mountain,mountain,assets/terrain/mountain,0,0,False,False,0,Missing terrain type directory: mountain,
+desert,desert,assets/terrain/desert,0,0,False,False,0,Missing terrain type directory: desert,
+dungeon,dungeon,assets/terrain/dungeon,0,0,False,False,0,Missing terrain type directory: dungeon,
+castle,castle,assets/terrain/castle,0,0,False,False,0,Missing terrain type directory: castle,

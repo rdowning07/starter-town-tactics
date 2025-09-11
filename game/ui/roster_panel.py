@@ -15,8 +15,8 @@ class RosterPanel:
         """Initialize the roster panel."""
         self.position = (
             470,  # Aligned with "T" in "Exit" from controls text
-            10,
-        )  # Far right, top (moved up since controls window removed)
+            0,  # Aligned with top of top row of tiles
+        )  # Far right, top aligned with game grid
         self.background_color = (0, 0, 0, 180)  # Semi-transparent black
         self.text_color = (255, 255, 255)  # White text
         self.alive_color = (0, 255, 0)  # Green for alive
